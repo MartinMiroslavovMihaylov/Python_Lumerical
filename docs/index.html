@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Python Lumercial Costructor Script’s documentation! &mdash; Python Lumercial Costructor Script 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Python Lumercial Costructor Script
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to Python Lumercial Costructor Script’s documentation!</a></li>
+<li><a class="reference internal" href="#how-to-use-the-script">How to use the script</a></li>
+<li><a class="reference internal" href="#how-to-use-the-help-menu">How to use the Help Menu</a></li>
+<li><a class="reference internal" href="#how-to-define-materials-and-parameters">How to define Materials and Parameters</a></li>
+<li><a class="reference internal" href="#how-to-use-the-logfile-function">How to use the Logfile function</a></li>
+<li><a class="reference internal" href="#how-to-use-the-loadingbar-function">How to use the loadingBar function</a></li>
+<li><a class="reference internal" href="#constructor-package">Constructor package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-Constructor.Constructor">Constructor.Constructor module</a><ul>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor"><code class="docutils literal notranslate"><span class="pre">Constructor</span></code></a><ul>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.ArcWaveguide"><code class="docutils literal notranslate"><span class="pre">Constructor.ArcWaveguide()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.BendWaveguide"><code class="docutils literal notranslate"><span class="pre">Constructor.BendWaveguide()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.CascadetMMI"><code class="docutils literal notranslate"><span class="pre">Constructor.CascadetMMI()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.Close"><code class="docutils literal notranslate"><span class="pre">Constructor.Close()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.CoppyDcard"><code class="docutils literal notranslate"><span class="pre">Constructor.CoppyDcard()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.DirectionalCoupler"><code class="docutils literal notranslate"><span class="pre">Constructor.DirectionalCoupler()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.EME"><code class="docutils literal notranslate"><span class="pre">Constructor.EME()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.EME_Solver"><code class="docutils literal notranslate"><span class="pre">Constructor.EME_Solver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.ExtractEMEResults"><code class="docutils literal notranslate"><span class="pre">Constructor.ExtractEMEResults()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.ExtractFDEModes"><code class="docutils literal notranslate"><span class="pre">Constructor.ExtractFDEModes()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.ExtractFDEResultsExtendet"><code class="docutils literal notranslate"><span class="pre">Constructor.ExtractFDEResultsExtendet()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.ExtractFDTDResults"><code class="docutils literal notranslate"><span class="pre">Constructor.ExtractFDTDResults()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.ExtrtactData"><code class="docutils literal notranslate"><span class="pre">Constructor.ExtrtactData()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.FDE_Solver"><code class="docutils literal notranslate"><span class="pre">Constructor.FDE_Solver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.FDTD"><code class="docutils literal notranslate"><span class="pre">Constructor.FDTD()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.FDTD_Solver"><code class="docutils literal notranslate"><span class="pre">Constructor.FDTD_Solver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.Help"><code class="docutils literal notranslate"><span class="pre">Constructor.Help()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.InverseTaper"><code class="docutils literal notranslate"><span class="pre">Constructor.InverseTaper()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.MMI2x1"><code class="docutils literal notranslate"><span class="pre">Constructor.MMI2x1()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.MMI2x1_Trapez"><code class="docutils literal notranslate"><span class="pre">Constructor.MMI2x1_Trapez()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.MMI2x2"><code class="docutils literal notranslate"><span class="pre">Constructor.MMI2x2()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.MMI2x2_Trapez"><code class="docutils literal notranslate"><span class="pre">Constructor.MMI2x2_Trapez()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.Overlap"><code class="docutils literal notranslate"><span class="pre">Constructor.Overlap()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.OverlapFDEModes"><code class="docutils literal notranslate"><span class="pre">Constructor.OverlapFDEModes()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.ReturnLogInfo"><code class="docutils literal notranslate"><span class="pre">Constructor.ReturnLogInfo()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.Script"><code class="docutils literal notranslate"><span class="pre">Constructor.Script()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.Solver"><code class="docutils literal notranslate"><span class="pre">Constructor.Solver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.StartEMESimulation"><code class="docutils literal notranslate"><span class="pre">Constructor.StartEMESimulation()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.StartFDESimulation"><code class="docutils literal notranslate"><span class="pre">Constructor.StartFDESimulation()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.StartFDTDSimulation"><code class="docutils literal notranslate"><span class="pre">Constructor.StartFDTDSimulation()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.StartSimFunction"><code class="docutils literal notranslate"><span class="pre">Constructor.StartSimFunction()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.StraightWaveguide"><code class="docutils literal notranslate"><span class="pre">Constructor.StraightWaveguide()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.WDM"><code class="docutils literal notranslate"><span class="pre">Constructor.WDM()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.Waveguide"><code class="docutils literal notranslate"><span class="pre">Constructor.Waveguide()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.removeObject"><code class="docutils literal notranslate"><span class="pre">Constructor.removeObject()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setArcWaveguideFDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setArcWaveguideFDTDSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setBendWaveguideFDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setBendWaveguideFDTDSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setCascadetMMIFDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setCascadetMMIFDTDSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setDCEMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setDCEMESolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setDCFDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setDCFDTDSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setInverseTaperEMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setInverseTaperEMESolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setMMI1x2VarFDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI1x2VarFDTDSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setMMI2x1EMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x1EMESolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setMMI2x1FDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x1FDTDSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setMMI2x2EMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x2EMESolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setMMI2x2FDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x2FDTDSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setMMI2x2VarFDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x2VarFDTDSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setStraightWaveguideEMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setStraightWaveguideEMESolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setStraightWaveguideFDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setStraightWaveguideFDTDSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setWDMEMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setWDMEMESolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setWaveguideFDESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setWaveguideFDESolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.varFDTD_Solver"><code class="docutils literal notranslate"><span class="pre">Constructor.varFDTD_Solver()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Constructor.Constructor.Help"><code class="docutils literal notranslate"><span class="pre">Help()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.HelpSubject"><code class="docutils literal notranslate"><span class="pre">HelpSubject</span></code></a><ul>
+<li><a class="reference internal" href="#Constructor.Constructor.HelpSubject.Help_LoadingBar"><code class="docutils literal notranslate"><span class="pre">HelpSubject.Help_LoadingBar()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.HelpSubject.Help_LogFile"><code class="docutils literal notranslate"><span class="pre">HelpSubject.Help_LogFile()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.HelpSubject.Help_Objects"><code class="docutils literal notranslate"><span class="pre">HelpSubject.Help_Objects()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.HelpSubject.Help_RemoveObject"><code class="docutils literal notranslate"><span class="pre">HelpSubject.Help_RemoveObject()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.HelpSubject.Help_Results"><code class="docutils literal notranslate"><span class="pre">HelpSubject.Help_Results()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.HelpSubject.Help_Solvers"><code class="docutils literal notranslate"><span class="pre">HelpSubject.Help_Solvers()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.HelpSubject.Help_StartSimulation"><code class="docutils literal notranslate"><span class="pre">HelpSubject.Help_StartSimulation()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Constructor.Constructor.Logfile"><code class="docutils literal notranslate"><span class="pre">Logfile()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.arange"><code class="docutils literal notranslate"><span class="pre">arange()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.loadingBar"><code class="docutils literal notranslate"><span class="pre">loadingBar()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-Constructor">Module contents</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Python Lumercial Costructor Script</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to Python Lumercial Costructor Script’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-python-lumercial-costructor-script-s-documentation">
+<h1>Welcome to Python Lumercial Costructor Script’s documentation!<a class="headerlink" href="#welcome-to-python-lumercial-costructor-script-s-documentation" title="Link to this heading"></a></h1>
+<p>To isntall the library please clone the git repo <a class="reference external" href="https://github.com/MartinMiroslavovMihaylov/Python_Lumerical.git">https://github.com/MartinMiroslavovMihaylov/Python_Lumerical.git</a>
+to a empty folder. The you can install the Costructor lib with the setup.py file. Type in open Terminal:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<section id="how-to-use-the-script">
+<h1>How to use the script<a class="headerlink" href="#how-to-use-the-script" title="Link to this heading"></a></h1>
+<p>First you need to locate your Lumerical installation folder and find the lumpi.py file.
+For example under Windows you can find the file under “C:Program FilesLumericalv221apipythonlumapi.py”.</p>
+<p>Once located yoy will need to add to Lumerical an Material File. The file will have an ending
+“Material_File_Example.mdf”. If you dont have an Material file you can skip this part.</p>
+<p>Finaly go to your Python IDLE and import the Constructor lib that you just installed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1"># Import Constructor</span>
+<span class="kn">import</span> <span class="nn">Constructor</span> <span class="k">as</span> <span class="nn">CN</span>
+<span class="c1"># Import Help Menu</span>
+<span class="kn">from</span> <span class="nn">Constructor</span> <span class="kn">import</span> <span class="n">Help</span>
+<span class="c1">#Import Loading Bar</span>
+<span class="kn">from</span> <span class="nn">Constructor</span> <span class="kn">import</span> <span class="n">loadingBar</span>
+<span class="c1"># Import Logfile function extractor</span>
+<span class="kn">from</span> <span class="nn">Constructor</span> <span class="kn">import</span> <span class="n">Logfile</span>
+
+<span class="c1"># Give the Material and lumpi.py files paths</span>
+<span class="n">Path</span> <span class="o">=</span> <span class="s2">&quot;C:/Program Files/Lumerical/v221/api/python/lumapi.py&quot;</span>
+<span class="n">MaterialPath</span> <span class="o">=</span> <span class="s2">&quot;C:/.../Materials.mdf&quot;</span>
+
+
+<span class="c1"># Start the Lumerical FDTD API</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">CN</span><span class="o">.</span><span class="n">Constructor</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">MaterialPath</span><span class="p">,</span>  <span class="s2">&quot;FDTD&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="how-to-use-the-help-menu">
+<h1>How to use the Help Menu<a class="headerlink" href="#how-to-use-the-help-menu" title="Link to this heading"></a></h1>
+<p>If you need Help with the functions you can use the build in Help guide.
+Just type:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Help</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="how-to-define-materials-and-parameters">
+<h1>How to define Materials and Parameters<a class="headerlink" href="#how-to-define-materials-and-parameters" title="Link to this heading"></a></h1>
+<p>The Materials are taken from the Lumerical build in or imported Materials database.
+The user can give Materials by them names as an python list of str. For Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Material</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SiO2 (Glass) - Palik&quot;</span><span class="p">,</span> <span class="s1">&#39;LiNbO3_20deg_X cut&#39;</span><span class="p">,</span> <span class="s2">&quot;SU-8&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The parameters are given as dictionary to the Costructor. For example to create an 1x2_MMI
+you can use this code snip:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#Create empty dictionary</span>
+<span class="n">Parameters</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;Substrate Height&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.05e-6</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;MMI Width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.6e-6</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;MMI Length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">18e-6</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;angle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;WG Height&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.3e-6</span>
+<span class="n">Parameters</span> <span class="p">[</span><span class="s1">&#39;WG Width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5e-6</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;WG Length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5e-6</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;Offset Input&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;Position Offset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.49e-6</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;Slab Height&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6e-6</span> <span class="o">-</span> <span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;WG Height&#39;</span><span class="p">]</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;Material&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Material</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;Taper Length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10e-6</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;Taper Width&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="mf">4e-6</span>
+<span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;Taper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Create the MMI</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">MMI2x1</span><span class="p">(</span><span class="n">Parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="how-to-use-the-logfile-function">
+<h1>How to use the Logfile function<a class="headerlink" href="#how-to-use-the-logfile-function" title="Link to this heading"></a></h1>
+<p>The Logfile function can be used after each simulation to generate an .txt file with all the parameters used
+for this specific simulation and the time stemp of the simulation. To use the function simply type:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save solver info to an variable</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">ReturnLogInfo</span><span class="p">()</span>
+<span class="c1"># create an list of solver info and parameters used for this simulation</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">solver</span><span class="p">,</span> <span class="n">Parameters</span><span class="p">]</span>
+<span class="c1"># Write the information to an .txt file in the given location</span>
+<span class="n">path_for_logFile</span> <span class="o">=</span> <span class="s2">&quot;C:/..../Simulation_Data/&quot;</span>
+<span class="n">Logfile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">path_for_logFile</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="how-to-use-the-loadingbar-function">
+<h1>How to use the loadingBar function<a class="headerlink" href="#how-to-use-the-loadingbar-function" title="Link to this heading"></a></h1>
+<p>The laoding bar function will create an loading bar in your python terminal whitch will
+give you more information about the current status of the simulation (if you are doing an
+sweep over couple of parameters). To show you how to use the function an for loop will be
+used :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span> <span class="k">as</span> <span class="nn">t</span>
+<span class="n">Lenght</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">20e-6</span><span class="p">,</span><span class="mf">30e-6</span><span class="p">,</span><span class="mf">2e-6</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Lenght</span><span class="p">)):</span>
+        <span class="c1">#Set the loading bar function</span>
+    <span class="n">loadingBar</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">Lenght</span><span class="p">))</span>
+    <span class="n">Parameters</span><span class="p">[</span><span class="s1">&#39;Taper Length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lenght</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">StraightWaveguide</span><span class="p">(</span><span class="n">Parameters</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">removeObject</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="constructor-package">
+<h1>Constructor package<a class="headerlink" href="#constructor-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-Constructor.Constructor">
+<span id="constructor-constructor-module"></span><h2>Constructor.Constructor module<a class="headerlink" href="#module-Constructor.Constructor" title="Link to this heading"></a></h2>
+<p>Created on Fri Feb 10 08:31:42 2023</p>
+<p>&#64;author: Martin.Mihaylov</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Constructor.Constructor.</span></span><span class="sig-name descname"><span class="pre">Constructor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MaterialLib</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.ArcWaveguide">
+<span class="sig-name descname"><span class="pre">ArcWaveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.ArcWaveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.ArcWaveguide" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Bend Wavaguide. Data needet:
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate height</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide height</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab height</p>
+</dd>
+<dt>Parameters[‘Material’]<span class="classifier">list</span></dt><dd><p>Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
+If Waveguide Angle is different then 0, then the straight waveguide will be tilted
+at the choosen degrees.</p>
+</dd>
+<dt>Parameters[“Wavelength”]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“S_Band Radius”]<span class="classifier">int/float</span></dt><dd><p>Radius of the Circle in um</p>
+</dd>
+<dt>Parameters[‘Arc deg’]<span class="classifier">int</span></dt><dd><p>Can be 90 or 180 for 1/4 of a cirle or 1/2 of a circle.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Value Error</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.BendWaveguide">
+<span class="sig-name descname"><span class="pre">BendWaveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.BendWaveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.BendWaveguide" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Bend Wavaguide. Data needet:
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate Height</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Height</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab height</p>
+</dd>
+<dt>Parameters[‘Material’]<span class="classifier">list</span></dt><dd><p>Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
+If Waveguide Angle is different then 0, then the straight waveguide will be tilted
+at the choosen degrees.</p>
+</dd>
+<dt>Parameters[“Wavelength”]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“x span”]<span class="classifier">int/float</span></dt><dd><p>Length of the S Curve. Span of the object.</p>
+</dd>
+<dt>Parameters[“y span”]<span class="classifier">int/float</span></dt><dd><p>Height of the curve. Difference between the input and output of the S-curve.</p>
+</dd>
+<dt>Parameters[“poles”]<span class="classifier">boolen</span></dt><dd><p>If Parameters[“poles”] = True an Bezier Curbe will be made.
+if Parameters[“poles”] = False an Cosinus Curve = y_span*(cos((pi/(2*x_span))*t)^2) will be made. Where
+t is in the range of 0 - y_span</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Value Error Massage.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.CascadetMMI">
+<span class="sig-name descname"><span class="pre">CascadetMMI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SpaceX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SpaceY</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.CascadetMMI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.CascadetMMI" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>TYPE</em>) – DESCRIPTION.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.Close">
+<span class="sig-name descname"><span class="pre">Close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.Close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.Close" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.CoppyDcard">
+<span class="sig-name descname"><span class="pre">CoppyDcard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modeTE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modeTM</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.CoppyDcard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.CoppyDcard" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modeTE</strong> (<em>str</em>) – The TE mode that will be copy to dCard to do the overlap analysis.</p></li>
+<li><p><strong>modeTM</strong> (<em>str</em>) – The TM mode that will be copy to dCard to do the overlap analysis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.DirectionalCoupler">
+<span class="sig-name descname"><span class="pre">DirectionalCoupler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.DirectionalCoupler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.DirectionalCoupler" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl class="simple">
+<dt>Parameters[‘Material’]<span class="classifier">list of str</span></dt><dd><p>List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer.</p>
+</dd>
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘Substrate Width’]<span class="classifier">int/float</span></dt><dd><p>Substrate Width.</p>
+</dd>
+<dt>Parameters[‘DC Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the directional coupler</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. The minimum distance between Waveguides is 1 um
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.EME">
+<span class="sig-name descname"><span class="pre">EME</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.EME"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.EME" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.EME_Solver">
+<span class="sig-name descname"><span class="pre">EME_Solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Structure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.EME_Solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.EME_Solver" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.ExtractEMEResults">
+<span class="sig-name descname"><span class="pre">ExtractEMEResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">MonitorName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EMEName</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.ExtractEMEResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.ExtractEMEResults" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>MonitorName</strong> (<em>str</em>) – The name of the monitor. By defoult the name will be ‘monitor’.
+So MonitorName = ‘monitor’ can be used. In case of change in the name
+the new name of the monitor should be given.</p></li>
+<li><p><strong>EMEName</strong> (<em>str</em>) – The name of the solver. In this case per defoult will be EMEName =
+‘EME’. In case of change in the name, the new name should be given.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul>
+<li><p><strong>OptionsMonitor</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>Dictionary with:</dt><dd><p>’lambda’
+‘f’
+‘x’
+‘y’
+‘z’
+‘E’
+‘H’
+‘Lumerical_dataset’</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>EME_Data</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>Dictionary with:</dt><dd><p>’user s matrix’
+‘internal s matrix’
+‘local diagnostics’
+‘coefficients’
+‘global diagnostics’</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.ExtractFDEModes">
+<span class="sig-name descname"><span class="pre">ExtractFDEModes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">EffIndexValue</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.ExtractFDEModes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.ExtractFDEModes" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>EffIndexValue</strong> (<em>float/int</em>) – Effective index value. All modes with effective index smaller then
+the  Effective will be deleted. Effective is usualy the smalles effective
+index from the hole construction (usualy the cladding).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dictData</strong> – Dictionary with the modes polarization numbers</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.ExtractFDEResultsExtendet">
+<span class="sig-name descname"><span class="pre">ExtractFDEResultsExtendet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">EffIndexValue</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.ExtractFDEResultsExtendet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.ExtractFDEResultsExtendet" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>EffIndexValue</strong> (<em>float/int</em>) – Effective index value. All modes with effective index smaller then
+the  Effective will be deleted. Effective is usualy the smalles effective
+index from the hole construction (usualy the cladding).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul>
+<li><p><strong>dictModes</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>Dictionary with:</dt><dd><p>’TE polarization fraction num’
+‘effective area’
+‘effective index num’
+‘group index num’
+‘Ex’
+‘Ey’
+‘Ez’</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>dictData</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>Dictionary with:</dt><dd><p>’E’</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.ExtractFDTDResults">
+<span class="sig-name descname"><span class="pre">ExtractFDTDResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ports</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sparam</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.ExtractFDTDResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.ExtractFDTDResults" title="Link to this definition"></a></dt>
+<dd><p>This fuction will add an S-Parameter Sweep to the FDTD simulation.
+This will allowed to sweep the S-parameter Matrix like it is done in
+EMe solver. Additionally will extract the Power on each port according to the time
+monitors that ware set in the solver functions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.ExtrtactData">
+<span class="sig-name descname"><span class="pre">ExtrtactData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.ExtrtactData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.ExtrtactData" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.FDE_Solver">
+<span class="sig-name descname"><span class="pre">FDE_Solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Structure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.FDE_Solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.FDE_Solver" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.FDTD">
+<span class="sig-name descname"><span class="pre">FDTD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.FDTD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.FDTD" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.FDTD_Solver">
+<span class="sig-name descname"><span class="pre">FDTD_Solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Structure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.FDTD_Solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.FDTD_Solver" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.Help">
+<span class="sig-name descname"><span class="pre">Help</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.Help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.Help" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.InverseTaper">
+<span class="sig-name descname"><span class="pre">InverseTaper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.InverseTaper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.InverseTaper" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Parameters</strong><strong>[</strong><strong>'Material'</strong><strong>]</strong> (<em>list</em><em> of </em><em>str</em>) – List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer.</p></li>
+<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
+<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int/float</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p></li>
+<li><p><strong>Height'</strong><strong>]</strong> – Waveguide hight. Also the height of the MMI section</p></li>
+<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Waveguide width. Also in this function and ONLY in this function this will be the
+ibverse Taper width!!!</p></li>
+<li><p><strong>Height'</strong><strong>]</strong> – Slab height</p></li>
+<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'PWB Taper</em>) – Inverse Taper Length</p></li>
+<li><p><strong>Width'</strong><strong>]</strong> – Front Width of the inverse Taper!! In this Function and ONLY in this function, the
+Parameters[‘Taper Width’] is the frond width of the inverse Taper!</p></li>
+<li><p><strong>Back'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'PWB Taper Hight</em>) – Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)</p></li>
+<li><p><strong>Back'</strong><strong>]</strong> – Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)</p></li>
+<li><p><strong>Front'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'PWB Taper Hight</em>) – Photonic Wirebonding (PWB) Width front side (to the photonic waveguide)</p></li>
+<li><p><strong>Front'</strong><strong>]</strong> – Photonic Wire Bonding Height front side (to the photonic waveguide)</p></li>
+<li><p><strong>Length'</strong><strong>]</strong> – Length of the Photonic Wire Bonding Taper</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.MMI2x1">
+<span class="sig-name descname"><span class="pre">MMI2x1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.MMI2x1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.MMI2x1" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl>
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl>
+<dt>Parameters[‘Material’]<span class="classifier">list of str</span></dt><dd><p>List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer.</p>
+</dd>
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the MMI.</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the MMI.</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><blockquote>
+<div><p>Waveguide hight. Also the height of the MMI section</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+</dl>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide length.</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘Offset Input’]<span class="classifier">int/float</span></dt><dd><p>Offset of the input waveguide.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>Taper can be set to be True ot False.
+if Taper == False - No Taper used
+if Taper == True - Taper placed</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers length. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers width. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.MMI2x1_Trapez">
+<span class="sig-name descname"><span class="pre">MMI2x1_Trapez</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.MMI2x1_Trapez"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.MMI2x1_Trapez" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl>
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl>
+<dt>Parameters[‘Material’]<span class="classifier">list of str</span></dt><dd><p>List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer.</p>
+</dd>
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the MMI.</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the MMI.</p>
+</dd>
+<dt>Parameters[‘Middle MMI Length’]: int/float</dt><dd><p>Length of the MMI in the Middle Part due to inperfection by manufacturing</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><blockquote>
+<div><p>Waveguide hight. Also the height of the MMI section</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+</dl>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide length.</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘Offset Input’]<span class="classifier">int/float</span></dt><dd><p>Offset of the input waveguide.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>Taper can be set to be True ot False.
+if Taper == False - No Taper used
+if Taper == True - Taper placed</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers length. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers width. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.MMI2x2">
+<span class="sig-name descname"><span class="pre">MMI2x2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.MMI2x2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.MMI2x2" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl>
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl>
+<dt>Parameters[‘Material’]<span class="classifier">list of str</span></dt><dd><blockquote>
+<div><p>List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+</dl>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the MMI.</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the MMI.</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide length.</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><blockquote>
+<div><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+becouse of manufactering restrictions in the University.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+</dl>
+</dd>
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>Taper can be set to be True ot False.
+if Taper == False - No Taper used
+if Taper == True - Taper placed</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers length. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers width. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Value Error.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.MMI2x2_Trapez">
+<span class="sig-name descname"><span class="pre">MMI2x2_Trapez</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.MMI2x2_Trapez"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.MMI2x2_Trapez" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl>
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl>
+<dt>Parameters[‘Material’]<span class="classifier">list of str</span></dt><dd><blockquote>
+<div><p>List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+</dl>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the MMI.</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the MMI.</p>
+</dd>
+<dt>Parameters[‘Middle MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the MMI in the Middle Part due to inperfection by manufacturing</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide length.</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><blockquote>
+<div><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+becouse of manufactering restrictions in the University.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+</dl>
+</dd>
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>Taper can be set to be True ot False.
+if Taper == False - No Taper used
+if Taper == True - Taper placed</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers length. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers width. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Value Error.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.Overlap">
+<span class="sig-name descname"><span class="pre">Overlap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.Overlap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.Overlap" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul>
+<li><p><strong>TEModes</strong> (<em>dict</em>) – Dictionary of TE - Modes.</p></li>
+<li><p><strong>dictDataTE</strong> (<em>dict</em>) – Dictionary of TE - Modes E field values</p></li>
+<li><p><strong>SweepDictTE</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>Dictionary of TE - Modes:</dt><dd><ol class="arabic simple">
+<li><p>overlap Procentage</p></li>
+<li><p>TE polarization fraction number</p></li>
+<li><p>TE polarization fraction</p></li>
+<li><p>loss</p></li>
+<li><p>Ex</p></li>
+<li><p>Ey</p></li>
+<li><p>Ez</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p><strong>TMModes</strong> (<em>dict</em>) – Dictionary of TM - Modes..</p></li>
+<li><p><strong>dictDataTM</strong> (<em>dict</em>) – Dictionary of TM - Modes E field values.</p></li>
+<li><p><strong>SweepDictTM</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>Dictionary of TM - Modes:</dt><dd><ol class="arabic simple">
+<li><p>overlap Procentage</p></li>
+<li><p>TE polarization fraction number</p></li>
+<li><p>TE polarization fraction</p></li>
+<li><p>loss</p></li>
+<li><p>Ex</p></li>
+<li><p>Ey</p></li>
+<li><p>Ez</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.OverlapFDEModes">
+<span class="sig-name descname"><span class="pre">OverlapFDEModes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.OverlapFDEModes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.OverlapFDEModes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.ReturnLogInfo">
+<span class="sig-name descname"><span class="pre">ReturnLogInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.ReturnLogInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.ReturnLogInfo" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.Script">
+<span class="sig-name descname"><span class="pre">Script</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.Script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.Script" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.Solver">
+<span class="sig-name descname"><span class="pre">Solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Structure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.Solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.Solver" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.StartEMESimulation">
+<span class="sig-name descname"><span class="pre">StartEMESimulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.StartEMESimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.StartEMESimulation" title="Link to this definition"></a></dt>
+<dd><p>This Function will save a the construted object under the name “SimRun1”
+then will run the simulation. The simulation cannot be done without first
+saving the object. On the end the ‘emepropagation’ of the mode 1 port 1
+will be done.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.StartFDESimulation">
+<span class="sig-name descname"><span class="pre">StartFDESimulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.StartFDESimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.StartFDESimulation" title="Link to this definition"></a></dt>
+<dd><p>This Function will save a the construted object under the name “SimRun1”
+then will run the simulation. The simulation cannot be done without first
+saving the object. On the end the ‘findmodes’ will simulate all 20 modes
+that are set by defoult to be calculated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.StartFDTDSimulation">
+<span class="sig-name descname"><span class="pre">StartFDTDSimulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.StartFDTDSimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.StartFDTDSimulation" title="Link to this definition"></a></dt>
+<dd><p>This Function will save a the construted object under the name “SimRun1”
+then will run the simulation. The simulation cannot be done without first
+saving the object. On the end the ‘emepropagation’ of the mode 1 port 1
+will be done.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.StartSimFunction">
+<span class="sig-name descname"><span class="pre">StartSimFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.StartSimFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.StartSimFunction" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.StraightWaveguide">
+<span class="sig-name descname"><span class="pre">StraightWaveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.StraightWaveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.StraightWaveguide" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Bend Wavaguide. Data needet:
+Parameters[‘Substrate Height’] : int float</p>
+<blockquote>
+<div><p>Substrate Height</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the Waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the Waveguide</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the Waveguide</p>
+</dd>
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>If Taper == False, only Waveguiedes will be constructed.
+If Taper == True, only an single Taper will be constructed</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Taper Length</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>Taper backside width, the frontside width is the waveguide width</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab height.</p>
+</dd>
+<dt>Parameters[‘Material’]<span class="classifier">list</span></dt><dd><p>List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer.</p>
+</dd>
+<dt>Parameters[“Wavelength”]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Waveguide Angle”]<span class="classifier">int/float</span></dt><dd><p>Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
+If Waveguide Angle is different then 0, then the straight waveguide will be tilted
+at the choosen degrees.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Value Error</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.WDM">
+<span class="sig-name descname"><span class="pre">WDM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.WDM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.WDM" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl>
+<dt>Parameters[‘Material’]<span class="classifier">list of str</span></dt><dd><p>List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer.</p>
+</dd>
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the MMI.</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the MMI.</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><blockquote>
+<div><p>Waveguide hight. Also the height of the MMI section</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+</dl>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide length.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[‘Angle Thetha’] :</dt><dd><p>Input and output angle of the waveguide. This is only temporally</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>Backside width of the Taper, frontside width is the waveguide width</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the Taper.</p>
+</dd>
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>If Taper == False, no Taper will be placed with the Waveguides.
+If Taper == True, tapers will be placed with the waveguides</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.Waveguide">
+<span class="sig-name descname"><span class="pre">Waveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.Waveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.Waveguide" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
+<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Length of the Waveguide.</p></li>
+<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Height of the Waveguide</p></li>
+<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Width of the Waveguide</p></li>
+<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p></li>
+<li><p><strong>Height'</strong><strong>]</strong> – Slab height.</p></li>
+<li><p><strong>Parameters</strong><strong>[</strong><strong>'Material'</strong><strong>]</strong> (<em>list</em>) – List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Value Error</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.removeObject">
+<span class="sig-name descname"><span class="pre">removeObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.removeObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.removeObject" title="Link to this definition"></a></dt>
+<dd><p>Switch from simulation to layout mode.
+Remove all objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setArcWaveguideFDTDSolver">
+<span class="sig-name descname"><span class="pre">setArcWaveguideFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setArcWaveguideFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setArcWaveguideFDTDSolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl>
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><blockquote>
+<div><dl>
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><blockquote>
+<div><p>Waveguide hight. Also the height of the MMI section</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>EME Mesh resolutio,</p>
+</dd>
+</dl>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><blockquote>
+<div><p>Wavelength</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[“S_Band Radius”]<span class="classifier">int/float</span></dt><dd><p>S-Bend Radius in um.</p>
+</dd>
+</dl>
+</dd>
+<dt>Parameters[‘Arc deg’]<span class="classifier">int/float</span></dt><dd><p>Arc define the Arc of the curve. It can be 90 or 180 degrees only.
+This two will define an 1/4 of a circle or 1/2 of a circle.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setBendWaveguideFDTDSolver">
+<span class="sig-name descname"><span class="pre">setBendWaveguideFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setBendWaveguideFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setBendWaveguideFDTDSolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl>
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl>
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><blockquote>
+<div><p>Waveguide hight. Also the height of the MMI section</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>EME Mesh resolutio,</p>
+</dd>
+</dl>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“x span”]<span class="classifier">int/float</span></dt><dd><p>Length of the S-Bend Waveguide</p>
+</dd>
+<dt>Parameters[“y span”]<span class="classifier">int/float</span></dt><dd><p>Width of the S-Bend Waveguide</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”][0]<span class="classifier">int/float</span></dt><dd><p>Span of Port in x direction</p>
+</dd>
+<dt>Parameters[“Port Span”][1]<span class="classifier">int/float</span></dt><dd><p>Span of Port in y direction</p>
+</dd>
+<dt>Parameters[“Port Span”][2] ; int/float</dt><dd><p>Span of Port in z direction</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setCascadetMMIFDTDSolver">
+<span class="sig-name descname"><span class="pre">setCascadetMMIFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SpaceX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SpaceY</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setCascadetMMIFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setCascadetMMIFDTDSolver" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setDCEMESolver">
+<span class="sig-name descname"><span class="pre">setDCEMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setDCEMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setDCEMESolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">float/int</span></dt><dd><p>Height of the Substrate</p>
+</dd>
+<dt>Parameters[‘Substrate Width’]<span class="classifier">float/int</span></dt><dd><p>Width of the MMI</p>
+</dd>
+<dt>Parameters[‘DC Length’]<span class="classifier">float/int</span></dt><dd><p>Length of the Directional coupler</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">float/int</span></dt><dd><p>Height of the Waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">float/int</span></dt><dd><p>Waveguide Width</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">float/int</span></dt><dd><p>Positional offser of the waveguides. If posOffset the two Waveguides
+will be offset of the middle position (y = 0) by the half of there
+Width. In this case they will not overlap if the Offset is 0.</p>
+</dd>
+<dt>Parameters[‘y res’]<span class="classifier">float/int</span></dt><dd><p>Mesh resolution for the y-Axis</p>
+</dd>
+<dt>Parameters[‘z res’]<span class="classifier">float/int</span></dt><dd><p>Mesh resolution for the z Axis</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">float/int</span></dt><dd><p>Slab height.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">float/int</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setDCFDTDSolver">
+<span class="sig-name descname"><span class="pre">setDCFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setDCFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setDCFDTDSolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">float/int</span></dt><dd><p>Height of the Substrate</p>
+</dd>
+<dt>Parameters[‘Substrate Width’]<span class="classifier">float/int</span></dt><dd><p>Width of the MMI</p>
+</dd>
+<dt>Parameters[‘DC Length’]<span class="classifier">float/int</span></dt><dd><p>Length of the Directional coupler</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">float/int</span></dt><dd><p>Height of the Waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">float/int</span></dt><dd><p>Waveguide Width</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">float/int</span></dt><dd><p>Positional offser of the waveguides. If posOffset the two Waveguides
+will be offset of the middle position (y = 0) by the half of there
+Width. In this case they will not overlap if the Offset is 0.</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">float/int</span></dt><dd><p>Mesh resolution for the x-Axis</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">float/int</span></dt><dd><p>Slab height.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">float/int</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setInverseTaperEMESolver">
+<span class="sig-name descname"><span class="pre">setInverseTaperEMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setInverseTaperEMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setInverseTaperEMESolver" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘WG Height’<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab height</p>
+</dd>
+<dt>Parameters[‘PWB Taper Width Back’]<span class="classifier">int/float</span></dt><dd><p>Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)</p>
+</dd>
+<dt>Parameters[‘PWB Taper Hight Back’]<span class="classifier">int/float</span></dt><dd><p>Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)</p>
+</dd>
+<dt>Parameters[‘PWB Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the Photonic Wire Bonding Taper</p>
+</dd>
+<dt>Parameters[‘y res’]<span class="classifier">int/float</span></dt><dd><p>Mesh y-Axis</p>
+</dd>
+<dt>Parameters[‘z res’]<span class="classifier">int/float</span></dt><dd><p>Mesh z-Axis</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setMMI1x2VarFDTDSolver">
+<span class="sig-name descname"><span class="pre">setMMI1x2VarFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setMMI1x2VarFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setMMI1x2VarFDTDSolver" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Slab_Height<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>MMI_Width<span class="classifier">int/float</span></dt><dd><p>Width of MMI</p>
+</dd>
+<dt>MMI_Length<span class="classifier">int/float</span></dt><dd><p>Length of MMI</p>
+</dd>
+<dt>angle<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>WG_Height<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>WG_Width<span class="classifier">int/float</span></dt><dd><p>Width og waveguide</p>
+</dd>
+<dt>WG_Length<span class="classifier">int/float</span></dt><dd><p>Length of waveguide</p>
+</dd>
+<dt>posOffset<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>OffsetInpit<span class="classifier">int/float</span></dt><dd><p>Input waveguide/taper offset.</p>
+</dd>
+<dt>y_res<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>z_res<span class="classifier">int/float</span></dt><dd><p>Mesh cell size.</p>
+</dd>
+<dt>Slab_Height<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>WaveLength<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Taper<span class="classifier">boolen, optional</span></dt><dd><dl class="simple">
+<dt>Defoult Taper == False</dt><dd><p>if Taper == True Simulation region will ajust for simulation with tapers</p>
+</dd>
+</dl>
+</dd>
+<dt>TaperLength<span class="classifier">int/float</span></dt><dd><p>Length of taper.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – DESCRIPTION.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setMMI2x1EMESolver">
+<span class="sig-name descname"><span class="pre">setMMI2x1EMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setMMI2x1EMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setMMI2x1EMESolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of MMI</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of MMI</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width og waveguide</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Length of waveguide</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘Offset Input’]<span class="classifier">int/float</span></dt><dd><p>Input waveguide/taper offset.</p>
+</dd>
+<dt>Parameters[‘y res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘z res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setMMI2x1FDTDSolver">
+<span class="sig-name descname"><span class="pre">setMMI2x1FDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setMMI2x1FDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setMMI2x1FDTDSolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of MMI</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of MMI</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width og waveguide</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Length of waveguide</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘Offset Input’]<span class="classifier">int/float</span></dt><dd><p>Input waveguide/taper offset.</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setMMI2x2EMESolver">
+<span class="sig-name descname"><span class="pre">setMMI2x2EMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setMMI2x2EMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setMMI2x2EMESolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of MMI</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of MMI</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width og waveguide</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Length of waveguide</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘y res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘z res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell size.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setMMI2x2FDTDSolver">
+<span class="sig-name descname"><span class="pre">setMMI2x2FDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setMMI2x2FDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setMMI2x2FDTDSolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of MMI</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of MMI</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width og waveguide</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Length of waveguide</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setMMI2x2VarFDTDSolver">
+<span class="sig-name descname"><span class="pre">setMMI2x2VarFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setMMI2x2VarFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setMMI2x2VarFDTDSolver" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Slab_Height<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>MMI_Width<span class="classifier">int/float</span></dt><dd><p>Width of MMI</p>
+</dd>
+<dt>MMI_Length<span class="classifier">int/float</span></dt><dd><p>Length of MMI</p>
+</dd>
+<dt>angle<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>WG_Height<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>WG_Width<span class="classifier">int/float</span></dt><dd><p>Width og waveguide</p>
+</dd>
+<dt>WG_Length<span class="classifier">int/float</span></dt><dd><p>Length of waveguide</p>
+</dd>
+<dt>posOffset<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>OffsetInpit<span class="classifier">int/float</span></dt><dd><p>Input waveguide/taper offset.</p>
+</dd>
+<dt>y_res<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>z_res<span class="classifier">int/float</span></dt><dd><p>Mesh cell size.</p>
+</dd>
+<dt>Slab_Height<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>WaveLength<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Taper<span class="classifier">boolen, optional</span></dt><dd><dl class="simple">
+<dt>Defoult Taper == False</dt><dd><p>if Taper == True Simulation region will ajust for simulation with tapers</p>
+</dd>
+</dl>
+</dd>
+<dt>TaperLength<span class="classifier">int/float</span></dt><dd><p>Length of taper.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – DESCRIPTION.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setStraightWaveguideEMESolver">
+<span class="sig-name descname"><span class="pre">setStraightWaveguideEMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setStraightWaveguideEMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setStraightWaveguideEMESolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide length</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width</p>
+</dd>
+<dt>Parameters[“Taper”]<span class="classifier">boolen</span></dt><dd><p>If Taper == False, only straight Waveguide will be simulated,
+If Taper == True an Taper will be simulated</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>Taper backside Width. Taper Fronside width is the width of the Waveguide</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Taper Length</p>
+</dd>
+<dt>Parameters[‘y res’]: int/float</dt><dd><p>EME Mesh resolutio,</p>
+</dd>
+<dt>Parameters[‘y res’]: int/float</dt><dd><p>EME Mesh resolutio,</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Waveguide Angle”]<span class="classifier">int/float</span></dt><dd><p>This Parameter will set the theta ratation angle of the port.</p>
+</dd>
+<dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setStraightWaveguideFDTDSolver">
+<span class="sig-name descname"><span class="pre">setStraightWaveguideFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setStraightWaveguideFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setStraightWaveguideFDTDSolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘WG Lrngth’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Length</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[“Taper”]<span class="classifier">boolen</span></dt><dd><p>If Taper == False, only straight Waveguide will be simulated,
+If Taper == True an Taper will be simulated</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>Taper backside Width. Taper Fronside width is the width of the Waveguide</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Taper Length</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>EME Mesh resolutio,</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Waveguide Angle”]<span class="classifier">int/float</span></dt><dd><p>This Parameter will set the theta ratation angle of the port. It can be 90 or 180.</p>
+</dd>
+<dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setWDMEMESolver">
+<span class="sig-name descname"><span class="pre">setWDMEMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setWDMEMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setWDMEMESolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
+<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Width of the MMI.</p></li>
+<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of the MMI.</p></li>
+<li><p><strong>Height'</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Waveguide hight. Also the height of the MMI section</p></li>
+<li><p><strong>Length'</strong><strong>]</strong> – Waveguide length.</p></li>
+<li><p><strong>Width'</strong><strong>]</strong> – Waveguide width.</p></li>
+<li><p><strong>Width'</strong><strong>]</strong> – Taper backside width, frontside width is the waveguide width.</p></li>
+<li><p><strong>Length'</strong><strong>]</strong> – Taper Length</p></li>
+<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'z</em>) – Mesh y-Axis</p></li>
+<li><p><strong>res'</strong><strong>]</strong> – Mesh z-Axis</p></li>
+<li><p><strong>Height'</strong><strong>]</strong> – Slab Height.</p></li>
+<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength</p></li>
+<li><p><strong>Thetha'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Angle</em>) – Angle for the input and output waveguides</p></li>
+<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> – <p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)
+Parameters[“Port Span”] : list of floats/ints</p>
+<blockquote>
+<div><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setWaveguideFDESolver">
+<span class="sig-name descname"><span class="pre">setWaveguideFDESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setWaveguideFDESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setWaveguideFDESolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</dt><dd><dl class="simple">
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>Parameters[‘y res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘z res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.varFDTD_Solver">
+<span class="sig-name descname"><span class="pre">varFDTD_Solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Structure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.varFDTD_Solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.varFDTD_Solver" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Constructor.Constructor.Help">
+<span class="sig-prename descclassname"><span class="pre">Constructor.Constructor.</span></span><span class="sig-name descname"><span class="pre">Help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Help" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Constructor.Constructor.HelpSubject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Constructor.Constructor.</span></span><span class="sig-name descname"><span class="pre">HelpSubject</span></span><a class="reference internal" href="_modules/Constructor/Constructor.html#HelpSubject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.HelpSubject" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.HelpSubject.Help_LoadingBar">
+<span class="sig-name descname"><span class="pre">Help_LoadingBar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#HelpSubject.Help_LoadingBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.HelpSubject.Help_LoadingBar" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.HelpSubject.Help_LogFile">
+<span class="sig-name descname"><span class="pre">Help_LogFile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#HelpSubject.Help_LogFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.HelpSubject.Help_LogFile" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.HelpSubject.Help_Objects">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Help_Objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#HelpSubject.Help_Objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.HelpSubject.Help_Objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.HelpSubject.Help_RemoveObject">
+<span class="sig-name descname"><span class="pre">Help_RemoveObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#HelpSubject.Help_RemoveObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.HelpSubject.Help_RemoveObject" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.HelpSubject.Help_Results">
+<span class="sig-name descname"><span class="pre">Help_Results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#HelpSubject.Help_Results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.HelpSubject.Help_Results" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.HelpSubject.Help_Solvers">
+<span class="sig-name descname"><span class="pre">Help_Solvers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#HelpSubject.Help_Solvers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.HelpSubject.Help_Solvers" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.HelpSubject.Help_StartSimulation">
+<span class="sig-name descname"><span class="pre">Help_StartSimulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#HelpSubject.Help_StartSimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.HelpSubject.Help_StartSimulation" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Constructor.Constructor.Logfile">
+<span class="sig-prename descclassname"><span class="pre">Constructor.Constructor.</span></span><span class="sig-name descname"><span class="pre">Logfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Logfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Logfile" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>list</em>) – List of dictionarys with all the data for the simulation (obj.ReturnLogInfo()) and the parameters (Parameters dictionary) given to the simulation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Constructor.Constructor.arange">
+<span class="sig-prename descclassname"><span class="pre">Constructor.Constructor.</span></span><span class="sig-name descname"><span class="pre">arange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#arange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.arange" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Constructor.Constructor.loadingBar">
+<span class="sig-prename descclassname"><span class="pre">Constructor.Constructor.</span></span><span class="sig-name descname"><span class="pre">loadingBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#loadingBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.loadingBar" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Constructor">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Constructor" title="Link to this heading"></a></h2>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Martin Mihaylov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
