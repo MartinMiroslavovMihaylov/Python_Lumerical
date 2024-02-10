@@ -71,8 +71,8 @@ class Constructor:
         '''
         self.lum.switchtolayout()
         self.lum.deleteall()
-        
-    
+
+
     def Help(self, Subject):
 
         if Subject is None:
@@ -98,7 +98,7 @@ class Constructor:
                 raise ValueError("Help can be called with Help(str(subject)). Subject can be choosen from 'Objects', 'Solvers', 'Start Simulation', 'Results', 'Loading Bar' and 'Log File' !! ")
 
 
-                  
+
 
 
 
@@ -221,6 +221,10 @@ class Constructor:
         # elif Structure == "CascadetMMI":
         #     self.Struct = "CascadetMMI"
         #     self.setCascadetMMIFDTDSolver(Parameters, SpaceX, SpaceY)
+        elif Structure == "GratingCoupler":
+            self.Struct = "GratingCoupler"
+            self.setGratingCouplerFDTDSolver(Parameters)
+            self.SolverInfo["Simulated Object"] = "GratingCoupler"
         else:
             raise ValueError("Invalid Strucute for FDTD Solver is selected. Possible Strucures are MMI2x1 or MMI2x2")
 
@@ -266,52 +270,312 @@ class Constructor:
             self.setMMI2x2VarFDTDSolver(Parameters)
         else:
             raise ValueError("Invalid Strucute for varFDTD Solver is selected. Possible Strucures are MMI2x1 or MMI2x2")
-            
-            
+
+
     def ReturnLogInfo(self):
         return self.SolverInfo
-    
-    
+
+
     def Script(self):
-        myscript =  'delta_w = 2*thickness*tan((angle_side)*pi/180); \n'
-        myscript = myscript +  '?"width_l = " + num2str(width_l); \n'
-        myscript = myscript +  '?"width_r = " + num2str(width_r) + endl; \n'
-        myscript = myscript +  'width_top_l = width_l - (1-hfrac_ref)*delta_w; \n'
-        myscript = myscript +  'width_top_r = width_r - (1-hfrac_ref)*delta_w; \n'
-        myscript = myscript +  '?"width_top_l = " + num2str(width_top_l); \n'
-        myscript = myscript +  '?"width_top_r = " + num2str(width_top_r) + endl; \n'
-        myscript = myscript +  'width_bot_l = width_l + hfrac_ref*delta_w; \n'
-        myscript = myscript +  'width_bot_r = width_r + hfrac_ref*delta_w; \n'
-        myscript = myscript +  '?"width_bot_l = " + num2str(width_bot_l); \n'
-        myscript = myscript +  '?"width_bot_r = " + num2str(width_bot_r) + endl; \n'
-        myscript = myscript +  'if ((hfrac_ref>1) or (hfrac_ref<0)){?"Error: hfrac_ref must be between 0 and 1.";break;} \n'
-        myscript = myscript +  'if ((width_top_l<0) or (width_top_r<0) or (width_bot_l<0) or (width_bot_r<0)){?"Error: width and angle values are not correct.";break;} \n'
-        myscript = myscript +  'zmin = -thickness/2; \n'
-        myscript = myscript +  'zmax = thickness/2; \n'
-        myscript = myscript +  'xmin = -len/2; \n'
-        myscript = myscript +  'xmax = len/2; \n'
-        myscript = myscript +  'ymin_bot_l = -width_bot_l/2; \n'
-        myscript = myscript +  'ymax_bot_l = width_bot_l/2; \n'
-        myscript = myscript +  'ymin_bot_r = -width_bot_r/2; \n'
-        myscript = myscript +  'ymax_bot_r = width_bot_r/2; \n'
-        myscript = myscript +  'ymin_top_l = -width_top_l/2; \n'
-        myscript = myscript +  'ymax_top_l = width_top_l/2; \n'
-        myscript = myscript +  'ymin_top_r = -width_top_r/2; \n'
-        myscript = myscript +  'ymax_top_r = width_top_r/2; \n'
-        myscript = myscript +  'vtx=    [xmin,ymin_bot_l,zmin; xmax,ymin_bot_r,zmin; xmax,ymax_bot_r,zmin; xmin,ymax_bot_l,zmin; xmin,ymin_top_l,zmax; xmax,ymin_top_r,zmax; xmax,ymax_top_r,zmax; xmin,ymax_top_l,zmax];   \n'
-        myscript = myscript +  'a = cell(6); \n'
-        myscript = myscript +  'for(i = 1:6){ a{i} = cell(1);}   \n'
-        myscript = myscript +  'a{1}{1} = [1,4,3,2];   \n'
-        myscript = myscript +  'a{2}{1} = [1,2,6,5];   \n'
-        myscript = myscript +  'a{3}{1} = [2,3,7,6];   \n'
-        myscript = myscript +  'a{4}{1} = [3,4,8,7];   \n'
-        myscript = myscript +  'a{5}{1} = [1,5,8,4];   \n'
-        myscript = myscript +  'a{6}{1} = [5,6,7,8];   \n'
-        myscript = myscript +  'addplanarsolid(vtx,a);   \n'
-        myscript = myscript +  'if (material=="<Object defined dielectric>"){setnamed("solid", "index",index);}   \n'
-        myscript = myscript +  'else{setnamed("solid", "material",material);}   \n'
-        
+        myscript = 'delta_w = 2*thickness*tan((angle_side)*pi/180); \n'
+        myscript = myscript + '?"width_l = " + num2str(width_l); \n'
+        myscript = myscript + '?"width_r = " + num2str(width_r) + endl; \n'
+        myscript = myscript + 'width_top_l = width_l - (1-hfrac_ref)*delta_w; \n'
+        myscript = myscript + 'width_top_r = width_r - (1-hfrac_ref)*delta_w; \n'
+        myscript = myscript + '?"width_top_l = " + num2str(width_top_l); \n'
+        myscript = myscript + '?"width_top_r = " + num2str(width_top_r) + endl; \n'
+        myscript = myscript + 'width_bot_l = width_l + hfrac_ref*delta_w; \n'
+        myscript = myscript + 'width_bot_r = width_r + hfrac_ref*delta_w; \n'
+        myscript = myscript + '?"width_bot_l = " + num2str(width_bot_l); \n'
+        myscript = myscript + '?"width_bot_r = " + num2str(width_bot_r) + endl; \n'
+        myscript = myscript + 'if ((hfrac_ref>1) or (hfrac_ref<0)){?"Error: hfrac_ref must be between 0 and 1.";break;} \n'
+        myscript = myscript + 'if ((width_top_l<0) or (width_top_r<0) or (width_bot_l<0) or (width_bot_r<0)){?"Error: width and angle values are not correct.";break;} \n'
+        myscript = myscript + 'zmin = -thickness/2; \n'
+        myscript = myscript + 'zmax = thickness/2; \n'
+        myscript = myscript + 'xmin = -len/2; \n'
+        myscript = myscript + 'xmax = len/2; \n'
+        myscript = myscript + 'ymin_bot_l = -width_bot_l/2; \n'
+        myscript = myscript + 'ymax_bot_l = width_bot_l/2; \n'
+        myscript = myscript + 'ymin_bot_r = -width_bot_r/2; \n'
+        myscript = myscript + 'ymax_bot_r = width_bot_r/2; \n'
+        myscript = myscript + 'ymin_top_l = -width_top_l/2; \n'
+        myscript = myscript + 'ymax_top_l = width_top_l/2; \n'
+        myscript = myscript + 'ymin_top_r = -width_top_r/2; \n'
+        myscript = myscript + 'ymax_top_r = width_top_r/2; \n'
+        myscript = myscript + 'vtx=    [xmin,ymin_bot_l,zmin; xmax,ymin_bot_r,zmin; xmax,ymax_bot_r,zmin; xmin,ymax_bot_l,zmin; xmin,ymin_top_l,zmax; xmax,ymin_top_r,zmax; xmax,ymax_top_r,zmax; xmin,ymax_top_l,zmax];   \n'
+        myscript = myscript + 'a = cell(6); \n'
+        myscript = myscript + 'for(i = 1:6){ a{i} = cell(1);}   \n'
+        myscript = myscript + 'a{1}{1} = [1,4,3,2];   \n'
+        myscript = myscript + 'a{2}{1} = [1,2,6,5];   \n'
+        myscript = myscript + 'a{3}{1} = [2,3,7,6];   \n'
+        myscript = myscript + 'a{4}{1} = [3,4,8,7];   \n'
+        myscript = myscript + 'a{5}{1} = [1,5,8,4];   \n'
+        myscript = myscript + 'a{6}{1} = [5,6,7,8];   \n'
+        myscript = myscript + 'addplanarsolid(vtx,a);   \n'
+        myscript = myscript + 'if (material=="<Object defined dielectric>"){setnamed("solid", "index",index);}   \n'
+        myscript = myscript + 'else{setnamed("solid", "material",material);}   \n'
+
         return myscript
+
+
+
+
+
+    def Grating_Script(self):
+        myscriptGC = 'n_periods = %n periods%; \n'
+        myscriptGC = myscriptGC + 'add_coating = %add coating%; \n'
+        myscriptGC = myscriptGC + 'thickness_coating = %thickness coating%; \n'
+        myscriptGC = myscriptGC + 'z_span_grating = %z span grating%; \n'
+        myscriptGC = myscriptGC + 'index_coating = %index coating%; \n'
+        myscriptGC = myscriptGC + 'index_grating = %index grating%; \n'
+        myscriptGC = myscriptGC + 'mat_coating = %mat coating%; \n'
+        myscriptGC = myscriptGC + 'mat_grating = %mat grating%; \n'
+        myscriptGC = myscriptGC + 'sidewall = %specify sidewall oxide coating%; \n'
+        myscriptGC = myscriptGC + 'os = %sidewall oxide thickness%; \n'
+        myscriptGC = myscriptGC + 'duty_cycle = %duty cycle%; \n'
+        myscriptGC = myscriptGC + 'tooth_angle = %tooth angle%; \n'
+        myscriptGC = myscriptGC + 'substrate_thickness = %substrate thickness%; \n'
+        myscriptGC = myscriptGC + 'fill=duty_cycle*period; \n'
+        myscriptGC = myscriptGC + 'theta = tooth_angle*pi/180; \n'
+        myscriptGC = myscriptGC + 'a=z_span_grating/tan(theta); \n'
+        myscriptGC = myscriptGC + 'n_periods=n_periods-1; \n'
+        myscriptGC = myscriptGC + 'if ( sidewall==0){' \
+                                  'os=thickness_coating*(1-sin(theta));' \
+                                  '} \n'
+        myscriptGC = myscriptGC + 'V=matrix(4,2); \n'
+        myscriptGC = myscriptGC + 'V(1,1:2)=[-fill/2,0]; \n'
+        myscriptGC = myscriptGC + 'V(2,1:2)=[-fill/2+a,z_span_grating]; \n'
+        myscriptGC = myscriptGC + 'V(3,1:2)=[fill/2-a,z_span_grating]; \n'
+        myscriptGC = myscriptGC + 'V(4,1:2)=[fill/2,0]; \n'
+        myscriptGC = myscriptGC + 'Vc=matrix(12,2); \n'
+        myscriptGC = myscriptGC + 'Vc(1,1:2)=[-period/2,thickness_coating]; \n'
+        myscriptGC = myscriptGC + 'Vc(2,1:2)=[-fill/2-os,thickness_coating]; \n'
+        myscriptGC = myscriptGC + 'Vc(3,1:2)=[-fill/2+a-os,z_span_grating+thickness_coating]; \n'
+        myscriptGC = myscriptGC + 'Vc(4,1:2)=[fill/2-a+os,z_span_grating+thickness_coating]; \n'
+        myscriptGC = myscriptGC + 'Vc(5,1:2)=[fill/2+os,thickness_coating]; \n'
+        myscriptGC = myscriptGC + 'Vc(6,1:2)=[period/2,thickness_coating]; \n'
+        myscriptGC = myscriptGC + 'Vc(7,1:2)=[period/2,0]; \n'
+        myscriptGC = myscriptGC + 'Vc(8,1:2)=[fill/2,0]; \n'
+        myscriptGC = myscriptGC + 'Vc(9,1:2)=[fill/2-a,z_span_grating]; \n'
+        myscriptGC = myscriptGC + 'Vc(10,1:2)=[-fill/2+a,z_span_grating];   \n'
+        myscriptGC = myscriptGC + 'Vc(11,1:2)=[-fill/2,0]; \n'
+        myscriptGC = myscriptGC + 'Vc(12,1:2)=[-period/2,0]; \n'
+        myscriptGC = myscriptGC + 'for(i=-n_periods/2:n_periods/2){ ' \
+                              'addpoly; set("name","post");' \
+                              ' set("x",period*i); ' \
+                              'set("y",0);' \
+                              ' set("z span",width);' \
+                              ' set("vertices",V); ' \
+                              ' set("material",mat_grating);' \
+                              ' if(get("material")=="<Object defined dielectric>") ' \
+                              '{ set("index",index_grating); } ' \
+                              'if (add_coating) {' \
+                              'addpoly;' \
+                              'set("name","coating");' \
+                              'set("x",period*i);' \
+                              'set("y",0);' \
+                              'set("z span",width);' \
+                              'set("vertices",Vc);' \
+                              'set("material",mat_coating);' \
+                              ' if(get("material")=="<Object defined dielectric>") ' \
+                              '{ set("index",index_coating); }' \
+                              ' }' \
+                              '}   \n'
+
+        myscriptGC = myscriptGC + 'addrect; \n'
+        myscriptGC = myscriptGC + 'set("x",0); \n'
+        myscriptGC = myscriptGC + 'set("y",-substrate_thickness/2); \n'
+        myscriptGC = myscriptGC + 'set("x span",(n_periods+1)*period); \n'
+        myscriptGC = myscriptGC + 'set("y span",substrate_thickness); \n'
+        myscriptGC = myscriptGC + 'set("z span",width); \n'
+        myscriptGC = myscriptGC + 'set("material",mat_grating); \n'
+        myscriptGC = myscriptGC + 'if(get("material")=="<Object defined dielectric>"){ set("index",index_grating); }  \n'
+
+
+        return myscriptGC
+
+
+
+
+    def Simple_Grating_Coupler_Script(self):
+        myscriptGC = 'n_periods = ceil(%target length%/pitch); \n'
+        myscriptGC = myscriptGC + 'fill_width = pitch*%duty cycle%; \n'
+        myscriptGC = myscriptGC + 'etch_width = pitch*(1-%duty cycle%); \n'
+        myscriptGC = myscriptGC + 'L = n_periods*pitch + etch_width; \n'
+        myscriptGC = myscriptGC + 'if(%etch depth% > %h total%) { ' \
+                     '%etch depth% = %h total%;' \
+                     '} \n'
+        myscriptGC = myscriptGC + 'addrect; \n'
+        myscriptGC = myscriptGC + 'set("name","input waveguide"); \n'
+        myscriptGC = myscriptGC + 'set("x min",-%input length%); \n'
+        myscriptGC = myscriptGC + 'set("x max",0); \n'
+        myscriptGC = myscriptGC + 'set("y min",0); \n'
+        myscriptGC = myscriptGC + 'set("y max",%h total%); \n'
+        myscriptGC = myscriptGC + 'if(%etch depth% < %h total%) { ' \
+                     'addrect;' \
+                     'set("name","lower layer");' \
+                     'set("x min",0);' \
+                     'set("x max",L);' \
+                     'set("y min",0);' \
+                     'set("y max",%h total%-%etch depth%);' \
+                     '} \n'
+        myscriptGC = myscriptGC + 'addrect; \n'
+        myscriptGC = myscriptGC + 'set("name","output waveguide"); \n'
+        myscriptGC = myscriptGC + 'set("x min",L); \n'
+        myscriptGC = myscriptGC + 'set("x max",L+%output length%); \n'
+        myscriptGC = myscriptGC + 'set("y min",0); \n'
+        myscriptGC = myscriptGC + 'set("y max",%h total%); \n'
+        myscriptGC = myscriptGC + 'for(i=1:n_periods){' \
+                     'addrect;' \
+                     'set("name","post");' \
+                     'set("x min",pitch*(i-1)+etch_width);' \
+                     'set("x max",pitch*i);' \
+                     'set("y min",%h total%-%etch depth%);' \
+                     'set("y max",%h total%);' \
+                     '} \n'
+        myscriptGC = myscriptGC + 'selectall; \n'
+        myscriptGC = myscriptGC + 'set("material",material); \n'
+        myscriptGC = myscriptGC + 'if(get("material")=="<Object defined dielectric>") ' \
+                     '{ set("index",index); }  \n'
+        myscriptGC = myscriptGC + 'set("z",0); \n'
+        myscriptGC = myscriptGC + 'set("z span",50e-6); \n'
+        # myscriptGC = myscriptGC + 'addrect; \n'
+        # myscriptGC = myscriptGC + 'set("name","substrate"); \n'
+        # myscriptGC = myscriptGC + 'set("x",-%target length%/2); \n'
+        # myscriptGC = myscriptGC + 'set("x span",L+%output length% + %input length%); \n'
+        # myscriptGC = myscriptGC + 'set("y",0); \n'
+        # myscriptGC = myscriptGC + 'set("y span", 1e-6); \n'
+        # myscriptGC = myscriptGC + 'set("z",-0.5e-6); \n'
+        # myscriptGC = myscriptGC + 'set("z span",50e-6); \n'
+        # myscriptGC = myscriptGC + 'set("material",material_slab); \n'
+        #
+
+
+        return myscriptGC
+
+
+
+    def Grating_Coupler_curved_Script(self):
+        myscriptGC = 'n_periods = ceil(%target length%/pitch); \n'
+        myscriptGC = myscriptGC + 'fill_width = pitch*%duty cycle%; \n'
+        myscriptGC = myscriptGC + 'etch_width = pitch*(1-%duty cycle%); \n'
+        myscriptGC = myscriptGC + 'L = n_periods*pitch + etch_width; \n'
+        myscriptGC = myscriptGC + 'theta = asin( 0.5*%y span%/radius ) * 180/pi; \n'
+        myscriptGC = myscriptGC + 'addrect; \n'
+        myscriptGC = myscriptGC + 'set("name","waveguide"); \n'
+        myscriptGC = myscriptGC + 'set("x min",-%waveguide length%); \n'
+        myscriptGC = myscriptGC + 'set("x max",0); \n'
+        myscriptGC = myscriptGC + 'set("y",0); \n'
+        myscriptGC = myscriptGC + 'set("y span",%waveguide width%); \n'
+        myscriptGC = myscriptGC + 'set("z min",0); \n'
+        myscriptGC = myscriptGC + 'set("z max",%h total%); \n'
+        myscriptGC = myscriptGC + 'addcustom; \n'
+        myscriptGC = myscriptGC + 'set("x min",0); \n'
+        myscriptGC = myscriptGC + 'set("x max",radius * cos(theta*pi/180)); \n'
+        myscriptGC = myscriptGC + 'set("z min",0); \n'
+        myscriptGC = myscriptGC + 'set("z max",%h total%); \n'
+        myscriptGC = myscriptGC + 'set("y span",%y span%); \n'
+        myscriptGC = myscriptGC + 'Ltaper = get("x span")*1e6; \n'
+        myscriptGC = myscriptGC + 'w1 = %waveguide width%*1e6/2; \n'
+        myscriptGC = myscriptGC + 'w2 = %y span%*1e6/2; \n'
+        myscriptGC = myscriptGC + 'x0 = Ltaper/2; \n'
+        myscriptGC = myscriptGC + 'a = w2; \n'
+        myscriptGC = myscriptGC + 'alpha = (w1-w2)/Ltaper^m; \n'
+        myscriptGC = myscriptGC + 'format long; \n'
+        myscriptGC = myscriptGC + 'equation = num2str(alpha)+"*("+num2str(x0)+"-x)^"+num2str(m)+"+"+num2str(a); \n'
+        myscriptGC = myscriptGC + 'set("equation 1",equation); \n'
+        myscriptGC = myscriptGC + 'format short; \n'
+        myscriptGC = myscriptGC + 'addring; \n'
+        myscriptGC = myscriptGC + 'set("name","input section"); \n'
+        myscriptGC = myscriptGC + 'set("inner radius",radius * cos(theta*pi/180)); \n'
+        myscriptGC = myscriptGC + 'set("outer radius",radius); \n'
+        myscriptGC = myscriptGC + 'set("x",0); \n'
+        myscriptGC = myscriptGC + 'set("y",0); \n'
+        myscriptGC = myscriptGC + 'set("z min",0); \n'
+        myscriptGC = myscriptGC + 'set("z max",%h total%); \n'
+        myscriptGC = myscriptGC + 'set("theta start",-theta); \n'
+        myscriptGC = myscriptGC + 'set("theta stop",theta); \n'
+        myscriptGC = myscriptGC + 'if(%etch depth% < %h total%) {' \
+                                  'copy;' \
+                                  'set("name","lower layer");' \
+                                  'set("inner radius",radius);' \
+                                  'set("outer radius",radius+L);' \
+                                  'set("z min",0);' \
+                                  'set("z max",%h total%-%etch depth%);' \
+                                  '} \n'
+        myscriptGC = myscriptGC + 'copy; \n'
+        myscriptGC = myscriptGC + 'set("name","output section"); \n'
+        myscriptGC = myscriptGC + 'set("inner radius",radius+L); \n'
+        myscriptGC = myscriptGC + 'set("outer radius",radius+L+%L extra%); \n'
+        myscriptGC = myscriptGC + 'set("z max",%h total%); \n'
+        myscriptGC = myscriptGC + 'for(i=1:n_periods){' \
+                                  'addring;' \
+                                  'set("x",0);' \
+                                  'set("y",0);' \
+                                  'set("z min",%h total%-%etch depth%);' \
+                                  'set("z max",%h total%);' \
+                                  'set("theta start",-theta);' \
+                                  'set("theta stop",theta);' \
+                                  'set("inner radius",radius + pitch*(i-1)+etch_width);' \
+                                  'set("outer radius",radius + pitch*i);' \
+                                  '} \n'
+        myscriptGC = myscriptGC + 'selectall; \n'
+        myscriptGC = myscriptGC + 'set("material",material);  \n'
+        myscriptGC = myscriptGC + 'if(get("material")=="<Object defined dielectric>") ' \
+                                  '{ set("index",index); }  \n'
+        myscriptGC = myscriptGC + 'move(-radius,0,0); \n'
+
+        return myscriptGC
+
+
+
+    def Fiber_Script(self):
+        myscriptSMF = 'core_index = %core index%; \n'
+        myscriptSMF = myscriptSMF + 'cladding_index = %cladding index%; \n'
+        myscriptSMF = myscriptSMF + 'core_radius = %core diameter%/2.0; \n'
+        myscriptSMF = myscriptSMF + 'cladding_radius = %cladding diameter%/2.0; \n'
+        myscriptSMF = myscriptSMF + 'theta_rad = theta/(180/pi); \n'
+        myscriptSMF = myscriptSMF + 'L = %z span%/cos(theta_rad); \n'
+        myscriptSMF = myscriptSMF + 'addcircle; \n'
+        myscriptSMF = myscriptSMF + 'set("name", "core"); \n'
+        myscriptSMF = myscriptSMF + 'set("override mesh order from material database",1); \n'
+        myscriptSMF = myscriptSMF + 'set("mesh order",4); \n'
+        myscriptSMF = myscriptSMF + 'set("first axis","y"); \n'
+        myscriptSMF = myscriptSMF + 'set("rotation 1",10); \n'
+        myscriptSMF = myscriptSMF + 'set("alpha", 1); \n'
+        myscriptSMF = myscriptSMF + 'addcircle; \n'
+        myscriptSMF = myscriptSMF + 'set("name", "cladding"); \n'
+        myscriptSMF = myscriptSMF + 'set("override mesh order from material database",1); \n'
+        myscriptSMF = myscriptSMF + 'set("mesh order",5); \n'
+        myscriptSMF = myscriptSMF + 'set("first axis","y"); \n'
+        myscriptSMF = myscriptSMF + 'set("rotation 1",10); \n'
+        myscriptSMF = myscriptSMF + 'set("alpha", 0.35); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("core","radius",core_radius); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("core","index",core_index); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("core","x",0.0); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("core","y",0.0); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("core","z",0.0); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("core","z span",L); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("core","first axis","y"); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("core","rotation 1",theta); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("cladding","radius",cladding_radius); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("cladding","index",cladding_index); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("cladding","x",0.0); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("cladding","y",0.0); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("cladding","z",0.0); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("cladding","z span",L); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("cladding","first axis","y"); \n'
+        myscriptSMF = myscriptSMF + 'setnamed("cladding","rotation 1",theta); \n'
+
+        return myscriptSMF
+
+
+
+
+
+
+
+
 
 
 
@@ -321,8 +585,8 @@ class Constructor:
 
 
     def Waveguide(self, Parameters):
-        
-        
+
+
         '''
         Parameters
         ----------
@@ -342,7 +606,7 @@ class Constructor:
         Parameters['Material'] : list
             List of Materials. the list should be with names (str) of a valid Lumerical materials.
             Check the names in Lumerical Materials viewer.
-                   
+
         Raises
         ------
         ValueError
@@ -369,7 +633,7 @@ class Constructor:
             MaterialClad = Material[0]
             MaterialSlab = Material[1]
             MaterialWG = MaterialSlab
-            
+
 
         maxWGL = WG_Length / 2
         minWGL = -WG_Length / 2
@@ -381,7 +645,7 @@ class Constructor:
         min_WGH = max_slabH
         max_WGH = WG_Height
         min_BoxH = -4e-6
-        
+
 
         # Triangle EQ for waveguide Width
         x = abs(max_WGH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -435,7 +699,7 @@ class Constructor:
             self.lum.set("override mesh order from material database", True)
             self.lum.set("mesh order", 4)
             self.lum.set("alpha", 0.7)
-            
+
 
         else:
             # Slab
@@ -495,7 +759,7 @@ class Constructor:
             self.lum.set("override mesh order from material database", True)
             self.lum.set("mesh order", 4)
             self.lum.set("alpha", 0.7)
-            
+
 
 
 
@@ -503,7 +767,7 @@ class Constructor:
     def StraightWaveguide(self, Parameters):
 
         '''
-        
+
         Parameters
         ----------
         Parameters : Dictionary
@@ -534,9 +798,9 @@ class Constructor:
             Parameters["Wavelength"] : int/float
                 Wavelength
             Parameters["Waveguide Angle"] : int/float
-                Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide. 
-                If Waveguide Angle is different then 0, then the straight waveguide will be tilted 
-                at the choosen degrees. 
+                Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
+                If Waveguide Angle is different then 0, then the straight waveguide will be tilted
+                at the choosen degrees.
         Raises
         ------
         ValueError
@@ -575,8 +839,8 @@ class Constructor:
 
 
 
-            
-            
+
+
         # Device specifications
         Device_Width = 2*WG_Length + WaveLength * 2  # MMI_Width
 
@@ -587,9 +851,9 @@ class Constructor:
 
 
         if Taper == False:
-            
+
             if Side_Angle == 0:
-    
+
                 self.lum.addrect()
                 self.lum.set("name", "Substrate")
                 self.lum.set("y", 0)
@@ -599,11 +863,11 @@ class Constructor:
                 self.lum.set("x", WG_Length / 2)
                 self.lum.set("x span", WG_Length + WG_Width)
                 self.lum.set("material", MaterialSub)
-    
+
                 # creating the thin film
                 min_slabH = max_subH
                 max_slabH = max_subH + Slab_Height
-    
+
                 self.lum.addrect()
                 self.lum.set("name", "LN_slab")
                 self.lum.set("y", 0)
@@ -613,17 +877,17 @@ class Constructor:
                 self.lum.set("x", WG_Length / 2)
                 self.lum.set("x span", WG_Length + WG_Width)
                 self.lum.set("material", MaterialSlab)
-    
+
                 z_Offset = max_slabH + WG_Height / 2
                 # Triangle EQ for waveguide Width
                 x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
                 extention = np.sqrt(x ** 2 - WG_Height ** 2)
                 WG_W = WG_Width + 2 * extention
-    
-    
-    
+
+
+
                 names = ["Staight_WG"]
-    
+
                 self.lum.addwaveguide()
                 self.lum.set("name", names[0])
                 self.lum.set("x", 0)
@@ -637,8 +901,8 @@ class Constructor:
                 self.lum.set("material", MaterialWG)
                 self.lum.set("first axis", 'z')
                 self.lum.set("rotation 1", Side_Angle)
-                
-            
+
+
                 # # create_cover
                 # self.lum.addrect()
                 # self.lum.set("name", "cladding")
@@ -652,9 +916,9 @@ class Constructor:
                 # self.lum.set("override mesh order from material database", True)
                 # self.lum.set("mesh order", 4)
                 # self.lum.set("alpha", 0.7)
-    
-    
-    
+
+
+
             else:
                 self.lum.addrect()
                 self.lum.set("name", "Substrate")
@@ -665,11 +929,11 @@ class Constructor:
                 self.lum.set("x", WG_Length / 2)
                 self.lum.set("x span", WG_Length + WG_Width)
                 self.lum.set("material", MaterialSub)
-    
+
                 # creating the thin film
                 min_slabH = max_subH
                 max_slabH = max_subH + Slab_Height
-    
+
                 self.lum.addrect()
                 self.lum.set("name", "LN_slab")
                 self.lum.set("y", WG_Length / 4)
@@ -679,17 +943,17 @@ class Constructor:
                 self.lum.set("x", WG_Length / 2)
                 self.lum.set("x span", WG_Length + WG_Width)
                 self.lum.set("material", MaterialSlab)
-    
+
                 z_Offset = max_slabH + WG_Height / 2
                 # Triangle EQ for waveguide Width
                 x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
                 extention = np.sqrt(x ** 2 - WG_Height ** 2)
                 WG_W = WG_Width + 2 * extention
-    
-    
-    
+
+
+
                 names = ["Staight_WG"]
-    
+
                 self.lum.addwaveguide()
                 self.lum.set("name", names[0])
                 self.lum.set("x", 0)
@@ -703,10 +967,10 @@ class Constructor:
                 self.lum.set("material", MaterialWG)
                 self.lum.set("first axis", 'z')
                 self.lum.set("rotation 1", Side_Angle)
-                
-                
-                
-                
+
+
+
+
                 # # create_cover
                 # self.lum.addrect()
                 # self.lum.set("name", "cladding")
@@ -720,17 +984,17 @@ class Constructor:
                 # self.lum.set("override mesh order from material database", True)
                 # self.lum.set("mesh order", 4)
                 # self.lum.set("alpha", 0.7)
-                
-                
+
+
         elif Taper == True:
-            
+
             # Device specifications
             Device_Width = 2*TaperLength + WaveLength * 2  # MMI_Width
 
             # creating the substrate
             max_subH = Substrate_Height
             min_subH = -Substrate_Height
-            
+
             self.lum.addrect()
             self.lum.set("name", "Substrate")
             self.lum.set("y", 0)
@@ -754,42 +1018,42 @@ class Constructor:
             self.lum.set("x", 0)
             self.lum.set("x span", TaperLength + WG_Width)
             self.lum.set("material", MaterialSlab)
-            
-            
+
+
 
             z_Offset = max_slabH + WG_Height / 2
-        
+
             # Taper Widths on Bott Cal
             x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
             extention = np.sqrt(x ** 2 - WG_Height ** 2)
             TaperSideWidth = TaperWidth + 2 * extention
             WG_W = WG_Width + 2 * extention
 
-            
+
             z_Offset = max_slabH
-            
+
             # PWD Taper Hights
             TaperZmin = z_Offset
             TaperZmax = z_Offset + WG_Height
-            
+
             # PWB Taper Length
             TaperXmax =  TaperLength/2
             TaperXmin =  -TaperLength/2
-            
+
             # Create PWB Taper
             ymin_bot_l =  - WG_W / 2
             ymax_bot_l =    WG_W / 2
-            
+
             ymin_bot_r =  - TaperSideWidth / 2
             ymax_bot_r =    TaperSideWidth / 2
-            
+
             ymin_top_l =  - WG_Width / 2
             ymax_top_l =    WG_Width / 2
-            
+
             ymin_top_r =  - TaperWidth / 2
             ymax_top_r =    TaperWidth / 2
 
-            
+
 
             vtx = np.array([[TaperXmin, ymin_bot_l, TaperZmin],  # 1
                             [TaperXmax, ymin_bot_r, TaperZmin],  # 2
@@ -803,8 +1067,8 @@ class Constructor:
             a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
                  [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
                  [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
-            
-        
+
+
 
             # Send Values to Lumerical and create solid
             self.lum.putv('vertices', vtx)
@@ -813,8 +1077,8 @@ class Constructor:
             self.lum.set('material', MaterialWG)
             self.lum.set('name', "Taper")
 
-            
-            
+
+
 
 
 
@@ -840,9 +1104,9 @@ class Constructor:
             Parameters['Slab Height'] : int/float
                 Slab height
             Parameters['Material'] : list
-                Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide. 
-                If Waveguide Angle is different then 0, then the straight waveguide will be tilted 
-                at the choosen degrees. 
+                Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
+                If Waveguide Angle is different then 0, then the straight waveguide will be tilted
+                at the choosen degrees.
             Parameters["Wavelength"] : int/float
                 Wavelength
             Parameters["x span"] : int/float
@@ -853,7 +1117,7 @@ class Constructor:
                 If Parameters["poles"] = True an Bezier Curbe will be made.
                 if Parameters["poles"] = False an Cosinus Curve = y_span*(cos((pi/(2*x_span))*t)^2) will be made. Where
                 t is in the range of 0 - y_span
-                
+
         Raises
         ------
         ValueError
@@ -875,9 +1139,9 @@ class Constructor:
         x_span = Parameters["x span"]
         y_span = Parameters["y span"]
         polesList = Parameters["poles"]
-        
-        
-        
+
+
+
         if polesList == False:
             pole = np.array([[0, 0], [x_span / 2, 0], [x_span / 2, y_span], [x_span, y_span]])
         elif polesList == True:
@@ -899,7 +1163,7 @@ class Constructor:
 
 
 
-        
+
 
         # Device specifications
         Device_Width = y_span + WaveLength * 2  # MMI_Width
@@ -952,9 +1216,9 @@ class Constructor:
         self.lum.set("base angle", 90 - angle)
         self.lum.set("poles", pole)
         self.lum.set("material", MaterialWG)
-        
-        
-        # if polesList == None:  
+
+
+        # if polesList == None:
         #     pole = np.array([[0, 0], [x_span / 2, 0], [x_span / 2, y_span], [x_span, y_span]])
         #     self.lum.set("poles", pole)
         #     self.lum.set("material", MaterialWG)
@@ -962,7 +1226,7 @@ class Constructor:
         #     pole = np.array(polesList)
         #     self.lum.set("poles", pole)
         #     self.lum.set("material", MaterialWG)
-            
+
         # create_cover
         self.lum.addrect()
         self.lum.set("name", "cladding")
@@ -1001,9 +1265,9 @@ class Constructor:
             Parameters['Slab Height'] : int/float
                 Slab height
             Parameters['Material'] : list
-                Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide. 
-                If Waveguide Angle is different then 0, then the straight waveguide will be tilted 
-                at the choosen degrees. 
+                Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
+                If Waveguide Angle is different then 0, then the straight waveguide will be tilted
+                at the choosen degrees.
             Parameters["Wavelength"] : int/float
                 Wavelength
             Parameters["S_Band Radius"] : int/float
@@ -1118,7 +1382,7 @@ class Constructor:
             self.lum.set("poles", pole)
             self.lum.set("material", MaterialWG)
 
-            
+
             # # create_cover
             # self.lum.addrect()
             # self.lum.set("name", "cladding")
@@ -1148,7 +1412,7 @@ class Constructor:
             # creating the substrate
             max_subH = Substrate_Height
             min_subH = -Substrate_Height
-            
+
 
             self.lum.addrect()
             self.lum.set("name", "Substrate")
@@ -1213,8 +1477,8 @@ class Constructor:
             self.lum.set("material", MaterialWG)
             self.lum.set("first axis", 'z')
             self.lum.set("rotation 1", 90)
-            
-            
+
+
             # # create_cover
             # self.lum.addrect()
             # self.lum.set("name", "cladding")
@@ -1232,7 +1496,7 @@ class Constructor:
         else:
             raise ValueError(
                 "Incorrect Arc Value. The arc can only be an integer and can only be arc = 90 or arc = 180!")
-            
+
 
 
 
@@ -1394,20 +1658,20 @@ class Constructor:
 
         if Taper == False:
 
-            #Too Fara and Too close 
+            #Too Fara and Too close
             offset_WG = posOffset / 2 + WG_Width / 2 + WG_W / 2
-            offset_WG2 = posOffset / 2 
+            offset_WG2 = posOffset / 2
 
-            
-            
+
+
             if offset_WG > MMI_Wid / 2:
                 self.lum.deleteall()
                 raise ValueError('You are Trying to move the Waveguide outside the MMI. This is not possible!')
-            
+
             elif offset_WG2 <0.5e-6:
                 self.lum.deleteall()
                 raise ValueError('The distance between the Tapers is less then 1 um !')
-                
+
 
 
             else:
@@ -1799,42 +2063,42 @@ class Constructor:
         self.lum.set("poles", pole)
         self.lum.set("material", MaterialWG)
         self.lum.set("base width", MMI_Wid)
-        
-        
+
+
         #Create the MMI L2 Tapers for the Trapezoid
         TaperNames = ["Input_Trapez", "Output_Trapez"]
         myscript = self.Script()
-        
-        
+
+
         self.lum.addstructuregroup()
         self.lum.set("name",TaperNames[0])
         self.lum.set("construction group",1)
         self.lum.adduserprop("thickness",2, WG_Height)
         self.lum.adduserprop("angle_side",0, angle)
         self.lum.adduserprop("width_l",2, WG_Width)
-        self.lum.adduserprop("width_r",2, MMI_Wid)
+        self.lum.adduserprop("width_r",2, MMI_Width)
         self.lum.adduserprop("hfrac_ref",0,1)
         self.lum.adduserprop("len",2, MMI_Length2)
         self.lum.adduserprop("material",5,MaterialWG)
         self.lum.adduserprop("index",0,1)
-        self.lum.set("script",myscript) 
-        self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2) 
+        self.lum.set("script",myscript)
+        self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2)
         self.lum.set("z", z_Offset)
         self.lum.set("y", 0)
-        
-        
+
+
         self.lum.addstructuregroup()
         self.lum.set("name",TaperNames[1])
         self.lum.set("construction group",1)
         self.lum.adduserprop("thickness",2, WG_Height)
         self.lum.adduserprop("angle_side",0, angle)
         self.lum.adduserprop("width_l",2, WG_Width)
-        self.lum.adduserprop("width_r",2, MMI_Wid)
+        self.lum.adduserprop("width_r",2, MMI_Width)
         self.lum.adduserprop("hfrac_ref",0,1)
         self.lum.adduserprop("len",2, MMI_Length2)
         self.lum.adduserprop("material",5,MaterialWG)
         self.lum.adduserprop("index",0,1)
-        self.lum.set("script",myscript) 
+        self.lum.set("script",myscript)
         self.lum.set("first axis", "z")
         self.lum.set("rotation 1",180)
         self.lum.set("x", MMI_Length / 2 + MMI_Length2/2)
@@ -1853,20 +2117,20 @@ class Constructor:
 
         if Taper == False:
 
-            #Too Fara and Too close 
+            #Too Fara and Too close
             offset_WG = posOffset / 2 + WG_Width / 2 + WG_W / 2
-            offset_WG2 = posOffset / 2 
+            offset_WG2 = posOffset / 2
 
-            
-            
+
+
             if offset_WG > MMI_Wid / 2:
                 self.lum.deleteall()
                 raise ValueError('You are Trying to move the Waveguide outside the MMI. This is not possible!')
-            
+
             elif offset_WG2 <0.5e-6:
                 self.lum.deleteall()
                 raise ValueError('The distance between the Tapers is less then 1 um !')
-                
+
 
 
             else:
@@ -1973,42 +2237,42 @@ class Constructor:
             self.lum.set("poles", pole)
             self.lum.set("material", MaterialWG)
             self.lum.set("base width", MMI_Wid)
-            
-            
+
+
             #Create the MMI L2 Tapers for the Trapezoid
             TaperNames = ["Input_Trapez", "Output_Trapez"]
             myscript = self.Script()
-            
-            
+
+
             self.lum.addstructuregroup()
             self.lum.set("name",TaperNames[0])
             self.lum.set("construction group",1)
             self.lum.adduserprop("thickness",2, WG_Height)
             self.lum.adduserprop("angle_side",0, angle)
             self.lum.adduserprop("width_l",2, WG_Width)
-            self.lum.adduserprop("width_r",2, MMI_Wid)
+            self.lum.adduserprop("width_r",2, MMI_Width)
             self.lum.adduserprop("hfrac_ref",0,1)
             self.lum.adduserprop("len",2, MMI_Length2)
             self.lum.adduserprop("material",5,MaterialWG)
             self.lum.adduserprop("index",0,1)
-            self.lum.set("script",myscript) 
-            self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2) 
+            self.lum.set("script",myscript)
+            self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2)
             self.lum.set("z", z_Offset)
             self.lum.set("y", 0)
-            
-            
+
+
             self.lum.addstructuregroup()
             self.lum.set("name",TaperNames[1])
             self.lum.set("construction group",1)
             self.lum.adduserprop("thickness",2, WG_Height)
             self.lum.adduserprop("angle_side",0, angle)
             self.lum.adduserprop("width_l",2, WG_Width)
-            self.lum.adduserprop("width_r",2, MMI_Wid)
+            self.lum.adduserprop("width_r",2, MMI_Width)
             self.lum.adduserprop("hfrac_ref",0,1)
             self.lum.adduserprop("len",2, MMI_Length2)
             self.lum.adduserprop("material",5,MaterialWG)
             self.lum.adduserprop("index",0,1)
-            self.lum.set("script",myscript) 
+            self.lum.set("script",myscript)
             self.lum.set("first axis", "z")
             self.lum.set("rotation 1",180)
             self.lum.set("x", MMI_Length / 2 + MMI_Length2/2)
@@ -2225,6 +2489,8 @@ class Constructor:
         TaperLength = Parameters['Taper Length']
         TaperWidth = Parameters['Taper Width']
         Taper = Parameters['Taper']
+        OffsetOutput = Parameters['Offset Output']
+
 
 
 
@@ -2313,21 +2579,21 @@ class Constructor:
         offset_WG2 = posOffset / 2
 
         # if offset_WG2 < 0.5e-6:
-        #     self.lum.deleteall()
-        #     raise ValueError('The distance between the Tapers is less then 1 um !')
+            # self.lum.deleteall()
+            # raise ValueError('The distance between the Tapers is less then 1 um !')
         # else:
 
         if Taper == False:
 
             # if offset_WG > OffMax:
-            #     self.lum.deleteall()
-            #     raise ValueError('You are Trying to move the Waveguide outside the MMI. This is not possible!')
+                # self.lum.deleteall()
+                # raise ValueError('You are Trying to move the Waveguide outside the MMI. This is not possible!')
             # else:
             # Mirror the In and Out WG on both sides
             maxWGL = [WG_Length, 0, 0]
             minWGL = [0, -WG_Length, -WG_Length]
             xPos = [max_MMIL, min_MMIL, min_MMIL]
-            yPos = [0 + OffsetInput, WG_Width / 2 + posOffset / 2, - WG_Width / 2 - posOffset / 2]
+            yPos = [0 + OffsetInput, (WG_Width / 2 + posOffset / 2) + OffsetOutput, (- WG_Width / 2 - posOffset / 2) + OffsetOutput ]
 
             # Names of the WGs
             names = ['LN_input_WG', 'LN_output_WG_L', 'LN_output_WG_R']
@@ -2350,163 +2616,163 @@ class Constructor:
 
 
         elif Taper == True:
-            # if offset_Taper > OffMax:
-            #     self.lum.deleteall()
-            #     raise ValueError('You are Trying to move the Taper outside the MMI. This is not possible!')
-            # else:
-            # Delate the Structure to start new
-            self.lum.deleteall()
-            # Device specifications
-            Device_Length = MMI_Length + 2 * WG_Length + 2*TaperLength
-            Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
+            if offset_Taper > OffMax:
+                self.lum.deleteall()
+                raise ValueError('You are Trying to move the Taper outside the MMI. This is not possible!')
+            else:
+                # Delate the Structure to start new
+                self.lum.deleteall()
+                # Device specifications
+                Device_Length = MMI_Length + 2 * WG_Length + 2*TaperLength
+                Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
 
-            # creating the substrate
-            max_subH = Substrate_Height
-            min_subH = -Substrate_Height
-            max_subW = Device_Width / 2
-            min_subW = -Device_Width / 2
-            min_subL = -Device_Length / 2
-            max_subL = Device_Length / 2
+                # creating the substrate
+                max_subH = Substrate_Height
+                min_subH = -Substrate_Height
+                max_subW = Device_Width / 2
+                min_subW = -Device_Width / 2
+                min_subL = -Device_Length / 2
+                max_subL = Device_Length / 2
 
-            self.lum.addrect()
-            self.lum.set("name", "Substrate")
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set("z min", min_subH)
-            self.lum.set("z max", max_subH)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("material", MaterialSub)
+                self.lum.addrect()
+                self.lum.set("name", "Substrate")
+                self.lum.set("y min", min_subW)
+                self.lum.set("y max", max_subW)
+                self.lum.set("z min", min_subH)
+                self.lum.set("z max", max_subH)
+                self.lum.set("x min", min_subL)
+                self.lum.set("x max", max_subL)
+                self.lum.set("material", MaterialSub)
 
-            # creating the thin film
-            min_slabH = max_subH
-            max_slabH = max_subH + Slab_Height
+                # creating the thin film
+                min_slabH = max_subH
+                max_slabH = max_subH + Slab_Height
 
-            self.lum.addrect()
-            self.lum.set("name", "LN_slab")
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set("z min", min_slabH)
-            self.lum.set("z max", max_slabH)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("material", MaterialSlab)
+                self.lum.addrect()
+                self.lum.set("name", "LN_slab")
+                self.lum.set("y min", min_subW)
+                self.lum.set("y max", max_subW)
+                self.lum.set("z min", min_slabH)
+                self.lum.set("z max", max_slabH)
+                self.lum.set("x min", min_subL)
+                self.lum.set("x max", max_subL)
+                self.lum.set("material", MaterialSlab)
 
-            # creating the MMI
-            max_MMIH = WG_Height
-            max_MMIL = MMI_Length / 2
-            min_MMIL = -MMI_Length / 2
-            z_Offset = max_slabH + max_MMIH / 2
+                # creating the MMI
+                max_MMIH = WG_Height
+                max_MMIL = MMI_Length / 2
+                min_MMIL = -MMI_Length / 2
+                z_Offset = max_slabH + max_MMIH / 2
 
-            # Triangle EQ for MMI Width
-            x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
-            extention = np.sqrt(x ** 2 - max_MMIH ** 2)
-            MMI_Wid = MMI_Width + 2 * extention
+                # Triangle EQ for MMI Width
+                x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
+                extention = np.sqrt(x ** 2 - max_MMIH ** 2)
+                MMI_Wid = MMI_Width + 2 * extention
 
-            self.lum.addwaveguide()
-            self.lum.set("name", "MMI")
-            self.lum.set("x", 0)
-            self.lum.set("y", 0)
-            self.lum.set("z", z_Offset)
-            self.lum.set("base height", max_MMIH)
-            self.lum.set("base angle", 90 - angle)
-            pole = np.array([[max_MMIL, 0], [min_MMIL, 0]])
-            self.lum.set("poles", pole)
-            self.lum.set("material", MaterialWG)
-            self.lum.set("base width", MMI_Wid)
-
-
-            # New x Length of the Tapers
-            maxLength = max_MMIL + TaperLength
-            minLength = min_MMIL - TaperLength
-
-            # Mirror the In and Out WG on both sides
-            maxWGL = [WG_Length, 0, 0]
-            minWGL = [0, -WG_Length, -WG_Length]
-            xPos = [maxLength, minLength, minLength]
-            yPos = [0 + OffsetInput, WG_Width / 2 + posOffset / 2, - WG_Width / 2 - posOffset / 2]
-
-            # Names of the WGs
-            names = ['LN_input_WG', 'LN_output_WG_L', 'LN_output_WG_R']
-            TapersNames = ['Taper_input_WG', 'Taper_output_WG_L', 'Taper_output_WG_R']
-
-            # Taper loop
-            # Taper Widths on Bott Cal
-            x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
-            extention = np.sqrt(x ** 2 - max_MMIH ** 2)
-            TaperSideWidth = TaperWidth + 2 * extention
-
-            TaperPosXmin = [max_MMIL, min_MMIL, min_MMIL]
-            TaperPosXmax = [max_MMIL + TaperLength, min_MMIL - TaperLength, min_MMIL - TaperLength]
-
-            PosOffset = [0, (posOffset / 2 + WG_Width / 2), -(posOffset / 2 + WG_Width / 2)]
-            TaperPosYMax_BotR = [(0 + OffsetInput + WG_W / 2), (-WG_W / 2), (-WG_W / 2)]
-            TaperPosYMin_BotR = [(0 + OffsetInput - WG_W / 2), (WG_W / 2), (WG_W / 2)]
-            TaperPosYMax_TopR = [(0 + OffsetInput + WG_Width / 2), (-WG_Width / 2), (-WG_Width / 2)]
-            TaperPosYMin_TopR = [(0 + OffsetInput - WG_Width / 2), (+WG_Width / 2), (+WG_Width / 2)]
-
-            TaperPosYMax_BotL = [(0 + OffsetInput + TaperSideWidth / 2), (-TaperSideWidth / 2),
-                                 (-TaperSideWidth / 2)]
-            TaperPosYMin_BotL = [(0 + OffsetInput - TaperSideWidth / 2), (+TaperSideWidth / 2),
-                                 (+TaperSideWidth / 2)]
-            TaperPosYMax_TopL = [(0 + OffsetInput + TaperWidth / 2), (-TaperWidth / 2), (-TaperWidth / 2)]
-            TaperPosYMin_TopL = [(0 + OffsetInput - TaperWidth / 2), (+TaperWidth / 2), (+TaperWidth / 2)]
-
-            for i in range(len(xPos)):
-                TaperZmin = max_slabH
-                TaperZmax = max_slabH + max_MMIH
-
-                TaperXmin = TaperPosXmin[i]
-                TaperXmax = TaperPosXmax[i]
-
-                ymin_bot_l = TaperPosYMin_BotL[i]
-                ymax_bot_l = TaperPosYMax_BotL[i]
-
-                ymin_bot_r = TaperPosYMin_BotR[i]
-                ymax_bot_r = TaperPosYMax_BotR[i]
-
-                ymin_top_l = TaperPosYMin_TopL[i]
-                ymax_top_l = TaperPosYMax_TopL[i]
-
-                ymin_top_r = TaperPosYMin_TopR[i]
-                ymax_top_r = TaperPosYMax_TopR[i]
-
-                vtx = np.array([[TaperXmin, ymin_bot_l, TaperZmin],  # 1
-                                [TaperXmax, ymin_bot_r, TaperZmin],  # 2
-                                [TaperXmax, ymax_bot_r, TaperZmin],  # 3
-                                [TaperXmin, ymax_bot_l, TaperZmin],  # 4
-                                [TaperXmin, ymin_top_l, TaperZmax],  # 5
-                                [TaperXmax, ymin_top_r, TaperZmax],  # 6
-                                [TaperXmax, ymax_top_r, TaperZmax],  # 7
-                                [TaperXmin, ymax_top_l, TaperZmax],  # 8
-                                ])
-                a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
-                     [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
-                     [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
-                
-            
-
-                # Send Values to Lumerical and create solid
-                self.lum.putv('vertices', vtx)
-                self.lum.putv('facets', a)
-                self.lum.addplanarsolid(vtx, a)
-                self.lum.set('material', MaterialWG)
-                self.lum.set('name', TapersNames[i])
-                self.lum.set('y', PosOffset[i])
-
-            # create loop
-            for i in range(len(xPos)):
                 self.lum.addwaveguide()
-                self.lum.set("name", names[i])
-                self.lum.set("x", xPos[i])
-                self.lum.set("y", yPos[i])
+                self.lum.set("name", "MMI")
+                self.lum.set("x", 0)
+                self.lum.set("y", 0)
                 self.lum.set("z", z_Offset)
-                self.lum.set("base width", WG_Width_top)
                 self.lum.set("base height", max_MMIH)
                 self.lum.set("base angle", 90 - angle)
-                pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
+                pole = np.array([[max_MMIL, 0], [min_MMIL, 0]])
                 self.lum.set("poles", pole)
-                self.lum.set("material", MaterialSlab)
+                self.lum.set("material", MaterialWG)
+                self.lum.set("base width", MMI_Wid)
+
+
+                # New x Length of the Tapers
+                maxLength = max_MMIL + TaperLength
+                minLength = min_MMIL - TaperLength
+
+                # Mirror the In and Out WG on both sides
+                maxWGL = [WG_Length, 0, 0]
+                minWGL = [0, -WG_Length, -WG_Length]
+                xPos = [maxLength, minLength, minLength]
+                yPos = [0 + OffsetInput, WG_Width / 2 + posOffset / 2, - WG_Width / 2 - posOffset / 2]
+
+                # Names of the WGs
+                names = ['LN_input_WG', 'LN_output_WG_L', 'LN_output_WG_R']
+                TapersNames = ['Taper_input_WG', 'Taper_output_WG_L', 'Taper_output_WG_R']
+
+                # Taper loop
+                # Taper Widths on Bott Cal
+                x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
+                extention = np.sqrt(x ** 2 - max_MMIH ** 2)
+                TaperSideWidth = TaperWidth + 2 * extention
+
+                TaperPosXmin = [max_MMIL, min_MMIL, min_MMIL]
+                TaperPosXmax = [max_MMIL + TaperLength, min_MMIL - TaperLength, min_MMIL - TaperLength]
+
+                PosOffset = [0, (posOffset / 2 + WG_Width / 2), -(posOffset / 2 + WG_Width / 2)]
+                TaperPosYMax_BotR = [(0 + OffsetInput + WG_W / 2), (-WG_W / 2), (-WG_W / 2)]
+                TaperPosYMin_BotR = [(0 + OffsetInput - WG_W / 2), (WG_W / 2), (WG_W / 2)]
+                TaperPosYMax_TopR = [(0 + OffsetInput + WG_Width / 2), (-WG_Width / 2), (-WG_Width / 2)]
+                TaperPosYMin_TopR = [(0 + OffsetInput - WG_Width / 2), (+WG_Width / 2), (+WG_Width / 2)]
+
+                TaperPosYMax_BotL = [(0 + OffsetInput + TaperSideWidth / 2), (-TaperSideWidth / 2),
+                                     (-TaperSideWidth / 2)]
+                TaperPosYMin_BotL = [(0 + OffsetInput - TaperSideWidth / 2), (+TaperSideWidth / 2),
+                                     (+TaperSideWidth / 2)]
+                TaperPosYMax_TopL = [(0 + OffsetInput + TaperWidth / 2), (-TaperWidth / 2), (-TaperWidth / 2)]
+                TaperPosYMin_TopL = [(0 + OffsetInput - TaperWidth / 2), (+TaperWidth / 2), (+TaperWidth / 2)]
+
+                for i in range(len(xPos)):
+                    TaperZmin = max_slabH
+                    TaperZmax = max_slabH + max_MMIH
+
+                    TaperXmin = TaperPosXmin[i]
+                    TaperXmax = TaperPosXmax[i]
+
+                    ymin_bot_l = TaperPosYMin_BotL[i]
+                    ymax_bot_l = TaperPosYMax_BotL[i]
+
+                    ymin_bot_r = TaperPosYMin_BotR[i]
+                    ymax_bot_r = TaperPosYMax_BotR[i]
+
+                    ymin_top_l = TaperPosYMin_TopL[i]
+                    ymax_top_l = TaperPosYMax_TopL[i]
+
+                    ymin_top_r = TaperPosYMin_TopR[i]
+                    ymax_top_r = TaperPosYMax_TopR[i]
+
+                    vtx = np.array([[TaperXmin, ymin_bot_l, TaperZmin],  # 1
+                                    [TaperXmax, ymin_bot_r, TaperZmin],  # 2
+                                    [TaperXmax, ymax_bot_r, TaperZmin],  # 3
+                                    [TaperXmin, ymax_bot_l, TaperZmin],  # 4
+                                    [TaperXmin, ymin_top_l, TaperZmax],  # 5
+                                    [TaperXmax, ymin_top_r, TaperZmax],  # 6
+                                    [TaperXmax, ymax_top_r, TaperZmax],  # 7
+                                    [TaperXmin, ymax_top_l, TaperZmax],  # 8
+                                    ])
+                    a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
+                         [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
+                         [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
+
+
+
+                    # Send Values to Lumerical and create solid
+                    self.lum.putv('vertices', vtx)
+                    self.lum.putv('facets', a)
+                    self.lum.addplanarsolid(vtx, a)
+                    self.lum.set('material', MaterialWG)
+                    self.lum.set('name', TapersNames[i])
+                    self.lum.set('y', PosOffset[i])
+
+                # create loop
+                for i in range(len(xPos)):
+                    self.lum.addwaveguide()
+                    self.lum.set("name", names[i])
+                    self.lum.set("x", xPos[i])
+                    self.lum.set("y", yPos[i])
+                    self.lum.set("z", z_Offset)
+                    self.lum.set("base width", WG_Width_top)
+                    self.lum.set("base height", max_MMIH)
+                    self.lum.set("base angle", 90 - angle)
+                    pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
+                    self.lum.set("poles", pole)
+                    self.lum.set("material", MaterialSlab)
 
         else:
             raise ValueError(
@@ -2519,17 +2785,17 @@ class Constructor:
         self.lum.set("y min", min_subW)
         self.lum.set("y max", max_subW)
         self.lum.set("z", z_Offset)
-        self.lum.set("z span", max_MMIH * 2)
+        self.lum.set("z span", max_MMIH + 0.4e-6)
         self.lum.set("x min", min_subL)
         self.lum.set("x max", max_subL)
         self.lum.set("override mesh order from material database", True)
         self.lum.set("mesh order", 4)
         self.lum.set("alpha", 0.7)
-    
-    
-    
-    
-    
+
+
+
+
+
 
 
     def MMI2x1_Trapez(self, Parameters):
@@ -2611,7 +2877,7 @@ class Constructor:
         TaperLength = Parameters['Taper Length']
         TaperWidth = Parameters['Taper Width']
         Taper = Parameters['Taper']
-        
+
 
 
         # Material definition
@@ -2673,6 +2939,7 @@ class Constructor:
         extention = np.sqrt(x ** 2 - max_MMIH ** 2)
         MMI_Wid = MMI_Width + 2 * extention
 
+
         self.lum.addwaveguide()
         self.lum.set("name", "MMI")
         self.lum.set("x", 0)
@@ -2684,52 +2951,52 @@ class Constructor:
         self.lum.set("poles", pole)
         self.lum.set("material", MaterialWG)
         self.lum.set("base width", MMI_Wid)
-        
-        
-        
+
+
+
         #Create the MMI L2 Tapers for the Trapezoid
         TaperNames = ["Input_Trapez", "Output_Trapez"]
         myscript = self.Script()
-        
-        
+
+
         self.lum.addstructuregroup()
         self.lum.set("name",TaperNames[0])
         self.lum.set("construction group",1)
         self.lum.adduserprop("thickness",2, WG_Height)
         self.lum.adduserprop("angle_side",0, angle)
         self.lum.adduserprop("width_l",2, WG_Width)
-        self.lum.adduserprop("width_r",2, MMI_Wid)
+        self.lum.adduserprop("width_r",2, MMI_Width)
         self.lum.adduserprop("hfrac_ref",0,1)
         self.lum.adduserprop("len",2, MMI_Length2)
         self.lum.adduserprop("material",5,MaterialWG)
         self.lum.adduserprop("index",0,1)
-        self.lum.set("script",myscript) 
-        self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2) 
+        self.lum.set("script",myscript)
+        self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2)
         self.lum.set("z", z_Offset)
         self.lum.set("y", 0)
-        
-        
+
+
         self.lum.addstructuregroup()
         self.lum.set("name",TaperNames[1])
         self.lum.set("construction group",1)
         self.lum.adduserprop("thickness",2, WG_Height)
         self.lum.adduserprop("angle_side",0, angle)
         self.lum.adduserprop("width_l",2, WG_Width)
-        self.lum.adduserprop("width_r",2, MMI_Wid)
+        self.lum.adduserprop("width_r",2, MMI_Width)
         self.lum.adduserprop("hfrac_ref",0,1)
         self.lum.adduserprop("len",2, MMI_Length2)
         self.lum.adduserprop("material",5,MaterialWG)
         self.lum.adduserprop("index",0,1)
-        self.lum.set("script",myscript) 
+        self.lum.set("script",myscript)
         self.lum.set("first axis", "z")
         self.lum.set("rotation 1",180)
         self.lum.set("x", MMI_Length / 2 + MMI_Length2/2)
         self.lum.set("z", z_Offset)
         self.lum.set("y", 0)
-        
-        
-        
-        
+
+
+
+
 
         # Positions of the Input and Output WGs
         # Triangle EQ for MMI Width
@@ -2846,41 +3113,41 @@ class Constructor:
                     self.lum.set("poles", pole)
                     self.lum.set("material", MaterialWG)
                     self.lum.set("base width", MMI_Wid)
-                    
+
                     #Create the MMI L2 Tapers for the Trapezoid
                     TaperNames = ["Input_Trapez", "Output_Trapez"]
-                    
+
                     self.lum.addstructuregroup()
                     self.lum.set("name",TaperNames[0])
                     self.lum.set("construction group",1)
                     self.lum.adduserprop("thickness",2, WG_Height)
                     self.lum.adduserprop("angle_side",0, angle)
                     self.lum.adduserprop("width_l",2, WG_Width)
-                    self.lum.adduserprop("width_r",2, MMI_Wid)
+                    self.lum.adduserprop("width_r",2, MMI_Width)
                     self.lum.adduserprop("hfrac_ref",0,1)
                     self.lum.adduserprop("len",2, MMI_Length2)
                     self.lum.adduserprop("material",5,MaterialWG)
                     self.lum.adduserprop("index",0,1)
-                    self.lum.set("script",myscript) 
+                    self.lum.set("script",myscript)
                     # self.lum.set("first axis", "z")
                     # self.lum.set("rotation 1",angleTheta)
                     self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2) #-MMI_Length / 2
                     self.lum.set("z", z_Offset)
                     self.lum.set("y", 0)
-                    
-                    
+
+
                     self.lum.addstructuregroup()
                     self.lum.set("name",TaperNames[1])
                     self.lum.set("construction group",1)
                     self.lum.adduserprop("thickness",2, WG_Height)
                     self.lum.adduserprop("angle_side",0, angle)
                     self.lum.adduserprop("width_l",2, WG_Width)
-                    self.lum.adduserprop("width_r",2, MMI_Wid)
+                    self.lum.adduserprop("width_r",2, MMI_Width)
                     self.lum.adduserprop("hfrac_ref",0,1)
                     self.lum.adduserprop("len",2, MMI_Length2)
                     self.lum.adduserprop("material",5,MaterialWG)
                     self.lum.adduserprop("index",0,1)
-                    self.lum.set("script",myscript) 
+                    self.lum.set("script",myscript)
                     self.lum.set("first axis", "z")
                     self.lum.set("rotation 1",180)
                     self.lum.set("x", MMI_Length / 2 + MMI_Length2/2) #-MMI_Length / 2
@@ -2955,8 +3222,8 @@ class Constructor:
                         a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
                              [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
                              [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
-                        
-                    
+
+
 
                         # Send Values to Lumerical and create solid
                         self.lum.putv('vertices', vtx)
@@ -3071,7 +3338,7 @@ class Constructor:
 
 
 
-        
+
 
         # Device specifications
         Device_Length = DC_Lenght
@@ -3152,7 +3419,7 @@ class Constructor:
 
     def WDM(self, Parameters):
         '''
-        
+
 
         Parameters
         ----------
@@ -3179,16 +3446,16 @@ class Constructor:
                 Height of the slab.
             Parameters['Wavelength'] : int/float
                 Wavelength
-            Parameters['Angle Thetha'] : 
-                Input and output angle of the waveguide. This is only temporally 
+            Parameters['Angle Thetha'] :
+                Input and output angle of the waveguide. This is only temporally
             Parameters['Taper Width'] : int/float
                 Backside width of the Taper, frontside width is the waveguide width
             Parameters['Taper Length'] : int/float
-                Length of the Taper. 
+                Length of the Taper.
             Parameters['Taper'] : boolen
                 If Taper == False, no Taper will be placed with the Waveguides.
                 If Taper == True, tapers will be placed with the waveguides
-        
+
         Raises
         ------
         ValueError
@@ -3199,12 +3466,12 @@ class Constructor:
         None.
 
         '''
-        
+
         Material = Parameters['Material']
         Substrate_Height = Parameters['Substrate Height']
         MMI_Width = Parameters['MMI Width']
         MMI_Length = Parameters['MMI Length']
-        angle = Parameters['angle'] 
+        angle = Parameters['angle']
         WG_Height = Parameters['WG Height']
         WG_Width = Parameters['WG Width']
         WG_Length = Parameters['WG Length']
@@ -3224,11 +3491,11 @@ class Constructor:
             MaterialClad = Material[0]
             MaterialSlab = Material[1]
             MaterialWG = MaterialSlab
-        
+
 
 
         if Taper == False:
-            
+
             # Device specifications
             Device_Length = MMI_Length + 4 * WG_Length
             Device_Width = MMI_Width + 2*WG_Length + WaveLength * 2  # MMI_Width
@@ -3237,7 +3504,7 @@ class Constructor:
             max_subH = Substrate_Height
             min_subH = -Substrate_Height
 
-             
+
             self.lum.addrect()
             self.lum.set("name", "Substrate")
             self.lum.set("z min", min_subH)
@@ -3247,11 +3514,11 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set("material", MaterialSub)
-             
+
             # creating the thin film
             min_slabH = max_subH
             max_slabH = max_subH + Slab_Height
-             
+
             self.lum.addrect()
             self.lum.set("name", "LN_slab")
             self.lum.set("z min", min_slabH)
@@ -3261,12 +3528,12 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set("material", MaterialSlab)
-             
+
             # creating the MMI
             # creating the MMI
 
             max_MMIH = WG_Height
-            max_MMIL = MMI_Length / 2 
+            max_MMIL = MMI_Length / 2
             min_MMIL = -MMI_Length / 2
             z_Offset = max_slabH + max_MMIH / 2
 
@@ -3276,7 +3543,7 @@ class Constructor:
             extention = np.sqrt(x ** 2 - max_MMIH ** 2)
             MMI_Wid = MMI_Width + 2 * extention
 
-             
+
             # self.lum.addwaveguide()
             # self.lum.set("name", "MMI")
             # self.lum.set("base height", max_MMIH)
@@ -3288,8 +3555,8 @@ class Constructor:
             # self.lum.set("poles", pole)
             # self.lum.set("material", MaterialWG)
             # self.lum.set("base width", MMI_Wid)
-            
-            
+
+
             x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
             extention = np.sqrt(x ** 2 - max_MMIH ** 2)
             WG_W = WG_Width + 2 * extention
@@ -3315,7 +3582,7 @@ class Constructor:
             self.lum.set("poles", pole)
             self.lum.set("material", MaterialWG)
             self.lum.set("base width", MMI_Wid)
-            
+
             # Names of the WGs
             Waveguides = ['LN_Input', 'LN_Output']
             myscript = self.Script()
@@ -3375,8 +3642,8 @@ class Constructor:
 
 
         elif Taper == True:
-            
-            
+
+
             # Device specifications
             Device_Length = MMI_Length + 4 * WG_Length
             Device_Width = MMI_Width + 2*WG_Length + WaveLength * 2  # MMI_Width
@@ -3384,13 +3651,13 @@ class Constructor:
             # creating the substrate
             max_subH = Substrate_Height
             min_subH = -Substrate_Height
-            
+
             # creating the thin film
             min_slabH = max_subH
             max_slabH = max_subH + Slab_Height
-            
+
             max_MMIH = WG_Height
-            max_MMIL = MMI_Length / 2 
+            max_MMIL = MMI_Length / 2
             min_MMIL = -MMI_Length / 2
             z_Offset = max_slabH + max_MMIH / 2
 
@@ -3399,23 +3666,23 @@ class Constructor:
             x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
             extention = np.sqrt(x ** 2 - max_MMIH ** 2)
             MMI_Wid = MMI_Width + 2 * extention
-            
+
             TaperNames = ["Input_Taper", "Output_Taper"]
             Waveguides = ["Input_WG", "Output_WG"]
-            
+
             x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
             extention = np.sqrt(x ** 2 - max_MMIH ** 2)
             WG_W = WG_Width + 2 * extention
-            
+
             # Correction in Y-Axis
             difY = (TaperLength/2) * np.cos(angleTheta*np.pi/180)
-            xLen = 2*(TaperLength/2)* np.sin((angleTheta/2) * np.pi/180)  
-            Diff = WG_W - WG_Width 
-            
+            xLen = 2*(TaperLength/2)* np.sin((angleTheta/2) * np.pi/180)
+            Diff = WG_W - WG_Width
+
             NewY = -MMI_Width / 2 + TaperWidth/2- np.sqrt( (TaperLength/2)**2 - difY**2) # - xLen - Diff/2 #
             Li =( 4*2.5*MMI_Width**2)/WaveLength
 
-             
+
             self.lum.addrect()
             self.lum.set("name", "Substrate")
             self.lum.set("z min", min_subH)
@@ -3425,9 +3692,9 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set("material", MaterialSub)
-             
-            
-             
+
+
+
             self.lum.addrect()
             self.lum.set("name", "LN_slab")
             self.lum.set("z min", min_slabH)
@@ -3437,9 +3704,9 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set("material", MaterialSlab)
-           
+
             # creating the MMI
-             
+
             self.lum.addwaveguide()
             self.lum.set("name", "MMI")
             self.lum.set("base height", max_MMIH)
@@ -3451,16 +3718,16 @@ class Constructor:
             self.lum.set("poles", pole)
             self.lum.set("material", MaterialWG)
             self.lum.set("base width", MMI_Wid)
-            
-            
-            
-            
 
-            
+
+
+
+
+
             # Input and Output Tapers and WGs
             myscript = self.Script()
-            
-            
+
+
             self.lum.addstructuregroup()
             self.lum.set("name",TaperNames[0])
             self.lum.set("construction group",1)
@@ -3472,13 +3739,13 @@ class Constructor:
             self.lum.adduserprop("len",2, TaperLength)
             self.lum.adduserprop("material",5,MaterialWG)
             self.lum.adduserprop("index",0,1)
-            self.lum.set("script",myscript) 
+            self.lum.set("script",myscript)
             self.lum.set("first axis", "z")
             self.lum.set("rotation 1",angleTheta)
             self.lum.set("x", -MMI_Length / 2 - TaperLength/2 ) #-MMI_Length / 2
             self.lum.set("z", z_Offset)
             self.lum.set("y", NewY)
-            
+
 
 
 
@@ -3493,7 +3760,7 @@ class Constructor:
             self.lum.adduserprop("len",2, WG_Length)
             self.lum.adduserprop("material",5,MaterialWG)
             self.lum.adduserprop("index",0,1)
-            self.lum.set("script",myscript) 
+            self.lum.set("script",myscript)
             self.lum.set("first axis", "z")
             self.lum.set("rotation 1",angleTheta)
             self.lum.set("x", -MMI_Length / 2 - TaperLength/2 ) #-MMI_Length / 2
@@ -3513,15 +3780,15 @@ class Constructor:
             self.lum.adduserprop("len",2, TaperLength)
             self.lum.adduserprop("material",5,MaterialWG)
             self.lum.adduserprop("index",0,1)
-            self.lum.set("script",myscript) 
+            self.lum.set("script",myscript)
             self.lum.set("first axis", "z")
             self.lum.set("rotation 1",angleTheta)
             self.lum.set("x", MMI_Length / 2 + TaperLength/2 )  #+ MMI_Length / 2
             self.lum.set("z", z_Offset)
             self.lum.set("y", -NewY )
-            
-            
-            
+
+
+
             self.lum.addstructuregroup()
             self.lum.set("name",Waveguides[1])
             self.lum.set("construction group",1)
@@ -3533,7 +3800,7 @@ class Constructor:
             self.lum.adduserprop("len",2, WG_Length)
             self.lum.adduserprop("material",5,MaterialWG)
             self.lum.adduserprop("index",0,1)
-            self.lum.set("script",myscript) 
+            self.lum.set("script",myscript)
             self.lum.set("first axis", "z")
             self.lum.set("rotation 1",angleTheta)
             self.lum.set("x", MMI_Length / 2 + TaperLength/2 )  #+ MMI_Length / 2
@@ -3553,15 +3820,15 @@ class Constructor:
             self.lum.set("override mesh order from material database", True)
             self.lum.set("mesh order", 4)
             self.lum.set("alpha", 0.7)
-                
-                
-                
-        
-        
-   
+
+
+
+
+
+
     def InverseTaper(self, Parameters):
         '''
-        
+
 
         Parameters
         ----------
@@ -3576,28 +3843,28 @@ class Constructor:
         Parameters['WG Height'] : int/float
             Waveguide hight. Also the height of the MMI section
         Parameters['WG Width'] : int/float
-            Waveguide width. Also in this function and ONLY in this function this will be the 
+            Waveguide width. Also in this function and ONLY in this function this will be the
             ibverse Taper width!!!
         Parameters['Slab Height'] : int/float
             Slab height
         Parameters['Taper Length'] : int/float
             Inverse Taper Length
         Parameters['Taper Width'] : int/float
-            Front Width of the inverse Taper!! In this Function and ONLY in this function, the 
-            Parameters['Taper Width'] is the frond width of the inverse Taper! 
+            Front Width of the inverse Taper!! In this Function and ONLY in this function, the
+            Parameters['Taper Width'] is the frond width of the inverse Taper!
         Parameters['PWB Taper Width Back'] : int/float
-            Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding) 
+            Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
         Parameters['PWB Taper Hight Back'] : int/float
-            Photonic Wire Bonding Height back side (to the Photonic Wire Bonding) 
+            Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
         Parameters['PWB Taper Width Front'] : int/float
-            Photonic Wirebonding (PWB) Width front side (to the photonic waveguide) 
+            Photonic Wirebonding (PWB) Width front side (to the photonic waveguide)
         Parameters['PWB Taper Hight Front'] : int/float
-            Photonic Wire Bonding Height front side (to the photonic waveguide) 
+            Photonic Wire Bonding Height front side (to the photonic waveguide)
         Parameters['PWB Taper Length'] : int/float
-            Length of the Photonic Wire Bonding Taper          
-        
-            
-    
+            Length of the Photonic Wire Bonding Taper
+
+
+
         Raises
         ------
         ValueError
@@ -3608,7 +3875,7 @@ class Constructor:
         None.
 
         '''
-        
+
         Material = Parameters['Material']
         Substrate_Height = Parameters['Substrate Height']
         angle = Parameters['angle']
@@ -3636,11 +3903,11 @@ class Constructor:
             MaterialPWB = Material[2]
 
 
-        
+
         # creating the substrate
         max_subH = Substrate_Height
         min_subH = -Substrate_Height
-        
+
         # make substrate
         self.lum.addrect()
         self.lum.set("name", "Substrate")
@@ -3653,11 +3920,11 @@ class Constructor:
         # self.lum.set("x", 10e-6)
         # self.lum.set("x span", TaperLength_PWB * 2)
         self.lum.set("material", MaterialSub)
-        
+
         # creating the thin film
         min_slabH = max_subH
         max_slabH = max_subH + Slab_Height
-        
+
         # Slab
         self.lum.addrect()
         self.lum.set("name", "LN_slab")
@@ -3670,19 +3937,19 @@ class Constructor:
         # self.lum.set("x", 10e-6)
         # self.lum.set("x span", TaperLength_PWB * 2)
         self.lum.set("material", MaterialSlab)
-        
+
         # Names of the WGs
         TapersNames = ['Taper_PWB', 'Inverse_Taper']
-        
+
         # Taper sideangle widths
         x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
         extention = np.sqrt(x ** 2 - WG_Height ** 2)
         TaperSideWidth = TaperWidth + 2 * extention
         WG_W = WG_Width + 2 * extention
-        
 
 
-        
+
+
         # PWD Taper Y-Parameters
         PWB_TaperPosYMax_BotR = [(TaperWidthF / 2)]
         PWB_TaperPosYMin_BotR = [(- TaperWidthF / 2)]
@@ -3692,7 +3959,7 @@ class Constructor:
         PWB_TaperPosYMin_BotL = [(- TaperWidthB / 2)]
         PWB_TaperPosYMax_TopL = [(TaperWidthB / 2)]
         PWB_TaperPosYMin_TopL = [(- TaperWidthB / 2)]
-        
+
         # Inverse   Taper Y-Parameters
         TaperPosYMax_BotR = [(WG_W / 2)]
         TaperPosYMin_BotR = [(- WG_W / 2)]
@@ -3702,42 +3969,42 @@ class Constructor:
         TaperPosYMin_BotL = [(- TaperSideWidth / 2)]
         TaperPosYMax_TopL = [(TaperWidth / 2)]
         TaperPosYMin_TopL = [(- TaperWidth / 2)]
-        
 
-      
-        
+
+
+
         z_Offset = max_slabH
-        
+
         # PWD Taper Hights
         TaperZmin = z_Offset
         TaperZmaxF = z_Offset + TaperHightF
         TaperZmaxB = z_Offset + TaperHightB
-        
+
         # Inverse Taper Hights
         TaperZmin = z_Offset
         TaperZmax = z_Offset + WG_Height
-        
+
         # PWB Taper Length
         PWB_TaperXmin = -TaperLength_PWB / 2
         PWB_TaperXmax = TaperLength_PWB / 2
-        
+
         # Inverse Taper Length
         TaperXmin = -TaperLength / 2
         TaperXmax = TaperLength / 2
-        
+
         # Create PWB Taper
         ymin_bot_l = PWB_TaperPosYMin_BotL[0]
         ymax_bot_l = PWB_TaperPosYMax_BotL[0]
-        
+
         ymin_bot_r = PWB_TaperPosYMin_BotR[0]
         ymax_bot_r = PWB_TaperPosYMax_BotR[0]
-        
+
         ymin_top_l = PWB_TaperPosYMin_TopL[0]
         ymax_top_l = PWB_TaperPosYMax_TopL[0]
-        
+
         ymin_top_r = PWB_TaperPosYMin_TopR[0]
         ymax_top_r = PWB_TaperPosYMax_TopR[0]
-        
+
         vtx = np.array([[PWB_TaperXmin, ymin_bot_l, TaperZmin],  # 1
                         [PWB_TaperXmax, ymin_bot_r, TaperZmin],  # 2
                         [PWB_TaperXmax, ymax_bot_r, TaperZmin],  # 3
@@ -3750,7 +4017,7 @@ class Constructor:
         a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
              [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
              [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
-        
+
         # Send Values to Lumerical and create solid
         self.lum.putv('vertices', vtx)
         self.lum.putv('facets', a)
@@ -3759,21 +4026,21 @@ class Constructor:
         self.lum.set("override mesh order from material database",1)
         self.lum.set("mesh order",3)
         self.lum.set('name', TapersNames[0])
-        
-        
+
+
         # Create Inverse Taper
         ymin_bot_l = TaperPosYMin_BotL[0]
         ymax_bot_l = TaperPosYMax_BotL[0]
-        
+
         ymin_bot_r = TaperPosYMin_BotR[0]
         ymax_bot_r = TaperPosYMax_BotR[0]
-        
+
         ymin_top_l = TaperPosYMin_TopL[0]
         ymax_top_l = TaperPosYMax_TopL[0]
-        
+
         ymin_top_r = TaperPosYMin_TopR[0]
         ymax_top_r = TaperPosYMax_TopR[0]
-        
+
         vtx = np.array([[TaperXmin, ymin_bot_l, TaperZmin],  # 1
                         [TaperXmax, ymin_bot_r, TaperZmin],  # 2
                         [TaperXmax, ymax_bot_r, TaperZmin],  # 3
@@ -3786,9 +4053,9 @@ class Constructor:
         a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
              [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
              [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
-        
+
         Offset_InvTaper = PWB_TaperXmin + TaperXmax
-        
+
         if Offset_InvTaper - TaperXmax / 2 > PWB_TaperXmax:
             raise ValueError(
                 "Inverse Taper is moved outside the PWB Taper! The maximal x-Offset of the Inverse Taper is Parameters['Offset Inverse Taper'] = " + str(
@@ -3803,14 +4070,14 @@ class Constructor:
             self.lum.set('second axis', 'z')
             self.lum.set('rotation 2', 0)
             self.lum.set('x', Offset_InvTaper)
-        
-        
+
+
         # Make Sqered WG-Extention of the PWB for mode Calculations
-        
+
         # Extra Waveguide Lenght
         Ext_WGLength = 1e-6
         PWD_x_Offset = PWB_TaperXmin
-        
+
         self.lum.addrect()
         self.lum.set('x min', PWD_x_Offset - Ext_WGLength)
         self.lum.set('x max',PWD_x_Offset)
@@ -3822,14 +4089,14 @@ class Constructor:
         self.lum.set("mesh order", 3)
         self.lum.set('name', 'WG_Extention_PWB')
         self.lum.set('material', MaterialPWB)
-        
+
         # Make Sqred WG-Extention for the inverse Taper
         x_min = (Offset_InvTaper + TaperXmax)
-        x_max =  PWB_TaperXmax + Ext_WGLength 
+        x_max =  PWB_TaperXmax + Ext_WGLength
         center = TaperXmax + Offset_InvTaper
-        
+
         ZOffset_WG = TaperZmin+ WG_Height/2
-        
+
         self.lum.addwaveguide()
         self.lum.set("name", 'WG_Extention_Inverse_Taper')
         self.lum.set("x", center )
@@ -3841,13 +4108,10 @@ class Constructor:
         pole = np.array([[0, 0], [x_max, 0]])
         self.lum.set("poles", pole)
         self.lum.set("material", MaterialSlab)
-
-
-
-
-
-
-
+        
+        
+        
+        
     def CascadetMMI(self, Parameters, SpaceX, SpaceY):
         '''
         
@@ -4290,18 +4554,530 @@ class Constructor:
             self.lum.set("override mesh order from material database", True)
             self.lum.set("mesh order", 4)
             self.lum.set("alpha", 0.7)
-        
-        
-        
-        
-       
-        
-        
-     
-            
 
- 
-                
+
+
+
+    def GratingCoupler(self, Parameters):
+
+        # simplify variable names by removing spaces
+        TargetLength = Parameters["Length GC"]
+        WidthGC = Parameters["Width GC"]
+        TaperLength = Parameters['Taper Length']
+        Hight = Parameters["Hight GC"]
+        EtchDepth = Parameters["Etch Depth GC"]
+        DutyCycle = Parameters["Duty Cycle"]
+        Pitch = Parameters["Pitch GC"]
+        InputLlength = Parameters["Input Length GC"]
+        OutputLength = Parameters["Output Length GC"]
+        Material = Parameters["Material  GC"]
+        CoreDiameter = Parameters["SMF Core Diameter"]
+        CladdingDiameter = Parameters["SMF Cladding Diameter"]
+        ZSpan = Parameters["SMF Z Spam"]
+        Theta = Parameters["SMF Theta"]
+        CoreIndex = Parameters["SMF Core Index"]
+        CladdingIndex = Parameters["SMF Cladding Index"]
+        Taper = Parameters["Taper"]
+
+        WG_Height = Parameters['WG Height']
+        WG_Width = Parameters['WG Width']
+        angle = Parameters['angle']
+
+
+
+        # Create the MMI L2 Tapers for the Trapezoid
+        GCNames = "Grating Coupler"
+        FiberName = "SMF"
+        myscript = self.Simple_Grating_Coupler_Script()
+        SMF_Script = self.Fiber_Script()
+
+
+
+        # Make the Grating Coupler
+        import math
+        n_periods = math.floor(TargetLength / Pitch)
+        fill_width = Pitch * DutyCycle
+        etch_width = Pitch * (1 - DutyCycle)
+        L = n_periods * Pitch + etch_width
+        spanX = OutputLength + TargetLength + InputLlength
+
+        if EtchDepth > Hight:
+            EtchDepth = Hight
+        elif EtchDepth < Hight:
+            self.lum.addrect()
+            self.lum.set("name", "lower layer")
+            self.lum.set("x min", 0)
+            self.lum.set("x max", L)
+            self.lum.set("y min", 0)
+            self.lum.set("y max", Hight - EtchDepth)
+
+        self.lum.addrect()
+        self.lum.set("name", "input waveguide")
+        self.lum.set("x min", -InputLlength)
+        self.lum.set("x max", 0)
+        self.lum.set("y min", 0)
+        self.lum.set("y max", Hight)
+
+        self.lum.addrect()
+        self.lum.set("name", "output waveguide")
+        self.lum.set("x min", L)
+        self.lum.set("x max", L + OutputLength)
+        self.lum.set("y min", 0)
+        self.lum.set("y max", Hight)
+
+        for i in range(1, n_periods+1):
+            self.lum.addrect()
+            self.lum.set("name", "post")
+            self.lum.set("x min", Pitch * (i - 1) + etch_width)
+            self.lum.set("x max", Pitch * i)
+            self.lum.set("y min", Hight - EtchDepth)
+            self.lum.set("y max", Hight)
+
+        self.lum.selectall()
+        self.lum.set("material", Material[0])
+        self.lum.set("z", 0)
+        self.lum.set("z span", WidthGC)
+
+        self.lum.addrect()
+        self.lum.set("name", "Substrate")
+        self.lum.set("x", TargetLength/2)
+        self.lum.set("x span", spanX)
+        self.lum.set("y", -(0.5e-6) / 2)
+        self.lum.set("y span", 0.5e-6)
+        self.lum.set("z", 0 )
+        self.lum.set("z span", WidthGC)
+        self.lum.set("material", Material[1])
+
+        self.lum.addrect()
+        self.lum.set("name", "Cladding")
+        self.lum.set("x", TargetLength / 2)
+        self.lum.set("x span", spanX)
+        self.lum.set("y", Hight / 2)
+        self.lum.set("y span", 0.7e-6 + Hight)
+        self.lum.set("z", 0)
+        self.lum.set("z span", WidthGC)
+        self.lum.set("material", Material[1])
+        self.lum.set("alpha", 0.7)
+        self.lum.set("override mesh order from material database",1)
+        self.lum.set("mesh order", 3)
+
+        self.lum.addrect()
+        self.lum.set("name", "Si_Layer")
+        self.lum.set("x", TargetLength / 2)
+        self.lum.set("x span", spanX)
+        self.lum.set("y", -(1.5e-6) / 2)
+        self.lum.set("y span", 1e-6)
+        self.lum.set("z", 0)
+        self.lum.set("z span", WidthGC)
+        self.lum.set("material", Material[0])
+
+
+
+
+
+        self.lum.selectall()
+        self.lum.addtogroup(GCNames)
+        self.lum.select(GCNames)
+        self.lum.set("first axis", "x")
+        self.lum.set("rotation 1", 90)
+        self.lum.set("x", -TargetLength/2)
+
+
+
+
+
+        # self.lum.addstructuregroup()
+        # self.lum.set("name", GCNames)
+        # self.lum.set("construction group", 1)
+
+        # self.lum.adduserprop("index", 0, Index)
+        # self.lum.adduserprop("material", 5, Material[0])
+        # self.lum.adduserprop("target length", 2, TargetLength)
+        # self.lum.adduserprop("h total", 2, Hight)
+        # self.lum.adduserprop("etch depth", 2, EtchDepth)
+        # self.lum.adduserprop("duty cycle", 0, DutyCycle)
+        # self.lum.adduserprop("pitch", 2, Pitch)
+        # self.lum.adduserprop("input length", 2, InputLlength)
+        # self.lum.adduserprop("output length", 2, OutputLength)
+        # self.lum.set("script", myscript)
+        # self.lum.set("first axis", "x")
+        # self.lum.set("rotation 1", 90)
+        # self.lum.set("x", -TargetLength/2)
+
+
+        # Build SMF
+
+        core_index = CoreIndex
+        cladding_index = CladdingIndex
+        core_radius = CoreDiameter / 2
+        cladding_radius = CladdingDiameter/2
+        theta_rad = Theta / (180 / np.pi)
+        L = ZSpan / np.cos(theta_rad)
+
+
+
+        # Check if Material Cable is given
+        if len(Material) == 2:
+            CoreIndex = CoreIndex
+            CladdingIndex = CladdingIndex
+
+            self.lum.addcircle()
+            self.lum.set("name", "core")
+            self.lum.set("override mesh order from material database", 1)
+            self.lum.set("mesh order", 4)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", 10)
+            self.lum.set("alpha", 1)
+            self.lum.set("radius", core_radius)
+            self.lum.set("index", CoreIndex)
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", 0)
+            self.lum.set("z span", L)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", Theta)
+
+            self.lum.addcircle()
+            self.lum.set("name", "cladding")
+            self.lum.set("override mesh order from material database", 1)
+            self.lum.set("mesh order", 5)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", 10)
+            self.lum.set("alpha", 0.35)
+            self.lum.set("radius", cladding_radius)
+            self.lum.set("index", CladdingIndex)
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", 0)
+            self.lum.set("z span", L)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", Theta)
+
+        else:
+            CoreMaterial = Material[2]
+            CladdingMaterial = Material[3]
+
+            self.lum.addcircle()
+            self.lum.set("name", "core")
+            self.lum.set("override mesh order from material database", 1)
+            self.lum.set("mesh order", 4)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", 10)
+            self.lum.set("alpha", 1)
+            self.lum.set("radius", core_radius)
+            self.lum.set("material", CoreMaterial)
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", 0)
+            self.lum.set("z span", L)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", Theta)
+
+            self.lum.addcircle()
+            self.lum.set("name", "cladding")
+            self.lum.set("override mesh order from material database", 1)
+            self.lum.set("mesh order", 5)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", 10)
+            self.lum.set("alpha", 0.35)
+            self.lum.set("radius", cladding_radius)
+            self.lum.set("material", CladdingMaterial)
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", 0)
+            self.lum.set("z span", L)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", Theta)
+
+        self.lum.select("core")
+        self.lum.addtogroup('SMF')
+        self.lum.select("cladding")
+        self.lum.addtogroup('SMF')
+
+
+
+
+        if Taper == True:
+            # Add Taper
+            TaperNames = "Taper"
+            myscript = self.Script()
+            spanX = OutputLength+TargetLength + InputLlength
+
+            self.lum.addstructuregroup()
+            self.lum.set("name", TaperNames)
+            self.lum.set("construction group", 1)
+            self.lum.adduserprop("thickness", 2, Hight)
+            self.lum.adduserprop("angle_side", 0, angle)
+            self.lum.adduserprop("width_l", 2, WG_Width)
+            self.lum.adduserprop("width_r", 2, WidthGC)
+            self.lum.adduserprop("hfrac_ref", 0, 1)
+            self.lum.adduserprop("len", 2, TaperLength)
+            self.lum.adduserprop("material", 5, Material[0])
+            self.lum.adduserprop("index", 0, 1)
+            self.lum.set("script", myscript)
+            self.lum.set("x", -TargetLength/2 - InputLlength - TaperLength/2)
+            self.lum.set("z", Hight/2)
+            self.lum.set("y", 0)
+
+
+            # Add Substrate for thge taper
+            TaperSubNames = "Taper Substrate"
+            myscript = self.Script()
+            self.lum.addstructuregroup()
+            self.lum.set("name", TaperSubNames)
+            self.lum.set("construction group", 1)
+            self.lum.adduserprop("thickness", 2, 1e-6)
+            self.lum.adduserprop("angle_side", 0, 0)
+            self.lum.adduserprop("width_l", 2, WG_Width)
+            self.lum.adduserprop("width_r", 2, WidthGC)
+            self.lum.adduserprop("hfrac_ref", 0, 1)
+            self.lum.adduserprop("len", 2, TaperLength)
+            self.lum.adduserprop("material", 5, Material[1])
+            self.lum.adduserprop("index", 0, 1)
+            self.lum.set("script", myscript)
+            self.lum.set("x", -TargetLength/2 - InputLlength - TaperLength/2)
+            self.lum.set("z", -0.5e-6)
+            self.lum.set("y", 0)
+
+            # Taper Cladding
+            TaperSubNames = "Taper Cladding"
+            myscript = self.Script()
+            myscript = myscript + 'set("alpha", 0.7);  \n'
+            myscript = myscript + 'set("override mesh order from material database",1);  \n'
+            myscript = myscript + 'set("mesh order", 0, 3);  \n'
+            self.lum.addstructuregroup()
+            self.lum.set("name", TaperSubNames)
+            self.lum.set("construction group", 1)
+            self.lum.adduserprop("thickness", 2, 0.7e-6 + Hight)
+            self.lum.adduserprop("angle_side", 0, 0)
+            self.lum.adduserprop("width_l", 2, WG_Width)
+            self.lum.adduserprop("width_r", 2, WidthGC)
+            self.lum.adduserprop("hfrac_ref", 0, 1)
+            self.lum.adduserprop("len", 2, TaperLength)
+            self.lum.adduserprop("material", 5, Material[1])
+            self.lum.adduserprop("index", 0, 1)
+            self.lum.set("script", myscript)
+            self.lum.set("x", -TargetLength / 2 - InputLlength - TaperLength / 2)
+            self.lum.set("z", Hight / 2)
+            self.lum.set("y", 0)
+        else:
+            pass
+
+
+
+
+
+
+    def GratingCouplerNeff(self, Parameters):
+
+        Hight = Parameters["Hight GC"]
+        EtchDepth = Parameters["Etch Depth GC"]
+        DutyCycle = Parameters["Duty Cycle"]
+        Pitch = Parameters["Pitch GC"]
+        WidthGC_Gap = Parameters["Width GC Gap"]
+        Material = Parameters["Material  GC"]
+        TargetLength = Parameters["Length GC"]
+        WidthGC = Parameters["Width GC"]
+
+        # Make the Grating Coupler
+        import math
+        n_periods = math.floor(TargetLength / Pitch)
+        fill_width = Pitch * DutyCycle
+        DutyCycle = DutyCycle*100
+        etch_width = Pitch - ((DutyCycle/100)*Pitch)
+        L = 1 * Pitch
+
+
+        # Create Ribs and Gaps
+        # for i in range(1, 2 ):
+        self.lum.addrect()
+        self.lum.set("name", "Pitch")
+        self.lum.set("x min", WidthGC_Gap)
+        self.lum.set("x max", Pitch)
+        self.lum.set("z min", Hight - EtchDepth)
+        self.lum.set("z max", Hight)
+        self.lum.set("material", Material[0])
+        self.lum.set("y", 0)
+        self.lum.set("y span", WidthGC)
+
+        #Add Bottom Layer of Material
+        self.lum.addrect()
+        self.lum.set("name", "lower layer")
+        self.lum.set("x min", 0)
+        self.lum.set("x max", L)
+        self.lum.set("z min", 0)
+        self.lum.set("z max", Hight - EtchDepth)
+        self.lum.set("material", Material[0])
+        self.lum.set("y", 0)
+        self.lum.set("y span", WidthGC)
+
+        # Add Substrate
+        self.lum.addrect()
+        self.lum.set("name", "Substrate")
+        self.lum.set("x",  L / 2)
+        self.lum.set("x span", L)
+        self.lum.set("z", -(1e-6) / 2)
+        self.lum.set("z span", 1e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", WidthGC)
+        self.lum.set("material", Material[1])
+
+        # Add Cladding
+        self.lum.addrect()
+        self.lum.set("name", "Cladding")
+        self.lum.set("x", L / 2)
+        self.lum.set("x span", L)
+        self.lum.set("z min", Hight - EtchDepth)
+        self.lum.set("z max", Hight + 0.7e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", WidthGC)
+        self.lum.set("material", Material[1])
+        self.lum.set('override mesh order from material database', 1)
+        self.lum.set("mesh order", 4)
+        self.lum.set("alpha", 0.7)
+
+        self.lum.selectall()
+        self.lum.addtogroup("GC Rib")
+        self.lum.select("GC Rib")
+        self.lum.set("first axis", "z")
+        self.lum.set("rotation 1", 90)
+
+
+
+
+
+
+
+
+
+
+    #
+    #
+    #
+    # def GratingCouplerCurve(self, Parameters):
+    #
+    #     # simplify variable names by removing spaces
+    #     Index = Parameters["Index GC"]
+    #     TargetLength = Parameters["Length GC"]
+    #     Hight = Parameters["Hight GC"]
+    #     EtchDepth = Parameters["Etch Depth GC"]
+    #     DutyCycle = Parameters["Duty Cycle"]
+    #     Pitch = Parameters["Pitch GC"]
+    #     LengthGC = Parameters["Length Object GC"]
+    #     Material = Parameters["Material  GC"]
+    #     M = Parameters["M Parameter"]
+    #     YSpan = Parameters["Y Span GC"]
+    #     WG_Length = Parameters["WG Length"]
+    #     WG_Width = Parameters["WG Width"]
+    #     Radius = Parameters["Pitch Radius GC"]
+    #     CoreDiameter = Parameters["SMF Core Diameter"]
+    #     CladdingDiameter = Parameters["SMF Cladding Diameter"]
+    #     ZSpan = Parameters["SMF Z Spam"]
+    #     Theta = Parameters["SMF Theta"]
+    #     CoreIndex = Parameters["SMF Core Index"]
+    #     CladdingIndex = Parameters["SMF Cladding Index"]
+    #
+    #     # Create the MMI L2 Tapers for the Trapezoid
+    #     GCNames = "Grating Coupler"
+    #     FiberName = "SMF"
+    #     myscript = self.Grating_Coupler_curved_Script()
+    #     SMF_Script = self.Fiber_Script()
+    #
+    #
+    #     self.lum.addstructuregroup()
+    #     self.lum.set("name", GCNames)
+    #     self.lum.set("construction group", 1)
+    #     self.lum.adduserprop("target length", 2, TargetLength)
+    #     self.lum.adduserprop("h total", 2, Hight)
+    #     self.lum.adduserprop("etch depth", 2, EtchDepth)
+    #     self.lum.adduserprop("duty cycle", 0, DutyCycle)
+    #     self.lum.adduserprop("pitch", 2, Pitch)
+    #     self.lum.adduserprop("radius", 2, Radius)
+    #     self.lum.adduserprop("y span", 2, YSpan)
+    #     self.lum.adduserprop("L extra", 2, LengthGC)
+    #     self.lum.adduserprop("waveguide width", 2, WG_Width)
+    #     self.lum.adduserprop("waveguide length", 2, WG_Length)
+    #     self.lum.adduserprop("index", 0, Index)
+    #     self.lum.adduserprop("material", 5, Material[0])
+    #     self.lum.adduserprop("m", 2, M)
+    #     self.lum.set("script", myscript)
+    #
+    #
+    #
+    #     self.lum.addstructuregroup()
+    #     self.lum.set("name", FiberName)
+    #     self.lum.set("construction group", 1)
+    #     self.lum.adduserprop("core diameter", 2, TargetLength)
+    #     self.lum.adduserprop("cladding diameter", 2, Hight)
+    #     self.lum.adduserprop("z span", 2, ZSpan)
+    #     self.lum.adduserprop("theta", 0, Theta)
+    #     self.lum.adduserprop("core index", 0, CoreIndex)
+    #     self.lum.adduserprop("cladding index", 0, CladdingIndex)
+    #     self.lum.set("script", SMF_Script)
+    #
+    #
+    #
+
+
+
+
+
+
+        # # simplify variable names by removing spaces
+        # WidthGC = Parameters["Width GC"]
+        # SideWallOxideThickness = Parameters["SideWall Oxide Thickness"]
+        # SideWallCoating = Parameters["Sidewall Coating GC"]
+        # ThicknessCoating = Parameters["Thickness Coating"]
+        # ZSpan = Parameters["Z Span GC"]
+        # Period = Parameters["Period GC"]
+        # SubstrateThickness = Parameters["Substrate Thickness GC"]
+        # Material = Parameters["Material  GC"]
+        # ToothAngle = Parameters["Tooth Angle GC"]
+        # DutyCycle = Parameters["Duty Cycle"]
+        # n_periods = Parameters["Grating Period"]
+        # Coating = Parameters["Coating GC"]
+        # IndexCoating = Parameters["Index Coating"]
+        # IndexGrating = Parameters["Index Grating"]
+        #
+        #
+
+        #
+        # # Create the MMI L2 Tapers for the Trapezoid
+        # GCNames = "Grating Coupler"
+        # myscript = self.Grating_Script()
+        #
+        # self.lum.addstructuregroup()
+        # self.lum.set("name", GCNames)
+        # self.lum.set("construction group", 1)
+        # self.lum.adduserprop("add coating", 0, Coating)
+        # self.lum.adduserprop("duty cycle", 0, DutyCycle)
+        # self.lum.adduserprop("index coating", 0, IndexCoating)
+        # self.lum.adduserprop("index grating", 0, IndexGrating)
+        # self.lum.adduserprop("mat coating", 5, Material[1])
+        # self.lum.adduserprop("mat grating", 5, Material[0])
+        # self.lum.adduserprop("n periods", 0, n_periods)
+        # self.lum.adduserprop("period", 2, Period)
+        # self.lum.adduserprop("sidewall oxide thickness", 2, SideWallOxideThickness)
+        # self.lum.adduserprop("specify sidewall oxide coating", 0, SideWallCoating)
+        # self.lum.adduserprop("substrate thickness", 2, SubstrateThickness)
+        # self.lum.adduserprop("thickness coating", 2, ThicknessCoating)
+        # self.lum.adduserprop("tooth angle", 0, ToothAngle)
+        # self.lum.adduserprop("width", 2, WidthGC)
+        # self.lum.adduserprop("z span grating", 2, ZSpan)
+        # self.lum.set("script", myscript)
+        # self.lum.set('first axis','y')
+        # self.lum.set('rotation 1',90)
+        # self.lum.set('second axis', 'x')
+        # self.lum.set('rotation 2', 90)
+        #
+        #
+        # # TODO: Add Waveguide and Taper to Structure
+        #
+
+
+
+
+
 
     # =============================================================================
     # Functions for the solvers
@@ -4323,10 +5099,10 @@ class Constructor:
                Parameters['WG Height'] : int/float
                    Waveguide hight. Also the height of the MMI section
                Parameters['WG Width'] : int/float
-                   Waveguide width. 
+                   Waveguide width.
                Parameters["Taper"] : boolen
-                   If Taper == False, only straight Waveguide will be simulated, 
-                   If Taper == True an Taper will be simulated 
+                   If Taper == False, only straight Waveguide will be simulated,
+                   If Taper == True an Taper will be simulated
                Parameters['Taper Width'] : int/float
                    Taper backside Width. Taper Fronside width is the width of the Waveguide
                Parameters['Taper Length'] : int/float
@@ -4338,7 +5114,7 @@ class Constructor:
                Parameters['Wavelength'] : int/float
                    Wavelength
                Parameters["Waveguide Angle"] : int/float
-                   This Parameter will set the theta ratation angle of the port. It can be 90 or 180. 
+                   This Parameter will set the theta ratation angle of the port. It can be 90 or 180.
                Parameters["Port Span"] : list of floats/ints
                    List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
                Parameters["Mode"] : str
@@ -4373,7 +5149,7 @@ class Constructor:
         Device_Width = 2*WG_Length + WaveLength * 2  # MMI_Width
 
         max_slabH = Slab_Height
-        MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
+        MonitorHeight = Substrate_Height + max_slabH + WG_Height / 2
         EME_WGLength = (WG_Length * np.cos(angle * np.pi / 180))
 
 
@@ -4381,7 +5157,7 @@ class Constructor:
 
         if Taper == False:
             if angle == 0:
-    
+
                 # Adds a FDTD Solver
                 self.lum.addfdtd()
                 self.lum.set("x", WG_Length / 2)
@@ -4398,9 +5174,9 @@ class Constructor:
                 self.lum.set('set simulation bandwidth', 0)
                 self.lum.set('global source center wavelength', WaveLength)
                 self.lum.set('global source wavelength span', 0)
-    
-    
-    
+
+
+
                 # Define Ports
                 x = [0,EME_WGLength]
                 yPos = [0, 0]
@@ -4408,7 +5184,7 @@ class Constructor:
                 theta = [0, 0]
                 direction = ['Forward', 'Backward']
                 name = ['Input', 'Output']
-    
+
                 for i in range(2):
                     self.lum.addport()
                     self.lum.set('name', name[i])
@@ -4420,9 +5196,9 @@ class Constructor:
                     self.lum.set("z span", z_Port_Span)
                     self.lum.set('direction', direction[i])
                     self.lum.set('mode selection', Mode)
-    
-    
-    
+
+
+
                     # Power Monitor Port 1
                     self.lum.addtime()
                     self.lum.set('name', name[i])
@@ -4432,7 +5208,7 @@ class Constructor:
                     self.lum.set('output Px', 1)
                     self.lum.set('output Py', 1)
                     self.lum.set('output Pz', 1)
-    
+
                 # Add Movie monitor
                 self.lum.addmovie()
                 self.lum.set("y", 0)
@@ -4440,7 +5216,7 @@ class Constructor:
                 self.lum.set("z", MonitorHeight)
                 self.lum.set("x", WG_Length/2)
                 self.lum.set("x span", WG_Length)
-    
+
                 # Add Power and Freq Monitor
                 self.lum.addpower()
                 self.lum.set('monitor type', '2D Z-normal')
@@ -4453,14 +5229,14 @@ class Constructor:
                 self.lum.set('output Py', 1)
                 self.lum.set('output Pz', 1)
                 self.lum.set('output power', 1)
-    
-    
+
+
             else:
-    
+
                 # Calc Output Loc
                 sideLength = np.cos(angle*np.pi/180)* WG_Length
                 sideHight = np.sqrt(WG_Length**2 - sideLength**2)
-              
+
                 # Adds a FDTD Solver
                 self.lum.addfdtd()
                 self.lum.set("x", WG_Length/2)
@@ -4477,8 +5253,8 @@ class Constructor:
                 self.lum.set('set simulation bandwidth', 0)
                 self.lum.set('global source center wavelength', WaveLength)
                 self.lum.set('global source wavelength span', 0)
-    
-    
+
+
                 # Define Ports
                 x = [0, EME_WGLength]
                 yPos = [0, 0 + sideHight]
@@ -4486,7 +5262,7 @@ class Constructor:
                 direction = ['Forward', 'Backward']
                 name = ['Input', 'Output']
                 theta = [angle, angle]
-    
+
                 for i in range(2):
                     self.lum.addport()
                     self.lum.set('name', name[i])
@@ -4499,7 +5275,7 @@ class Constructor:
                     self.lum.set('direction', direction[i])
                     self.lum.set('mode selection', Mode)
                     self.lum.set('theta',theta[i])
-    
+
                     # Power Monitor Port 1
                     self.lum.addtime()
                     self.lum.set('name', name[i])
@@ -4509,7 +5285,7 @@ class Constructor:
                     self.lum.set('output Px', 1)
                     self.lum.set('output Py', 1)
                     self.lum.set('output Pz', 1)
-    
+
                 # Add Movie monitor
                 self.lum.addmovie()
                 self.lum.set("y", WG_Length/4)
@@ -4517,7 +5293,7 @@ class Constructor:
                 self.lum.set("z", MonitorHeight)
                 self.lum.set("x", WG_Length/2)
                 self.lum.set("x span", WG_Length)
-    
+
                 # Add Power and Freq Monitor
                 self.lum.addpower()
                 self.lum.set('monitor type', '2D Z-normal')
@@ -4530,18 +5306,18 @@ class Constructor:
                 self.lum.set('output Py', 1)
                 self.lum.set('output Pz', 1)
                 self.lum.set('output power', 1)
-                
-                
-                
+
+
+
         elif Taper == True:
-            
+
             # Device specifications
             Device_Width = 2*TaperLength + WaveLength * 2  # MMI_Width
 
             max_slabH = Slab_Height
-            MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
+            MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
             EME_WGLength = TaperLength * np.cos(angle * np.pi / 180)
-            
+
             # Adds a FDTD Solver
             self.lum.addfdtd()
             self.lum.set("x", 0)
@@ -4562,14 +5338,14 @@ class Constructor:
 
 
             # Define Ports
-            Diff_Span = y_Port_Span - WG_Width 
+            Diff_Span = y_Port_Span - WG_Width
             x = [-TaperLength/2+ 0.1e-6 , TaperLength/2 - 0.1e-6]
             yPos = [0, 0]
             yPos_span = [y_Port_Span, TaperWidth + Diff_Span]
             theta = [0, 0]
             direction = ['Forward', 'Backward']
             name = ['Input', 'Output']
-            
+
             for i in range(2):
                 self.lum.addport()
                 self.lum.set('name', name[i])
@@ -4593,8 +5369,8 @@ class Constructor:
                 self.lum.set('output Px', 1)
                 self.lum.set('output Py', 1)
                 self.lum.set('output Pz', 1)
-            
-            
+
+
             # Add Movie monitor
             self.lum.addmovie()
             self.lum.set("y", TaperLength/4)
@@ -4713,7 +5489,7 @@ class Constructor:
             self.lum.set('mode selection', Mode)
             self.lum.set("bent waveguide", 1)
             self.lum.set("bend radius", radius)
-            
+
 
 
             # Power Monitor Port 1
@@ -4905,7 +5681,7 @@ class Constructor:
                    Span of Port in y direction
                Parameters["Port Span"][2] ; int/float
                    Span of Port in z direction
-                   
+
 
         Returns
         -------
@@ -5094,17 +5870,17 @@ class Constructor:
         Mode = Parameters["Mode"]
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
-        
-        
+
+
         if Taper == False:
-   
+
             # Device specifications
             Device_Length = MMI_Length + 2 * WG_Length
             Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
             max_slabH = Slab_Height
             # Ports_mid = Substrate_Height + (max_slabH + WG_Height) / 2
-            Ports_mid = Substrate_Height + max_slabH
-    
+            Ports_mid = Substrate_Height + max_slabH + WG_Height/2
+
             # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
             self.lum.addfdtd()
             self.lum.set("x min", -(Device_Length / 2))
@@ -5121,31 +5897,31 @@ class Constructor:
             self.lum.set('set simulation bandwidth', 0)
             self.lum.set('global source center wavelength', WaveLength)
             self.lum.set('global source wavelength span', 0)
-    
+
             x = [(Device_Length / 2), (Device_Length / 2), -(Device_Length / 2), -(Device_Length / 2)]
             direction = ['Backward', 'Backward', 'Forward', 'Forward']
-    
-    
+
+
             name = ['Input_L', 'Input_R', 'Output_L', 'Output_R']
             yPort_vec = [posOffset / 2 + WG_Width / 2, -(posOffset / 2 + WG_Width / 2), posOffset / 2 + WG_Width / 2, -(posOffset / 2 + WG_Width / 2)]
-            
+
             overLapp = yPort_vec[0] - y_Port_Span/2
             if overLapp < 0:
                 raise ValueError("!!! CAUTION !!! - The Ports are overlapping at the middle! Please change the Y Port Span or move the Waveguides away from each other!")
             else:
-                pass 
-    
+                pass
+
             self.lum.addmovie()
             self.lum.set("x min", -(0.5e-6 + Device_Length / 2))
             self.lum.set("x max", (0.5e-6 + Device_Length / 2))
             self.lum.set("y min", -(Device_Width + 1e-6))
             self.lum.set("y max", (Device_Width + 1e-6))
             self.lum.set("z", Ports_mid)
-    
-    
+
+
             PortCorrection = [-0.1e-6, -0.1e-6, 0.1e-6, 0.1e-6]
             for i in range(4):
-    
+
                 # Power Monitor Port 1
                 self.lum.addpower()
                 self.lum.set('name', "Power_"+ name[i])
@@ -5159,7 +5935,7 @@ class Constructor:
                 self.lum.set('output Py', 1)
                 self.lum.set('output Pz', 1)
                 self.lum.set('output power', 1)
-    
+
                 # Ports
                 self.lum.addport()
                 self.lum.set('name', name[i])
@@ -5170,7 +5946,7 @@ class Constructor:
                 self.lum.set("z span", z_Port_Span)
                 self.lum.set('direction', direction[i])
                 self.lum.set('mode selection', Mode)
-    
+
             # Add Power and Freq Monitor
             self.lum.addpower()
             self.lum.set('monitor type', '2D Z-normal')
@@ -5183,16 +5959,16 @@ class Constructor:
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
-            
-           
+
+
         elif Taper == True:
             # Device specifications
             Device_Length = MMI_Length + 2 * WG_Length + 2*TaperLength
             Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
             max_slabH = Slab_Height
             # Ports_mid = Substrate_Height + (max_slabH + WG_Height) / 2
-            Ports_mid = Substrate_Height + max_slabH
-    
+            Ports_mid = Substrate_Height + max_slabH + WG_Height/2
+
             # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
             self.lum.addfdtd()
             self.lum.set("x min", -(Device_Length / 2))
@@ -5209,31 +5985,31 @@ class Constructor:
             self.lum.set('set simulation bandwidth', 0)
             self.lum.set('global source center wavelength', WaveLength)
             self.lum.set('global source wavelength span', 0)
-    
+
             x = [(Device_Length / 2), (Device_Length / 2), -(Device_Length / 2), -(Device_Length / 2)]
             direction = ['Backward', 'Backward', 'Forward', 'Forward']
-    
-    
+
+
             name = ['Input_L', 'Input_R', 'Output_L', 'Output_R']
             yPort_vec = [posOffset / 2 + WG_Width / 2, -(posOffset / 2 + WG_Width / 2), posOffset / 2 + WG_Width / 2, -(posOffset / 2 + WG_Width / 2)]
-            
+
             overLapp = yPort_vec[0] - y_Port_Span/2
             if overLapp < 0:
                 raise ValueError("!!! CAUTION !!! - The Ports are overlapping at the middle! Please change the Y Port Span or move the Waveguides away from each other!")
             else:
-                pass 
-    
+                pass
+
             self.lum.addmovie()
             self.lum.set("x min", -(0.5e-6 + Device_Length / 2))
             self.lum.set("x max", (0.5e-6 + Device_Length / 2))
             self.lum.set("y min", -(Device_Width + 1e-6))
             self.lum.set("y max", (Device_Width + 1e-6))
             self.lum.set("z", Ports_mid)
-    
-    
+
+
             PortCorrection = [-0.1e-6, -0.1e-6, 0.1e-6, 0.1e-6]
             for i in range(4):
-    
+
                 # Power Monitor Port 1
                 self.lum.addpower()
                 self.lum.set('name', "Power_"+ name[i])
@@ -5247,7 +6023,7 @@ class Constructor:
                 self.lum.set('output Py', 1)
                 self.lum.set('output Pz', 1)
                 self.lum.set('output power', 1)
-    
+
                 # Ports
                 self.lum.addport()
                 self.lum.set('name', name[i])
@@ -5258,7 +6034,7 @@ class Constructor:
                 self.lum.set("z span", z_Port_Span)
                 self.lum.set('direction', direction[i])
                 self.lum.set('mode selection', Mode)
-    
+
             # Add Power and Freq Monitor
             self.lum.addpower()
             self.lum.set('monitor type', '2D Z-normal')
@@ -5274,15 +6050,15 @@ class Constructor:
 
         else:
             raise ValueError("Incorect Taper variable!. Possible Taper values are Taper = False or Taper = True.")
-            
+
 
 
 
 
     def setMMI2x1FDTDSolver(self, Parameters):
         '''
-    
-    
+
+
         Parameters
         ----------
         Parameters : Dictionary
@@ -5314,13 +6090,13 @@ class Constructor:
                     Wavelength.
                 Parameters["Mode"] : str
                     Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-    
+
         Returns
         -------
         None.
-    
+
         '''
-    
+
         Substrate_Height = Parameters['Substrate Height']
         MMI_Width = Parameters['MMI Width']
         MMI_Length = Parameters['MMI Length']
@@ -5338,12 +6114,13 @@ class Constructor:
         Mode = Parameters["Mode"]
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
-        
-        
+        OffsetOutput = Parameters['Offset Output']
+
+
         if Taper == False:
-            
-    
-    
+
+
+
             # Device specifications
             Device_Length = MMI_Length + 2 * WG_Length
             Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
@@ -5351,9 +6128,9 @@ class Constructor:
             # Ports_mid = Substrate_Height + (max_slabH + WG_Height) / 2
             # Ports_mid = Substrate_Height + Slab_Height + WG_Height / 2
             # MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-            Ports_mid = Substrate_Height + max_slabH
+            Ports_mid = Substrate_Height + max_slabH + WG_Height/2
             # WG_H = WG_Height
-        
+
             # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
             self.lum.addfdtd()
             self.lum.set("x min", -(Device_Length / 2))
@@ -5370,16 +6147,16 @@ class Constructor:
             self.lum.set('set simulation bandwidth', 0)
             self.lum.set('global source center wavelength', WaveLength)
             self.lum.set('global source wavelength span', 0)
-        
+
             # Positions of the Input and Output WGs
             # Triangle EQ for MMI Width
             x = [(Device_Length / 2), -(Device_Length / 2), -(Device_Length / 2)]
             direction = ['Backward', 'Forward', 'Forward']
-        
+
             name = ['Input', 'Output_L', 'Output_R']
-            
-            yPort_vec = [OffsetInput, -(posOffset / 2 + WG_Width / 2), posOffset / 2 + WG_Width / 2]
-            
+
+            yPort_vec = [OffsetInput, -(posOffset / 2 + WG_Width / 2) + OffsetOutput, (posOffset / 2 + WG_Width / 2) + OffsetOutput]
+
             overLapp = yPort_vec[2] - y_Port_Span/2
             if overLapp < 0:
                 y_Port_Span_old = y_Port_Span
@@ -5402,7 +6179,7 @@ class Constructor:
                     self.lum.set('monitor type', '2D X-normal')
                     self.lum.set("x", x[i] + PortCorrection[i])
                     self.lum.set("y", yPort_vec[i])
-                    self.lum.set("y span", y_Port_Span)
+                    self.lum.set("y span", y_Port_Span_old)
                     self.lum.set("z", Ports_mid)
                     self.lum.set("z span", z_Port_Span)
                     self.lum.set('output Px', 1)
@@ -5414,7 +6191,7 @@ class Constructor:
                     self.lum.set('name', name[i])
                     self.lum.set("x", x[i])
                     self.lum.set("y", yPort_vec[i])
-                    self.lum.set("y span", y_Port_Span)
+                    self.lum.set("y span", y_Port_Span_old)
                     self.lum.set("z", Ports_mid)
                     self.lum.set("z span", z_Port_Span)
                     self.lum.set('direction', direction[i])
@@ -5490,18 +6267,18 @@ class Constructor:
 
 
 
-        
+
         elif Taper == True:
-    
+
             # Device specifications
             Device_Length = MMI_Length + 2 * WG_Length +2*TaperLength
             Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
             max_slabH = Slab_Height
             # Ports_mid = Substrate_Height + (max_slabH + WG_Height) / 2
-            Ports_mid = Substrate_Height + max_slabH
+            Ports_mid = Substrate_Height + max_slabH + WG_Height/2
             # MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
             # WG_H = WG_Height
-        
+
             # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
             self.lum.addfdtd()
             self.lum.set("x min", -(Device_Length / 2))
@@ -5518,16 +6295,16 @@ class Constructor:
             self.lum.set('set simulation bandwidth', 0);
             self.lum.set('global source center wavelength', WaveLength)
             self.lum.set('global source wavelength span', 0)
-        
+
             # Positions of the Input and Output WGs
             # Triangle EQ for MMI Width
             x = [(Device_Length / 2), -(Device_Length / 2), -(Device_Length / 2)]
             direction = ['Backward', 'Forward', 'Forward']
-        
+
             name = ['Input', 'Output_L', 'Output_R']
-            
+
             yPort_vec = [OffsetInput, -(posOffset / 2 + WG_Width / 2), posOffset / 2 + WG_Width / 2]
-            
+
             overLapp = yPort_vec[2] - y_Port_Span/2
             if overLapp < 0:
                 y_Port_Span_old = y_Port_Span
@@ -5632,11 +6409,11 @@ class Constructor:
                 self.lum.set('output Py', 1)
                 self.lum.set('output Pz', 1)
                 self.lum.set('output power', 1)
-    
+
 
         else:
             raise ValueError("Incorect Taper variable!. Possible Taper values are Taper = False or Taper = True.")
-            
+
 
 
     def setDCFDTDSolver(self, Parameters):
@@ -5688,14 +6465,14 @@ class Constructor:
         Mode = Parameters["Mode"]
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
-        
-        
+
+
 
         # Device specifications
         Device_Length = DC_Lenght
         Device_Width = Substrate_Width
         max_slabH = Slab_Height
-        Ports_mid = Substrate_Height + (max_slabH + WG_Height) / 2
+        Ports_mid = Substrate_Height + max_slabH + WG_Height/2
 
         # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
         self.lum.addfdtd()
@@ -5718,12 +6495,12 @@ class Constructor:
         direction = ['Backward', 'Backward', 'Forward', 'Forward']
         yPort_vec = [posOffset / 2 + WG_Width / 2, -(posOffset / 2 + WG_Width / 2), posOffset / 2 + WG_Width / 2, -(posOffset / 2 + WG_Width / 2)]
         name = ['Input_L', 'Input_R', 'Output_L', 'Output_R']
-        
+
         overLapp = yPort_vec[0] - y_Port_Span/2
         if overLapp < 0:
             raise ValueError("!!! CAUTION !!! - The Ports are overlapping at the middle! Please change the Y Port Span or move the Waveguides away from each other!")
         else:
-            pass 
+            pass
 
         self.lum.addmovie()
         self.lum.set("x min", -(0.5e-6 + Device_Length / 2))
@@ -5733,7 +6510,7 @@ class Constructor:
         self.lum.set("z", Ports_mid)
 
         for i in range(4):
-            
+
             # Power Monitor Port 1
             self.lum.addpower()
             self.lum.set('name', "Power_"+ name[i])
@@ -5747,7 +6524,7 @@ class Constructor:
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
-            
+
 
             self.lum.addport()
             self.lum.set('name', name[i])
@@ -5771,11 +6548,155 @@ class Constructor:
         self.lum.set('output Py', 1)
         self.lum.set('output Pz', 1)
         self.lum.set('output power', 1)
-        
-        
-        
-        
-        
+
+
+
+
+
+    # def setWDMFDTDSolver(self, Parameters):
+    #     '''
+
+
+    #     Parameters
+    #     ----------
+    #     Parameters : Dictionary
+    #         Dictionary with all the data needet for the Bend Wavaguide. Data needet:
+    #             Parameters
+    #             ----------
+    #             Parameters['Substrate Height'] : int/float
+    #                 Substrate height.
+    #             Parameters['MMI Width'] : int/float
+    #                 Width of the MMI.
+    #             Parameters['MMI Length'] : int/float
+    #                 Length of the MMI.
+    #             Parameters['WG Height' : int/float
+    #                 Waveguide hight. Also the height of the MMI section
+    #             Parameters['WG Width'] : int/float
+    #                 Waveguide width.
+    #             Parameters['WG Length'] : int/float
+    #                 Waveguide length.
+    #             Parameters['y res'] : int/float
+    #                 Mesh y-Axis
+    #             Parameters['z res'] : int/float
+    #                 Mesh z-Axis
+    #             Parameters['Slab Height'] : int/float
+    #                 Slab Height.
+    #             Parameters['Wavelength'] : int/float
+    #                 Wavelength
+    #             Parameters['Angle Thetha'] : boolen
+    #                 Angle for the input and output waveguides
+    #             Parameters["Mode"] : str
+    #                 Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+
+    #     Returns
+    #     -------
+    #     None.
+
+    #     '''
+
+    #     Substrate_Height = Parameters['Substrate Height']
+    #     MMI_Width = Parameters['MMI Width']
+    #     MMI_Length = Parameters['MMI Length']
+    #     WG_Height = Parameters['WG Height']
+    #     WG_Width = Parameters['WG Width']
+    #     WG_Length = Parameters['WG Length']
+    #     y_res = Parameters['y res']
+    #     z_res = Parameters['z res']
+    #     Slab_Height = Parameters['Slab Height']
+    #     WaveLength = Parameters['Wavelength']
+    #     angleTheta = Parameters['Angle Thetha']
+    #     Mode = Parameters["Mode"]
+
+
+    #     # Device specifications
+    #     Device_Length = MMI_Length + 2 * WG_Length
+    #     Device_Width = MMI_Width + 2*(WG_Length) + WaveLength * 2  # MMI_Width
+    #     max_slabH = Slab_Height
+    #     MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
+    #     Ports_mid = (max_slabH + WG_Height) / 2
+
+    #     # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
+    #     self.lum.addeme()
+    #     self.lum.set('simulation temperature', 273.15 + 20)
+    #     self.lum.set("x min", 1e-6)
+    #     self.lum.set("y", 0)
+    #     self.lum.set("y span", Device_Width)
+    #     self.lum.set("z", Substrate_Height)
+    #     self.lum.set("z span", 4e-6)
+    #     self.lum.set("wavelength", WaveLength)
+    #     self.lum.set("z min bc", "PML")
+    #     self.lum.set("z max bc", "PML")
+    #     self.lum.set("y min bc", "PML")
+    #     self.lum.set("y max bc", "PML")
+    #     # set cell properties
+    #     self.lum.set("number of cell groups", 3)
+    #     self.lum.set("group spans", np.array([[WG_Length - 1e-6], [MMI_Length], [WG_Length - 1e-6]]))
+    #     self.lum.set("cells", np.array([[3], [3], [3]]))
+    #     self.lum.set("subcell method", np.array([[0], [0], [0]]))
+
+    #     # Modes to Calculate
+    #     self.lum.set('number of modes for all cell groups', 20)
+
+    #     # Mesh Cells
+    #     self.lum.set("define y mesh by", "maximum mesh step")
+    #     self.lum.set("dy", y_res)
+    #     self.lum.set("define z mesh by", "maximum mesh step")
+    #     self.lum.set("dz", z_res)
+    #     self.lum.set('fit materials with multi-coefficient model', 1)
+    #     self.lum.set('wavelength start', 0.4e-6)
+    #     self.lum.set('wavelength stop', 2e-6)
+
+    #     # max_yPos = [(WG_W / 2 + OffsetInput) * 2, 0, (WG_Width / 2 + posOffset / 2) * 2]
+    #     # min_yPos = [-(WG_W / 2 + OffsetInput) * 2, -(WG_Width / 2 + posOffset / 2) * 2, 0]
+
+    #     Input_yPos = -MMI_Width / 2 + WG_Width / 2
+    #     y = WG_Length * np.tan(angleTheta * np.pi / 180)
+    #     Input_Y = Input_yPos - y + WG_Width
+
+    #     Output_yPos = MMI_Width / 2 - WG_Width / 2
+    #     y2 = WG_Length * np.tan(angleTheta * np.pi / 180)
+    #     Output_Y = Output_yPos + y2 - WG_Width / 2
+    #     portLoc = ["left", "right"]
+
+    #     self.lum.select("EME::Ports::port_" + str(1))
+    #     self.lum.set("port location", portLoc[0])
+    #     self.lum.set("use full simulation span", 0)
+    #     # self.lum.set("y min", min_yPos[1])
+    #     # self.lum.set("y max", max_yPos[1])
+    #     self.lum.set("y", Input_Y)
+    #     self.lum.set("y span", WG_Width + 2e-6)
+    #     self.lum.set("z", Ports_mid)
+    #     self.lum.set("z span", 2e-6)
+    #     self.lum.set("mode selection", Mode)
+    #     self.lum.set("theta", angleTheta)
+
+    #     self.lum.select("EME::Ports::port_" + str(2))
+    #     self.lum.set("port location", portLoc[1])
+    #     self.lum.set("use full simulation span", 0)
+    #     # self.lum.set("y min", min_yPos[2])
+    #     # self.lum.set("y max", max_yPos[2])
+    #     self.lum.set("y", Output_Y)
+    #     self.lum.set("y span", WG_Width + 2e-6)
+    #     self.lum.set("z", Ports_mid)
+    #     self.lum.set("z span", 2e-6)
+    #     self.lum.set("mode selection", Mode)
+    #     self.lum.set("theta", angleTheta)
+
+    #     # Add monitor
+    #     # x_MMI = Device_Length / 2
+    #     self.lum.addemeprofile()
+    #     self.lum.set("x", Device_Length / 2)
+    #     self.lum.set("x span", Device_Length)
+    #     # self.lum.set("x min", -(Device_Length / 2))
+    #     # self.lum.set("x max", (Device_Length / 2))
+    #     self.lum.set("y", 0)
+    #     self.lum.set("y span", Device_Width )
+    #     # self.lum.set("y min", -Device_Width / 2)
+    #     # self.lum.set("y max", Device_Width / 2)
+    #     self.lum.set("z", MonitorHeight)
+    
+    
+    
     def setCascadetMMIFDTDSolver(self, Parameters, SpaceX, SpaceY):
         
         
@@ -6033,155 +6954,268 @@ class Constructor:
 
             else:
                 raise ValueError("Incorect Taper variable!. Possible Taper values are Taper = False or Taper = True.")
-            
-            
-            
+
+
+
+    def setGratingCouplerFDTDSolver(self, Parameters):
+
+        ZSpan = Parameters["SMF Z Spam"]
+        GC_SectionLenght = Parameters["Length GC"]
+        InputLenght = Parameters["Input Length GC"]
+        OutputLenght = Parameters["Output Length GC"]
+        TaperLength = Parameters['Taper Length']
+        WidthGC = Parameters["Width GC"]
+        Theta = Parameters["SMF Theta"]
+        CoreDiameter = Parameters["SMF Core Diameter"]
+        Hight = Parameters["Hight GC"]
+        x_res = Parameters['x res']
+        WaveLength = Parameters['Wavelength']
+        Mode = Parameters["Mode"]
+        y_Port_Span = Parameters["Port Span"][1]
+        z_Port_Span = Parameters["Port Span"][2]
+        Taper = Parameters["Taper"]
+
+
+
+        # Device specifications
+        Device_Length = GC_SectionLenght + InputLenght + OutputLenght + TaperLength
 
 
 
 
 
-    # def setWDMFDTDSolver(self, Parameters):
-    #     '''
+        # Define Ports
+        Port_Names = ["Input_SMF_Port", "Output"]
 
 
-    #     Parameters
-    #     ----------
-    #     Parameters : Dictionary
-    #         Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-    #             Parameters
-    #             ----------
-    #             Parameters['Substrate Height'] : int/float
-    #                 Substrate height.
-    #             Parameters['MMI Width'] : int/float
-    #                 Width of the MMI.
-    #             Parameters['MMI Length'] : int/float
-    #                 Length of the MMI.
-    #             Parameters['WG Height' : int/float
-    #                 Waveguide hight. Also the height of the MMI section
-    #             Parameters['WG Width'] : int/float
-    #                 Waveguide width.
-    #             Parameters['WG Length'] : int/float
-    #                 Waveguide length.
-    #             Parameters['y res'] : int/float
-    #                 Mesh y-Axis
-    #             Parameters['z res'] : int/float
-    #                 Mesh z-Axis
-    #             Parameters['Slab Height'] : int/float
-    #                 Slab Height.
-    #             Parameters['Wavelength'] : int/float
-    #                 Wavelength
-    #             Parameters['Angle Thetha'] : boolen
-    #                 Angle for the input and output waveguides
-    #             Parameters["Mode"] : str
-    #                 Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-
-    #     Returns
-    #     -------
-    #     None.
-
-    #     '''
-
-    #     Substrate_Height = Parameters['Substrate Height']
-    #     MMI_Width = Parameters['MMI Width']
-    #     MMI_Length = Parameters['MMI Length']
-    #     WG_Height = Parameters['WG Height']
-    #     WG_Width = Parameters['WG Width']
-    #     WG_Length = Parameters['WG Length']
-    #     y_res = Parameters['y res']
-    #     z_res = Parameters['z res']
-    #     Slab_Height = Parameters['Slab Height']
-    #     WaveLength = Parameters['Wavelength']
-    #     angleTheta = Parameters['Angle Thetha']
-    #     Mode = Parameters["Mode"]
 
 
-    #     # Device specifications
-    #     Device_Length = MMI_Length + 2 * WG_Length
-    #     Device_Width = MMI_Width + 2*(WG_Length) + WaveLength * 2  # MMI_Width
-    #     max_slabH = Slab_Height
-    #     MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-    #     Ports_mid = (max_slabH + WG_Height) / 2
 
-    #     # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
-    #     self.lum.addeme()
-    #     self.lum.set('simulation temperature', 273.15 + 20)
-    #     self.lum.set("x min", 1e-6)
-    #     self.lum.set("y", 0)
-    #     self.lum.set("y span", Device_Width)
-    #     self.lum.set("z", Substrate_Height)
-    #     self.lum.set("z span", 4e-6)
-    #     self.lum.set("wavelength", WaveLength)
-    #     self.lum.set("z min bc", "PML")
-    #     self.lum.set("z max bc", "PML")
-    #     self.lum.set("y min bc", "PML")
-    #     self.lum.set("y max bc", "PML")
-    #     # set cell properties
-    #     self.lum.set("number of cell groups", 3)
-    #     self.lum.set("group spans", np.array([[WG_Length - 1e-6], [MMI_Length], [WG_Length - 1e-6]]))
-    #     self.lum.set("cells", np.array([[3], [3], [3]]))
-    #     self.lum.set("subcell method", np.array([[0], [0], [0]]))
+        if Taper == True:
 
-    #     # Modes to Calculate
-    #     self.lum.set('number of modes for all cell groups', 20)
+            # Adds a Finite-Difference Time-Domain  (FDTD) solver region to the MODE simulation environment.
+            self.lum.addfdtd()
+            self.lum.set("x", -TaperLength / 2)
+            self.lum.set("x span", Device_Length)
+            self.lum.set("y", 0)
+            self.lum.set("y span", WidthGC)
+            self.lum.set("z", 0)
+            self.lum.set("z min", -1e-6)
+            self.lum.set("z max", ZSpan / 2)
+            self.lum.set('simulation temperature', 273.15 + 20)
+            self.lum.set('z min bc', 'PML')
+            self.lum.set('z max bc', 'PML')
+            self.lum.set('mesh type', 'auto non-uniform')
+            self.lum.set('min mesh step', x_res)
+            self.lum.set('set simulation bandwidth', 0)
+            self.lum.set('global source center wavelength', WaveLength)
+            self.lum.set('global source wavelength span', 0)
 
-    #     # Mesh Cells
-    #     self.lum.set("define y mesh by", "maximum mesh step")
-    #     self.lum.set("dy", y_res)
-    #     self.lum.set("define z mesh by", "maximum mesh step")
-    #     self.lum.set("dz", z_res)
-    #     self.lum.set('fit materials with multi-coefficient model', 1)
-    #     self.lum.set('wavelength start', 0.4e-6)
-    #     self.lum.set('wavelength stop', 2e-6)
+            # Faser Port
+            self.lum.addport()
+            self.lum.set('name', Port_Names[0])
+            self.lum.set('injection axis', "z-axis")
+            self.lum.set('direction', "Backward")
+            self.lum.set('mode selection', Mode)
+            self.lum.set('theta', Theta)
+            self.lum.set("x", 0)
+            self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
+            self.lum.set('y', 0)
+            self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
+            self.lum.set("z", (ZSpan / 4) - 0.2e-6)
 
-    #     # max_yPos = [(WG_W / 2 + OffsetInput) * 2, 0, (WG_Width / 2 + posOffset / 2) * 2]
-    #     # min_yPos = [-(WG_W / 2 + OffsetInput) * 2, -(WG_Width / 2 + posOffset / 2) * 2, 0]
+            # Output Port
+            self.lum.addport()
+            self.lum.set('name', Port_Names[1])
+            self.lum.set("x", -GC_SectionLenght/2 - InputLenght - TaperLength)
+            self.lum.set('x span', CoreDiameter)
+            self.lum.set('y', 0)
+            self.lum.set('y span', y_Port_Span)
+            self.lum.set("z", Hight/2 )
+            self.lum.set("z span", z_Port_Span )
+            self.lum.set('injection axis', "x-axis")
+            self.lum.set('direction', "Forward")
+            self.lum.set('mode selection', Mode)
 
-    #     Input_yPos = -MMI_Width / 2 + WG_Width / 2
-    #     y = WG_Length * np.tan(angleTheta * np.pi / 180)
-    #     Input_Y = Input_yPos - y + WG_Width
 
-    #     Output_yPos = MMI_Width / 2 - WG_Width / 2
-    #     y2 = WG_Length * np.tan(angleTheta * np.pi / 180)
-    #     Output_Y = Output_yPos + y2 - WG_Width / 2
-    #     portLoc = ["left", "right"]
 
-    #     self.lum.select("EME::Ports::port_" + str(1))
-    #     self.lum.set("port location", portLoc[0])
-    #     self.lum.set("use full simulation span", 0)
-    #     # self.lum.set("y min", min_yPos[1])
-    #     # self.lum.set("y max", max_yPos[1])
-    #     self.lum.set("y", Input_Y)
-    #     self.lum.set("y span", WG_Width + 2e-6)
-    #     self.lum.set("z", Ports_mid)
-    #     self.lum.set("z span", 2e-6)
-    #     self.lum.set("mode selection", Mode)
-    #     self.lum.set("theta", angleTheta)
 
-    #     self.lum.select("EME::Ports::port_" + str(2))
-    #     self.lum.set("port location", portLoc[1])
-    #     self.lum.set("use full simulation span", 0)
-    #     # self.lum.set("y min", min_yPos[2])
-    #     # self.lum.set("y max", max_yPos[2])
-    #     self.lum.set("y", Output_Y)
-    #     self.lum.set("y span", WG_Width + 2e-6)
-    #     self.lum.set("z", Ports_mid)
-    #     self.lum.set("z span", 2e-6)
-    #     self.lum.set("mode selection", Mode)
-    #     self.lum.set("theta", angleTheta)
+            # Power Monitor SMF Port
+            self.lum.addpower()
+            self.lum.set('name', "Power_"+ Port_Names[0])
+            self.lum.set('monitor type', '2D Z-normal')
+            self.lum.set("x", 0)
+            self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
+            self.lum.set('y', 0)
+            self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
+            self.lum.set("z", (ZSpan / 4) - 0.3e-6)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+            self.lum.set('output power', 1)
 
-    #     # Add monitor
-    #     # x_MMI = Device_Length / 2
-    #     self.lum.addemeprofile()
-    #     self.lum.set("x", Device_Length / 2)
-    #     self.lum.set("x span", Device_Length)
-    #     # self.lum.set("x min", -(Device_Length / 2))
-    #     # self.lum.set("x max", (Device_Length / 2))
-    #     self.lum.set("y", 0)
-    #     self.lum.set("y span", Device_Width )
-    #     # self.lum.set("y min", -Device_Width / 2)
-    #     # self.lum.set("y max", Device_Width / 2)
-    #     self.lum.set("z", MonitorHeight)
+
+
+            # Power Monitor Output Port
+            self.lum.addpower()
+            self.lum.set('name', "Power_" + Port_Names[1])
+            self.lum.set('monitor type', '2D X-normal')
+            self.lum.set("x", -GC_SectionLenght/2 - InputLenght - TaperLength)
+            self.lum.set('y', 0)
+            self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
+            self.lum.set("z", Hight/2)
+            self.lum.set("z span", z_Port_Span)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+            self.lum.set('output power', 1)
+
+
+            # Add Global Power and Freq Monitor
+            self.lum.addpower()
+            self.lum.set('name', "Global_Power_Monitor Z-normal")
+            self.lum.set('monitor type', '2D Z-normal')
+            self.lum.set("x", -TaperLength/2)
+            self.lum.set("x span", Device_Length)
+            self.lum.set("y", 0)
+            self.lum.set("y span", WidthGC)
+            self.lum.set('z', Hight/2)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+            self.lum.set('output power', 1)
+
+
+            # Add Global Power and Freq Monitor Y-Axis
+            self.lum.addpower()
+            self.lum.set('name', "Global_Power_Monitor Y-normal")
+            self.lum.set('monitor type', '2D Y-normal')
+            self.lum.set("x", -TaperLength / 2)
+            self.lum.set("x span", Device_Length)
+            self.lum.set("y", 0)
+            self.lum.set('z', Hight / 2)
+            self.lum.set("z span", z_Port_Span)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+            self.lum.set('output power', 1)
+
+            # Select Source
+            self.lum.select('FDTD::ports')
+            self.lum.set('source port', 'Output')
+
+        else:
+
+            # Adds a Finite-Difference Time-Domain  (FDTD) solver region to the MODE simulation environment.
+            self.lum.addfdtd()
+            self.lum.set("x", 0)
+            self.lum.set("x span", Device_Length-TaperLength)
+            self.lum.set("y", 0)
+            self.lum.set("y span", WidthGC)
+            self.lum.set("z", 0)
+            self.lum.set("z min", -1e-6)
+            self.lum.set("z max", ZSpan / 2)
+            self.lum.set('simulation temperature', 273.15 + 20)
+            self.lum.set('z min bc', 'PML')
+            self.lum.set('z max bc', 'PML')
+            self.lum.set('mesh type', 'auto non-uniform')
+            self.lum.set('min mesh step', x_res)
+            self.lum.set('set simulation bandwidth', 0)
+            self.lum.set('global source center wavelength', WaveLength)
+            self.lum.set('global source wavelength span', 0)
+
+            # Faser Port
+            self.lum.addport()
+            self.lum.set('name', Port_Names[0])
+            self.lum.set('injection axis', "z-axis")
+            self.lum.set('direction', "Backward")
+            self.lum.set('mode selection', Mode)
+            self.lum.set('theta', Theta)
+            self.lum.set("x", 0)
+            self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
+            self.lum.set('y', 0)
+            self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
+            self.lum.set("z", (ZSpan / 4) - 0.2e-6)
+
+            # Output Port
+            self.lum.addport()
+            self.lum.set('name', Port_Names[1])
+            self.lum.set("x", -GC_SectionLenght / 2 - InputLenght)
+            self.lum.set('x span', CoreDiameter)
+            self.lum.set('y', 0)
+            self.lum.set('y span', WidthGC)
+            self.lum.set("z", Hight / 2)
+            self.lum.set("z span", z_Port_Span)
+            self.lum.set('injection axis', "x-axis")
+            self.lum.set('direction', "Forward")
+            self.lum.set('mode selection', Mode)
+
+            # Power Monitor SMF Port
+            self.lum.addpower()
+            self.lum.set('name', "Power_" + Port_Names[0])
+            self.lum.set('monitor type', '2D Z-normal')
+            self.lum.set("x", 0)
+            self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
+            self.lum.set('y', 0)
+            self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
+            self.lum.set("z", (ZSpan / 4) - 0.3e-6)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+            self.lum.set('output power', 1)
+
+            # Power Monitor Output Port
+            self.lum.addpower()
+            self.lum.set('name', "Power_" + Port_Names[1])
+            self.lum.set('monitor type', '2D X-normal')
+            self.lum.set("x", -GC_SectionLenght / 2 - InputLenght)
+            self.lum.set('y', 0)
+            self.lum.set('y span', WidthGC)
+            self.lum.set("z", Hight / 2)
+            self.lum.set("z span", z_Port_Span)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+            self.lum.set('output power', 1)
+
+            # Add Global Power and Freq Monitor
+            self.lum.addpower()
+            self.lum.set('name', "Global_Power_Monitor Z-normal")
+            self.lum.set('monitor type', '2D Z-normal')
+            self.lum.set("x", 0)
+            self.lum.set("x span", Device_Length- TaperLength)
+            self.lum.set("y", 0)
+            self.lum.set("y span", WidthGC)
+            self.lum.set('z', Hight / 2)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+            self.lum.set('output power', 1)
+
+            # Power Monitor Y Direction
+            self.lum.addpower()
+            self.lum.set('name', "Global_Power_Monitor Y-normal")
+            self.lum.set('monitor type', '2D Y-normal')
+            self.lum.set("x", 0)
+            self.lum.set("x span", Device_Length - TaperLength)
+            self.lum.set("y", 0)
+            self.lum.set('z', Hight / 2)
+            self.lum.set("z span", z_Port_Span)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+            self.lum.set('output power', 1)
+
+            # Select Source
+            self.lum.select('FDTD::ports')
+            self.lum.set('source port', 'Output')
+
+
+
+
+
+
+
 
 
 
@@ -6203,8 +7237,8 @@ class Constructor:
                Parameters['WG Length'] : int/float
                    Waveguide width
                Parameters["Taper"] : boolen
-                   If Taper == False, only straight Waveguide will be simulated, 
-                   If Taper == True an Taper will be simulated 
+                   If Taper == False, only straight Waveguide will be simulated,
+                   If Taper == True an Taper will be simulated
                Parameters['Taper Width'] : int/float
                    Taper backside Width. Taper Fronside width is the width of the Waveguide
                Parameters['Taper Length'] : int/float
@@ -6260,7 +7294,7 @@ class Constructor:
 
         max_slabH = Slab_Height
         # MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-        MonitorHeight = Substrate_Height + max_slabH 
+        MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
         # Ports_mid = (max_slabH + WG_Height) / 2
         Ports_mid = max_slabH + WG_Height/2
         EME_WGLength = WG_Length * np.cos(angle * np.pi / 180)
@@ -6268,7 +7302,7 @@ class Constructor:
 
         if Taper == False:
             if angle == 0:
-    
+
                 # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
                 self.lum.addeme()
                 self.lum.set('simulation temperature', 273.15 + 20)
@@ -6282,16 +7316,16 @@ class Constructor:
                 self.lum.set("z max bc", "PML")
                 self.lum.set("y min bc", "PML")
                 self.lum.set("y max bc", "PML")
-    
+
                 # set cell properties
                 self.lum.set("number of cell groups", 1)
                 self.lum.set("group spans", np.array([[EME_WGLength]]))
                 self.lum.set("cells", np.array([[30]]))
                 self.lum.set("subcell method", np.array([[1]]))
-    
+
                 # Modes to Calculate
                 self.lum.set('number of modes for all cell groups', 20)
-    
+
                 # Mesh Cells
                 self.lum.set("define y mesh by", "maximum mesh step")
                 self.lum.set("dy", y_res)
@@ -6300,25 +7334,25 @@ class Constructor:
                 self.lum.set('fit materials with multi-coefficient model', 1)
                 self.lum.set('wavelength start', 0.4e-6)
                 self.lum.set('wavelength stop', 2e-6)
-    
+
                 # Define Ports
-    
+
                 yPos = [0, 0]
                 yPos_span = [y_Port_Span, y_Port_Span]
                 portLoc = ["left", "right"]
                 theta = [0, 0]
-    
+
                 for i in range(2):
                     self.lum.select("EME::Ports::port_" + str(i + 1))
                     self.lum.set("port location", portLoc[i])
                     self.lum.set("use full simulation span", 0)
                     self.lum.set("y", yPos[i])
                     self.lum.set("y span", yPos_span[i])
-                    self.lum.set("z", max_slabH)
+                    self.lum.set("z", Ports_mid)
                     self.lum.set("z span", z_Port_Span)
                     self.lum.set("mode selection", Mode)
                     self.lum.set("theta", theta[i])
-    
+
                 # Add monitor
                 self.lum.addemeprofile()
                 self.lum.set("x", (Device_Length / 2))
@@ -6326,14 +7360,14 @@ class Constructor:
                 self.lum.set("y", 0)
                 self.lum.set("y span", Device_Width)
                 self.lum.set("z", MonitorHeight)
-    
-    
+
+
             else:
-    
+
                 # Calc Output Loc
                 sideLength = np.cos(angle*np.pi/180)* WG_Length
                 sideHight = np.sqrt(WG_Length**2 - sideLength**2)
-    
+
                 # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
                 self.lum.addeme()
                 self.lum.set("x min", 0)
@@ -6347,16 +7381,16 @@ class Constructor:
                 self.lum.set("z max bc", "PML")
                 self.lum.set("y min bc", "PML")
                 self.lum.set("y max bc", "PML")
-    
+
                 # set cell properties
                 self.lum.set("number of cell groups", 1)
                 self.lum.set("group spans", np.array([[EME_WGLength]]))
                 self.lum.set("cells", np.array([[30]]))
                 self.lum.set("subcell method", np.array([[1]]))
-    
+
                 # Modes to Calculate
                 self.lum.set('number of modes for all cell groups', 20)
-    
+
                 # Mesh Cells
                 self.lum.set("define y mesh by", "maximum mesh step")
                 self.lum.set("dy", y_res)
@@ -6365,17 +7399,17 @@ class Constructor:
                 self.lum.set('fit materials with multi-coefficient model', 1)
                 self.lum.set('wavelength start', 0.4e-6)
                 self.lum.set('wavelength stop', 2e-6)
-    
-    
-    
+
+
+
                 # Define Ports
-    
+
                 yPos = [-WG_Length / 4, -WG_Length / 4 + sideHight]
                 yPos_span = [y_Port_Span, y_Port_Span]
                 portLoc = ["left", "right"]
                 theta = [angle, angle]
-    
-    
+
+
                 for i in range(2):
                     self.lum.select("EME::Ports::port_" + str(i + 1))
                     self.lum.set("port location", portLoc[i])
@@ -6386,7 +7420,7 @@ class Constructor:
                     self.lum.set("z span", z_Port_Span)
                     self.lum.set("mode selection", Mode)
                     self.lum.set("theta", theta[i])
-    
+
                 # Add monitor
                 self.lum.addemeprofile()
                 self.lum.set("x", (Device_Length / 2))
@@ -6394,9 +7428,9 @@ class Constructor:
                 self.lum.set("y", (Device_Length / 4))
                 self.lum.set("y span", Device_Width)
                 self.lum.set("z", MonitorHeight)
-                
-                
-                
+
+
+
         elif Taper == True:
 
             # Device specifications
@@ -6404,11 +7438,11 @@ class Constructor:
             Device_Width = 2 * TaperLength + WaveLength * 2  # MMI_Width
 
             max_slabH = Slab_Height
-            MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-            Ports_mid = (max_slabH + WG_Height) / 2
+            MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
+            Ports_mid = max_slabH + WG_Height/2
             EME_WGLength = TaperLength * np.cos(angle * np.pi / 180)
-            
-            
+
+
             # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
             self.lum.addeme()
             self.lum.set('simulation temperature', 273.15 + 20)
@@ -6441,13 +7475,13 @@ class Constructor:
             self.lum.set('wavelength start', 0.4e-6)
             self.lum.set('wavelength stop', 2e-6)
 
-            # Define Ports       
-            Diff_Span = y_Port_Span - WG_Width 
+            # Define Ports
+            Diff_Span = y_Port_Span - WG_Width
             yPos = [0, 0]
             yPos_span = [y_Port_Span, TaperWidth + Diff_Span]
             portLoc = ["left", "right"]
             theta = [0, 0]
-            
+
             for i in range(2):
                 self.lum.select("EME::Ports::port_" + str(i + 1))
                 self.lum.set("port location", portLoc[i])
@@ -6466,8 +7500,8 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set("z", MonitorHeight)
-            
-            
+
+
 
 
 
@@ -6533,15 +7567,15 @@ class Constructor:
         Mode = Parameters["Mode"]
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
-        
-        
+
+
         # Device specifications
         Device_Length = DC_Lenght
         Device_Width = WG_Width * 10 + WaveLength * 2  # MMI_Width
 
         max_slabH = Slab_Height
-        MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-        Ports_mid = (max_slabH + WG_Height) / 2
+        MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
+        Ports_mid = max_slabH + WG_Height/2
 
         # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
         self.lum.addeme()
@@ -6578,12 +7612,12 @@ class Constructor:
         # Define Ports
         yPort_vec = [posOffset / 2 + WG_Width / 2, -(posOffset / 2 + WG_Width / 2), posOffset / 2 + WG_Width / 2, -(posOffset / 2 + WG_Width / 2)]
         portLoc = ["left", "left", "right", "right"]
-        
+
         overLapp = yPort_vec[0] - y_Port_Span/2
         if overLapp < 0:
             raise ValueError("!!! CAUTION !!! - The Ports are overlapping at the middle! Please change the Y Port Span or move the Waveguides away from each other!")
         else:
-            pass 
+            pass
 
         for i in range(2):
             self.lum.addemeport()
@@ -6693,9 +7727,9 @@ class Constructor:
             # 1x2 MMI
             max_slabH = Slab_Height
             # MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-            MonitorHeight = Substrate_Height + max_slabH
+            MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
             # Ports_mid = (max_slabH + WG_Height) / 2
-            Ports_mid = max_slabH
+            Ports_mid = max_slabH + WG_Height/2
 
             # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
             self.lum.addeme()
@@ -6726,9 +7760,9 @@ class Constructor:
             # 1x2 MMI
             max_slabH = Slab_Height
             # MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-            MonitorHeight = Substrate_Height + max_slabH
+            MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
             # Ports_mid = (max_slabH + WG_Height) / 2
-            Ports_mid = max_slabH
+            Ports_mid = max_slabH + WG_Height/2
 
             # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
             self.lum.addeme()
@@ -6805,15 +7839,15 @@ class Constructor:
             #     max_yPos = [(WG_W / 2 + OffsetInput) * 2, 0, (WG_Width / 2 + posOffset / 2) * 2]
             #     min_yPos = [-(WG_W / 2 + OffsetInput) * 2, -(WG_Width / 2 + posOffset / 2) * 2, 0]
             #     portLoc = ["right", "left", "left"]
-            
+
             yPort_vec = [OffsetInput, -(posOffset / 2 + WG_Width / 2), posOffset / 2 + WG_Width / 2]
             portLoc = ["right", "left", "left"]
-            
+
             overLapp = yPort_vec[2] - y_Port_Span/2
             if overLapp < 0:
                 raise ValueError("!!! CAUTION !!! - The Ports are overlapping at the middle! Please change the Y Port Span or move the Waveguides away from each other!")
             else:
-                pass 
+                pass
 
             for i in range(1):
                 self.lum.addemeport()
@@ -6923,9 +7957,9 @@ class Constructor:
             Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
             max_slabH = Slab_Height
             # MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-            MonitorHeight = Substrate_Height + max_slabH
+            MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
             # Ports_mid = (max_slabH + WG_Height) / 2
-            Ports_mid = max_slabH
+            Ports_mid = max_slabH + WG_Height/2
 
             # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
             self.lum.addeme()
@@ -6955,9 +7989,9 @@ class Constructor:
             Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
             max_slabH = Slab_Height
             # MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-            MonitorHeight = Substrate_Height + max_slabH
+            MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
             # Ports_mid = (max_slabH + WG_Height) / 2
-            Ports_mid = max_slabH
+            Ports_mid = max_slabH + WG_Height/2
 
             # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
             self.lum.addeme()
@@ -7006,14 +8040,14 @@ class Constructor:
             # Define Ports
             yPort_vec = [posOffset / 2 + WG_Width / 2, -(posOffset / 2 + WG_Width / 2), posOffset / 2 + WG_Width / 2, -(posOffset / 2 + WG_Width / 2)]
             portLoc = ["left", "left", "right", "right"]
-            
-            
+
+
             overLapp = yPort_vec[0] - y_Port_Span/2
             if overLapp < 0:
                 raise ValueError("!!! CAUTION !!! - The Ports are overlapping at the middle! Please change the Y Port Span or move the Waveguides away from each other!")
             else:
-                pass 
-            
+                pass
+
             for i in range(2):
                 self.lum.addemeport()
 
@@ -7042,7 +8076,7 @@ class Constructor:
 
     def setWDMEMESolver(self, Parameters):
         '''
-        
+
         Parameters
         ----------
         Parameters['Substrate Height'] : int/float
@@ -7088,8 +8122,8 @@ class Constructor:
             None.
 
                 '''
-                
-        
+
+
 
         Substrate_Height = Parameters['Substrate Height']
         MMI_Width = Parameters['MMI Width']
@@ -7107,7 +8141,7 @@ class Constructor:
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
         TaperLength = Parameters['Taper Length']
-        
+
 
         # Device specifications
         Device_Length = MMI_Length + 2 * WG_Length
@@ -7115,9 +8149,9 @@ class Constructor:
         Device_Width = MMI_Width + 2*WG_Length + WaveLength * 2
         max_slabH = Slab_Height
         # MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-        MonitorHeight = Substrate_Height + max_slabH
+        MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
         # Ports_mid = (max_slabH + WG_Height) / 2
-        Ports_mid = max_slabH
+        Ports_mid = max_slabH + WG_Height/2
 
 
         # EME Boundary Length
@@ -7164,7 +8198,7 @@ class Constructor:
             Input_Y = Input_yPos - (np.sqrt((TaperLength)**2 - BoardLen**2))
 
 
-            Output_yPos = MMI_Width / 2 -TaperWidth/2 
+            Output_yPos = MMI_Width / 2 -TaperWidth/2
             Output_Y = Output_yPos + (np.sqrt((TaperLength)**2 - BoardLen**2))
             portLoc = ["left", "right"]
 
@@ -7201,8 +8235,8 @@ class Constructor:
             self.lum.set("y min", -Device_Width / 2)
             self.lum.set("y max", Device_Width / 2)
             self.lum.set("z", MonitorHeight)
-            
-            
+
+
         else:
 
             # Correction in Y-Axis
@@ -7214,7 +8248,7 @@ class Constructor:
             Input_Y = NewY - difY/2
 
 
-            Output_yPos = MMI_Width / 2 - TaperWidth/2 
+            Output_yPos = MMI_Width / 2 - TaperWidth/2
             Output_Y = Output_yPos + (np.sqrt((TaperLength)**2 - BoardLen**2)) - WG_Width
             Output_Y = -NewY + difY / 2
             portLoc = ["left", "right"]
@@ -7252,8 +8286,8 @@ class Constructor:
             self.lum.set("y min", -Device_Width / 2)
             self.lum.set("y max", Device_Width / 2)
             self.lum.set("z", MonitorHeight)
-            
-                
+
+
 
 
 
@@ -7272,11 +8306,11 @@ class Constructor:
           Parameters['Slab Height'] : int/float
               Slab height
           Parameters['PWB Taper Width Back'] : int/float
-              Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding) 
+              Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
           Parameters['PWB Taper Hight Back'] : int/float
-              Photonic Wire Bonding Height back side (to the Photonic Wire Bonding) 
+              Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
           Parameters['PWB Taper Length'] : int/float
-              Length of the Photonic Wire Bonding Taper      
+              Length of the Photonic Wire Bonding Taper
           Parameters['y res'] : int/float
               Mesh y-Axis
           Parameters['z res'] : int/float
@@ -7307,17 +8341,17 @@ class Constructor:
         z_res = Parameters['z res']
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
-    
-    
+
+
         # # Device specifications
         max_slabH = Slab_Height
-        MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-        Ports_mid = (max_slabH + WG_Width) / 2
-        Ports_PWB_mid = (max_slabH + TaperHightB) / 2
+        MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
+        Ports_mid = max_slabH + WG_Width/2
+        Ports_PWB_mid = max_slabH + TaperHightB/2
         X_min = -TaperLength_PWB/2 - 0.5e-6
-    
-    
-    
+
+
+
         # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
         self.lum.addeme()
         self.lum.set("x min", X_min)
@@ -7325,7 +8359,7 @@ class Constructor:
         self.lum.set("y span", TaperWidthB + TaperWidthB/2)
         self.lum.set('simulation temperature', 273.15 + 20)
         self.lum.set("z", TaperHightB/2) #Substrate_Height
-        self.lum.set("z span", TaperHightB*2) 
+        self.lum.set("z span", TaperHightB*2)
         self.lum.set("wavelength", WaveLength)
         self.lum.set("z min bc", "PML")
         self.lum.set("z max bc", "PML")
@@ -7336,10 +8370,10 @@ class Constructor:
         self.lum.set("group spans", np.array([[0.1e-6], [TaperLength_PWB], [9.9e-6]]))
         self.lum.set("cells", np.array([[3], [80], [3]]))
         self.lum.set("subcell method", np.array([[1], [1], [1]]))
-    
+
         # Modes to Calculate
         self.lum.set('number of modes for all cell groups', 20)
-    
+
         # Mesh Cells
         self.lum.set("define y mesh by", "maximum mesh step")
         self.lum.set("dy", y_res)
@@ -7348,11 +8382,11 @@ class Constructor:
         self.lum.set('fit materials with multi-coefficient model', 1)
         self.lum.set('wavelength start', 0.4e-6)
         self.lum.set('wavelength stop', 2e-6)
-    
-    
+
+
         portLoc = ["left", "right"]
         z_span_PWB = TaperHightB + (z_Port_Span - WG_Height)/2
-    
+
         self.lum.select("EME::Ports::port_" + str(1))
         self.lum.set("port location", portLoc[0])
         self.lum.set("use full simulation span", 1)
@@ -7362,7 +8396,7 @@ class Constructor:
         # self.lum.set("z", Ports_PWB_mid)
         # self.lum.set("z span", z_span_PWB)
         self.lum.set("mode selection", Mode)
-    
+
         self.lum.select("EME::Ports::port_" + str(2))
         self.lum.set("port location", portLoc[1])
         self.lum.set("use full simulation span", 1)
@@ -7372,9 +8406,9 @@ class Constructor:
         # self.lum.set("z", Ports_mid)
         # self.lum.set("z span", z_Port_Span)
         self.lum.set("mode selection", Mode)
-    
-    
-    
+
+
+
         # Add monitor Horizondal
         self.lum.addemeprofile()
         # self.lum.set("x", 0)
@@ -7384,9 +8418,9 @@ class Constructor:
         self.lum.set("y", 0)
         self.lum.set("y span", TaperWidthB*2)
         self.lum.set("z", MonitorHeight)
-        
-        
-        # Add monitor Vertical   
+
+
+        # Add monitor Vertical
         self.lum.addemeprofile()
         self.lum.set('monitor type', "2D Y-normal")
         # self.lum.set("x", 0)
@@ -7751,7 +8785,7 @@ class Constructor:
         self.lum.set('fit materials with multi-coefficient model', 1)
         self.lum.set('wavelength start', 0.4e-6)
         self.lum.set('wavelength stop', 2e-6)
-        self.lum.set("y max", 5e-6) 
+        self.lum.set("y max", 5e-6)
         self.lum.set("y min", -5e-6)
         self.lum.set('z', WG_Mid)
         self.lum.set('z span', 2e-6)
@@ -7760,12 +8794,47 @@ class Constructor:
 
 
 
+    def setGratingCouplerNeffFDE(self, Parameters):
+
+        GC_Height = Parameters["Hight GC"]
+        Pitch = Parameters["Pitch GC"]
+        dy = Parameters['y res']
+        dz = Parameters['z res']
+        Slab_Height = 1e-6
+        WaveLength = Parameters['Wavelength']
+
+        # FDE Dimensions
+        WG_Mid = GC_Height / 2
+
+        # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
+        self.lum.addfde()
+        self.lum.set('solver type', "2D X normal")
+        self.lum.set("x", 0)
+        self.lum.set('define y mesh by', 'maximum mesh step')
+        self.lum.set('dy', dy)
+        self.lum.set('define z mesh by', 'maximum mesh step')
+        self.lum.set('dz', dz)
+        self.lum.set("z min bc", "PML")
+        self.lum.set("z max bc", "PML")
+        self.lum.set("y min bc", "PML")
+        self.lum.set("y max bc", "PML")
+        self.lum.set('fit materials with multi-coefficient model', 1)
+        self.lum.set('wavelength start', 0.4e-6)
+        self.lum.set('wavelength stop', 2e-6)
+        self.lum.set("y max", Pitch+1e-6)
+        self.lum.set("y min", -Pitch-1e-6)
+        self.lum.set('z', WG_Mid)
+        self.lum.set('z span', 2e-6)
+        self.lum.set("wavelength", WaveLength)
+
+
+
 
     # =============================================================================
     # Functions
     # =============================================================================
-    
-    
+
+
     def StartEMESimulation(self):
         '''
         This Function will save a the construted object under the name "SimRun1"
@@ -7799,9 +8868,9 @@ class Constructor:
         '''
         self.lum.save('SimRun1')
         self.lum.run()
-        
-        
-        
+
+
+
 
     def StartFDESimulation(self):
         '''
@@ -7823,7 +8892,7 @@ class Constructor:
 
 
     def ExtractFDTDResults(self, Ports, Sparam):
-        
+
         '''
         This fuction will add an S-Parameter Sweep to the FDTD simulation.
         This will allowed to sweep the S-parameter Matrix like it is done in
@@ -7984,9 +9053,9 @@ class Constructor:
             EME_Data[data] = self.lum.getresult(str(EMEName), str(data))
 
         return OptionsMonitor, EME_Data
-    
-    
-    
+
+
+
 
     def ExtractFDEModes(self, EffIndexValue):
         '''
@@ -8025,8 +9094,8 @@ class Constructor:
                     pass
 
         return dictModes, dictModes2
-    
-    
+
+
 
     def CoppyDcard(self, modeTE, modeTM):
         '''

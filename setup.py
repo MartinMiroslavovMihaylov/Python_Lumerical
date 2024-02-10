@@ -18,7 +18,7 @@ setup(
       name='LNOI-Constructor',                 # This is the name of your PyPI-package.
       description="A SCT Group Lumerical Constructor package.",
       author="Martin.Mihaylov",
-      version='1.0',                          # Update the version number for new releases
+      version='1.1',                          # Update the version number for new releases
       install_requires=requirements,
       packages=find_packages() 
       
