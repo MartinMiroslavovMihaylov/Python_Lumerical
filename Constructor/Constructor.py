@@ -4578,6 +4578,7 @@ class Constructor:
         CoreIndex = Parameters["SMF Core Index"]
         CladdingIndex = Parameters["SMF Cladding Index"]
         Taper = Parameters["Taper"]
+        SubstrateThickness = Parameters['Substrate Height']
 
         WG_Height = Parameters['WG Height']
         WG_Width = Parameters['WG Width']
@@ -4638,22 +4639,25 @@ class Constructor:
         self.lum.set("z", 0)
         self.lum.set("z span", WidthGC)
 
+
+
         self.lum.addrect()
         self.lum.set("name", "Substrate")
         self.lum.set("x", TargetLength/2)
         self.lum.set("x span", spanX)
-        self.lum.set("y", -(0.5e-6) / 2)
-        self.lum.set("y span", 0.5e-6)
+        self.lum.set('y', -SubstrateThickness/2)
+        self.lum.set("y span", SubstrateThickness)
         self.lum.set("z", 0 )
         self.lum.set("z span", WidthGC)
         self.lum.set("material", Material[1])
+
 
         self.lum.addrect()
         self.lum.set("name", "Cladding")
         self.lum.set("x", TargetLength / 2)
         self.lum.set("x span", spanX)
-        self.lum.set("y", Hight / 2)
-        self.lum.set("y span", 0.7e-6 + Hight)
+        self.lum.set("y min", 0)
+        self.lum.set("y max", Hight + 0.7e-6)
         self.lum.set("z", 0)
         self.lum.set("z span", WidthGC)
         self.lum.set("material", Material[1])
@@ -4661,12 +4665,13 @@ class Constructor:
         self.lum.set("override mesh order from material database",1)
         self.lum.set("mesh order", 3)
 
+
         self.lum.addrect()
         self.lum.set("name", "Si_Layer")
         self.lum.set("x", TargetLength / 2)
         self.lum.set("x span", spanX)
-        self.lum.set("y", -(1.5e-6) / 2)
-        self.lum.set("y span", 1e-6)
+        self.lum.set("y", - SubstrateThickness -(2e-6) / 2)
+        self.lum.set("y span", 2e-6)
         self.lum.set("z", 0)
         self.lum.set("z span", WidthGC)
         self.lum.set("material", Material[0])
@@ -4840,13 +4845,13 @@ class Constructor:
             self.lum.set("y", 0)
 
             # Taper Cladding
-            TaperSubNames = "Taper Cladding"
+            TaperCladNames = "Taper Cladding"
             myscript = self.Script()
             myscript = myscript + 'set("alpha", 0.7);  \n'
             myscript = myscript + 'set("override mesh order from material database",1);  \n'
-            myscript = myscript + 'set("mesh order", 0, 3);  \n'
+            myscript = myscript + 'set("mesh order", 3);  \n'
             self.lum.addstructuregroup()
-            self.lum.set("name", TaperSubNames)
+            self.lum.set("name", TaperCladNames)
             self.lum.set("construction group", 1)
             self.lum.adduserprop("thickness", 2, 0.7e-6 + Hight)
             self.lum.adduserprop("angle_side", 0, 0)
@@ -4858,8 +4863,28 @@ class Constructor:
             self.lum.adduserprop("index", 0, 1)
             self.lum.set("script", myscript)
             self.lum.set("x", -TargetLength / 2 - InputLlength - TaperLength / 2)
-            self.lum.set("z", Hight / 2)
+            self.lum.set("z", Hight / 2 + ( 0.7e-6)/2)
             self.lum.set("y", 0)
+            
+            # Add Si Layer on Bottom
+            TaperSiLayerNames = "Taper Si_Layer"
+            myscript = self.Script()
+            self.lum.addstructuregroup()
+            self.lum.set("name", TaperSiLayerNames)
+            self.lum.set("construction group", 1)
+            self.lum.adduserprop("thickness", 2, 2e-6)
+            self.lum.adduserprop("angle_side", 0, 0)
+            self.lum.adduserprop("width_l", 2, WG_Width)
+            self.lum.adduserprop("width_r", 2, WidthGC)
+            self.lum.adduserprop("hfrac_ref", 0, 1)
+            self.lum.adduserprop("len", 2, TaperLength)
+            self.lum.adduserprop("material", 5, Material[0])
+            self.lum.adduserprop("index", 0, 1)
+            self.lum.set("script", myscript)
+            self.lum.set("x", -TargetLength/2 - InputLlength - TaperLength/2)
+            self.lum.set("z", -2e-6)
+            self.lum.set("y", 0)
+            
         else:
             pass
 
@@ -6974,11 +6999,17 @@ class Constructor:
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
         Taper = Parameters["Taper"]
+        SubstrateThickness = Parameters['Substrate Height']
+        GCThickness = Parameters["Hight GC"]
+        CladdingThickness = 0.7e-6
+        
+        
 
 
 
         # Device specifications
         Device_Length = GC_SectionLenght + InputLenght + OutputLenght + TaperLength
+        FDTD_ZSpan = GCThickness + CladdingThickness + SubstrateThickness
 
 
 
@@ -7000,8 +7031,11 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", WidthGC)
             self.lum.set("z", 0)
-            self.lum.set("z min", -1e-6)
-            self.lum.set("z max", ZSpan / 2)
+            self.lum.set("z span",  (ZSpan / 2))
+            # self.lum.set("z min", -1e-6)
+            # self.lum.set("z max", ZSpan / 2)
+            # self.lum.set("z min", -1e-6)
+            # self.lum.set("z max", ZSpan / 2)
             self.lum.set('simulation temperature', 273.15 + 20)
             self.lum.set('z min bc', 'PML')
             self.lum.set('z max bc', 'PML')
@@ -7113,8 +7147,9 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", WidthGC)
             self.lum.set("z", 0)
-            self.lum.set("z min", -1e-6)
-            self.lum.set("z max", ZSpan / 2)
+            self.lum.set("z span", (ZSpan / 2))
+            # self.lum.set("z min", -1e-6)
+            # self.lum.set("z max", ZSpan / 2)
             self.lum.set('simulation temperature', 273.15 + 20)
             self.lum.set('z min bc', 'PML')
             self.lum.set('z max bc', 'PML')
