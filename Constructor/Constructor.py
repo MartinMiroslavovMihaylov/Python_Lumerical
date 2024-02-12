@@ -623,6 +623,7 @@ class Constructor:
         angle = Parameters['angle']
         Slab_Height = Parameters['Slab Height']
         Material = Parameters['Material']
+        SubstrateHight = Parameters['Substrate Height']
 
 
         # Material defginition
@@ -658,9 +659,9 @@ class Constructor:
             self.lum.set("name", 'Waveguide')
             self.lum.set("x", 0)
             self.lum.set("y", 0)
-            self.lum.set("z", max_slabH)
+            self.lum.set("z", WG_Height/2)
             self.lum.set("base width", WG_W)
-            self.lum.set("base height", max_slabH + WG_Height / 2)
+            self.lum.set("base height", WG_Height)
             self.lum.set("base angle", 90 - angle)
             pole = np.array([[maxWGL, 0], [minWGL, 0]])
             self.lum.set("poles", pole)
@@ -680,25 +681,25 @@ class Constructor:
             self.lum.set("name", "Silicon")
             self.lum.set("y min", min_subW)
             self.lum.set("y max", max_subW)
-            self.lum.set("z min", min_BoxH)
-            self.lum.set("z max", min_slabH)
+            self.lum.set("z", -SubstrateHight/2)
+            self.lum.set("z span",SubstrateHight)
             self.lum.set("x min", minWGL)
             self.lum.set("x max", maxWGL)
             self.lum.set("material", MaterialSub)
 
             # create_cover
-            self.lum.addrect()
-            self.lum.set("name", "cladding")
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set('z', max_WGH / 2 + min_WGH)
-            self.lum.set('z span', 2 * WG_Height)
-            self.lum.set("x min", minWGL)
-            self.lum.set("x max", maxWGL)
-            self.lum.set("material", MaterialClad)
-            self.lum.set("override mesh order from material database", True)
-            self.lum.set("mesh order", 4)
-            self.lum.set("alpha", 0.7)
+            # self.lum.addrect()
+            # self.lum.set("name", "cladding")
+            # self.lum.set("y min", min_subW)
+            # self.lum.set("y max", max_subW)
+            # self.lum.set('z', max_WGH / 2 + min_WGH)
+            # self.lum.set('z span', 2 * WG_Height)
+            # self.lum.set("x min", minWGL)
+            # self.lum.set("x max", maxWGL)
+            # self.lum.set("material", MaterialClad)
+            # self.lum.set("override mesh order from material database", True)
+            # self.lum.set("mesh order", 4)
+            # self.lum.set("alpha", 0.7)
 
 
         else:
@@ -759,6 +760,8 @@ class Constructor:
             self.lum.set("override mesh order from material database", True)
             self.lum.set("mesh order", 4)
             self.lum.set("alpha", 0.7)
+            
+            
 
 
 
@@ -9321,7 +9324,9 @@ class Constructor:
         dy = Parameters['y res']
         dz = Parameters['z res']
         Slab_Height = Parameters['Slab Height']
+        SubstrateHight = Parameters['Substrate Height']
         WaveLength = Parameters['Wavelength']
+        
 
         # FDE Dimensions
         WG_Mid = Slab_Height + WG_Height / 2
@@ -9344,7 +9349,7 @@ class Constructor:
         self.lum.set("y max", 5e-6)
         self.lum.set("y min", -5e-6)
         self.lum.set('z', WG_Mid)
-        self.lum.set('z span', 2e-6)
+        self.lum.set('z span', WG_Height + Slab_Height + SubstrateHight/2)
         self.lum.set("wavelength", WaveLength)
 
 
