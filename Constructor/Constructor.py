@@ -5175,93 +5175,88 @@ class Constructor:
 
 
 
+        # Add Taper
+        TaperNames = "Taper"
+        myscript = self.Script()
+        spanX = OutputLength+TargetLength + InputLlength
+        RadiusDiff = (GCRadius -  GCRadius * np.cos(Theta*np.pi/180) )/2
 
-        if Taper == True:
-            # Add Taper
-            TaperNames = "Taper"
-            myscript = self.Script()
-            spanX = OutputLength+TargetLength + InputLlength
-            RadiusDiff = (GCRadius -  GCRadius * np.cos(Theta*np.pi/180) )/2
-
-            self.lum.addstructuregroup()
-            self.lum.set("name", TaperNames)
-            self.lum.set("construction group", 1)
-            self.lum.adduserprop("thickness", 2, Hight)
-            self.lum.adduserprop("angle_side", 0, angle)
-            self.lum.adduserprop("width_l", 2, WG_Width)
-            self.lum.adduserprop("width_r", 2, WidthGC)
-            self.lum.adduserprop("hfrac_ref", 0, 1)
-            self.lum.adduserprop("len", 2, TaperLength)
-            self.lum.adduserprop("material", 5, Material[0])
-            self.lum.adduserprop("index", 0, 1)
-            self.lum.set("script", myscript)
-            self.lum.set("x", -TargetLength/2 - RadiusDiff)
-            self.lum.set("z", Hight/2)
-            self.lum.set("y", 0)
+        self.lum.addstructuregroup()
+        self.lum.set("name", TaperNames)
+        self.lum.set("construction group", 1)
+        self.lum.adduserprop("thickness", 2, Hight)
+        self.lum.adduserprop("angle_side", 0, angle)
+        self.lum.adduserprop("width_l", 2, WG_Width)
+        self.lum.adduserprop("width_r", 2, WidthGC)
+        self.lum.adduserprop("hfrac_ref", 0, 1)
+        self.lum.adduserprop("len", 2, TaperLength)
+        self.lum.adduserprop("material", 5, Material[0])
+        self.lum.adduserprop("index", 0, 1)
+        self.lum.set("script", myscript)
+        self.lum.set("x", -TargetLength/2 - RadiusDiff)
+        self.lum.set("z", Hight/2)
+        self.lum.set("y", 0)
 
 
-            # Add Substrate for thge taper
-            TaperSubNames = "Taper Substrate"
-            myscript = self.Script()
-            self.lum.addstructuregroup()
-            self.lum.set("name", TaperSubNames)
-            self.lum.set("construction group", 1)
-            self.lum.adduserprop("thickness", 2, SubstrateThickness)
-            self.lum.adduserprop("angle_side", 0, 0)
-            self.lum.adduserprop("width_l", 2, WG_Width)
-            self.lum.adduserprop("width_r", 2, WidthGC)
-            self.lum.adduserprop("hfrac_ref", 0, 1)
-            self.lum.adduserprop("len", 2, TaperLength)
-            self.lum.adduserprop("material", 5, Material[1])
-            self.lum.adduserprop("index", 0, 1)
-            self.lum.set("script", myscript)
-            self.lum.set("x", -TargetLength/2 - RadiusDiff)
-            self.lum.set("z", -SubstrateThickness/2 )
-            self.lum.set("y", 0)
+        # Add Substrate for thge taper
+        TaperSubNames = "Taper Substrate"
+        myscript = self.Script()
+        self.lum.addstructuregroup()
+        self.lum.set("name", TaperSubNames)
+        self.lum.set("construction group", 1)
+        self.lum.adduserprop("thickness", 2, SubstrateThickness)
+        self.lum.adduserprop("angle_side", 0, 0)
+        self.lum.adduserprop("width_l", 2, WG_Width)
+        self.lum.adduserprop("width_r", 2, WidthGC)
+        self.lum.adduserprop("hfrac_ref", 0, 1)
+        self.lum.adduserprop("len", 2, TaperLength)
+        self.lum.adduserprop("material", 5, Material[1])
+        self.lum.adduserprop("index", 0, 1)
+        self.lum.set("script", myscript)
+        self.lum.set("x", -TargetLength/2 - RadiusDiff)
+        self.lum.set("z", -SubstrateThickness/2 )
+        self.lum.set("y", 0)
 
-            # Taper Cladding
-            TaperCladNames = "Taper Cladding"
-            myscript = self.Script()
-            myscript = myscript + 'set("alpha", 0.7);  \n'
-            myscript = myscript + 'set("override mesh order from material database",1);  \n'
-            myscript = myscript + 'set("mesh order", 3);  \n'
-            self.lum.addstructuregroup()
-            self.lum.set("name", TaperCladNames)
-            self.lum.set("construction group", 1)
-            self.lum.adduserprop("thickness", 2, 0.7e-6 + Hight)
-            self.lum.adduserprop("angle_side", 0, 0)
-            self.lum.adduserprop("width_l", 2, WG_Width)
-            self.lum.adduserprop("width_r", 2, WidthGC)
-            self.lum.adduserprop("hfrac_ref", 0, 1)
-            self.lum.adduserprop("len", 2, TaperLength)
-            self.lum.adduserprop("material", 5, Material[1])
-            self.lum.adduserprop("index", 0, 1)
-            self.lum.set("script", myscript)
-            self.lum.set("x", -TargetLength/2 - RadiusDiff)
-            self.lum.set("z", Hight / 2 + ( 0.7e-6)/2)
-            self.lum.set("y", 0)
-            
-            # Add Si Layer on Bottom
-            TaperSiLayerNames = "Taper Si_Layer"
-            myscript = self.Script()
-            self.lum.addstructuregroup()
-            self.lum.set("name", TaperSiLayerNames)
-            self.lum.set("construction group", 1)
-            self.lum.adduserprop("thickness", 2, 2e-6)
-            self.lum.adduserprop("angle_side", 0, 0)
-            self.lum.adduserprop("width_l", 2, WG_Width)
-            self.lum.adduserprop("width_r", 2, WidthGC)
-            self.lum.adduserprop("hfrac_ref", 0, 1)
-            self.lum.adduserprop("len", 2, TaperLength)
-            self.lum.adduserprop("material", 5, Material[0])
-            self.lum.adduserprop("index", 0, 1)
-            self.lum.set("script", myscript)
-            self.lum.set("x", -TargetLength/2 - RadiusDiff)
-            self.lum.set("z", -(2e-6)/2 - SubstrateThickness)
-            self.lum.set("y", 0)
-            
-        else:
-            pass
+        # Taper Cladding
+        TaperCladNames = "Taper Cladding"
+        myscript = self.Script()
+        myscript = myscript + 'set("alpha", 0.7);  \n'
+        myscript = myscript + 'set("override mesh order from material database",1);  \n'
+        myscript = myscript + 'set("mesh order", 3);  \n'
+        self.lum.addstructuregroup()
+        self.lum.set("name", TaperCladNames)
+        self.lum.set("construction group", 1)
+        self.lum.adduserprop("thickness", 2, 0.7e-6 + Hight)
+        self.lum.adduserprop("angle_side", 0, 0)
+        self.lum.adduserprop("width_l", 2, WG_Width)
+        self.lum.adduserprop("width_r", 2, WidthGC)
+        self.lum.adduserprop("hfrac_ref", 0, 1)
+        self.lum.adduserprop("len", 2, TaperLength)
+        self.lum.adduserprop("material", 5, Material[1])
+        self.lum.adduserprop("index", 0, 1)
+        self.lum.set("script", myscript)
+        self.lum.set("x", -TargetLength/2 - RadiusDiff)
+        self.lum.set("z", Hight / 2 + ( 0.7e-6)/2)
+        self.lum.set("y", 0)
+
+        # Add Si Layer on Bottom
+        TaperSiLayerNames = "Taper Si_Layer"
+        myscript = self.Script()
+        self.lum.addstructuregroup()
+        self.lum.set("name", TaperSiLayerNames)
+        self.lum.set("construction group", 1)
+        self.lum.adduserprop("thickness", 2, 2e-6)
+        self.lum.adduserprop("angle_side", 0, 0)
+        self.lum.adduserprop("width_l", 2, WG_Width)
+        self.lum.adduserprop("width_r", 2, WidthGC)
+        self.lum.adduserprop("hfrac_ref", 0, 1)
+        self.lum.adduserprop("len", 2, TaperLength)
+        self.lum.adduserprop("material", 5, Material[0])
+        self.lum.adduserprop("index", 0, 1)
+        self.lum.set("script", myscript)
+        self.lum.set("x", -TargetLength/2 - RadiusDiff)
+        self.lum.set("z", -(2e-6)/2 - SubstrateThickness)
+        self.lum.set("y", 0)
 
 
     
@@ -7639,7 +7634,6 @@ class Constructor:
         Mode = Parameters["Mode"]
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
-        Taper = Parameters["Taper"]
         SubstrateThickness = Parameters['Substrate Height']
         GCThickness = Parameters["Hight GC"]
         CladdingThickness = 0.7e-6
