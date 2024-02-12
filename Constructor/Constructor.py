@@ -4831,7 +4831,7 @@ class Constructor:
             self.lum.addstructuregroup()
             self.lum.set("name", TaperSubNames)
             self.lum.set("construction group", 1)
-            self.lum.adduserprop("thickness", 2, 1e-6)
+            self.lum.adduserprop("thickness", 2, SubstrateThickness)
             self.lum.adduserprop("angle_side", 0, 0)
             self.lum.adduserprop("width_l", 2, WG_Width)
             self.lum.adduserprop("width_r", 2, WidthGC)
@@ -4841,7 +4841,7 @@ class Constructor:
             self.lum.adduserprop("index", 0, 1)
             self.lum.set("script", myscript)
             self.lum.set("x", -TargetLength/2 - InputLlength - TaperLength/2)
-            self.lum.set("z", -0.5e-6)
+            self.lum.set("z", -SubstrateThickness/2 )
             self.lum.set("y", 0)
 
             # Taper Cladding
@@ -4882,7 +4882,7 @@ class Constructor:
             self.lum.adduserprop("index", 0, 1)
             self.lum.set("script", myscript)
             self.lum.set("x", -TargetLength/2 - InputLlength - TaperLength/2)
-            self.lum.set("z", -2e-6)
+            self.lum.set("z", -(2e-6)/2 - SubstrateThickness)
             self.lum.set("y", 0)
             
         else:
@@ -4891,8 +4891,382 @@ class Constructor:
 
 
 
+    def RingGratingCoupler(self, Parameters):
+
+        # simplify variable names by removing spaces
+        TargetLength = Parameters["Length GC"]
+        WidthGC = Parameters["Width GC"]
+        TaperLength = Parameters['Taper Length']
+        Hight = Parameters["Hight GC"]
+        EtchDepth = Parameters["Etch Depth GC"]
+        DutyCycle = Parameters["Duty Cycle"]
+        Pitch = Parameters["Pitch GC"]
+        InputLlength = Parameters["Input Length GC"]
+        OutputLength = Parameters["Output Length GC"]
+        Material = Parameters["Material  GC"]
+        CoreDiameter = Parameters["SMF Core Diameter"]
+        CladdingDiameter = Parameters["SMF Cladding Diameter"]
+        ZSpan = Parameters["SMF Z Spam"]
+        Theta = Parameters["SMF Theta"]
+        CoreIndex = Parameters["SMF Core Index"]
+        CladdingIndex = Parameters["SMF Cladding Index"]
+        Taper = Parameters["Taper"]
+        SubstrateThickness = Parameters['Substrate Height']
+        
+        GCRadius = Parameters["GC Radius"]
+
+        
+        WG_Height = Parameters['WG Height']
+        WG_Width = Parameters['WG Width']
+        angle = Parameters['angle']
 
 
+
+        # Create the MMI L2 Tapers for the Trapezoid
+        GCNames = "Grating Coupler"
+        FiberName = "SMF"
+        myscript = self.Simple_Grating_Coupler_Script()
+        SMF_Script = self.Fiber_Script()
+
+
+
+        # Make the Grating Coupler
+        import math
+        n_periods = math.floor(TargetLength / Pitch)
+        fill_width = Pitch * DutyCycle
+        etch_width = Pitch * (1 - DutyCycle)
+        L = n_periods * Pitch + etch_width
+        spanX = OutputLength + TargetLength + InputLlength
+        Theta = np.arcsin( 0.5*WidthGC/GCRadius ) * 180/np.pi
+        
+
+        if EtchDepth > Hight:
+            EtchDepth = Hight
+        elif EtchDepth < Hight:
+            self.lum.addring()
+            self.lum.set("name", "lower layer")
+            self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+            self.lum.set("outer radius",GCRadius +L + OutputLength)
+            self.lum.set("z min", 0)
+            self.lum.set("z max", Hight - EtchDepth)
+            self.lum.set("theta start",-Theta)
+            self.lum.set("theta stop",Theta)
+            
+
+
+ 
+        # input section
+        self.lum.addring()
+        self.lum.set("name","input section")
+        # self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+        self.lum.set("inner radius", 0)
+        self.lum.set("outer radius",GCRadius)
+        self.lum.set("x",0)
+        self.lum.set("y",0)
+        self.lum.set("z min",0)
+        self.lum.set("z max",Hight)
+        self.lum.set("theta start",-Theta)
+        self.lum.set("theta stop",Theta)
+
+
+        # output section
+        self.lum.addring()
+        self.lum.set("name","output section")
+        self.lum.set("inner radius",GCRadius + L)
+        self.lum.set("outer radius",GCRadius +L + OutputLength)
+        self.lum.set("x",0)
+        self.lum.set("y",0)
+        self.lum.set("z min",0)
+        self.lum.set("z max",Hight)
+        self.lum.set("theta start",-Theta)
+        self.lum.set("theta stop",Theta)
+
+       
+        # Add Grating
+        for i in range(1, n_periods+1):
+            self.lum.addring()
+            self.lum.set("x",0)
+            self.lum.set("y",0)
+            self.lum.set("z min", Hight - EtchDepth)
+            self.lum.set("z max",Hight)
+            self.lum.set("theta start",-Theta)
+            self.lum.set("theta stop",Theta)
+            self.lum.set("inner radius",GCRadius +  Pitch * (i - 1) + etch_width)
+            self.lum.set("outer radius",GCRadius + Pitch*i)
+            self.lum.set("name", "post")
+       
+
+        self.lum.selectall()
+        self.lum.set("material", Material[0])
+        #self.lum.set("z", 0)
+        #self.lum.set("z span", WidthGC)
+
+
+
+
+       
+       
+        self.lum.addring()
+        self.lum.set("name", "Substrate")
+        self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+        self.lum.set("outer radius",GCRadius +L + OutputLength)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", -SubstrateThickness/2)
+        self.lum.set("z span", SubstrateThickness)
+        self.lum.set("theta start",-Theta)
+        self.lum.set("theta stop",Theta)
+        self.lum.set("material", Material[1])
+        
+
+
+        self.lum.addring()
+        self.lum.set("name", "Cladding")
+        self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+        self.lum.set("outer radius",GCRadius +L + OutputLength)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z min", 0)
+        self.lum.set("z max", Hight + 0.7e-6)
+        self.lum.set("theta start",-Theta)
+        self.lum.set("theta stop",Theta)
+        self.lum.set("material", Material[1])
+        self.lum.set("alpha", 0.7)
+        self.lum.set("override mesh order from material database",1)
+        self.lum.set("mesh order", 3)
+
+
+        self.lum.addring()
+        self.lum.set("name", "Si_Layer")
+        self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+        self.lum.set("outer radius",GCRadius +L + OutputLength)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", - SubstrateThickness -(2e-6) / 2)
+        self.lum.set("z span", 2e-6)
+        self.lum.set("theta start",-Theta)
+        self.lum.set("theta stop",Theta)
+        self.lum.set("material", Material[0])
+
+
+
+
+
+        self.lum.selectall()
+        self.lum.addtogroup(GCNames)
+        self.lum.select(GCNames)
+        # self.lum.set("first axis", "x")
+        # self.lum.set("rotation 1", 90)
+        self.lum.set("x", -TargetLength/2)
+
+
+
+
+
+        # self.lum.addstructuregroup()
+        # self.lum.set("name", GCNames)
+        # self.lum.set("construction group", 1)
+
+        # self.lum.adduserprop("index", 0, Index)
+        # self.lum.adduserprop("material", 5, Material[0])
+        # self.lum.adduserprop("target length", 2, TargetLength)
+        # self.lum.adduserprop("h total", 2, Hight)
+        # self.lum.adduserprop("etch depth", 2, EtchDepth)
+        # self.lum.adduserprop("duty cycle", 0, DutyCycle)
+        # self.lum.adduserprop("pitch", 2, Pitch)
+        # self.lum.adduserprop("input length", 2, InputLlength)
+        # self.lum.adduserprop("output length", 2, OutputLength)
+        # self.lum.set("script", myscript)
+        # self.lum.set("first axis", "x")
+        # self.lum.set("rotation 1", 90)
+        # self.lum.set("x", -TargetLength/2)
+
+
+        # Build SMF
+
+        core_index = CoreIndex
+        cladding_index = CladdingIndex
+        core_radius = CoreDiameter / 2
+        cladding_radius = CladdingDiameter/2
+        theta_rad = Theta / (180 / np.pi)
+        L = ZSpan / np.cos(theta_rad)
+
+
+
+        # Check if Material Cable is given
+        if len(Material) == 2:
+            CoreIndex = CoreIndex
+            CladdingIndex = CladdingIndex
+
+            self.lum.addcircle()
+            self.lum.set("name", "core")
+            self.lum.set("override mesh order from material database", 1)
+            self.lum.set("mesh order", 4)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", 10)
+            self.lum.set("alpha", 1)
+            self.lum.set("radius", core_radius)
+            self.lum.set("index", CoreIndex)
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", 0)
+            self.lum.set("z span", L)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", Theta)
+
+            self.lum.addcircle()
+            self.lum.set("name", "cladding")
+            self.lum.set("override mesh order from material database", 1)
+            self.lum.set("mesh order", 5)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", 10)
+            self.lum.set("alpha", 0.35)
+            self.lum.set("radius", cladding_radius)
+            self.lum.set("index", CladdingIndex)
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", 0)
+            self.lum.set("z span", L)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", Theta)
+
+        else:
+            CoreMaterial = Material[2]
+            CladdingMaterial = Material[3]
+
+            self.lum.addcircle()
+            self.lum.set("name", "core")
+            self.lum.set("override mesh order from material database", 1)
+            self.lum.set("mesh order", 4)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", 10)
+            self.lum.set("alpha", 1)
+            self.lum.set("radius", core_radius)
+            self.lum.set("material", CoreMaterial)
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", 0)
+            self.lum.set("z span", L)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", Theta)
+
+            self.lum.addcircle()
+            self.lum.set("name", "cladding")
+            self.lum.set("override mesh order from material database", 1)
+            self.lum.set("mesh order", 5)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", 10)
+            self.lum.set("alpha", 0.35)
+            self.lum.set("radius", cladding_radius)
+            self.lum.set("material", CladdingMaterial)
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", 0)
+            self.lum.set("z span", L)
+            self.lum.set("first axis", "y")
+            self.lum.set("rotation 1", Theta)
+
+        self.lum.select("core")
+        self.lum.addtogroup('SMF')
+        self.lum.select("cladding")
+        self.lum.addtogroup('SMF')
+        self.lum.select('SMF')
+        self.lum.set("x", TargetLength)
+
+
+
+
+        if Taper == True:
+            # Add Taper
+            TaperNames = "Taper"
+            myscript = self.Script()
+            spanX = OutputLength+TargetLength + InputLlength
+            RadiusDiff = (GCRadius -  GCRadius * np.cos(Theta*np.pi/180) )/2
+
+            self.lum.addstructuregroup()
+            self.lum.set("name", TaperNames)
+            self.lum.set("construction group", 1)
+            self.lum.adduserprop("thickness", 2, Hight)
+            self.lum.adduserprop("angle_side", 0, angle)
+            self.lum.adduserprop("width_l", 2, WG_Width)
+            self.lum.adduserprop("width_r", 2, WidthGC)
+            self.lum.adduserprop("hfrac_ref", 0, 1)
+            self.lum.adduserprop("len", 2, TaperLength)
+            self.lum.adduserprop("material", 5, Material[0])
+            self.lum.adduserprop("index", 0, 1)
+            self.lum.set("script", myscript)
+            self.lum.set("x", -TargetLength/2 - RadiusDiff)
+            self.lum.set("z", Hight/2)
+            self.lum.set("y", 0)
+
+
+            # Add Substrate for thge taper
+            TaperSubNames = "Taper Substrate"
+            myscript = self.Script()
+            self.lum.addstructuregroup()
+            self.lum.set("name", TaperSubNames)
+            self.lum.set("construction group", 1)
+            self.lum.adduserprop("thickness", 2, SubstrateThickness)
+            self.lum.adduserprop("angle_side", 0, 0)
+            self.lum.adduserprop("width_l", 2, WG_Width)
+            self.lum.adduserprop("width_r", 2, WidthGC)
+            self.lum.adduserprop("hfrac_ref", 0, 1)
+            self.lum.adduserprop("len", 2, TaperLength)
+            self.lum.adduserprop("material", 5, Material[1])
+            self.lum.adduserprop("index", 0, 1)
+            self.lum.set("script", myscript)
+            self.lum.set("x", -TargetLength/2 - RadiusDiff)
+            self.lum.set("z", -SubstrateThickness/2 )
+            self.lum.set("y", 0)
+
+            # Taper Cladding
+            TaperCladNames = "Taper Cladding"
+            myscript = self.Script()
+            myscript = myscript + 'set("alpha", 0.7);  \n'
+            myscript = myscript + 'set("override mesh order from material database",1);  \n'
+            myscript = myscript + 'set("mesh order", 3);  \n'
+            self.lum.addstructuregroup()
+            self.lum.set("name", TaperCladNames)
+            self.lum.set("construction group", 1)
+            self.lum.adduserprop("thickness", 2, 0.7e-6 + Hight)
+            self.lum.adduserprop("angle_side", 0, 0)
+            self.lum.adduserprop("width_l", 2, WG_Width)
+            self.lum.adduserprop("width_r", 2, WidthGC)
+            self.lum.adduserprop("hfrac_ref", 0, 1)
+            self.lum.adduserprop("len", 2, TaperLength)
+            self.lum.adduserprop("material", 5, Material[1])
+            self.lum.adduserprop("index", 0, 1)
+            self.lum.set("script", myscript)
+            self.lum.set("x", -TargetLength/2 - RadiusDiff)
+            self.lum.set("z", Hight / 2 + ( 0.7e-6)/2)
+            self.lum.set("y", 0)
+            
+            # Add Si Layer on Bottom
+            TaperSiLayerNames = "Taper Si_Layer"
+            myscript = self.Script()
+            self.lum.addstructuregroup()
+            self.lum.set("name", TaperSiLayerNames)
+            self.lum.set("construction group", 1)
+            self.lum.adduserprop("thickness", 2, 2e-6)
+            self.lum.adduserprop("angle_side", 0, 0)
+            self.lum.adduserprop("width_l", 2, WG_Width)
+            self.lum.adduserprop("width_r", 2, WidthGC)
+            self.lum.adduserprop("hfrac_ref", 0, 1)
+            self.lum.adduserprop("len", 2, TaperLength)
+            self.lum.adduserprop("material", 5, Material[0])
+            self.lum.adduserprop("index", 0, 1)
+            self.lum.set("script", myscript)
+            self.lum.set("x", -TargetLength/2 - RadiusDiff)
+            self.lum.set("z", -(2e-6)/2 - SubstrateThickness)
+            self.lum.set("y", 0)
+            
+        else:
+            pass
+
+
+    
+    
+    
     def GratingCouplerNeff(self, Parameters):
 
         Hight = Parameters["Hight GC"]
@@ -7244,10 +7618,163 @@ class Constructor:
             # Select Source
             self.lum.select('FDTD::ports')
             self.lum.set('source port', 'Output')
+            
+         
+
+
+         
+    def setRingGratingCouplerFDTDSolver(self, Parameters):
+
+        ZSpan = Parameters["SMF Z Spam"]
+        GC_SectionLenght = Parameters["Length GC"]
+        InputLenght = Parameters["Input Length GC"]
+        OutputLenght = Parameters["Output Length GC"]
+        TaperLength = Parameters['Taper Length']
+        WidthGC = Parameters["Width GC"]
+        Theta = Parameters["SMF Theta"]
+        CoreDiameter = Parameters["SMF Core Diameter"]
+        Hight = Parameters["Hight GC"]
+        x_res = Parameters['x res']
+        WaveLength = Parameters['Wavelength']
+        Mode = Parameters["Mode"]
+        y_Port_Span = Parameters["Port Span"][1]
+        z_Port_Span = Parameters["Port Span"][2]
+        Taper = Parameters["Taper"]
+        SubstrateThickness = Parameters['Substrate Height']
+        GCThickness = Parameters["Hight GC"]
+        CladdingThickness = 0.7e-6
+        
+        GCRadius = Parameters["GC Radius"]
+        
+        
+        
+
+        # Device specifications
+        Device_Length =  GC_SectionLenght + OutputLenght + TaperLength 
+        Device_Width = WidthGC + ( GCRadius + GC_SectionLenght + OutputLenght  - GCRadius)
+        FDTD_ZSpan = GCThickness + CladdingThickness + SubstrateThickness
+       
 
 
 
 
+
+        # Define Ports
+        Port_Names = ["Input_SMF_Port", "Output"]
+
+
+
+        # Adds a Finite-Difference Time-Domain  (FDTD) solver region to the MODE simulation environment.
+        self.lum.addfdtd()
+        self.lum.set("x min", -GC_SectionLenght/2 - TaperLength/2 - 1e-6)
+        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", Device_Width)
+        self.lum.set("z", 0)
+        self.lum.set("z span",  (ZSpan / 2))
+        self.lum.set('simulation temperature', 273.15 + 20)
+        self.lum.set('z min bc', 'PML')
+        self.lum.set('z max bc', 'PML')
+        self.lum.set('mesh type', 'auto non-uniform')
+        self.lum.set('min mesh step', x_res)
+        self.lum.set('set simulation bandwidth', 0)
+        self.lum.set('global source center wavelength', WaveLength)
+        self.lum.set('global source wavelength span', 0)
+
+
+        # Faser Port
+        self.lum.addport()
+        self.lum.set('name', Port_Names[0])
+        self.lum.set('injection axis', "z-axis")
+        self.lum.set('direction', "Backward")
+        self.lum.set('mode selection', Mode)
+        self.lum.set('theta', Theta)
+        self.lum.set("x", GC_SectionLenght)
+        self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
+        self.lum.set('y', 0)
+        self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
+        self.lum.set("z", (ZSpan / 4) - 0.2e-6)
+
+
+        # Output Port
+        self.lum.addport()
+        self.lum.set('name', Port_Names[1])
+        self.lum.set("x", -GC_SectionLenght/2 - TaperLength/2)
+        self.lum.set('x span', CoreDiameter)
+        self.lum.set('y', 0)
+        self.lum.set('y span', y_Port_Span)
+        self.lum.set("z", Hight/2 )
+        self.lum.set("z span", z_Port_Span )
+        self.lum.set('injection axis', "x-axis")
+        self.lum.set('direction', "Forward")
+        self.lum.set('mode selection', Mode)
+
+
+
+
+        # Power Monitor SMF Port
+        self.lum.addpower()
+        self.lum.set('name', "Power_"+ Port_Names[0])
+        self.lum.set('monitor type', '2D Z-normal')
+        self.lum.set("x", GC_SectionLenght)
+        self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
+        self.lum.set('y', 0)
+        self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
+        self.lum.set("z", (ZSpan / 4) - 0.3e-6)
+        self.lum.set('output Px', 1)
+        self.lum.set('output Py', 1)
+        self.lum.set('output Pz', 1)
+        self.lum.set('output power', 1)
+
+
+
+        # Power Monitor Output Port
+        self.lum.addpower()
+        self.lum.set('name', "Power_" + Port_Names[1])
+        self.lum.set('monitor type', '2D X-normal')
+        self.lum.set("x", -GC_SectionLenght/2 - TaperLength/2)
+        self.lum.set('y', 0)
+        self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
+        self.lum.set("z", Hight/2)
+        self.lum.set("z span", z_Port_Span)
+        self.lum.set('output Px', 1)
+        self.lum.set('output Py', 1)
+        self.lum.set('output Pz', 1)
+        self.lum.set('output power', 1)
+
+
+        # Add Global Power and Freq Monitor
+        self.lum.addpower()
+        self.lum.set('name', "Global_Power_Monitor Z-normal")
+        self.lum.set('monitor type', '2D Z-normal')
+        self.lum.set("x min", -GC_SectionLenght/2 - TaperLength/2 - 1e-6)
+        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", WidthGC)
+        self.lum.set('z', Hight/2)
+        self.lum.set('output Px', 1)
+        self.lum.set('output Py', 1)
+        self.lum.set('output Pz', 1)
+        self.lum.set('output power', 1)
+
+
+        # Add Global Power and Freq Monitor Y-Axis
+        self.lum.addpower()
+        self.lum.set('name', "Global_Power_Monitor Y-normal")
+        self.lum.set('monitor type', '2D Y-normal')
+        self.lum.set("x min", -GC_SectionLenght/2 - TaperLength/2 - 1e-6)
+        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght + 1e-6)
+        self.lum.set("y", 0)
+        self.lum.set('z', Hight / 2)
+        self.lum.set("z span", z_Port_Span)
+        self.lum.set('output Px', 1)
+        self.lum.set('output Py', 1)
+        self.lum.set('output Pz', 1)
+        self.lum.set('output power', 1)
+
+        # Select Source
+        self.lum.select('FDTD::ports')
+        self.lum.set('source port', 'Output')
 
 
 
