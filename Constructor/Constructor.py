@@ -5011,7 +5011,8 @@ class Constructor:
        
         self.lum.addring()
         self.lum.set("name", "Substrate")
-        self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+        # self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+        self.lum.set("inner radius", 0)
         self.lum.set("outer radius",GCRadius +L + OutputLength)
         self.lum.set("x", 0)
         self.lum.set("y", 0)
@@ -5025,7 +5026,8 @@ class Constructor:
 
         self.lum.addring()
         self.lum.set("name", "Cladding")
-        self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+        # self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+        self.lum.set("inner radius", 0)
         self.lum.set("outer radius",GCRadius +L + OutputLength)
         self.lum.set("x", 0)
         self.lum.set("y", 0)
@@ -5041,7 +5043,8 @@ class Constructor:
 
         self.lum.addring()
         self.lum.set("name", "Si_Layer")
-        self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+        # self.lum.set("inner radius",GCRadius * np.cos(Theta*np.pi/180))
+        self.lum.set("inner radius", 0)
         self.lum.set("outer radius",GCRadius +L + OutputLength)
         self.lum.set("x", 0)
         self.lum.set("y", 0)
@@ -5175,91 +5178,165 @@ class Constructor:
         self.lum.addtogroup('SMF')
         self.lum.select('SMF')
         self.lum.set("x", TargetLength)
+        
+        
+        
+        # Triangle EQ for waveguide Width
+        x = abs(Hight / (np.cos((angle) * np.pi / 180)))  # in Radians
+        extention = np.sqrt(x ** 2 - Hight ** 2)
+        WG_W = WG_Width + 2 * extention
+        
+        
+        # Add Waveguide substrate
+        self.lum.addrect()
+        self.lum.set("name", "Waveguide_Substrate")
+        self.lum.set("y", 0)
+        self.lum.set("y span", WG_W)
+        self.lum.set("z",-SubstrateThickness/2)
+        self.lum.set("z span", SubstrateThickness)
+        self.lum.set("x", -GCRadius/2 )
+        self.lum.set("x span", 10e-6)
+        self.lum.set("material", Material[1])
 
-
-
-        # Add Taper
-        TaperNames = "Taper"
-        myscript = self.Script()
-        spanX = OutputLength+TargetLength + InputLlength
-        RadiusDiff = (GCRadius -  GCRadius * np.cos(Theta*np.pi/180) )/2
-
-        self.lum.addstructuregroup()
-        self.lum.set("name", TaperNames)
-        self.lum.set("construction group", 1)
-        self.lum.adduserprop("thickness", 2, Hight)
-        self.lum.adduserprop("angle_side", 0, angle)
-        self.lum.adduserprop("width_l", 2, WG_Width)
-        self.lum.adduserprop("width_r", 2, WidthGC)
-        self.lum.adduserprop("hfrac_ref", 0, 1)
-        self.lum.adduserprop("len", 2, TaperLength)
-        self.lum.adduserprop("material", 5, Material[0])
-        self.lum.adduserprop("index", 0, 1)
-        self.lum.set("script", myscript)
-        self.lum.set("x", -TargetLength/2 - RadiusDiff)
+      
+        # Add Waveguide 
+        names = ["Straight Waveguide"]
+        self.lum.addwaveguide()
+        self.lum.set("name", names[0])
+        self.lum.set("x", -GCRadius/2)
+        self.lum.set("y", 0)
         self.lum.set("z", Hight/2)
-        self.lum.set("y", 0)
+        self.lum.set("base width", WG_W)
+        self.lum.set("base height", Hight)
+        self.lum.set("base angle", 90 - angle)
+        pole = np.array([[-5e-6, 0], [5e-6, 0]])
+        self.lum.set("poles", pole)
+        self.lum.set("material", Material[0])
 
 
-        # Add Substrate for thge taper
-        TaperSubNames = "Taper Substrate"
-        myscript = self.Script()
-        self.lum.addstructuregroup()
-        self.lum.set("name", TaperSubNames)
-        self.lum.set("construction group", 1)
-        self.lum.adduserprop("thickness", 2, SubstrateThickness)
-        self.lum.adduserprop("angle_side", 0, 0)
-        self.lum.adduserprop("width_l", 2, WG_Width)
-        self.lum.adduserprop("width_r", 2, WidthGC)
-        self.lum.adduserprop("hfrac_ref", 0, 1)
-        self.lum.adduserprop("len", 2, TaperLength)
-        self.lum.adduserprop("material", 5, Material[1])
-        self.lum.adduserprop("index", 0, 1)
-        self.lum.set("script", myscript)
-        self.lum.set("x", -TargetLength/2 - RadiusDiff)
-        self.lum.set("z", -SubstrateThickness/2 )
-        self.lum.set("y", 0)
 
-        # Taper Cladding
-        TaperCladNames = "Taper Cladding"
-        myscript = self.Script()
-        myscript = myscript + 'set("alpha", 0.7);  \n'
-        myscript = myscript + 'set("override mesh order from material database",1);  \n'
-        myscript = myscript + 'set("mesh order", 3);  \n'
-        self.lum.addstructuregroup()
-        self.lum.set("name", TaperCladNames)
-        self.lum.set("construction group", 1)
-        self.lum.adduserprop("thickness", 2, 0.7e-6 + Hight)
-        self.lum.adduserprop("angle_side", 0, 0)
-        self.lum.adduserprop("width_l", 2, WG_Width)
-        self.lum.adduserprop("width_r", 2, WidthGC)
-        self.lum.adduserprop("hfrac_ref", 0, 1)
-        self.lum.adduserprop("len", 2, TaperLength)
-        self.lum.adduserprop("material", 5, Material[1])
-        self.lum.adduserprop("index", 0, 1)
-        self.lum.set("script", myscript)
-        self.lum.set("x", -TargetLength/2 - RadiusDiff)
-        self.lum.set("z", Hight / 2 + ( 0.7e-6)/2)
+        # Waveguide Cladding
+        self.lum.addrect()
+        self.lum.set("name", "Waveguide Cladding")
+        self.lum.set("material", Material[1])
         self.lum.set("y", 0)
+        self.lum.set("y span", WG_W)
+        self.lum.set("z min", 0)
+        self.lum.set("z max", Hight + 0.7e-6)
+        self.lum.set("x", -GCRadius/2 )
+        self.lum.set("x span", 10e-6)
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 3)
+        self.lum.set("alpha", 0.7)
+        
+        
+        self.lum.addrect()
+        self.lum.set("name", "Waveguide Si_Layer")
+        self.lum.set("x",-GCRadius/2 )
+        self.lum.set("x span", 10e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", WG_W)
+        self.lum.set("z", - SubstrateThickness -(2e-6) / 2)
+        self.lum.set("z span", 2e-6)
+        self.lum.set("material", Material[0])
 
-        # Add Si Layer on Bottom
-        TaperSiLayerNames = "Taper Si_Layer"
-        myscript = self.Script()
-        self.lum.addstructuregroup()
-        self.lum.set("name", TaperSiLayerNames)
-        self.lum.set("construction group", 1)
-        self.lum.adduserprop("thickness", 2, 2e-6)
-        self.lum.adduserprop("angle_side", 0, 0)
-        self.lum.adduserprop("width_l", 2, WG_Width)
-        self.lum.adduserprop("width_r", 2, WidthGC)
-        self.lum.adduserprop("hfrac_ref", 0, 1)
-        self.lum.adduserprop("len", 2, TaperLength)
-        self.lum.adduserprop("material", 5, Material[0])
-        self.lum.adduserprop("index", 0, 1)
-        self.lum.set("script", myscript)
-        self.lum.set("x", -TargetLength/2 - RadiusDiff)
-        self.lum.set("z", -(2e-6)/2 - SubstrateThickness)
-        self.lum.set("y", 0)
+        
+        
+
+        self.lum.select("Waveguide_Substrate")
+        self.lum.addtogroup('Input Waveguide')
+        self.lum.select("Straight Waveguide")
+        self.lum.addtogroup('Input Waveguide')
+        self.lum.select("Waveguide Cladding")
+        self.lum.addtogroup('Input Waveguide')
+        self.lum.select("Waveguide Si_Layer")
+        self.lum.addtogroup('Input Waveguide')
+
+
+
+
+        # # Add Taper
+        # TaperNames = "Taper"
+        # myscript = self.Script()
+        # spanX = OutputLength+TargetLength + InputLlength
+        # RadiusDiff = (GCRadius -  GCRadius * np.cos(Theta*np.pi/180) )/2
+        # 
+        # self.lum.addstructuregroup()
+        # self.lum.set("name", TaperNames)
+        # self.lum.set("construction group", 1)
+        # self.lum.adduserprop("thickness", 2, Hight)
+        # self.lum.adduserprop("angle_side", 0, angle)
+        # self.lum.adduserprop("width_l", 2, WG_Width)
+        # self.lum.adduserprop("width_r", 2, WidthGC)
+        # self.lum.adduserprop("hfrac_ref", 0, 1)
+        # self.lum.adduserprop("len", 2, TaperLength)
+        # self.lum.adduserprop("material", 5, Material[0])
+        # self.lum.adduserprop("index", 0, 1)
+        # self.lum.set("script", myscript)
+        # self.lum.set("x", -TargetLength/2 - RadiusDiff)
+        # self.lum.set("z", Hight/2)
+        # self.lum.set("y", 0)
+        #     
+        # 
+        # # Add Substrate for thge taper
+        # TaperSubNames = "Taper Substrate"
+        # myscript = self.Script()
+        # self.lum.addstructuregroup()
+        # self.lum.set("name", TaperSubNames)
+        # self.lum.set("construction group", 1)
+        # self.lum.adduserprop("thickness", 2, SubstrateThickness)
+        # self.lum.adduserprop("angle_side", 0, 0)
+        # self.lum.adduserprop("width_l", 2, WG_Width)
+        # self.lum.adduserprop("width_r", 2, WidthGC)
+        # self.lum.adduserprop("hfrac_ref", 0, 1)
+        # self.lum.adduserprop("len", 2, TaperLength)
+        # self.lum.adduserprop("material", 5, Material[1])
+        # self.lum.adduserprop("index", 0, 1)
+        # self.lum.set("script", myscript)
+        # self.lum.set("x", -TargetLength/2 - RadiusDiff)
+        # self.lum.set("z", -SubstrateThickness/2 )
+        # self.lum.set("y", 0)
+
+        # # Taper Cladding
+        # TaperCladNames = "Taper Cladding"
+        # myscript = self.Script()
+        # myscript = myscript + 'set("alpha", 0.7);  \n'
+        # myscript = myscript + 'set("override mesh order from material database",1);  \n'
+        # myscript = myscript + 'set("mesh order", 3);  \n'
+        # self.lum.addstructuregroup()
+        # self.lum.set("name", TaperCladNames)
+        # self.lum.set("construction group", 1)
+        # self.lum.adduserprop("thickness", 2, 0.7e-6 + Hight)
+        # self.lum.adduserprop("angle_side", 0, 0)
+        # self.lum.adduserprop("width_l", 2, WG_Width)
+        # self.lum.adduserprop("width_r", 2, WidthGC)
+        # self.lum.adduserprop("hfrac_ref", 0, 1)
+        # self.lum.adduserprop("len", 2, TaperLength)
+        # self.lum.adduserprop("material", 5, Material[1])
+        # self.lum.adduserprop("index", 0, 1)
+        # self.lum.set("script", myscript)
+        # self.lum.set("x", -TargetLength/2 - RadiusDiff)
+        # self.lum.set("z", Hight / 2 + ( 0.7e-6)/2)
+        # self.lum.set("y", 0)
+
+        # # Add Si Layer on Bottom
+        # TaperSiLayerNames = "Taper Si_Layer"
+        # myscript = self.Script()
+        # self.lum.addstructuregroup()
+        # self.lum.set("name", TaperSiLayerNames)
+        # self.lum.set("construction group", 1)
+        # self.lum.adduserprop("thickness", 2, 2e-6)
+        # self.lum.adduserprop("angle_side", 0, 0)
+        # self.lum.adduserprop("width_l", 2, WG_Width)
+        # self.lum.adduserprop("width_r", 2, WidthGC)
+        # self.lum.adduserprop("hfrac_ref", 0, 1)
+        # self.lum.adduserprop("len", 2, TaperLength)
+        # self.lum.adduserprop("material", 5, Material[0])
+        # self.lum.adduserprop("index", 0, 1)
+        # self.lum.set("script", myscript)
+        # self.lum.set("x", -TargetLength/2 - RadiusDiff)
+        # self.lum.set("z", -(2e-6)/2 - SubstrateThickness)
+        # self.lum.set("y", 0)
 
 
     
@@ -7651,7 +7728,7 @@ class Constructor:
         Device_Width = WidthGC + ( GCRadius + GC_SectionLenght + OutputLenght  - GCRadius)
         FDTD_ZSpan = GCThickness + CladdingThickness + SubstrateThickness
        
-
+        
 
 
 
@@ -7663,7 +7740,7 @@ class Constructor:
 
         # Adds a Finite-Difference Time-Domain  (FDTD) solver region to the MODE simulation environment.
         self.lum.addfdtd()
-        self.lum.set("x min", -GC_SectionLenght/2 - TaperLength/2 - 1e-6)
+        self.lum.set("x min", -GC_SectionLenght/2 - 10e-6 /  2 - 1e-6)
         self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
         self.lum.set("y", 0)
         self.lum.set("y span", Device_Width)
@@ -7696,7 +7773,7 @@ class Constructor:
         # Output Port
         self.lum.addport()
         self.lum.set('name', Port_Names[1])
-        self.lum.set("x", -GC_SectionLenght/2 - TaperLength/2)
+        self.lum.set("x", -GC_SectionLenght/2 - 8e-6 /2)
         self.lum.set('x span', CoreDiameter)
         self.lum.set('y', 0)
         self.lum.set('y span', y_Port_Span)
@@ -7729,9 +7806,9 @@ class Constructor:
         self.lum.addpower()
         self.lum.set('name', "Power_" + Port_Names[1])
         self.lum.set('monitor type', '2D X-normal')
-        self.lum.set("x", -GC_SectionLenght/2 - TaperLength/2)
+        self.lum.set("x", -GC_SectionLenght/2  - 8e-6 /2)
         self.lum.set('y', 0)
-        self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
+        self.lum.set('y span', y_Port_Span)
         self.lum.set("z", Hight/2)
         self.lum.set("z span", z_Port_Span)
         self.lum.set('output Px', 1)
@@ -7744,10 +7821,10 @@ class Constructor:
         self.lum.addpower()
         self.lum.set('name', "Global_Power_Monitor Z-normal")
         self.lum.set('monitor type', '2D Z-normal')
-        self.lum.set("x min", -GC_SectionLenght/2 - TaperLength/2 - 1e-6)
+        self.lum.set("x min", -GC_SectionLenght/2  - 10e-6 /2 - 1e-6)
         self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
         self.lum.set("y", 0)
-        self.lum.set("y span", WidthGC)
+        self.lum.set("y span", Device_Width)
         self.lum.set('z', Hight/2)
         self.lum.set('output Px', 1)
         self.lum.set('output Py', 1)
@@ -7759,7 +7836,7 @@ class Constructor:
         self.lum.addpower()
         self.lum.set('name', "Global_Power_Monitor Y-normal")
         self.lum.set('monitor type', '2D Y-normal')
-        self.lum.set("x min", -GC_SectionLenght/2 - TaperLength/2 - 1e-6)
+        self.lum.set("x min", -GC_SectionLenght/2  - 10e-6 /2 - 1e-6)
         self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght + 1e-6)
         self.lum.set("y", 0)
         self.lum.set('z', Hight / 2)
@@ -7768,6 +7845,18 @@ class Constructor:
         self.lum.set('output Py', 1)
         self.lum.set('output Pz', 1)
         self.lum.set('output power', 1)
+        
+        
+        # Add Refractive index Monitor 
+        self.lum.addindex()
+        self.lum.set('name', "Refractive Index Monitor Y-normal")
+        self.lum.set('monitor type', '2D Y-normal')
+        self.lum.set("x min", -GC_SectionLenght/2  - 10e-6 /2 - 1e-6)
+        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght + 1e-6)
+        self.lum.set("y", 0)
+        self.lum.set('z', Hight / 2)
+        self.lum.set("z span", z_Port_Span)
+        
 
         # Select Source
         self.lum.select('FDTD::ports')
