@@ -5117,8 +5117,8 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("z", 0)
             self.lum.set("z span", L)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", Theta)
+
+
 
             self.lum.addcircle()
             self.lum.set("name", "cladding")
@@ -5133,8 +5133,7 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("z", 0)
             self.lum.set("z span", L)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", Theta)
+
 
         else:
             CoreMaterial = Material[2]
@@ -5153,8 +5152,7 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("z", 0)
             self.lum.set("z span", L)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", Theta)
+
 
             self.lum.addcircle()
             self.lum.set("name", "cladding")
@@ -5169,15 +5167,15 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("z", 0)
             self.lum.set("z span", L)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", Theta)
+
 
         self.lum.select("core")
         self.lum.addtogroup('SMF')
         self.lum.select("cladding")
         self.lum.addtogroup('SMF')
         self.lum.select('SMF')
-        self.lum.set("x", TargetLength)
+        self.lum.set("x", -TargetLength/2 +GCRadius + core_radius) #TargetLength
+
         
         
         
@@ -5346,65 +5344,58 @@ class Constructor:
 
         Hight = Parameters["Hight GC"]
         EtchDepth = Parameters["Etch Depth GC"]
-        DutyCycle = Parameters["Duty Cycle"]
         Pitch = Parameters["Pitch GC"]
-        WidthGC_Gap = Parameters["Width GC Gap"]
         Material = Parameters["Material  GC"]
-        TargetLength = Parameters["Length GC"]
-        WidthGC = Parameters["Width GC"]
+
+
 
         # Make the Grating Coupler
-        import math
-        n_periods = math.floor(TargetLength / Pitch)
-        fill_width = Pitch * DutyCycle
-        DutyCycle = DutyCycle*100
-        etch_width = Pitch - ((DutyCycle/100)*Pitch)
-        L = 1 * Pitch
+        Gap = 1e-6 - Pitch
 
 
         # Create Ribs and Gaps
         # for i in range(1, 2 ):
         self.lum.addrect()
         self.lum.set("name", "Pitch")
-        self.lum.set("x min", WidthGC_Gap)
-        self.lum.set("x max", Pitch)
+        self.lum.set("x", 0)
+        self.lum.set("x span", Pitch)
         self.lum.set("z min", Hight - EtchDepth)
         self.lum.set("z max", Hight)
         self.lum.set("material", Material[0])
         self.lum.set("y", 0)
-        self.lum.set("y span", WidthGC)
+        self.lum.set("y span", 5e-6)
 
         #Add Bottom Layer of Material
         self.lum.addrect()
         self.lum.set("name", "lower layer")
-        self.lum.set("x min", 0)
-        self.lum.set("x max", L)
+        self.lum.set("x", 0)
+        self.lum.set("x span", Pitch + 2*Gap)
         self.lum.set("z min", 0)
         self.lum.set("z max", Hight - EtchDepth)
         self.lum.set("material", Material[0])
         self.lum.set("y", 0)
-        self.lum.set("y span", WidthGC)
+        self.lum.set("y span", 5e-6)
 
         # Add Substrate
         self.lum.addrect()
         self.lum.set("name", "Substrate")
-        self.lum.set("x",  L / 2)
-        self.lum.set("x span", L)
+        self.lum.set("x",  0)
+        self.lum.set("x span", Pitch + 2*Gap)
         self.lum.set("z", -(1e-6) / 2)
         self.lum.set("z span", 1e-6)
         self.lum.set("y", 0)
-        self.lum.set("y span", WidthGC)
+        self.lum.set("y span", 5e-6)
         self.lum.set("material", Material[1])
 
         # Add Cladding
         self.lum.addrect()
         self.lum.set("name", "Cladding")
-        self.lum.set("x", L / 2)
-        self.lum.set("x span", L)
+        self.lum.set("x", 0)
+        self.lum.set("x span", Pitch + 2*Gap)
         self.lum.set("z min", Hight - EtchDepth)
         self.lum.set("z max", Hight + 0.7e-6)
         self.lum.set("y", 0)
-        self.lum.set("y span", WidthGC)
+        self.lum.set("y span", 5e-6)
         self.lum.set("material", Material[1])
         self.lum.set('override mesh order from material database', 1)
         self.lum.set("mesh order", 4)
@@ -5786,7 +5777,7 @@ class Constructor:
         elif Taper == True:
 
             # Device specifications
-            Device_Width = 2*TaperLength + WaveLength * 2  # MMI_Width
+            Device_Width = 2*TaperWidth + WaveLength * 2  # MMI_Width
 
             max_slabH = Slab_Height
             MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
@@ -5796,7 +5787,7 @@ class Constructor:
             self.lum.addfdtd()
             self.lum.set("x", 0)
             self.lum.set("x span", TaperLength)
-            self.lum.set("y", TaperLength/4)
+            self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set('simulation temperature', 273.15 + 20)
             self.lum.set("z", Substrate_Height)
@@ -5847,7 +5838,7 @@ class Constructor:
 
             # Add Movie monitor
             self.lum.addmovie()
-            self.lum.set("y", TaperLength/4)
+            self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set("z", MonitorHeight)
             self.lum.set("x", 0)
@@ -5856,7 +5847,7 @@ class Constructor:
             # Add Power and Freq Monitor
             self.lum.addpower()
             self.lum.set('monitor type', '2D Z-normal')
-            self.lum.set("y", TaperLength/4)
+            self.lum.set("y",0)
             self.lum.set("y span", Device_Width)
             self.lum.set("x", 0)
             self.lum.set("x span", TaperLength)
@@ -7736,25 +7727,38 @@ class Constructor:
         # Define Ports
         Port_Names = ["Input_SMF_Port", "Output"]
 
-
+        self.lum.select("SMF")
+        fiber_xpos = self.lum.get("x")
 
         # Adds a Finite-Difference Time-Domain  (FDTD) solver region to the MODE simulation environment.
         self.lum.addfdtd()
         self.lum.set("x min", -GC_SectionLenght/2 - 10e-6 /  2 - 1e-6)
-        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
+        # self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
+        self.lum.set("x max",  fiber_xpos + CoreDiameter )
         self.lum.set("y", 0)
-        self.lum.set("y span", Device_Width)
+        self.lum.set("y span", Device_Width/2)
         self.lum.set("z", 0)
         self.lum.set("z span",  (ZSpan / 2))
         self.lum.set('simulation temperature', 273.15 + 20)
         self.lum.set('z min bc', 'PML')
         self.lum.set('z max bc', 'PML')
+        self.lum.set('y min bc', 'Anti-Symmetric')
+        self.lum.set('y max bc', 'PML')
         self.lum.set('mesh type', 'auto non-uniform')
         self.lum.set('min mesh step', x_res)
         self.lum.set('set simulation bandwidth', 0)
         self.lum.set('global source center wavelength', WaveLength)
         self.lum.set('global source wavelength span', 0)
 
+        # Detect Fiber position for Port exact aligment
+        self.lum.select("SMF")
+        fiber_xpos = self.lum.get("x")
+        fiber_ypos = self.lum.get("y")
+        fiber_zpos = self.lum.get("z")
+        self.lum.select("SMF::core")
+        fiber_core_diameter = 2 * self.lum.get("radius")
+        fiber_core_index = self.lum.get("index")
+        fiber_theta = Theta
 
         # Faser Port
         self.lum.addport()
@@ -7763,7 +7767,7 @@ class Constructor:
         self.lum.set('direction', "Backward")
         self.lum.set('mode selection', Mode)
         self.lum.set('theta', Theta)
-        self.lum.set("x", GC_SectionLenght)
+        self.lum.set("x", fiber_xpos)
         self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
         self.lum.set('y', 0)
         self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
@@ -7790,7 +7794,7 @@ class Constructor:
         self.lum.addpower()
         self.lum.set('name', "Power_"+ Port_Names[0])
         self.lum.set('monitor type', '2D Z-normal')
-        self.lum.set("x", GC_SectionLenght)
+        self.lum.set("x", fiber_xpos)
         self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
         self.lum.set('y', 0)
         self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
@@ -7822,9 +7826,10 @@ class Constructor:
         self.lum.set('name', "Global_Power_Monitor Z-normal")
         self.lum.set('monitor type', '2D Z-normal')
         self.lum.set("x min", -GC_SectionLenght/2  - 10e-6 /2 - 1e-6)
-        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
+        # self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
+        self.lum.set("x max",  fiber_xpos + CoreDiameter )
         self.lum.set("y", 0)
-        self.lum.set("y span", Device_Width)
+        self.lum.set("y span", Device_Width/2)
         self.lum.set('z', Hight/2)
         self.lum.set('output Px', 1)
         self.lum.set('output Py', 1)
@@ -7837,9 +7842,10 @@ class Constructor:
         self.lum.set('name', "Global_Movie_Monitor Z-normal")
         self.lum.set('monitor type', '2D Z-normal')
         self.lum.set("x min", -GC_SectionLenght/2  - 10e-6 /2 - 1e-6)
-        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
+        # self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
+        self.lum.set("x max",  fiber_xpos + CoreDiameter )
         self.lum.set("y", 0)
-        self.lum.set("y span", Device_Width)
+        self.lum.set("y span", Device_Width/2)
         self.lum.set('z', 0)
  
 
@@ -7849,7 +7855,8 @@ class Constructor:
         self.lum.set('name', "Global_Power_Monitor Y-normal")
         self.lum.set('monitor type', '2D Y-normal')
         self.lum.set("x min", -GC_SectionLenght/2  - 10e-6 /2 - 1e-6)
-        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght + 1e-6)
+        # self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght + 1e-6)
+        self.lum.set("x max",  fiber_xpos + CoreDiameter )
         self.lum.set("y", 0)
         self.lum.set('z', Hight / 2)
         self.lum.set("z span", z_Port_Span)
@@ -7864,7 +7871,8 @@ class Constructor:
         self.lum.set('name', "Global_Movie_Monitor Y-normal")
         self.lum.set('monitor type', '2D Y-normal')
         self.lum.set("x min", -GC_SectionLenght/2  - 10e-6 /2 - 1e-6)
-        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght + 1e-6)
+        # self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght + 1e-6)
+        self.lum.set("x max",  fiber_xpos + CoreDiameter )
         self.lum.set("y", 0)
         self.lum.set('z', Hight / 2)
         self.lum.set("z span", 2e-6)
@@ -7876,7 +7884,8 @@ class Constructor:
         self.lum.set('name', "Refractive Index Monitor Y-normal")
         self.lum.set('monitor type', '2D Y-normal')
         self.lum.set("x min", -GC_SectionLenght/2  - 10e-6 /2 - 1e-6)
-        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght + 1e-6)
+        # self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght + 1e-6)
+        self.lum.set("x max",  fiber_xpos + CoreDiameter )
         self.lum.set("y", 0)
         self.lum.set('z', Hight / 2)
         self.lum.set("z span", z_Port_Span)
@@ -7884,7 +7893,7 @@ class Constructor:
 
         # Select Source
         self.lum.select('FDTD::ports')
-        self.lum.set('source port', 'Output')
+        self.lum.set('source port', 'Input_SMF_Port')
 
 
 
@@ -9474,13 +9483,12 @@ class Constructor:
         Pitch = Parameters["Pitch GC"]
         dy = Parameters['y res']
         dz = Parameters['z res']
-        DutyCycle = Parameters["Duty Cycle"]
-        Slab_Height = 1e-6
         WaveLength = Parameters['Wavelength']
 
         # FDE Dimensions
+        Gap = 1e-6 - Pitch
         WG_Mid = GC_Height / 2
-        # Pitch/2 + Pitch*DutyCycle
+
 
         # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
         self.lum.addfde()
@@ -9497,10 +9505,10 @@ class Constructor:
         self.lum.set('fit materials with multi-coefficient model', 1)
         self.lum.set('wavelength start', 0.4e-6)
         self.lum.set('wavelength stop', 2e-6)
-        self.lum.set("y", Pitch/2 + Pitch/4)
-        self.lum.set("y min", -Pitch-0.11e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", Pitch+Gap)
         self.lum.set('z', WG_Mid)
-        self.lum.set('z span', GC_Height)
+        self.lum.set('z span',1e-6)
         self.lum.set("wavelength", WaveLength)
 
 
