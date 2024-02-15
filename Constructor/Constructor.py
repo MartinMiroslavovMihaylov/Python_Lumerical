@@ -5250,7 +5250,27 @@ class Constructor:
         self.lum.select("Waveguide Si_Layer")
         self.lum.addtogroup('Input Waveguide')
 
-
+        # global substrate and Si-Layer
+        self.lum.addrect()
+        self.lum.set("name", "SubstrateGlobal")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 120e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 120e-6)
+        self.lum.set("z", -SubstrateThickness/2)
+        self.lum.set("z span", SubstrateThickness)
+        self.lum.set("material", Material[1])
+        
+        self.lum.addrect()
+        self.lum.set("name", "Si_Layer Global")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 120e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 120e-6)
+        self.lum.set("z", - SubstrateThickness -(2e-6) / 2)
+        self.lum.set("z span", 2e-6)
+        self.lum.set("material", Material[0])
+        
 
 
         # # Add Taper
