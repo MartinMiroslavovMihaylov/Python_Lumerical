@@ -7830,6 +7830,18 @@ class Constructor:
         self.lum.set('output Py', 1)
         self.lum.set('output Pz', 1)
         self.lum.set('output power', 1)
+        
+        
+        # Add Global Power and Freq Monitor
+        self.lum.addmovie()
+        self.lum.set('name', "Global_Movie_Monitor Z-normal")
+        self.lum.set('monitor type', '2D Z-normal')
+        self.lum.set("x min", -GC_SectionLenght/2  - 10e-6 /2 - 1e-6)
+        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght +1e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", Device_Width)
+        self.lum.set('z', 0)
+ 
 
 
         # Add Global Power and Freq Monitor Y-Axis
@@ -7845,6 +7857,18 @@ class Constructor:
         self.lum.set('output Py', 1)
         self.lum.set('output Pz', 1)
         self.lum.set('output power', 1)
+        
+        
+        # Add Global Movie Monitor Y-Axis
+        self.lum.addmovie()
+        self.lum.set('name', "Global_Movie_Monitor Y-normal")
+        self.lum.set('monitor type', '2D Y-normal')
+        self.lum.set("x min", -GC_SectionLenght/2  - 10e-6 /2 - 1e-6)
+        self.lum.set("x max",  GCRadius + GC_SectionLenght/2 + OutputLenght + 1e-6)
+        self.lum.set("y", 0)
+        self.lum.set('z', Hight / 2)
+        self.lum.set("z span", 2e-6)
+
         
         
         # Add Refractive index Monitor 
@@ -9450,11 +9474,13 @@ class Constructor:
         Pitch = Parameters["Pitch GC"]
         dy = Parameters['y res']
         dz = Parameters['z res']
+        DutyCycle = Parameters["Duty Cycle"]
         Slab_Height = 1e-6
         WaveLength = Parameters['Wavelength']
 
         # FDE Dimensions
         WG_Mid = GC_Height / 2
+        # Pitch/2 + Pitch*DutyCycle
 
         # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
         self.lum.addfde()
@@ -9471,10 +9497,10 @@ class Constructor:
         self.lum.set('fit materials with multi-coefficient model', 1)
         self.lum.set('wavelength start', 0.4e-6)
         self.lum.set('wavelength stop', 2e-6)
-        self.lum.set("y max", Pitch+1e-6)
-        self.lum.set("y min", -Pitch-1e-6)
+        self.lum.set("y", Pitch/2 + Pitch/4)
+        self.lum.set("y min", -Pitch-0.11e-6)
         self.lum.set('z', WG_Mid)
-        self.lum.set('z span', 2e-6)
+        self.lum.set('z span', GC_Height)
         self.lum.set("wavelength", WaveLength)
 
 
