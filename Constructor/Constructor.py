@@ -7758,7 +7758,7 @@ class Constructor:
         self.lum.set("y", 0)
         self.lum.set("y span", Device_Width/2)
         self.lum.set("z", 0)
-        self.lum.set("z span",  (ZSpan / 2))
+        self.lum.set("z span",  SubstrateThickness + 2e-6)
         self.lum.set('simulation temperature', 273.15 + 20)
         self.lum.set('z min bc', 'PML')
         self.lum.set('z max bc', 'PML')
@@ -7791,7 +7791,8 @@ class Constructor:
         self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
         self.lum.set('y', 0)
         self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
-        self.lum.set("z", (ZSpan / 4) - 0.2e-6)
+        self.lum.set("z", (SubstrateThickness + 2e-6) / 2 )
+        self.lum.set("rotation offset", ZSpan / 4)
 
 
         # Output Port
