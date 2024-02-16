@@ -9573,7 +9573,23 @@ class Constructor:
         '''
         self.lum.save('SimRun1')
         self.lum.run()
-
+        
+        
+       
+    def StartFDTDOptimizerRingGratingCoupler(self, Tranmission_on_Port, pos):
+   
+        self.lum.select("SMF")
+        self.lum.set("x", pos)
+        self.lum.select("FDTD::ports::Input_SMF_Port")
+        self.lum.set("x", pos)
+        self.lum.select("Power_Input_SMF_Port")
+        self.lum.set("x", pos)
+        self.lum.save('SimRun1')
+        self.lum.run()
+        data = np.abs(self.lum.getresult("FDTD::ports::" + str(Tranmission_on_Port), 'T')["T"])
+        self.lum.switchtolayout()
+        return data
+  
 
 
 
@@ -9592,6 +9608,7 @@ class Constructor:
         self.lum.save('SimRun1')
         self.lum.run()
         self.lum.findmodes()
+        
 
 
 
