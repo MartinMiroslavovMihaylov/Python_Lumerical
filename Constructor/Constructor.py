@@ -225,6 +225,10 @@ class Constructor:
             self.Struct = "GratingCoupler"
             self.setGratingCouplerFDTDSolver(Parameters)
             self.SolverInfo["Simulated Object"] = "GratingCoupler"
+        elif Structure == "RingGratingCoupler":
+            self.Struct = "RingGratingCoupler"
+            self.setRingGratingCouplerFDTDSolver(Parameters)
+            self.SolverInfo["Simulated Object"] = "RingGratingCoupler"   
         else:
             raise ValueError("Invalid Strucute for FDTD Solver is selected. Possible Strucures are MMI2x1 or MMI2x2")
 
