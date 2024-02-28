@@ -5163,139 +5163,6 @@ class Constructor:
 
 
 
-
-
-
-
-
-    #
-    #
-    #
-    # def GratingCouplerCurve(self, Parameters):
-    #
-    #     # simplify variable names by removing spaces
-    #     Index = Parameters["Index GC"]
-    #     TargetLength = Parameters["Length GC"]
-    #     Hight = Parameters["Hight GC"]
-    #     EtchDepth = Parameters["Etch Depth GC"]
-    #     DutyCycle = Parameters["Duty Cycle"]
-    #     Pitch = Parameters["Pitch GC"]
-    #     LengthGC = Parameters["Length Object GC"]
-    #     Material = Parameters["Material  GC"]
-    #     M = Parameters["M Parameter"]
-    #     YSpan = Parameters["Y Span GC"]
-    #     WG_Length = Parameters["WG Length"]
-    #     WG_Width = Parameters["WG Width"]
-    #     Radius = Parameters["Pitch Radius GC"]
-    #     CoreDiameter = Parameters["SMF Core Diameter"]
-    #     CladdingDiameter = Parameters["SMF Cladding Diameter"]
-    #     ZSpan = Parameters["SMF Z Spam"]
-    #     Theta = Parameters["SMF Theta"]
-    #     CoreIndex = Parameters["SMF Core Index"]
-    #     CladdingIndex = Parameters["SMF Cladding Index"]
-    #
-    #     # Create the MMI L2 Tapers for the Trapezoid
-    #     GCNames = "Grating Coupler"
-    #     FiberName = "SMF"
-    #     myscript = self.Grating_Coupler_curved_Script()
-    #     SMF_Script = self.Fiber_Script()
-    #
-    #
-    #     self.lum.addstructuregroup()
-    #     self.lum.set("name", GCNames)
-    #     self.lum.set("construction group", 1)
-    #     self.lum.adduserprop("target length", 2, TargetLength)
-    #     self.lum.adduserprop("h total", 2, Hight)
-    #     self.lum.adduserprop("etch depth", 2, EtchDepth)
-    #     self.lum.adduserprop("duty cycle", 0, DutyCycle)
-    #     self.lum.adduserprop("pitch", 2, Pitch)
-    #     self.lum.adduserprop("radius", 2, Radius)
-    #     self.lum.adduserprop("y span", 2, YSpan)
-    #     self.lum.adduserprop("L extra", 2, LengthGC)
-    #     self.lum.adduserprop("waveguide width", 2, WG_Width)
-    #     self.lum.adduserprop("waveguide length", 2, WG_Length)
-    #     self.lum.adduserprop("index", 0, Index)
-    #     self.lum.adduserprop("material", 5, Material[0])
-    #     self.lum.adduserprop("m", 2, M)
-    #     self.lum.set("script", myscript)
-    #
-    #
-    #
-    #     self.lum.addstructuregroup()
-    #     self.lum.set("name", FiberName)
-    #     self.lum.set("construction group", 1)
-    #     self.lum.adduserprop("core diameter", 2, TargetLength)
-    #     self.lum.adduserprop("cladding diameter", 2, Hight)
-    #     self.lum.adduserprop("z span", 2, ZSpan)
-    #     self.lum.adduserprop("theta", 0, Theta)
-    #     self.lum.adduserprop("core index", 0, CoreIndex)
-    #     self.lum.adduserprop("cladding index", 0, CladdingIndex)
-    #     self.lum.set("script", SMF_Script)
-    #
-    #
-    #
-
-
-
-
-
-
-        # # simplify variable names by removing spaces
-        # WidthGC = Parameters["Width GC"]
-        # SideWallOxideThickness = Parameters["SideWall Oxide Thickness"]
-        # SideWallCoating = Parameters["Sidewall Coating GC"]
-        # ThicknessCoating = Parameters["Thickness Coating"]
-        # ZSpan = Parameters["Z Span GC"]
-        # Period = Parameters["Period GC"]
-        # SubstrateThickness = Parameters["Substrate Thickness GC"]
-        # Material = Parameters["Material  GC"]
-        # ToothAngle = Parameters["Tooth Angle GC"]
-        # DutyCycle = Parameters["Duty Cycle"]
-        # n_periods = Parameters["Grating Period"]
-        # Coating = Parameters["Coating GC"]
-        # IndexCoating = Parameters["Index Coating"]
-        # IndexGrating = Parameters["Index Grating"]
-        #
-        #
-
-        #
-        # # Create the MMI L2 Tapers for the Trapezoid
-        # GCNames = "Grating Coupler"
-        # myscript = self.Grating_Script()
-        #
-        # self.lum.addstructuregroup()
-        # self.lum.set("name", GCNames)
-        # self.lum.set("construction group", 1)
-        # self.lum.adduserprop("add coating", 0, Coating)
-        # self.lum.adduserprop("duty cycle", 0, DutyCycle)
-        # self.lum.adduserprop("index coating", 0, IndexCoating)
-        # self.lum.adduserprop("index grating", 0, IndexGrating)
-        # self.lum.adduserprop("mat coating", 5, Material[1])
-        # self.lum.adduserprop("mat grating", 5, Material[0])
-        # self.lum.adduserprop("n periods", 0, n_periods)
-        # self.lum.adduserprop("period", 2, Period)
-        # self.lum.adduserprop("sidewall oxide thickness", 2, SideWallOxideThickness)
-        # self.lum.adduserprop("specify sidewall oxide coating", 0, SideWallCoating)
-        # self.lum.adduserprop("substrate thickness", 2, SubstrateThickness)
-        # self.lum.adduserprop("thickness coating", 2, ThicknessCoating)
-        # self.lum.adduserprop("tooth angle", 0, ToothAngle)
-        # self.lum.adduserprop("width", 2, WidthGC)
-        # self.lum.adduserprop("z span grating", 2, ZSpan)
-        # self.lum.set("script", myscript)
-        # self.lum.set('first axis','y')
-        # self.lum.set('rotation 1',90)
-        # self.lum.set('second axis', 'x')
-        # self.lum.set('rotation 2', 90)
-        #
-        #
-        # # TODO: Add Waveguide and Taper to Structure
-        #
-
-
-
-
-
-
     # =============================================================================
     # Functions for the solvers
     # =============================================================================
@@ -7195,47 +7062,55 @@ class Constructor:
         GCThickness = Parameters["Hight GC"]
         CladdingThickness = 0.7e-6
         
-        
-
-
 
         # Device specifications
         Device_Length = GC_SectionLenght + InputLenght + OutputLenght + TaperLength
         FDTD_ZSpan = GCThickness + CladdingThickness + SubstrateThickness
 
 
-
-
-
         # Define Ports
         Port_Names = ["Input_SMF_Port", "Output"]
-
-
-
+       
+        
+        self.lum.select("SMF")
+        fiber_xpos = self.lum.get("x")
 
 
         if Taper == True:
 
             # Adds a Finite-Difference Time-Domain  (FDTD) solver region to the MODE simulation environment.
             self.lum.addfdtd()
-            self.lum.set("x", -TaperLength / 2)
-            self.lum.set("x span", Device_Length)
+            self.lum.set("x min", -GC_SectionLenght/2 - InputLenght - TaperLength)
+            self.lum.set("x max",  fiber_xpos + CoreDiameter )
+            # self.lum.set("x", -TaperLength / 2)
+            # self.lum.set("x span", Device_Length)
             self.lum.set("y", 0)
             self.lum.set("y span", WidthGC)
             self.lum.set("z", 0)
             self.lum.set("z span",  (ZSpan / 2))
-            # self.lum.set("z min", -1e-6)
-            # self.lum.set("z max", ZSpan / 2)
-            # self.lum.set("z min", -1e-6)
-            # self.lum.set("z max", ZSpan / 2)
             self.lum.set('simulation temperature', 273.15 + 20)
             self.lum.set('z min bc', 'PML')
             self.lum.set('z max bc', 'PML')
+            self.lum.set('y min bc', 'Anti-Symmetric')
+            self.lum.set('y max bc', 'PML')
             self.lum.set('mesh type', 'auto non-uniform')
             self.lum.set('min mesh step', x_res)
             self.lum.set('set simulation bandwidth', 0)
             self.lum.set('global source center wavelength', WaveLength)
             self.lum.set('global source wavelength span', 0)
+            
+            
+            # Detect Fiber position for Port exact aligment
+            self.lum.select("SMF")
+            fiber_xpos = self.lum.get("x")
+            fiber_ypos = self.lum.get("y")
+            fiber_zpos = self.lum.get("z")
+            self.lum.select("SMF::core")
+            fiber_core_diameter = 2 * self.lum.get("radius")
+            fiber_core_index = self.lum.get("index")
+            fiber_theta = Theta
+
+    
 
             # Faser Port
             self.lum.addport()
@@ -7244,11 +7119,15 @@ class Constructor:
             self.lum.set('direction', "Backward")
             self.lum.set('mode selection', Mode)
             self.lum.set('theta', Theta)
-            self.lum.set("x", 0)
+            self.lum.set("x", fiber_xpos)
             self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
+            # self.lum.set("x", 0)
+            # self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
             self.lum.set('y', 0)
             self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
-            self.lum.set("z", (ZSpan / 4) - 0.2e-6)
+            self.lum.set("rotation offset", ZSpan / 4)
+            self.lum.set("z", (SubstrateThickness + 2e-6) / 2 )
+
 
             # Output Port
             self.lum.addport()
@@ -7264,13 +7143,13 @@ class Constructor:
             self.lum.set('mode selection', Mode)
 
 
-
-
             # Power Monitor SMF Port
             self.lum.addpower()
             self.lum.set('name', "Power_"+ Port_Names[0])
             self.lum.set('monitor type', '2D Z-normal')
-            self.lum.set("x", 0)
+            # self.lum.set("x", 0)
+            # self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
+            self.lum.set("x", fiber_xpos)
             self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
             self.lum.set('y', 0)
             self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
@@ -7295,14 +7174,14 @@ class Constructor:
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
-
-
-            # Add Global Power and Freq Monitor
+            
+            
+            # Add Global Power and Freq Monitor Z-Normal
             self.lum.addpower()
             self.lum.set('name', "Global_Power_Monitor Z-normal")
             self.lum.set('monitor type', '2D Z-normal')
-            self.lum.set("x", -TaperLength/2)
-            self.lum.set("x span", Device_Length)
+            self.lum.set("x min", -GC_SectionLenght/2 - InputLenght - TaperLength)
+            self.lum.set("x max",  fiber_xpos + CoreDiameter )
             self.lum.set("y", 0)
             self.lum.set("y span", WidthGC)
             self.lum.set('z', Hight/2)
@@ -7310,14 +7189,24 @@ class Constructor:
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
-
-
+        
+        
+            # Add Global Movie Monitor Z-Normal
+            self.lum.addmovie()
+            self.lum.set('name', "Global_Movie_Monitor Z-normal")
+            self.lum.set('monitor type', '2D Z-normal')
+            self.lum.set("x min", -GC_SectionLenght/2 - InputLenght - TaperLength)
+            self.lum.set("x max",  fiber_xpos + CoreDiameter )
+            self.lum.set("y", 0)
+            self.lum.set("y span", WidthGC)
+            self.lum.set('z', 0)
+            
             # Add Global Power and Freq Monitor Y-Axis
             self.lum.addpower()
             self.lum.set('name', "Global_Power_Monitor Y-normal")
             self.lum.set('monitor type', '2D Y-normal')
-            self.lum.set("x", -TaperLength / 2)
-            self.lum.set("x span", Device_Length)
+            self.lum.set("x min", -GC_SectionLenght/2 - InputLenght - TaperLength)
+            self.lum.set("x max",  fiber_xpos + CoreDiameter )
             self.lum.set("y", 0)
             self.lum.set('z', Hight / 2)
             self.lum.set("z span", z_Port_Span)
@@ -7325,6 +7214,18 @@ class Constructor:
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
+        
+        
+            # Add Global Movie Monitor Y-Axis
+            self.lum.addmovie()
+            self.lum.set('name', "Global_Movie_Monitor Y-normal")
+            self.lum.set('monitor type', '2D Y-normal')
+            self.lum.set("x min", -GC_SectionLenght/2 - InputLenght - TaperLength)
+            self.lum.set("x max",  fiber_xpos + CoreDiameter )
+            self.lum.set("y", 0)
+            self.lum.set('z', Hight / 2)
+            self.lum.set("z span", 2e-6)
+
 
             # Select Source
             self.lum.select('FDTD::ports')
@@ -7334,23 +7235,36 @@ class Constructor:
 
             # Adds a Finite-Difference Time-Domain  (FDTD) solver region to the MODE simulation environment.
             self.lum.addfdtd()
-            self.lum.set("x", 0)
-            self.lum.set("x span", Device_Length-TaperLength)
+            self.lum.set("x min", -GC_SectionLenght/2 - InputLenght )
+            self.lum.set("x max",  fiber_xpos + CoreDiameter )
             self.lum.set("y", 0)
             self.lum.set("y span", WidthGC)
             self.lum.set("z", 0)
             self.lum.set("z span", (ZSpan / 2))
-            # self.lum.set("z min", -1e-6)
-            # self.lum.set("z max", ZSpan / 2)
             self.lum.set('simulation temperature', 273.15 + 20)
             self.lum.set('z min bc', 'PML')
             self.lum.set('z max bc', 'PML')
+            self.lum.set('y min bc', 'Anti-Symmetric')
+            self.lum.set('y max bc', 'PML')
             self.lum.set('mesh type', 'auto non-uniform')
             self.lum.set('min mesh step', x_res)
             self.lum.set('set simulation bandwidth', 0)
             self.lum.set('global source center wavelength', WaveLength)
             self.lum.set('global source wavelength span', 0)
-
+            
+            
+            
+            # Detect Fiber position for Port exact aligment
+            self.lum.select("SMF")
+            fiber_xpos = self.lum.get("x")
+            fiber_ypos = self.lum.get("y")
+            fiber_zpos = self.lum.get("z")
+            self.lum.select("SMF::core")
+            fiber_core_diameter = 2 * self.lum.get("radius")
+            fiber_core_index = self.lum.get("index")
+            fiber_theta = Theta
+            
+            
             # Faser Port
             self.lum.addport()
             self.lum.set('name', Port_Names[0])
@@ -7358,11 +7272,13 @@ class Constructor:
             self.lum.set('direction', "Backward")
             self.lum.set('mode selection', Mode)
             self.lum.set('theta', Theta)
-            self.lum.set("x", 0)
+            self.lum.set("x", fiber_xpos)
             self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
             self.lum.set('y', 0)
             self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
-            self.lum.set("z", (ZSpan / 4) - 0.2e-6)
+            self.lum.set("rotation offset", ZSpan / 4)
+            self.lum.set("z", (ZSpan / 4) - 0.3e-6)
+
 
             # Output Port
             self.lum.addport()
@@ -7377,11 +7293,12 @@ class Constructor:
             self.lum.set('direction', "Forward")
             self.lum.set('mode selection', Mode)
 
+
             # Power Monitor SMF Port
             self.lum.addpower()
             self.lum.set('name', "Power_" + Port_Names[0])
             self.lum.set('monitor type', '2D Z-normal')
-            self.lum.set("x", 0)
+            self.lum.set("x", fiber_xpos)
             self.lum.set('x span', CoreDiameter + CoreDiameter / 2)
             self.lum.set('y', 0)
             self.lum.set('y span', CoreDiameter + CoreDiameter / 2)
@@ -7390,6 +7307,7 @@ class Constructor:
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
+
 
             # Power Monitor Output Port
             self.lum.addpower()
@@ -7404,27 +7322,41 @@ class Constructor:
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
-
-            # Add Global Power and Freq Monitor
+            
+            
+            
+            # Add Global Power and Freq Monitor Z-Normal
             self.lum.addpower()
             self.lum.set('name', "Global_Power_Monitor Z-normal")
             self.lum.set('monitor type', '2D Z-normal')
-            self.lum.set("x", 0)
-            self.lum.set("x span", Device_Length- TaperLength)
+            self.lum.set("x min", -GC_SectionLenght/2 - InputLenght)
+            self.lum.set("x max",  fiber_xpos + CoreDiameter )
             self.lum.set("y", 0)
             self.lum.set("y span", WidthGC)
-            self.lum.set('z', Hight / 2)
+            self.lum.set('z', Hight/2)
             self.lum.set('output Px', 1)
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
-
-            # Power Monitor Y Direction
+        
+        
+            # Add Global Movie Monitor Z-Normal
+            self.lum.addmovie()
+            self.lum.set('name', "Global_Movie_Monitor Z-normal")
+            self.lum.set('monitor type', '2D Z-normal')
+            self.lum.set("x min", -GC_SectionLenght/2 - InputLenght)
+            self.lum.set("x max",  fiber_xpos + CoreDiameter )
+            self.lum.set("y", 0)
+            self.lum.set("y span", WidthGC)
+            self.lum.set('z', 0)
+            
+            
+            # Add Global Power and Freq Monitor Y-Axis
             self.lum.addpower()
             self.lum.set('name', "Global_Power_Monitor Y-normal")
             self.lum.set('monitor type', '2D Y-normal')
-            self.lum.set("x", 0)
-            self.lum.set("x span", Device_Length - TaperLength)
+            self.lum.set("x min", -GC_SectionLenght/2 - InputLenght)
+            self.lum.set("x max",  fiber_xpos + CoreDiameter )
             self.lum.set("y", 0)
             self.lum.set('z', Hight / 2)
             self.lum.set("z span", z_Port_Span)
@@ -7432,6 +7364,20 @@ class Constructor:
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
+        
+        
+            # Add Global Movie Monitor Y-Axis
+            self.lum.addmovie()
+            self.lum.set('name', "Global_Movie_Monitor Y-normal")
+            self.lum.set('monitor type', '2D Y-normal')
+            self.lum.set("x min", -GC_SectionLenght/2 - InputLenght)
+            self.lum.set("x max",  fiber_xpos + CoreDiameter )
+            self.lum.set("y", 0)
+            self.lum.set('z', Hight / 2)
+            self.lum.set("z span", 2e-6)
+            
+
+ 
 
             # Select Source
             self.lum.select('FDTD::ports')
