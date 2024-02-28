@@ -7229,7 +7229,7 @@ class Constructor:
 
             # Select Source
             self.lum.select('FDTD::ports')
-            self.lum.set('source port', 'Output')
+            self.lum.set('source port', 'Input_SMF_Port')
 
         else:
 
@@ -7381,7 +7381,7 @@ class Constructor:
 
             # Select Source
             self.lum.select('FDTD::ports')
-            self.lum.set('source port', 'Output')
+            self.lum.set('source port', 'Input_SMF_Port')
             
          
 
