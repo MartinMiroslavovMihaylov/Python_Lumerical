@@ -870,26 +870,37 @@ class Constructor:
                 self.lum.set("x", WG_Length / 2)
                 self.lum.set("x span", WG_Length + WG_Width)
                 self.lum.set("material", MaterialSub)
+                
+                
+                if Slab_Height != 0:
+                    
+                    # creating the thin film
+                    min_slabH = max_subH
+                    max_slabH = max_subH + Slab_Height
 
-                # creating the thin film
-                min_slabH = max_subH
-                max_slabH = max_subH + Slab_Height
+                    self.lum.addrect()
+                    self.lum.set("name", "LN_slab")
+                    self.lum.set("y", 0)
+                    self.lum.set("y span", Device_Width)
+                    self.lum.set("z min", min_slabH)
+                    self.lum.set("z max", max_slabH)
+                    self.lum.set("x", WG_Length / 2)
+                    self.lum.set("x span", WG_Length + WG_Width)
+                    self.lum.set("material", MaterialSlab)
 
-                self.lum.addrect()
-                self.lum.set("name", "LN_slab")
-                self.lum.set("y", 0)
-                self.lum.set("y span", Device_Width)
-                self.lum.set("z min", min_slabH)
-                self.lum.set("z max", max_slabH)
-                self.lum.set("x", WG_Length / 2)
-                self.lum.set("x span", WG_Length + WG_Width)
-                self.lum.set("material", MaterialSlab)
-
-                z_Offset = max_slabH + WG_Height / 2
-                # Triangle EQ for waveguide Width
-                x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
-                extention = np.sqrt(x ** 2 - WG_Height ** 2)
-                WG_W = WG_Width + 2 * extention
+                    z_Offset = max_slabH + WG_Height / 2
+                    # Triangle EQ for waveguide Width
+                    x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
+                    extention = np.sqrt(x ** 2 - WG_Height ** 2)
+                    WG_W = WG_Width + 2 * extention
+                    
+                else:
+                    z_Offset = max_subH + WG_Height / 2
+                    # Triangle EQ for waveguide Width
+                    x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
+                    extention = np.sqrt(x ** 2 - WG_Height ** 2)
+                    WG_W = WG_Width + 2 * extention
+                
 
 
 
@@ -1011,33 +1022,47 @@ class Constructor:
             self.lum.set("x", 0)
             self.lum.set("x span", TaperLength + WG_Width)
             self.lum.set("material", MaterialSub)
+            
+            if Slab_Height != 0:
+                
+                # creating the thin film
+                min_slabH = max_subH
+                max_slabH = max_subH + Slab_Height
+                
+                self.lum.addrect()
+                self.lum.set("name", "LN_slab")
+                self.lum.set("y", 0)
+                self.lum.set("y span", Device_Width)
+                self.lum.set("z min", min_slabH)
+                self.lum.set("z max", max_slabH)
+                self.lum.set("x", 0)
+                self.lum.set("x span", TaperLength + WG_Width)
+                self.lum.set("material", MaterialSlab)  
 
-            # creating the thin film
-            min_slabH = max_subH
-            max_slabH = max_subH + Slab_Height
+                
+            
+                z_Offset = max_slabH + WG_Height / 2
 
-            self.lum.addrect()
-            self.lum.set("name", "LN_slab")
-            self.lum.set("y", 0)
-            self.lum.set("y span", Device_Width)
-            self.lum.set("z min", min_slabH)
-            self.lum.set("z max", max_slabH)
-            self.lum.set("x", 0)
-            self.lum.set("x span", TaperLength + WG_Width)
-            self.lum.set("material", MaterialSlab)
+                # Taper Widths on Bott Cal
+                x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
+                extention = np.sqrt(x ** 2 - WG_Height ** 2)
+                TaperSideWidth = TaperWidth + 2 * extention
+                WG_W = WG_Width + 2 * extention
+                
+                z_Offset = max_slabH
+                
+            else:
+            
+                z_Offset = max_subH + WG_Height / 2
 
-
-
-            z_Offset = max_slabH + WG_Height / 2
-
-            # Taper Widths on Bott Cal
-            x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
-            extention = np.sqrt(x ** 2 - WG_Height ** 2)
-            TaperSideWidth = TaperWidth + 2 * extention
-            WG_W = WG_Width + 2 * extention
-
-
-            z_Offset = max_slabH
+                # Taper Widths on Bott Cal
+                x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
+                extention = np.sqrt(x ** 2 - WG_Height ** 2)
+                TaperSideWidth = TaperWidth + 2 * extention
+                WG_W = WG_Width + 2 * extention
+                
+                z_Offset = max_subH
+            
 
             # PWD Taper Hights
             TaperZmin = z_Offset
