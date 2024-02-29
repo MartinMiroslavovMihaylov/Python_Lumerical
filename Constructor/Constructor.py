@@ -5288,6 +5288,7 @@ class Constructor:
 
                 # Define Ports
                 x = [0,EME_WGLength]
+                x_Monitor = [0+0.1e-6,EME_WGLength-0.1e-6]
                 yPos = [0, 0]
                 yPos_span = [y_Port_Span, y_Port_Span]
                 theta = [0, 0]
@@ -5311,7 +5312,7 @@ class Constructor:
                     # Power Monitor Port 1
                     self.lum.addtime()
                     self.lum.set('name', name[i])
-                    self.lum.set("x", x[i] )
+                    self.lum.set("x", x_Monitor[i] )
                     self.lum.set("y", yPos[i])
                     self.lum.set("z", MonitorHeight)
                     self.lum.set('output Px', 1)
@@ -5366,6 +5367,7 @@ class Constructor:
 
                 # Define Ports
                 x = [0, EME_WGLength]
+                x_Monitor = [0+0.1e-6,EME_WGLength-0.1e-6]
                 yPos = [0, 0 + sideHight]
                 yPos_span = [y_Port_Span, y_Port_Span]
                 direction = ['Forward', 'Backward']
@@ -5388,7 +5390,7 @@ class Constructor:
                     # Power Monitor Port 1
                     self.lum.addtime()
                     self.lum.set('name', name[i])
-                    self.lum.set("x", x[i] )
+                    self.lum.set("x", x_Monitor[i] )
                     self.lum.set("y", yPos[i])
                     self.lum.set("z", MonitorHeight)
                     self.lum.set('output Px', 1)
@@ -5449,6 +5451,7 @@ class Constructor:
             # Define Ports
             Diff_Span = y_Port_Span - WG_Width
             x = [-TaperLength/2+ 0.1e-6 , TaperLength/2 - 0.1e-6]
+            x_Monitor = [-TaperLength/2+ 0.1e-6+0.1e-6,TaperLength/2 - 0.1e-6 - 0.1e-6]
             yPos = [0, 0]
             yPos_span = [y_Port_Span, TaperWidth + Diff_Span]
             theta = [0, 0]
@@ -5472,7 +5475,7 @@ class Constructor:
                 # Power Monitor Port 1
                 self.lum.addtime()
                 self.lum.set('name', name[i])
-                self.lum.set("x", x[i] )
+                self.lum.set("x", x_Monitor[i] )
                 self.lum.set("y", yPos[i])
                 self.lum.set("z", MonitorHeight)
                 self.lum.set('output Px', 1)
