@@ -3921,6 +3921,13 @@ class Constructor:
         TaperHightB = Parameters['PWB Taper Hight Back']
         TaperHightF = Parameters['PWB Taper Hight Front']
         TaperLength_PWB = Parameters['PWB Taper Length']
+        
+        # SMF Parameters
+        CoreDiameter = Parameters["SMF Core Diameter"]
+        CladdingDiameter = Parameters["SMF Cladding Diameter"]
+        CoreIndex = Parameters["SMF Core Index"]
+        CladdingIndex = Parameters["SMF Cladding Index"]
+     
 
 
         # Material definition
@@ -3957,18 +3964,21 @@ class Constructor:
         min_slabH = max_subH
         max_slabH = max_subH + Slab_Height
 
-        # Slab
-        self.lum.addrect()
-        self.lum.set("name", "LN_slab")
-        self.lum.set("y", 0e-12)
-        self.lum.set("y span", TaperWidthB * 2)
-        self.lum.set("z min", min_slabH)
-        self.lum.set("z max", max_slabH)
-        self.lum.set("x min", -TaperLength_PWB / 2 - 0.1e-6)
-        self.lum.set("x max", TaperLength_PWB)
-        # self.lum.set("x", 10e-6)
-        # self.lum.set("x span", TaperLength_PWB * 2)
-        self.lum.set("material", MaterialSlab)
+        # Create Slab and Check if Slab is needed
+        if Slab_Height == 0:
+            pass
+        else:
+            self.lum.addrect()
+            self.lum.set("name", "LN_slab")
+            self.lum.set("y", 0e-12)
+            self.lum.set("y span", TaperWidthB * 2)
+            self.lum.set("z min", min_slabH)
+            self.lum.set("z max", max_slabH)
+            self.lum.set("x min", -TaperLength_PWB / 2 - 0.1e-6)
+            self.lum.set("x max", TaperLength_PWB)
+            # self.lum.set("x", 10e-6)
+            # self.lum.set("x span", TaperLength_PWB * 2)
+            self.lum.set("material", MaterialSlab)
 
         # Names of the WGs
         TapersNames = ['Taper_PWB', 'Inverse_Taper']
@@ -4004,8 +4014,10 @@ class Constructor:
 
 
 
-
-        z_Offset = max_slabH
+        if Slab_Height == 0:
+            z_Offset = max_subH
+        else:
+            z_Offset = max_slabH
 
         # PWD Taper Hights
         TaperZmin = z_Offset
@@ -4108,19 +4120,19 @@ class Constructor:
 
         # Extra Waveguide Lenght
         Ext_WGLength = 1e-6
-        PWD_x_Offset = PWB_TaperXmin
+        # PWD_x_Offset = PWB_TaperXmin
 
-        self.lum.addrect()
-        self.lum.set('x min', PWD_x_Offset - Ext_WGLength)
-        self.lum.set('x max',PWD_x_Offset)
-        self.lum.set('y', 0)
-        self.lum.set('y span', TaperWidthB)
-        self.lum.set('z min', TaperZmin)
-        self.lum.set('z max', TaperZmaxB)
-        self.lum.set("override mesh order from material database", 1)
-        self.lum.set("mesh order", 3)
-        self.lum.set('name', 'WG_Extention_PWB')
-        self.lum.set('material', MaterialPWB)
+        # self.lum.addrect()
+        # self.lum.set('x min', PWD_x_Offset - Ext_WGLength)
+        # self.lum.set('x max',PWD_x_Offset)
+        # self.lum.set('y', 0)
+        # self.lum.set('y span', TaperWidthB)
+        # self.lum.set('z min', TaperZmin)
+        # self.lum.set('z max', TaperZmaxB)
+        # self.lum.set("override mesh order from material database", 1)
+        # self.lum.set("mesh order", 3)
+        # self.lum.set('name', 'WG_Extention_PWB')
+        # self.lum.set('material', MaterialPWB)
 
         # Make Sqred WG-Extention for the inverse Taper
         x_min = (Offset_InvTaper + TaperXmax)
@@ -4141,6 +4153,53 @@ class Constructor:
         self.lum.set("poles", pole)
         self.lum.set("material", MaterialSlab)
         
+        # Create Taper abjects
+        self.lum.select("WG_Extention_Inverse_Taper")
+        self.lum.addtogroup('InverseTaper')
+        self.lum.select(TapersNames[1])
+        self.lum.addtogroup('InverseTaper')
+        
+        
+ 
+        
+        
+        # Create the SMF 
+        
+        self.lum.addcircle()
+        self.lum.set("name", "core")
+        self.lum.set("first axis", "y")
+        self.lum.set("rotation 1", 90)
+        self.lum.set("alpha", 1)
+        self.lum.set("radius", CoreDiameter/2)
+        self.lum.set("index", CoreIndex)
+        self.lum.set("x", PWB_TaperXmin)
+        self.lum.set("y", 0)
+        self.lum.set("z", CoreDiameter/2 + z_Offset)
+        self.lum.set("z span", 2e-6)
+
+
+
+
+        self.lum.addcircle()
+        self.lum.set("name", "cladding")
+        self.lum.set("first axis", "y")
+        self.lum.set("rotation 1", 90)
+        self.lum.set("alpha", 0.35)
+        self.lum.set("radius", CladdingDiameter/2)
+        self.lum.set("index", CladdingIndex)
+        self.lum.set("x", PWB_TaperXmin )
+        self.lum.set("y", 0)
+        self.lum.set("z", CoreDiameter/2 + z_Offset)
+        self.lum.set("z span", 2e-6)
+        
+        
+        self.lum.select("core")
+        self.lum.addtogroup('SMF')
+        self.lum.select("cladding")
+        self.lum.addtogroup('SMF')
+
+
+    
         
         
         
