@@ -221,6 +221,10 @@ class Constructor:
         # elif Structure == "CascadetMMI":
         #     self.Struct = "CascadetMMI"
         #     self.setCascadetMMIFDTDSolver(Parameters, SpaceX, SpaceY)
+        elif Structure == "InverseTaper":
+            self.Strcut = "InverseTaper"
+            self.setInverseTaperFDTDSolver(Parameters)
+            self.SolverInfo["Simulated Object"] = "Inverse Taper"
         elif Structure == "GratingCoupler":
             self.Struct = "GratingCoupler"
             self.setGratingCouplerFDTDSolver(Parameters)
@@ -6877,6 +6881,196 @@ class Constructor:
     #     self.lum.set("z", MonitorHeight)
     
     
+    def setInverseTaperFDTDSolver(self, Parameters):
+        '''
+          Parameters
+          ----------
+          Parameters['Substrate Height'] : int/float
+              Substrate height.
+          Parameters['WG Height' : int/float
+              Waveguide hight. Also the height of the MMI section
+          Parameters['WG Width'] : int/float
+              Waveguide width.
+          Parameters['Slab Height'] : int/float
+              Slab height
+          Parameters['PWB Taper Width Back'] : int/float
+              Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
+          Parameters['PWB Taper Hight Back'] : int/float
+              Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
+          Parameters['PWB Taper Length'] : int/float
+              Length of the Photonic Wire Bonding Taper
+          Parameters['y res'] : int/float
+              Mesh y-Axis
+          Parameters['z res'] : int/float
+              Mesh z-Axis
+          Parameters['Wavelength'] : int/float
+              Wavelength
+          Parameters["Mode"] : str
+              Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+          Parameters["Port Span"] : list of floats/ints
+              List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+
+        Returns
+        -------
+        None.
+
+        '''
+
+        Substrate_Height = Parameters['Substrate Height']
+        WG_Height = Parameters['WG Height']
+        WG_Width = Parameters['WG Width']
+        Slab_Height = Parameters['Slab Height']
+        TaperWidthB = Parameters['PWB Taper Width Back']
+        TaperHightB = Parameters['PWB Taper Hight Back']
+        TaperLength_PWB = Parameters['PWB Taper Length']
+        WaveLength = Parameters['Wavelength']
+        Mode = Parameters["Mode"]
+        x_res = Parameters['x res']
+        y_Port_Span = Parameters["Port Span"][1]
+        z_Port_Span = Parameters["Port Span"][2]
+        
+        # SMF Parameters
+        CoreDiameter = Parameters["SMF Core Diameter"]
+        CladdingDiameter = Parameters["SMF Cladding Diameter"]
+
+
+        if Slab_Height == 0:
+            # # Device specifications
+            MonitorHeight = Substrate_Height + WG_Height/2
+            Ports_mid = Substrate_Height + WG_Width/2
+            Ports_PWB_mid = Substrate_Height + CoreDiameter/2 # TaperHightB/2
+            self.lum.select("SMF")
+            xPos_SMF = self.lum.get("x")
+            X_min = -TaperLength_PWB/2 - abs(xPos_SMF)
+            
+        else:
+            # # Device specifications
+            max_slabH = Slab_Height
+            MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
+            Ports_mid = max_slabH + Substrate_Height  + WG_Width/2
+            Ports_PWB_mid = max_slabH + CoreDiameter/2 # TaperHightB/2
+            self.lum.select("SMF")
+            xPos_SMF = self.lum.get("x")
+            X_min = -TaperLength_PWB/2 - abs(xPos_SMF)
+            
+            
+        # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
+        self.lum.addfdtd()
+        self.lum.set("x min", X_min)
+        self.lum.set("x max", TaperLength_PWB)
+        self.lum.set("y", 0)
+        self.lum.set("y span", TaperWidthB + TaperWidthB/2)
+        self.lum.set('simulation temperature', 273.15 + 20)
+        self.lum.set("z", Substrate_Height/2 + CoreDiameter/2 ) #Substrate_Height
+        self.lum.set("z span", TaperHightB*2)
+        self.lum.set('x min bc', 'PML')
+        self.lum.set('x max bc', 'PML')
+        self.lum.set('y min bc', 'Anti-Symmetric')
+        self.lum.set('y max bc', 'PML')
+        self.lum.set('z min bc', 'PML')
+        self.lum.set('z max bc', 'PML')
+        self.lum.set('mesh type', 'auto non-uniform')
+        self.lum.set('min mesh step', x_res)
+        self.lum.set('set simulation bandwidth', 0)
+        self.lum.set('global source center wavelength', WaveLength)
+        self.lum.set('global source wavelength span', 0)
+        
+        
+        # Ports Positions
+        xPort_Pos = [X_min, TaperLength_PWB]
+        yPort_Pos = [CoreDiameter + 2e-6, y_Port_Span]
+        zPort_Pos = [CoreDiameter+2e-6, z_Port_Span]
+        direction = ['Backward', 'Forward', 'Forward', 'Forward', 'Forward']
+        name = ['SMF Port', 'Waveguide Port']
+        
+
+   
+        x =[X_min, TaperLength_PWB]
+        PortCorrection = [0.1e-6, -0.1e-6]
+        zMid_Pos_Ports = [Ports_PWB_mid, Ports_mid]
+        direction = ["Forward", "Backward"]
+        # Add Ports to Structure
+        for i in range(2):
+            self.lum.addpower()
+            self.lum.set('name', "Power_" + name[i])
+            self.lum.set('monitor type', '2D X-normal')
+            self.lum.set("x", x[i] + PortCorrection[i])
+            self.lum.set("y", 0)
+            self.lum.set("y span", yPort_Pos[i])
+            self.lum.set("z", zMid_Pos_Ports[i])
+            self.lum.set("z span", zPort_Pos[i])
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+            self.lum.set('output power', 1)
+
+            self.lum.addport()
+            self.lum.set('name', name[i])
+            self.lum.set("x", x[i])
+            self.lum.set("y", 0)
+            self.lum.set("y span", yPort_Pos[i])
+            self.lum.set("z", zMid_Pos_Ports[i])
+            self.lum.set("z span", zPort_Pos[i])
+            self.lum.set('direction', direction[i])
+            self.lum.set('mode selection', Mode)
+            
+        
+        # Gaussian Source
+        self.lum.select("FDTD::ports::SMF Port")
+        self.lum.delete("FDTD::ports::SMF Port")
+        self.lum.addgaussian()
+        self.lum.set("injection axis", "x-axis")
+        self.lum.set("direction", direction[0])
+        self.lum.set("x", x[0])
+        self.lum.set("y", 0)
+        self.lum.set("y span", yPort_Pos[0])
+        self.lum.set("z", zMid_Pos_Ports[0])
+        self.lum.set("z span", zPort_Pos[0])
+        
+        
+
+        
+        
+        # Add Z Monitor over stucute
+        self.lum.addpower()
+        self.lum.set('name', "Power 2D Z-Normal")
+        self.lum.set('monitor type', '2D Z-normal')
+        self.lum.set("x min", X_min)
+        self.lum.set("x max", TaperLength_PWB)
+        self.lum.set("y", 0)
+        self.lum.set("y span", TaperWidthB + TaperWidthB/2)
+        self.lum.set("z", Ports_mid) #Substrate_Height
+        self.lum.set('output Px', 1)
+        self.lum.set('output Py', 1)
+        self.lum.set('output Pz', 1)
+        self.lum.set('output power', 1)
+        
+        # Add Movi Monitor Z-Normal over structure
+        self.lum.addmovie()
+        self.lum.set("x min", X_min)
+        self.lum.set("x max", TaperLength_PWB)
+        self.lum.set("y", 0)
+        self.lum.set("y span", TaperWidthB + TaperWidthB/2)
+        self.lum.set("z", Ports_mid)
+        
+        
+        # Add Y Monitor over stucute
+        self.lum.addpower()
+        self.lum.set('name', "Power 2D Y-Normal")
+        self.lum.set('monitor type', '2D Y-normal')
+        self.lum.set("x min", X_min)
+        self.lum.set("x max", TaperLength_PWB)
+        self.lum.set("y", 0)
+        self.lum.set("z", Substrate_Height/2 + CoreDiameter/2 ) #Substrate_Height
+        self.lum.set("z span", TaperHightB*2)
+        self.lum.set('output Px', 1)
+        self.lum.set('output Py', 1)
+        self.lum.set('output Pz', 1)
+        self.lum.set('output power', 1)
+        
+        
+    
+    
     
     def setCascadetMMIFDTDSolver(self, Parameters, SpaceX, SpaceY):
         
@@ -8849,6 +9043,7 @@ class Constructor:
         # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
         self.lum.addeme()
         self.lum.set("x min", X_min)
+        self.lum.set("x max", TaperLength_PWB)
         self.lum.set("y", 0)
         self.lum.set("y span", TaperWidthB + TaperWidthB/2)
         self.lum.set('simulation temperature', 273.15 + 20)
@@ -9076,6 +9271,9 @@ class Constructor:
         # self.lum.set("y min", -Device_Width / 2)
         # self.lum.set("y max", Device_Width / 2)
         # self.lum.set("z", MonitorHeight)
+
+
+
 
 
 
