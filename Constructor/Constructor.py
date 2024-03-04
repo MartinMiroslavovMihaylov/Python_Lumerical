@@ -3950,11 +3950,13 @@ class Constructor:
         # make substrate
         self.lum.addrect()
         self.lum.set("name", "Substrate")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 3)
         self.lum.set("y", 0)
         self.lum.set("y span", TaperWidthB * 2)
         self.lum.set("z min", min_subH)
         self.lum.set("z max", max_subH)
-        self.lum.set("x min", -TaperLength_PWB / 2 - 0.1e-6)
+        self.lum.set("x min", -TaperLength_PWB/2)
         self.lum.set("x max", TaperLength_PWB )
         # self.lum.set("x", 10e-6)
         # self.lum.set("x span", TaperLength_PWB * 2)
@@ -3970,6 +3972,8 @@ class Constructor:
         else:
             self.lum.addrect()
             self.lum.set("name", "LN_slab")
+            self.lum.set("override mesh order from material database", 1)
+            self.lum.set("mesh order", 3)
             self.lum.set("y", 0e-12)
             self.lum.set("y span", TaperWidthB * 2)
             self.lum.set("z min", min_slabH)
@@ -4167,6 +4171,8 @@ class Constructor:
         
         self.lum.addcircle()
         self.lum.set("name", "core")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 4)
         self.lum.set("first axis", "y")
         self.lum.set("rotation 1", 90)
         self.lum.set("alpha", 1)
@@ -4182,6 +4188,8 @@ class Constructor:
 
         self.lum.addcircle()
         self.lum.set("name", "cladding")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 5)
         self.lum.set("first axis", "y")
         self.lum.set("rotation 1", 90)
         self.lum.set("alpha", 0.35)
@@ -4197,6 +4205,8 @@ class Constructor:
         self.lum.addtogroup('SMF')
         self.lum.select("cladding")
         self.lum.addtogroup('SMF')
+        self.lum.select('SMF')
+        self.lum.set("x", -1e-6)
 
 
     
@@ -8808,14 +8818,31 @@ class Constructor:
         z_res = Parameters['z res']
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
+        
+        # SMF Parameters
+        CoreDiameter = Parameters["SMF Core Diameter"]
+        CladdingDiameter = Parameters["SMF Cladding Diameter"]
 
 
-        # # Device specifications
-        max_slabH = Slab_Height
-        MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
-        Ports_mid = max_slabH + WG_Width/2
-        Ports_PWB_mid = max_slabH + TaperHightB/2
-        X_min = -TaperLength_PWB/2 - 0.5e-6
+        if Slab_Height == 0:
+            # # Device specifications
+            MonitorHeight = Substrate_Height + WG_Height/2
+            Ports_mid = Substrate_Height/2 - CoreDiameter/2 + WG_Width/2
+            Ports_PWB_mid = CoreDiameter/2 # TaperHightB/2
+            self.lum.select("SMF")
+            xPos_SMF = self.lum.get("x")
+            X_min = -TaperLength_PWB/2 - abs(xPos_SMF)
+            
+        else:
+            # # Device specifications
+            max_slabH = Slab_Height
+            MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
+            Ports_mid = max_slabH + Substrate_Height/2 - CoreDiameter/2 + WG_Width/2
+            Ports_PWB_mid = max_slabH + CoreDiameter/2 # TaperHightB/2
+            self.lum.select("SMF")
+            xPos_SMF = self.lum.get("x")
+            X_min = -TaperLength_PWB/2 - abs(xPos_SMF)
+        
 
 
 
@@ -8825,7 +8852,7 @@ class Constructor:
         self.lum.set("y", 0)
         self.lum.set("y span", TaperWidthB + TaperWidthB/2)
         self.lum.set('simulation temperature', 273.15 + 20)
-        self.lum.set("z", TaperHightB/2) #Substrate_Height
+        self.lum.set("z", Substrate_Height/2 + CoreDiameter/2 ) #Substrate_Height
         self.lum.set("z span", TaperHightB*2)
         self.lum.set("wavelength", WaveLength)
         self.lum.set("z min bc", "PML")
@@ -8852,26 +8879,27 @@ class Constructor:
 
 
         portLoc = ["left", "right"]
-        z_span_PWB = TaperHightB + (z_Port_Span - WG_Height)/2
+        # z_span_PWB = CoreDiameter/2 + (z_Port_Span - WG_Height)/2
 
         self.lum.select("EME::Ports::port_" + str(1))
         self.lum.set("port location", portLoc[0])
-        self.lum.set("use full simulation span", 1)
-        # self.lum.set("use full simulation span", 0)
-        # self.lum.set("y", 0)
-        # self.lum.set("y span", TaperWidthB + y_Port_Span/2)
-        # self.lum.set("z", Ports_PWB_mid)
-        # self.lum.set("z span", z_span_PWB)
+        # self.lum.set("use full simulation span", 1)
+        self.lum.set("use full simulation span", 0)
+        self.lum.set("y", 0)
+        self.lum.set("y span", CoreDiameter + 2e-6)
+        self.lum.set("z", Substrate_Height/2)
+        self.lum.set("z span", CoreDiameter + 2e-6 )
         self.lum.set("mode selection", Mode)
+
 
         self.lum.select("EME::Ports::port_" + str(2))
         self.lum.set("port location", portLoc[1])
-        self.lum.set("use full simulation span", 1)
-        # self.lum.set("use full simulation span", 0)
-        # self.lum.set("y", 0)
-        # self.lum.set("y span", y_Port_Span)
-        # self.lum.set("z", Ports_mid)
-        # self.lum.set("z span", z_Port_Span)
+        # self.lum.set("use full simulation span", 1)
+        self.lum.set("use full simulation span", 0)
+        self.lum.set("y", 0)
+        self.lum.set("y span", y_Port_Span)
+        self.lum.set("z", Ports_mid)
+        self.lum.set("z span", z_Port_Span)
         self.lum.set("mode selection", Mode)
 
 
