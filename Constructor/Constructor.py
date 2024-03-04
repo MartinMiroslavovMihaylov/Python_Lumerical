@@ -3955,7 +3955,7 @@ class Constructor:
         self.lum.addrect()
         self.lum.set("name", "Substrate")
         self.lum.set("override mesh order from material database", 1)
-        self.lum.set("mesh order", 3)
+        self.lum.set("mesh order", 4)
         self.lum.set("y", 0)
         self.lum.set("y span", TaperWidthB * 2)
         self.lum.set("z min", min_subH)
@@ -3977,7 +3977,7 @@ class Constructor:
             self.lum.addrect()
             self.lum.set("name", "LN_slab")
             self.lum.set("override mesh order from material database", 1)
-            self.lum.set("mesh order", 3)
+            self.lum.set("mesh order", 4)
             self.lum.set("y", 0e-12)
             self.lum.set("y span", TaperWidthB * 2)
             self.lum.set("z min", min_slabH)
@@ -4029,8 +4029,8 @@ class Constructor:
 
         # PWD Taper Hights
         TaperZmin = z_Offset
-        TaperZmaxF = z_Offset + TaperHightF
-        TaperZmaxB = z_Offset + TaperHightB
+        TaperZmaxF =  TaperHightF
+        TaperZmaxB =  TaperHightB
 
         # Inverse Taper Hights
         TaperZmin = z_Offset
@@ -4176,7 +4176,7 @@ class Constructor:
         self.lum.addcircle()
         self.lum.set("name", "core")
         self.lum.set("override mesh order from material database", 1)
-        self.lum.set("mesh order", 4)
+        self.lum.set("mesh order", 5)
         self.lum.set("first axis", "y")
         self.lum.set("rotation 1", 90)
         self.lum.set("alpha", 1)
@@ -4193,7 +4193,7 @@ class Constructor:
         self.lum.addcircle()
         self.lum.set("name", "cladding")
         self.lum.set("override mesh order from material database", 1)
-        self.lum.set("mesh order", 5)
+        self.lum.set("mesh order", 6)
         self.lum.set("first axis", "y")
         self.lum.set("rotation 1", 90)
         self.lum.set("alpha", 0.35)
@@ -7026,6 +7026,9 @@ class Constructor:
         self.lum.set("y span", yPort_Pos[0])
         self.lum.set("z", zMid_Pos_Ports[0])
         self.lum.set("z span", zPort_Pos[0])
+        self.lum.set("waist radius w0", CoreDiameter/2)
+        self.lum. set("distance from waist",0)
+        
         
         
 
