@@ -4027,7 +4027,7 @@ class Constructor:
         else:
             z_Offset = max_slabH
 
-        # PWD Taper Hights
+        # PWB Taper Hights
         TaperZmin = z_Offset
         TaperZmaxF =  TaperHightF
         TaperZmaxB =  TaperHightB
@@ -4043,43 +4043,7 @@ class Constructor:
         # Inverse Taper Length
         TaperXmin = -TaperLength / 2
         TaperXmax = TaperLength / 2
-
-        # Create PWB Taper
-        ymin_bot_l = PWB_TaperPosYMin_BotL[0]
-        ymax_bot_l = PWB_TaperPosYMax_BotL[0]
-
-        ymin_bot_r = PWB_TaperPosYMin_BotR[0]
-        ymax_bot_r = PWB_TaperPosYMax_BotR[0]
-
-        ymin_top_l = PWB_TaperPosYMin_TopL[0]
-        ymax_top_l = PWB_TaperPosYMax_TopL[0]
-
-        ymin_top_r = PWB_TaperPosYMin_TopR[0]
-        ymax_top_r = PWB_TaperPosYMax_TopR[0]
-
-        vtx = np.array([[PWB_TaperXmin, ymin_bot_l, TaperZmin],  # 1
-                        [PWB_TaperXmax, ymin_bot_r, TaperZmin],  # 2
-                        [PWB_TaperXmax, ymax_bot_r, TaperZmin],  # 3
-                        [PWB_TaperXmin, ymax_bot_l, TaperZmin],  # 4
-                        [PWB_TaperXmin, ymin_top_l, TaperZmaxB],  # 5
-                        [PWB_TaperXmax, ymin_top_r, TaperZmaxF],  # 6
-                        [PWB_TaperXmax, ymax_top_r, TaperZmaxF],  # 7
-                        [PWB_TaperXmin, ymax_top_l, TaperZmaxB],  # 8
-                        ])
-        a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
-             [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
-             [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
-
-        # Send Values to Lumerical and create solid
-        self.lum.putv('vertices', vtx)
-        self.lum.putv('facets', a)
-        self.lum.addplanarsolid(vtx, a)
-        self.lum.set('material', MaterialPWB)
-        self.lum.set("override mesh order from material database",1)
-        self.lum.set("mesh order",3)
-        self.lum.set('name', TapersNames[0])
-
-
+        
         # Create Inverse Taper
         ymin_bot_l = TaperPosYMin_BotL[0]
         ymax_bot_l = TaperPosYMax_BotL[0]
@@ -4123,6 +4087,40 @@ class Constructor:
             self.lum.set('rotation 2', 0)
             self.lum.set('x', Offset_InvTaper)
 
+        # Create PWB Taper
+        ymin_bot_l = PWB_TaperPosYMin_BotL[0]
+        ymax_bot_l = PWB_TaperPosYMax_BotL[0]
+
+        ymin_bot_r = PWB_TaperPosYMin_BotR[0]
+        ymax_bot_r = PWB_TaperPosYMax_BotR[0]
+
+        ymin_top_l = PWB_TaperPosYMin_TopL[0]
+        ymax_top_l = PWB_TaperPosYMax_TopL[0]
+
+        ymin_top_r = PWB_TaperPosYMin_TopR[0]
+        ymax_top_r = PWB_TaperPosYMax_TopR[0]
+
+        vtx = np.array([[PWB_TaperXmin, ymin_bot_l, TaperZmin],  # 1
+                        [PWB_TaperXmax, ymin_bot_r, TaperZmin],  # 2
+                        [PWB_TaperXmax, ymax_bot_r, TaperZmin],  # 3
+                        [PWB_TaperXmin, ymax_bot_l, TaperZmin],  # 4
+                        [PWB_TaperXmin, ymin_top_l, TaperZmaxB],  # 5
+                        [PWB_TaperXmax, ymin_top_r, TaperZmaxF],  # 6
+                        [PWB_TaperXmax, ymax_top_r, TaperZmaxF],  # 7
+                        [PWB_TaperXmin, ymax_top_l, TaperZmaxB],  # 8
+                        ])
+        a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
+             [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
+             [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
+
+        # Send Values to Lumerical and create solid
+        self.lum.putv('vertices', vtx)
+        self.lum.putv('facets', a)
+        self.lum.addplanarsolid(vtx, a)
+        self.lum.set('material', MaterialPWB)
+        self.lum.set("override mesh order from material database",1)
+        self.lum.set("mesh order",3)
+        self.lum.set('name', TapersNames[0])
 
         # Make Sqered WG-Extention of the PWB for mode Calculations
 
