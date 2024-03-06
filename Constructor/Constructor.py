@@ -6987,7 +6987,21 @@ class Constructor:
         PortCorrection = [0.1e-6, -0.1e-6]
         zMid_Pos_Ports = [Ports_PWB_mid, Ports_mid]
         direction = ["Forward", "Backward"]
-        # Add Ports to Structure
+        
+        # Gaussian Source
+        self.lum.addgaussian()
+        self.lum.set("injection axis", "x-axis")
+        self.lum.set("direction", direction[0])
+        self.lum.set("x", x[0])
+        self.lum.set("y", 0)
+        self.lum.set("y span", yPort_Pos[0])
+        self.lum.set("z", zMid_Pos_Ports[0])
+        self.lum.set("z span", zPort_Pos[0])
+        self.lum.set("waist radius w0", CoreDiameter/2)
+        self.lum. set("distance from waist",0)
+    
+
+        # Add Ports to Structure and power monitors
         for i in range(2):
             self.lum.addpower()
             self.lum.set('name', "Power_" + name[i])
@@ -7002,35 +7016,17 @@ class Constructor:
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
 
-            self.lum.addport()
-            self.lum.set('name', name[i])
-            self.lum.set("x", x[i])
-            self.lum.set("y", 0)
-            self.lum.set("y span", yPort_Pos[i])
-            self.lum.set("z", zMid_Pos_Ports[i])
-            self.lum.set("z span", zPort_Pos[i])
-            self.lum.set('direction', direction[i])
-            self.lum.set('mode selection', Mode)
+            # self.lum.addport()
+            # self.lum.set('name', name[i])
+            # self.lum.set("x", x[i])
+            # self.lum.set("y", 0)
+            # self.lum.set("y span", yPort_Pos[i])
+            # self.lum.set("z", zMid_Pos_Ports[i])
+            # self.lum.set("z span", zPort_Pos[i])
+            # self.lum.set('direction', direction[i])
+            # self.lum.set('mode selection', Mode)
             
-        
-        # Gaussian Source
-        self.lum.select("FDTD::ports::SMF Port")
-        self.lum.delete("FDTD::ports::SMF Port")
-        self.lum.addgaussian()
-        self.lum.set("injection axis", "x-axis")
-        self.lum.set("direction", direction[0])
-        self.lum.set("x", x[0])
-        self.lum.set("y", 0)
-        self.lum.set("y span", yPort_Pos[0])
-        self.lum.set("z", zMid_Pos_Ports[0])
-        self.lum.set("z span", zPort_Pos[0])
-        self.lum.set("waist radius w0", CoreDiameter/2)
-        self.lum. set("distance from waist",0)
-        
-        
-        
 
-        
         
         # Add Z Monitor over stucute
         self.lum.addpower()
@@ -7069,28 +7065,30 @@ class Constructor:
         self.lum.set('output Pz', 1)
         self.lum.set('output power', 1)
         
-        # #Add Extra Mesch
-        # self.lum.addmesh()
-        # self.lum.set("based on a structure",1)
-        # self.lum.set("structure", "Taper_PWB")
-        # self.lum.set("set maximum mesh step",1)
-        # self.lum.set("override x mesh",1)
+        #Add Extra Mesch
+        self.lum.addmesh()
+        self.lum.set("name", "Mesh PWB")
+        self.lum.set("based on a structure",1)
+        self.lum.set("structure", "Taper_PWB")
+        self.lum.set("set maximum mesh step",1)
+        self.lum.set("override x mesh",0)
         # self.lum.set("dx", x_res)
-        # self.lum.set("override y mesh",1)
-        # self.lum.set("dy", x_res)
-        # self.lum.set("override z mesh",1)
-        # self.lum.set("dz", x_res)
+        self.lum.set("override y mesh",1)
+        self.lum.set("dy", x_res)
+        self.lum.set("override z mesh",1)
+        self.lum.set("dz", x_res)
         
-        # self.lum.addmesh()
-        # self.lum.set("based on a structure",1)
-        # self.lum.set("structure", "InverseTaper")
-        # self.lum.set("set maximum mesh step",1)
-        # self.lum.set("override x mesh",1)
+        self.lum.addmesh()
+        self.lum.set("name", "Mesh Inverse Taper")
+        self.lum.set("based on a structure",1)
+        self.lum.set("structure", "InverseTaper")
+        self.lum.set("set maximum mesh step",1)
+        self.lum.set("override x mesh",0)
         # self.lum.set("dx", x_res)
-        # self.lum.set("override y mesh",1)
-        # self.lum.set("dy", x_res)
-        # self.lum.set("override z mesh",1)
-        # self.lum.set("dz", x_res)
+        self.lum.set("override y mesh",1)
+        self.lum.set("dy", x_res)
+        self.lum.set("override z mesh",1)
+        self.lum.set("dz", x_res)
         
         
     
