@@ -6935,7 +6935,7 @@ class Constructor:
         if Slab_Height == 0:
             # # Device specifications
             MonitorHeight = Substrate_Height + WG_Height/2
-            Ports_mid = Substrate_Height + WG_Width/2
+            Ports_mid = Substrate_Height + WG_Height/2
             Ports_PWB_mid = Substrate_Height + CoreDiameter/2 # TaperHightB/2
             self.lum.select("SMF")
             xPos_SMF = self.lum.get("x")
@@ -6945,7 +6945,7 @@ class Constructor:
             # # Device specifications
             max_slabH = Slab_Height
             MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
-            Ports_mid = max_slabH + Substrate_Height  + WG_Width/2
+            Ports_mid = max_slabH + Substrate_Height  + WG_Height/2
             Ports_PWB_mid = max_slabH + CoreDiameter/2 # TaperHightB/2
             self.lum.select("SMF")
             xPos_SMF = self.lum.get("x")
@@ -7065,30 +7065,30 @@ class Constructor:
         self.lum.set('output Pz', 1)
         self.lum.set('output power', 1)
         
-        #Add Extra Mesch
-        self.lum.addmesh()
-        self.lum.set("name", "Mesh PWB")
-        self.lum.set("based on a structure",1)
-        self.lum.set("structure", "Taper_PWB")
-        self.lum.set("set maximum mesh step",1)
-        self.lum.set("override x mesh",0)
-        # self.lum.set("dx", x_res)
-        self.lum.set("override y mesh",1)
-        self.lum.set("dy", x_res)
-        self.lum.set("override z mesh",1)
-        self.lum.set("dz", x_res)
+        # #Add Extra Mesch
+        # self.lum.addmesh()
+        # self.lum.set("name", "Mesh PWB")
+        # self.lum.set("based on a structure",1)
+        # self.lum.set("structure", "Taper_PWB")
+        # self.lum.set("set maximum mesh step",1)
+        # self.lum.set("override x mesh",0)
+        # # self.lum.set("dx", x_res)
+        # self.lum.set("override y mesh",1)
+        # self.lum.set("dy", x_res)
+        # self.lum.set("override z mesh",1)
+        # self.lum.set("dz", x_res)
         
-        self.lum.addmesh()
-        self.lum.set("name", "Mesh Inverse Taper")
-        self.lum.set("based on a structure",1)
-        self.lum.set("structure", "InverseTaper")
-        self.lum.set("set maximum mesh step",1)
-        self.lum.set("override x mesh",0)
-        # self.lum.set("dx", x_res)
-        self.lum.set("override y mesh",1)
-        self.lum.set("dy", x_res)
-        self.lum.set("override z mesh",1)
-        self.lum.set("dz", x_res)
+        # self.lum.addmesh()
+        # self.lum.set("name", "Mesh Inverse Taper")
+        # self.lum.set("based on a structure",1)
+        # self.lum.set("structure", "InverseTaper")
+        # self.lum.set("set maximum mesh step",1)
+        # self.lum.set("override x mesh",0)
+        # # self.lum.set("dx", x_res)
+        # self.lum.set("override y mesh",1)
+        # self.lum.set("dy", x_res)
+        # self.lum.set("override z mesh",1)
+        # self.lum.set("dz", x_res)
         
         
     
