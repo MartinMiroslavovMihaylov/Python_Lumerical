@@ -883,7 +883,7 @@ class Constructor:
                     max_slabH = max_subH + Slab_Height
 
                     self.lum.addrect()
-                    self.lum.set("name", "LN_slab")
+                    self.lum.set("name", "Slab")
                     self.lum.set("y", 0)
                     self.lum.set("y span", Device_Width)
                     self.lum.set("z min", min_slabH)
@@ -893,22 +893,22 @@ class Constructor:
                     self.lum.set("material", MaterialSlab)
 
                     z_Offset = max_slabH + WG_Height / 2
-                    # Triangle EQ for waveguide Width
-                    x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
-                    extention = np.sqrt(x ** 2 - WG_Height ** 2)
-                    WG_W = WG_Width + 2 * extention
+
                     
                 else:
                     z_Offset = max_subH + WG_Height / 2
-                    # Triangle EQ for waveguide Width
-                    x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
-                    extention = np.sqrt(x ** 2 - WG_Height ** 2)
-                    WG_W = WG_Width + 2 * extention
+                    
+                    
+                    
+                # Triangle EQ for waveguide Width
+                x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
+                extention = np.sqrt(x ** 2 - WG_Height ** 2)
+                WG_W = WG_Width + 2 * extention
                 
 
 
 
-                names = ["Staight_WG"]
+                names = ["Straight Waveguide"]
 
                 self.lum.addwaveguide()
                 self.lum.set("name", names[0])
@@ -952,21 +952,32 @@ class Constructor:
                 self.lum.set("x span", WG_Length + WG_Width)
                 self.lum.set("material", MaterialSub)
 
-                # creating the thin film
-                min_slabH = max_subH
-                max_slabH = max_subH + Slab_Height
 
-                self.lum.addrect()
-                self.lum.set("name", "LN_slab")
-                self.lum.set("y", WG_Length / 4)
-                self.lum.set("y span", Device_Width)
-                self.lum.set("z min", min_slabH)
-                self.lum.set("z max", max_slabH)
-                self.lum.set("x", WG_Length / 2)
-                self.lum.set("x span", WG_Length + WG_Width)
-                self.lum.set("material", MaterialSlab)
+                if Slab_Height == 0:
+                    z_Offset = max_subH + WG_Height / 2
+                
+                else:
+                
+                    # creating the thin film
+                    min_slabH = max_subH
+                    max_slabH = max_subH + Slab_Height
 
-                z_Offset = max_slabH + WG_Height / 2
+                    self.lum.addrect()
+                    self.lum.set("name", "Slab")
+                    self.lum.set("y", WG_Length / 4)
+                    self.lum.set("y span", Device_Width)
+                    self.lum.set("z min", min_slabH)
+                    self.lum.set("z max", max_slabH)
+                    self.lum.set("x", WG_Length / 2)
+                    self.lum.set("x span", WG_Length + WG_Width)
+                    self.lum.set("material", MaterialSlab)
+
+                    z_Offset = max_slabH + WG_Height / 2
+                    
+                    
+                    
+                    
+                    
                 # Triangle EQ for waveguide Width
                 x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
                 extention = np.sqrt(x ** 2 - WG_Height ** 2)
@@ -974,7 +985,7 @@ class Constructor:
 
 
 
-                names = ["Staight_WG"]
+                names = ["Straight Waveguide"]
 
                 self.lum.addwaveguide()
                 self.lum.set("name", names[0])
@@ -1034,7 +1045,7 @@ class Constructor:
                 max_slabH = max_subH + Slab_Height
                 
                 self.lum.addrect()
-                self.lum.set("name", "LN_slab")
+                self.lum.set("name", "Slab")
                 self.lum.set("y", 0)
                 self.lum.set("y span", Device_Width)
                 self.lum.set("z min", min_slabH)
@@ -1219,22 +1230,31 @@ class Constructor:
         self.lum.set("x min", min_subL)
         self.lum.set("x max", max_subL)
         self.lum.set("material", MaterialSub)
+        
+        
+        if Slab_Height == 0:
+            z_Offset = max_subH + WG_Height / 2
+        else:
+        
+            # creating the thin film
+            min_slabH = max_subH
+            max_slabH = max_subH + Slab_Height
 
-        # creating the thin film
-        min_slabH = max_subH
-        max_slabH = max_subH + Slab_Height
+            self.lum.addrect()
+            self.lum.set("name", "Slab")
+            self.lum.set("y", y_span / 2)
+            self.lum.set("y span", Device_Width)
+            self.lum.set("z min", min_slabH)
+            self.lum.set("z max", max_slabH)
+            self.lum.set("x min", min_subL)
+            self.lum.set("x max", max_subL)
+            self.lum.set("material", MaterialSlab)
 
-        self.lum.addrect()
-        self.lum.set("name", "LN_slab")
-        self.lum.set("y", y_span / 2)
-        self.lum.set("y span", Device_Width)
-        self.lum.set("z min", min_slabH)
-        self.lum.set("z max", max_slabH)
-        self.lum.set("x min", min_subL)
-        self.lum.set("x max", max_subL)
-        self.lum.set("material", MaterialSlab)
-
-        z_Offset = max_slabH + WG_Height / 2
+            z_Offset = max_slabH + WG_Height / 2
+            self.lum.select('Slab')
+            self.lum.addtogroup("S Bend")
+            
+            
         # Triangle EQ for waveguide Width
         x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
         extention = np.sqrt(x ** 2 - WG_Height ** 2)
@@ -1265,7 +1285,7 @@ class Constructor:
 
         # create_cover
         self.lum.addrect()
-        self.lum.set("name", "cladding")
+        self.lum.set("name", "Cladding")
         self.lum.set("material", MaterialClad)
         self.lum.set("y", y_span / 2)
         self.lum.set("y span", Device_Width)
@@ -1276,6 +1296,11 @@ class Constructor:
         self.lum.set("override mesh order from material database", True)
         self.lum.set("mesh order", 4)
         self.lum.set("alpha", 0.7)
+        
+        self.lum.select("S-Bend")
+        self.lum.addtogroup("S Bend")
+        self.lum.select("Cladding")
+        self.lum.addtogroup("S Bend")
 
 
 
@@ -1384,21 +1409,28 @@ class Constructor:
             self.lum.set("x span", (m * radius * 2 + WG_Width))
             self.lum.set("material", MaterialSub)
 
-            # creating the thin film
-            min_slabH = max_subH
-            max_slabH = max_subH + Slab_Height
+            if Slab_Height == 0:
+                # creating the thin film
+                z_Offset = max_subH + WG_Height / 2
+            else:
+                # creating the thin film
+                min_slabH = max_subH
+                max_slabH = max_subH + Slab_Height
 
-            self.lum.addrect()
-            self.lum.set("name", "LN_slab")
-            self.lum.set("y", radius * m)
-            self.lum.set("y span", m * radius * 2 + WG_Width)
-            self.lum.set("z min", min_slabH)
-            self.lum.set("z max", max_slabH)
-            self.lum.set("x", m * radius)
-            self.lum.set("x span", (m * radius * 2 + WG_Width))
-            self.lum.set("material", MaterialSlab)
+                self.lum.addrect()
+                self.lum.set("name", "Slab")
+                self.lum.set("y", radius * m)
+                self.lum.set("y span", m * radius * 2 + WG_Width)
+                self.lum.set("z min", min_slabH)
+                self.lum.set("z max", max_slabH)
+                self.lum.set("x", m * radius)
+                self.lum.set("x span", (m * radius * 2 + WG_Width))
+                self.lum.set("material", MaterialSlab)
 
-            z_Offset = max_slabH + WG_Height / 2
+                z_Offset = max_slabH + WG_Height / 2
+                self.lum.select('Slab')
+                self.lum.addtogroup("90 Grad Bend")
+                
             # Triangle EQ for waveguide Width
             x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
             extention = np.sqrt(x ** 2 - WG_Height ** 2)
@@ -1417,6 +1449,9 @@ class Constructor:
             pole = np.array([[radius * 0, radius * 1], [radius * m, radius * 1], [radius * 1, radius * m], [radius * 1, radius * 0]])
             self.lum.set("poles", pole)
             self.lum.set("material", MaterialWG)
+            
+            self.lum.select('Bend_Waveguide')
+            self.lum.addtogroup("90 Grad Bend")
 
 
             # # create_cover
@@ -1459,28 +1494,36 @@ class Constructor:
             self.lum.set("x", 0)
             self.lum.set("x span", (m * radius * 2 + WG_Width) * 2)
             self.lum.set("material", MaterialSub)
+            
+            
+            if Slab_Height == 0:
+                z_Offset = max_subH + WG_Height / 2
+            else:
+                # creating the thin film
+                min_slabH = max_subH
+                max_slabH = max_subH + Slab_Height
 
-            # creating the thin film
-            min_slabH = max_subH
-            max_slabH = max_subH + Slab_Height
+                self.lum.addrect()
+                self.lum.set("name", "Slab")
+                self.lum.set("y", radius * m)
+                self.lum.set("y span", m * radius * 2 + WG_Width)
+                self.lum.set("z min", min_slabH)
+                self.lum.set("z max", max_slabH)
+                self.lum.set("x", 0)
+                self.lum.set("x span", (m * radius * 2 + WG_Width) * 2)
+                self.lum.set("material", MaterialSlab)
 
-            self.lum.addrect()
-            self.lum.set("name", "LN_slab")
-            self.lum.set("y", radius * m)
-            self.lum.set("y span", m * radius * 2 + WG_Width)
-            self.lum.set("z min", min_slabH)
-            self.lum.set("z max", max_slabH)
-            self.lum.set("x", 0)
-            self.lum.set("x span", (m * radius * 2 + WG_Width) * 2)
-            self.lum.set("material", MaterialSlab)
-
-            z_Offset = max_slabH + WG_Height / 2
+                z_Offset = max_slabH + WG_Height / 2
+                
+                self.lum.select('Slab')
+                self.lum.addtogroup("180 Grad Bend")
+                
             # Triangle EQ for waveguide Width
             x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
             extention = np.sqrt(x ** 2 - WG_Height ** 2)
             WG_W = WG_Width + 2 * extention
 
-            names = ['Arc_Waveguide1', 'Arc_Waveguie2']
+            names = ['Arc Waveguide1', 'Arc Waveguie2']
 
             self.lum.addwaveguide()
             self.lum.set("name", names[0])
@@ -1513,6 +1556,12 @@ class Constructor:
             self.lum.set("material", MaterialWG)
             self.lum.set("first axis", 'z')
             self.lum.set("rotation 1", 90)
+            
+            
+            self.lum.select('Arc Waveguide1')
+            self.lum.addtogroup("180 Grad Bend")
+            self.lum.select('Arc Waveguie2')
+            self.lum.addtogroup("180 Grad Bend")
 
 
             # # create_cover
@@ -1637,6 +1686,7 @@ class Constructor:
         min_subL = -Device_Length / 2
         max_subL = Device_Length / 2
 
+
         self.lum.addrect()
         self.lum.set("name", "Substrate")
         self.lum.set("y min", min_subW)
@@ -1646,27 +1696,35 @@ class Constructor:
         self.lum.set("x min", min_subL)
         self.lum.set("x max", max_subL)
         self.lum.set("material", MaterialSub)
-
-        # creating the thin film
-        min_slabH = max_subH
-        max_slabH = max_subH + Slab_Height
-
-        self.lum.addrect()
-        self.lum.set("name", "LN_slab")
-        self.lum.set("y min", min_subW)
-        self.lum.set("y max", max_subW)
-        self.lum.set("z min", min_slabH)
-        self.lum.set("z max", max_slabH)
-        self.lum.set("x min", min_subL)
-        self.lum.set("x max", max_subL)
-        self.lum.set("material", MaterialSlab)
-
+        
         # creating the MMI
         max_MMIH = WG_Height
         max_MMIL = MMI_Length / 2
         min_MMIL = -MMI_Length / 2
-        z_Offset = max_slabH + max_MMIH / 2
 
+        if Slab_Height == 0:
+            z_Offset = max_subH + max_MMIH / 2
+        else:      
+            # creating the thin film
+            min_slabH = max_subH
+            max_slabH = max_subH + Slab_Height
+
+            self.lum.addrect()
+            self.lum.set("name", "Slab")
+            self.lum.set("y min", min_subW)
+            self.lum.set("y max", max_subW)
+            self.lum.set("z min", min_slabH)
+            self.lum.set("z max", max_slabH)
+            self.lum.set("x min", min_subL)
+            self.lum.set("x max", max_subL)
+            self.lum.set("material", MaterialSlab)
+
+           
+            z_Offset = max_slabH + max_MMIH / 2
+            self.lum.select('Slab')
+            self.lum.addtogroup("MMI")
+            
+            
         # Triangle EQ for MMI Width
         x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
         extention = np.sqrt(x ** 2 - max_MMIH ** 2)
@@ -1719,7 +1777,7 @@ class Constructor:
                         -(WG_Width / 2 + posOffset / 2)]
 
                 # Names of the WGs
-                names = ['LN_input_WG_L', 'LN_input_WG_R', 'LN_output_WG_L', 'LN_output_WG_R']
+                names = ['Input WG_L', 'Input WG_R', 'Output WG_L', 'Output WG_R']
 
                 # create loop
                 for i in range(len(xPos)):
@@ -1748,7 +1806,18 @@ class Constructor:
             self.lum.set("override mesh order from material database", True)
             self.lum.set("mesh order", 4)
             self.lum.set("alpha", 0.7)
-
+            
+            
+            self.lum.select('MMI')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Input WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Input WG_R')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Output WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Output WG_R')
+            self.lum.addtogroup("MMI")
 
 
 
@@ -1778,25 +1847,35 @@ class Constructor:
             self.lum.set("x max", max_subL)
             self.lum.set("material", MaterialSub)
 
-            # creating the thin film
-            min_slabH = max_subH
-            max_slabH = max_subH + Slab_Height
-
-            self.lum.addrect()
-            self.lum.set("name", "LN_slab")
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set("z min", min_slabH)
-            self.lum.set("z max", max_slabH)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("material", MaterialSlab)
-
             # creating the MMI
             max_MMIH = WG_Height
             max_MMIL = MMI_Length / 2
             min_MMIL = -MMI_Length / 2
-            z_Offset = max_slabH + max_MMIH / 2
+            
+            if Slab_Height == 0:
+                z_Offset = max_subH + max_MMIH / 2
+                
+            else:
+                # creating the thin film
+                min_slabH = max_subH
+                max_slabH = max_subH + Slab_Height
+
+                self.lum.addrect()
+                self.lum.set("name", "Slab")
+                self.lum.set("y min", min_subW)
+                self.lum.set("y max", max_subW)
+                self.lum.set("z min", min_slabH)
+                self.lum.set("z max", max_slabH)
+                self.lum.set("x min", min_subL)
+                self.lum.set("x max", max_subL)
+                self.lum.set("material", MaterialSlab)
+
+                
+                z_Offset = max_slabH + max_MMIH / 2
+                
+                self.lum.select('Slab')
+                self.lum.addtogroup("MMI")
+            
 
             # Triangle EQ for MMI Width
             x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -1827,8 +1906,8 @@ class Constructor:
                     -(WG_Width / 2 + posOffset / 2)]
 
             # Names of the WGs
-            names = ['LN_input_WG_L', 'LN_input_WG_R', 'LN_output_WG_L', 'LN_output_WG_R']
-            TapersNames = ['Taper_input_WG_L', 'Taper_input_WG_R', 'Taper_output_WG_L', 'Taper_output_WG_R']
+            names = ['Input WG_L', 'Input WG_R', 'Output WG_L', 'Output WG_R']
+            TapersNames = ['Taper Input WG_L', 'Taper Input WG_R', 'Taper Output WG_L', 'Taper Output WG_R']
 
             # Taper Widths on Bott Cal
             x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -1927,6 +2006,27 @@ class Constructor:
                     pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
                     self.lum.set("poles", pole)
                     self.lum.set("material", MaterialSlab)
+                
+
+            self.lum.select('MMI')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Input WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Input WG_R')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Output WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Output WG_R')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Taper Input WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Taper Input WG_R')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Taper Output WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Taper Output WG_R')
+            self.lum.addtogroup("MMI")
+
 
             # create_cover
             self.lum.addrect()
@@ -1999,8 +2099,6 @@ class Constructor:
                 Parameters['Taper Width'] : int/float
                     If Taper == True, then this will set the Tapers width. If Taper == False
                     this will be ignored and some random value can be given.
-
-
         Raises
         ------
         ValueError
@@ -2053,6 +2151,7 @@ class Constructor:
         min_subL = -Device_Length / 2
         max_subL = Device_Length / 2
 
+
         self.lum.addrect()
         self.lum.set("name", "Substrate")
         self.lum.set("y min", min_subW)
@@ -2062,26 +2161,37 @@ class Constructor:
         self.lum.set("x min", min_subL)
         self.lum.set("x max", max_subL)
         self.lum.set("material", MaterialSub)
-
-        # creating the thin film
-        min_slabH = max_subH
-        max_slabH = max_subH + Slab_Height
-
-        self.lum.addrect()
-        self.lum.set("name", "LN_slab")
-        self.lum.set("y min", min_subW)
-        self.lum.set("y max", max_subW)
-        self.lum.set("z min", min_slabH)
-        self.lum.set("z max", max_slabH)
-        self.lum.set("x min", min_subL)
-        self.lum.set("x max", max_subL)
-        self.lum.set("material", MaterialSlab)
-
+        
+        
         # creating the MMI
         max_MMIH = WG_Height
         max_MMIL = MMI_Length / 2
         min_MMIL = -MMI_Length / 2
-        z_Offset = max_slabH + max_MMIH / 2
+
+
+        if Slab_Height == 0:
+            z_Offset = max_subH + max_MMIH / 2
+        else:
+            # creating the thin film
+            min_slabH = max_subH
+            max_slabH = max_subH + Slab_Height
+
+            self.lum.addrect()
+            self.lum.set("name", "Slab")
+            self.lum.set("y min", min_subW)
+            self.lum.set("y max", max_subW)
+            self.lum.set("z min", min_slabH)
+            self.lum.set("z max", max_slabH)
+            self.lum.set("x min", min_subL)
+            self.lum.set("x max", max_subL)
+            self.lum.set("material", MaterialSlab)
+
+            z_Offset = max_slabH + max_MMIH / 2
+            
+            self.lum.select("Slab")
+            self.lum.addtogroup("MMI")
+           
+           
 
         # Triangle EQ for MMI Width
         x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -2102,7 +2212,7 @@ class Constructor:
 
 
         #Create the MMI L2 Tapers for the Trapezoid
-        TaperNames = ["Input_Trapez", "Output_Trapez"]
+        TaperNames = ["Input Trapez", "Output Trapez"]
         myscript = self.Script()
 
 
@@ -2178,7 +2288,7 @@ class Constructor:
                         -(WG_Width / 2 + posOffset / 2)]
 
                 # Names of the WGs
-                names = ['LN_input_WG_L', 'LN_input_WG_R', 'LN_output_WG_L', 'LN_output_WG_R']
+                names = ['Input WG_L', 'Input WG_R', 'Output WG_L', 'Output WG_R']
 
                 # create loop
                 for i in range(len(xPos)):
@@ -2193,6 +2303,22 @@ class Constructor:
                     pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
                     self.lum.set("poles", pole)
                     self.lum.set("material", MaterialSlab)
+                    
+            self.lum.select('MMI')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Input WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Input WG_R')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Output WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Output WG_R')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Input Trapez')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Output Trapez')
+            self.lum.addtogroup("MMI")
+
 
             # create_cover
             self.lum.addrect()
@@ -2236,26 +2362,35 @@ class Constructor:
             self.lum.set("x min", min_subL)
             self.lum.set("x max", max_subL)
             self.lum.set("material", MaterialSub)
-
-            # creating the thin film
-            min_slabH = max_subH
-            max_slabH = max_subH + Slab_Height
-
-            self.lum.addrect()
-            self.lum.set("name", "LN_slab")
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set("z min", min_slabH)
-            self.lum.set("z max", max_slabH)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("material", MaterialSlab)
-
+            
             # creating the MMI
             max_MMIH = WG_Height
             max_MMIL = MMI_Length / 2
             min_MMIL = -MMI_Length / 2
-            z_Offset = max_slabH + max_MMIH / 2
+            
+            
+            if Slab_Height == 0:
+                z_Offset = max_subH + max_MMIH / 2
+            else:
+                # creating the thin film
+                min_slabH = max_subH
+                max_slabH = max_subH + Slab_Height
+
+                self.lum.addrect()
+                self.lum.set("name", "Slab")
+                self.lum.set("y min", min_subW)
+                self.lum.set("y max", max_subW)
+                self.lum.set("z min", min_slabH)
+                self.lum.set("z max", max_slabH)
+                self.lum.set("x min", min_subL)
+                self.lum.set("x max", max_subL)
+                self.lum.set("material", MaterialSlab)
+
+                z_Offset = max_slabH + max_MMIH / 2
+                self.lum.select("Slab")
+                self.lum.addtogroup("MMI")
+
+
 
             # Triangle EQ for MMI Width
             x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -2276,7 +2411,7 @@ class Constructor:
 
 
             #Create the MMI L2 Tapers for the Trapezoid
-            TaperNames = ["Input_Trapez", "Output_Trapez"]
+            TaperNames = ["Input Trapez", "Output Trapez"]
             myscript = self.Script()
 
 
@@ -2327,8 +2462,8 @@ class Constructor:
                     -(WG_Width / 2 + posOffset / 2)]
 
             # Names of the WGs
-            names = ['LN_input_WG_L', 'LN_input_WG_R', 'LN_output_WG_L', 'LN_output_WG_R']
-            TapersNames = ['Taper_input_WG_L', 'Taper_input_WG_R', 'Taper_output_WG_L', 'Taper_output_WG_R']
+            names = ['Input WG_L', 'Input WG_R', 'Output WG_L', 'Output WG_R']
+            TapersNames = ['Taper Input WG_L', 'Taper Input WG_R', 'Taper Output WG_L', 'Taper Output WG_R']
 
             # Taper Widths on Bott Cal
             x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -2427,6 +2562,30 @@ class Constructor:
                     pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
                     self.lum.set("poles", pole)
                     self.lum.set("material", MaterialSlab)
+                    
+                    
+            self.lum.select('MMI')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Input WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Input WG_R')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Output WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Output WG_R')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Input Trapez')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Output Trapez')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Taper Input WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Taper Input WG_R')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Taper Output WG_L')
+            self.lum.addtogroup("MMI")
+            self.lum.select('Taper Output WG_R')
+            self.lum.addtogroup("MMI")
 
             # create_cover
             self.lum.addrect()
@@ -2563,26 +2722,37 @@ class Constructor:
         self.lum.set("x min", min_subL)
         self.lum.set("x max", max_subL)
         self.lum.set("material", MaterialSub)
-
-        # creating the thin film
-        min_slabH = max_subH
-        max_slabH = max_subH + Slab_Height
-
-        self.lum.addrect()
-        self.lum.set("name", "LN_slab")
-        self.lum.set("y min", min_subW)
-        self.lum.set("y max", max_subW)
-        self.lum.set("z min", min_slabH)
-        self.lum.set("z max", max_slabH)
-        self.lum.set("x min", min_subL)
-        self.lum.set("x max", max_subL)
-        self.lum.set("material", MaterialSlab)
-
+        
         # creating the MMI
         max_MMIH = WG_Height
         max_MMIL = MMI_Length / 2
         min_MMIL = -MMI_Length / 2
-        z_Offset = max_slabH + max_MMIH / 2
+        
+        if Slab_Height == 0:
+            z_Offset = max_subH + max_MMIH / 2
+            
+        else:
+            # creating the thin film
+            min_slabH = max_subH
+            max_slabH = max_subH + Slab_Height
+
+            self.lum.addrect()
+            self.lum.set("name", "Slab")
+            self.lum.set("y min", min_subW)
+            self.lum.set("y max", max_subW)
+            self.lum.set("z min", min_slabH)
+            self.lum.set("z max", max_slabH)
+            self.lum.set("x min", min_subL)
+            self.lum.set("x max", max_subL)
+            self.lum.set("material", MaterialSlab)
+
+            
+            z_Offset = max_slabH + max_MMIH / 2
+            
+            self.lum.select("Slab")
+            self.lum.addtogroup("MMI")
+            
+            
 
         # Triangle EQ for MMI Width
         x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -2632,7 +2802,7 @@ class Constructor:
             yPos = [0 + OffsetInput, (WG_Width / 2 + posOffset / 2) + OffsetOutput, (- WG_Width / 2 - posOffset / 2) + OffsetOutput ]
 
             # Names of the WGs
-            names = ['LN_input_WG', 'LN_output_WG_L', 'LN_output_WG_R']
+            names = ['Input WG', 'Output WG_L', 'Output WG_R']
 
             # create loop
             for i in range(len(xPos)):
@@ -2649,7 +2819,16 @@ class Constructor:
                 self.lum.set("material", MaterialSlab)
 
 
-
+            self.lum.select("MMI")
+            self.lum.addtogroup("MMI")
+            self.lum.select("Input WG")
+            self.lum.addtogroup("MMI")
+            self.lum.select("Output WG_L")
+            self.lum.addtogroup("MMI")
+            self.lum.select("Output WG_R")
+            self.lum.addtogroup("MMI")
+            
+            
 
         elif Taper == True:
             if offset_Taper > OffMax:
@@ -2679,26 +2858,37 @@ class Constructor:
                 self.lum.set("x min", min_subL)
                 self.lum.set("x max", max_subL)
                 self.lum.set("material", MaterialSub)
-
-                # creating the thin film
-                min_slabH = max_subH
-                max_slabH = max_subH + Slab_Height
-
-                self.lum.addrect()
-                self.lum.set("name", "LN_slab")
-                self.lum.set("y min", min_subW)
-                self.lum.set("y max", max_subW)
-                self.lum.set("z min", min_slabH)
-                self.lum.set("z max", max_slabH)
-                self.lum.set("x min", min_subL)
-                self.lum.set("x max", max_subL)
-                self.lum.set("material", MaterialSlab)
-
+                
                 # creating the MMI
                 max_MMIH = WG_Height
                 max_MMIL = MMI_Length / 2
                 min_MMIL = -MMI_Length / 2
-                z_Offset = max_slabH + max_MMIH / 2
+                
+                if Slab_Height == 0:
+                    z_Offset = max_subH + max_MMIH / 2
+                else:
+                    
+
+                    # creating the thin film
+                    min_slabH = max_subH
+                    max_slabH = max_subH + Slab_Height
+
+                    self.lum.addrect()
+                    self.lum.set("name", "Slab")
+                    self.lum.set("y min", min_subW)
+                    self.lum.set("y max", max_subW)
+                    self.lum.set("z min", min_slabH)
+                    self.lum.set("z max", max_slabH)
+                    self.lum.set("x min", min_subL)
+                    self.lum.set("x max", max_subL)
+                    self.lum.set("material", MaterialSlab)
+
+                    
+                    z_Offset = max_slabH + max_MMIH / 2
+                    self.lum.select("Slab")
+                    self.lum.addtogroup("MMI")
+                    
+                    
 
                 # Triangle EQ for MMI Width
                 x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -2729,8 +2919,8 @@ class Constructor:
                 yPos = [0 + OffsetInput, WG_Width / 2 + posOffset / 2, - WG_Width / 2 - posOffset / 2]
 
                 # Names of the WGs
-                names = ['LN_input_WG', 'LN_output_WG_L', 'LN_output_WG_R']
-                TapersNames = ['Taper_input_WG', 'Taper_output_WG_L', 'Taper_output_WG_R']
+                names = ['Input WG', 'Output WG_L', 'Output WG_R']
+                TapersNames = ['Taper Input WG', 'Taper Output WG_L', 'Taper Output WG_R']
 
                 # Taper loop
                 # Taper Widths on Bott Cal
@@ -2809,6 +2999,22 @@ class Constructor:
                     pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
                     self.lum.set("poles", pole)
                     self.lum.set("material", MaterialSlab)
+                    
+                    
+            self.lum.select("MMI")
+            self.lum.addtogroup("MMI")
+            self.lum.select("Input WG")
+            self.lum.addtogroup("MMI")
+            self.lum.select("Output WG_L")
+            self.lum.addtogroup("MMI")
+            self.lum.select("Output WG_R")
+            self.lum.addtogroup("MMI")
+            self.lum.select("Taper Input WG")
+            self.lum.addtogroup("MMI")
+            self.lum.select("Taper Output WG_L")
+            self.lum.addtogroup("MMI")
+            self.lum.select("Taper Output WG_R")
+            self.lum.addtogroup("MMI")
 
         else:
             raise ValueError(
@@ -2949,26 +3155,34 @@ class Constructor:
         self.lum.set("x min", min_subL)
         self.lum.set("x max", max_subL)
         self.lum.set("material", MaterialSub)
-
-        # creating the thin film
-        min_slabH = max_subH
-        max_slabH = max_subH + Slab_Height
-
-        self.lum.addrect()
-        self.lum.set("name", "LN_slab")
-        self.lum.set("y min", min_subW)
-        self.lum.set("y max", max_subW)
-        self.lum.set("z min", min_slabH)
-        self.lum.set("z max", max_slabH)
-        self.lum.set("x min", min_subL)
-        self.lum.set("x max", max_subL)
-        self.lum.set("material", MaterialSlab)
-
+        
         # creating the MMI
         max_MMIH = WG_Height
         max_MMIL = MMI_Length / 2
         min_MMIL = -MMI_Length / 2
-        z_Offset = max_slabH + max_MMIH / 2
+        
+        if Slab_Height == 0:
+            z_Offset = max_subH + max_MMIH / 2
+        else:
+
+            # creating the thin film
+            min_slabH = max_subH
+            max_slabH = max_subH + Slab_Height
+
+            self.lum.addrect()
+            self.lum.set("name", "Slab")
+            self.lum.set("y min", min_subW)
+            self.lum.set("y max", max_subW)
+            self.lum.set("z min", min_slabH)
+            self.lum.set("z max", max_slabH)
+            self.lum.set("x min", min_subL)
+            self.lum.set("x max", max_subL)
+            self.lum.set("material", MaterialSlab)
+
+            z_Offset = max_slabH + max_MMIH / 2
+            self.lum.select("MMI")
+            self.lum.addtogroup("Slab")
+            
 
         # Triangle EQ for MMI Width
         x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -2991,7 +3205,7 @@ class Constructor:
 
 
         #Create the MMI L2 Tapers for the Trapezoid
-        TaperNames = ["Input_Trapez", "Output_Trapez"]
+        TaperNames = ["Input Trapez", "Output Trapez"]
         myscript = self.Script()
 
 
@@ -3065,7 +3279,7 @@ class Constructor:
                     yPos = [0 + OffsetInput, WG_Width / 2 + posOffset / 2, - WG_Width / 2 - posOffset / 2]
 
                     # Names of the WGs
-                    names = ['LN_input_WG', 'LN_output_WG_L', 'LN_output_WG_R']
+                    names = ['LN Input WG', 'LN Output WG_L', 'LN Output WG_R']
 
                     # create loop
                     for i in range(len(xPos)):
@@ -3080,6 +3294,21 @@ class Constructor:
                         pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
                         self.lum.set("poles", pole)
                         self.lum.set("material", MaterialSlab)
+                    
+                    
+                self.lum.select("MMI")
+                self.lum.addtogroup("MMI")
+                self.lum.select("LN Input WG")
+                self.lum.addtogroup("MMI")
+                self.lum.select("LN Output WG_L")
+                self.lum.addtogroup("MMI")
+                self.lum.select("LN Output WG_R")
+                self.lum.addtogroup("MMI")
+                self.lum.select("Input Trapez")
+                self.lum.addtogroup("MMI")
+                self.lum.select("Output Trapez")
+                self.lum.addtogroup("MMI")
+                
 
 
 
@@ -3112,26 +3341,34 @@ class Constructor:
                     self.lum.set("x min", min_subL)
                     self.lum.set("x max", max_subL)
                     self.lum.set("material", MaterialSub)
-
-                    # creating the thin film
-                    min_slabH = max_subH
-                    max_slabH = max_subH + Slab_Height
-
-                    self.lum.addrect()
-                    self.lum.set("name", "LN_slab")
-                    self.lum.set("y min", min_subW)
-                    self.lum.set("y max", max_subW)
-                    self.lum.set("z min", min_slabH)
-                    self.lum.set("z max", max_slabH)
-                    self.lum.set("x min", min_subL)
-                    self.lum.set("x max", max_subL)
-                    self.lum.set("material", MaterialSlab)
-
+                    
                     # creating the MMI
                     max_MMIH = WG_Height
                     max_MMIL = MMI_Length / 2
                     min_MMIL = -MMI_Length / 2
-                    z_Offset = max_slabH + max_MMIH / 2
+                    
+                    
+                    if Slab_Height == 0:
+                        z_Offset = max_subH + max_MMIH / 2
+                        
+                    else:
+                        # creating the thin film
+                        min_slabH = max_subH
+                        max_slabH = max_subH + Slab_Height
+
+                        self.lum.addrect()
+                        self.lum.set("name", "Slab")
+                        self.lum.set("y min", min_subW)
+                        self.lum.set("y max", max_subW)
+                        self.lum.set("z min", min_slabH)
+                        self.lum.set("z max", max_slabH)
+                        self.lum.set("x min", min_subL)
+                        self.lum.set("x max", max_subL)
+                        self.lum.set("material", MaterialSlab)
+
+                        z_Offset = max_slabH + max_MMIH / 2
+                        self.lum.select("Slab")
+                        self.lum.addtogroup("MMI")
 
                     # Triangle EQ for MMI Width
                     x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -3151,7 +3388,7 @@ class Constructor:
                     self.lum.set("base width", MMI_Wid)
 
                     #Create the MMI L2 Tapers for the Trapezoid
-                    TaperNames = ["Input_Trapez", "Output_Trapez"]
+                    TaperNames = ["Input Trapez", "Output Trapez"]
 
                     self.lum.addstructuregroup()
                     self.lum.set("name",TaperNames[0])
@@ -3202,8 +3439,8 @@ class Constructor:
                     yPos = [0 + OffsetInput, WG_Width / 2 + posOffset / 2, - WG_Width / 2 - posOffset / 2]
 
                     # Names of the WGs
-                    names = ['LN_input_WG', 'LN_output_WG_L', 'LN_output_WG_R']
-                    TapersNames = ['Taper_input_WG', 'Taper_output_WG_L', 'Taper_output_WG_R']
+                    names = ['LN Input WG', 'LN Output WG_L', 'LN Output WG_R']
+                    TapersNames = ['Taper Input WG', 'Taper Output WG_L', 'Taper Output WG_R']
 
                     # Taper loop
                     # Taper Widths on Bott Cal
@@ -3282,6 +3519,27 @@ class Constructor:
                         pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
                         self.lum.set("poles", pole)
                         self.lum.set("material", MaterialSlab)
+            
+            
+                self.lum.select("MMI")
+                self.lum.addtogroup("MMI")
+                self.lum.select("LN Input WG")
+                self.lum.addtogroup("MMI")
+                self.lum.select("LN Output WG_L")
+                self.lum.addtogroup("MMI")
+                self.lum.select("LN Output WG_R")
+                self.lum.addtogroup("MMI")
+                self.lum.select("Taper Input WG")
+                self.lum.addtogroup("MMI")
+                self.lum.select("Taper Output WG_L")
+                self.lum.addtogroup("MMI")
+                self.lum.select("Taper Output WG_R")
+                self.lum.addtogroup("MMI")
+                self.lum.select("Input Trapez")
+                self.lum.addtogroup("MMI")
+                self.lum.select("Output Trapez")
+                self.lum.addtogroup("MMI")
+
 
             else:
                 raise ValueError(
@@ -3397,20 +3655,29 @@ class Constructor:
         self.lum.set("x min", min_subL)
         self.lum.set("x max", max_subL)
         self.lum.set("material", MaterialSub)
+        
+        
+        if Slab_Height == 0:
+            z_Offset = max_subH + WG_Height / 2
+            
+        else:
+            # creating the thin film
+            min_slabH = max_subH
+            max_slabH = max_subH + Slab_Height
 
-        # creating the thin film
-        min_slabH = max_subH
-        max_slabH = max_subH + Slab_Height
-
-        self.lum.addrect()
-        self.lum.set("name", "LN_slab")
-        self.lum.set("y min", min_subW)
-        self.lum.set("y max", max_subW)
-        self.lum.set("z min", min_slabH)
-        self.lum.set("z max", max_slabH)
-        self.lum.set("x min", min_subL)
-        self.lum.set("x max", max_subL)
-        self.lum.set("material", MaterialSlab)
+            self.lum.addrect()
+            self.lum.set("name", "Slab")
+            self.lum.set("y min", min_subW)
+            self.lum.set("y max", max_subW)
+            self.lum.set("z min", min_slabH)
+            self.lum.set("z max", max_slabH)
+            self.lum.set("x min", min_subL)
+            self.lum.set("x max", max_subL)
+            self.lum.set("material", MaterialSlab)
+            z_Offset = max_slabH + WG_Height / 2
+            
+            self.lum.select("Slab")
+            self.lum.addtogroup("Directional Coupler")
 
         # Positions of the Input and Output WGs
         # Triangle EQ for MMI Width
@@ -3418,8 +3685,7 @@ class Constructor:
         extention = np.sqrt(x ** 2 - WG_Height ** 2)
         WG_W = WG_Width + 2 * extention
         WG_Width_bott = WG_W
-        z_Offset = max_slabH + WG_Height / 2
-
+        
         offset_WG = posOffset / 2 + WG_Width / 2 + WG_W / 2
 
         if offset_WG > Device_Width / 2:
@@ -3433,7 +3699,7 @@ class Constructor:
             yPos = [WG_Width / 2 + posOffset / 2, - WG_Width / 2 - posOffset / 2]
 
             # Names of the WGs
-            names = ['Top_WG', 'Bottom_WG']
+            names = ['Top WG', 'Bottom WG']
 
             # create loop
             for i in range(len(xPos)):
@@ -3449,6 +3715,10 @@ class Constructor:
                 self.lum.set("poles", pole)
                 self.lum.set("material", MaterialWG)
 
+            self.lum.select("Top WG")
+            self.lum.addtogroup("Directional Coupler")
+            self.lum.select("Bottom WG")
+            self.lum.addtogroup("Directional Coupler")
 
 
 
@@ -4274,7 +4544,7 @@ class Constructor:
         
 
         self.lum.addrect()
-        self.lum.set("name", "Substrate_Main")
+        self.lum.set("name", "Substrate Main")
         self.lum.set("y", 0)
         self.lum.set("y span", Device_Width)
         self.lum.set("z min", min_subH)
@@ -4282,28 +4552,33 @@ class Constructor:
         self.lum.set("x min", min_subL)
         self.lum.set("x max", max_subL)
         self.lum.set("material", MaterialSub)
-
-        # creating the thin film
-        min_slabH = max_subH
-        max_slabH = max_subH + Slab_Height
-
-        self.lum.addrect()
-        self.lum.set("name", "LN_slab_Main")
-        self.lum.set("y", 0)
-        self.lum.set("y span", Device_Width)
-        self.lum.set("z min", min_slabH)
-        self.lum.set("z max", max_slabH)
-        self.lum.set("x min", min_subL)
-        self.lum.set("x max", max_subL)
-        self.lum.set("material", MaterialSlab)
         
-
-
         # creating the MMI
         max_MMIH = WG_Height
         max_MMIL = MMI_Length / 2
         min_MMIL = -MMI_Length / 2
-        z_Offset = max_slabH + max_MMIH / 2
+        
+        if Slab_Height == 0:
+            z_Offset = max_subH + max_MMIH / 2
+        else:
+            # creating the thin film
+            min_slabH = max_subH
+            max_slabH = max_subH + Slab_Height
+
+            self.lum.addrect()
+            self.lum.set("name", "Slab Main")
+            self.lum.set("y", 0)
+            self.lum.set("y span", Device_Width)
+            self.lum.set("z min", min_slabH)
+            self.lum.set("z max", max_slabH)
+            self.lum.set("x min", min_subL)
+            self.lum.set("x max", max_subL)
+            self.lum.set("material", MaterialSlab)
+
+            z_Offset = max_slabH + max_MMIH / 2
+            self.lum.select("Slab")
+            self.lum.addtogroup("Cascadet MMI")
+            
 
         # Triangle EQ for MMI Width
         x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -4314,7 +4589,7 @@ class Constructor:
         Parameters__Position_Y = [0, (MMI_Wid + SpaceY)/2,  -(MMI_Wid + SpaceY)/2]
         
 
-        names_MMI = ["MMI_In", "MMI_Out1", "MMI_Out2"]
+        names_MMI = ["MMI In", "MMI Out1", "MMI Out2"]
         for i in range(3):
             self.lum.addwaveguide()
             self.lum.set("name", names_MMI[i])
@@ -4376,7 +4651,7 @@ class Constructor:
                         raise ValueError('Parameters["poles"] should be an boolen variable! Please set Parameters["poles"] to True if Bezier Curves needed. Set Parameters["poles"] to False for Cosinus Curve!')
         
         
-                    names = ["S-Bend_Top", "S-Bend_Bot"]
+                    names = ["S-Bend Top", "S-Bend Bot"]
                     S_Bend_X_Offset = [(-SpaceX - MMI_Length/2  - WG_Length), (SpaceX/2 - SpaceX/2 - MMI_Length/2 - WG_Length)]
                     S_Bend_Y_Offset = [( WG_Width / 2 + posOffset / 2) ,-( WG_Width / 2 + posOffset / 2)]
                     z_rotation = [0,180]
@@ -4398,9 +4673,9 @@ class Constructor:
                         
 
                     # Names of the WGs
-                    names1 = ['MMI_In_WG', 'MMI_Out_WG_Top', 'MMI_Out_WG_Bot']
-                    names2 = ['MMIOut1_In_WG', 'MMIOut1_Out_WG_Top', 'MMIOut1_Out_WG_Bot']
-                    names3 = ['MMIOut2_In_WG', 'MMIOut2_Out_WG_Top', 'MMIOut2_Out_WG_Bot']
+                    names1 = ['MMI In_WG', 'MMI Out_WG_Top', 'MMI Out_WG_Bot']
+                    names2 = ['MMIOut1 In_WG', 'MMIOut1 Out_WG_Top', 'MMIOut1 Out_WG_Bot']
+                    names3 = ['MMIOut2 In_WG', 'MMIOut2 Out_WG_Top', 'MMIOut2 Out_WG_Bot']
                     names = [names1, names2, names3]
 
                     # create loop
@@ -4419,8 +4694,35 @@ class Constructor:
                             self.lum.set("material", MaterialSlab)
 
 
-
-
+                self.lum.select("MMI In")
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select("MMI Out1")
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select("MMI Out2")
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select("MMI In_WG")
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMI Out_WG_Top')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMI Out_WG_Bot')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut1 In_WG')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut1 Out_WG_Top')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut1 Out_WG_Bot')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut2 In_WG')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut2 Out_WG_Top')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut2 Out_WG_Bot')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select("S-Bend Top")
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select("S-Bend Bot")
+                self.lum.addtogroup("Cascadet MMI")
+                
             elif Taper == True:
                 if offset_Taper > OffMax:
                     self.lum.deleteall()
@@ -4449,27 +4751,33 @@ class Constructor:
                     self.lum.set("x min", min_subL)
                     self.lum.set("x max", max_subL)
                     self.lum.set("material", MaterialSub)
-
-                    # creating the thin film
-                    min_slabH = max_subH
-                    max_slabH = max_subH + Slab_Height
-
-                    self.lum.addrect()
-                    self.lum.set("name", "LN_slab_Mian")
-                    self.lum.set("y", 0)
-                    self.lum.set("y span", Device_Width)
-                    self.lum.set("z min", min_slabH)
-                    self.lum.set("z max", max_slabH)
-                    self.lum.set("x min", min_subL)
-                    self.lum.set("x max", max_subL)
-                    self.lum.set("material", MaterialSlab)
                     
-
                     # creating the MMI
                     max_MMIH = WG_Height
                     max_MMIL = MMI_Length / 2
                     min_MMIL = -MMI_Length / 2
-                    z_Offset = max_slabH + max_MMIH / 2
+                    
+                    if Slab_Height == 0:
+                        z_Offset = max_subH + max_MMIH / 2
+                    else:
+                        # creating the thin film
+                        min_slabH = max_subH
+                        max_slabH = max_subH + Slab_Height
+
+                        self.lum.addrect()
+                        self.lum.set("name", "Slab Mian")
+                        self.lum.set("y", 0)
+                        self.lum.set("y span", Device_Width)
+                        self.lum.set("z min", min_slabH)
+                        self.lum.set("z max", max_slabH)
+                        self.lum.set("x min", min_subL)
+                        self.lum.set("x max", max_subL)
+                        self.lum.set("material", MaterialSlab)
+
+                        z_Offset = max_slabH + max_MMIH / 2
+                        self.lum.select("MMI In")
+                        self.lum.addtogroup("Cascadet MMI")
+                        
 
                     # Triangle EQ for MMI Width
                     x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -4480,7 +4788,7 @@ class Constructor:
                     Parameters__Position_X =  [0, -SpaceX -MMI_Length -2*TaperLength - 2*WG_Length , -SpaceX -MMI_Length -2*TaperLength - 2*WG_Length]
                     Parameters__Position_Y = [0, (MMI_Wid + SpaceY)/2,  -(MMI_Wid + SpaceY)/2]
                     
-                    names_MMI = ["MMI_In", "MMI_Out1", "MMI_Out2"]
+                    names_MMI = ["MMI In", "MMI Out1", "MMI Out2"]
                     for i in range(3):
                         self.lum.addwaveguide()
                         self.lum.set("name", names_MMI[i])
@@ -4545,7 +4853,7 @@ class Constructor:
                         raise ValueError('Parameters["poles"] should be an boolen variable! Please set Parameters["poles"] to True if Bezier Curves needed. Set Parameters["poles"] to False for Cosinus Curve!')
         
         
-                    names = ["S-Bend_Top", "S-Bend_Bot"]
+                    names = ["S-Bend Top", "S-Bend Bot"]
                     S_Bend_X_Offset = [(-SpaceX - MMI_Length/2 - TaperLength - WG_Length), (SpaceX/2 - SpaceX/2 - MMI_Length/2 - TaperLength - WG_Length)]
                     S_Bend_Y_Offset = [( WG_Width / 2 + posOffset / 2) ,-( WG_Width / 2 + posOffset / 2)]
                     z_rotation = [0,180]
@@ -4564,9 +4872,9 @@ class Constructor:
                         self.lum.set("first axis","z")
                         self.lum.set("rotation 1",z_rotation[i])
                     
-                    TapersNames1 = ['MMI_Taper_In_WG', 'MMI_Taper_Out_WG_Top', 'MMI_Taper_Out_WG_Bot']
-                    TapersNames2 = ['MMIOut1_Taper_In_WG', 'MMIOut1_Taper_Out_WG_Top', 'MMIOut1_Taper_Out_WG_Bot']
-                    TapersNames3 = ['MMIOut2_Taper_In_WG', 'MMIOut2_Taper_Out_WG_Top', 'MMIOut2_Taper_Out_WG_Bot']
+                    TapersNames1 = ['MMI Taper In_WG', 'MMI Taper Out WG_Top', 'MMI Taper Out WG_Bot']
+                    TapersNames2 = ['MMIOut1 Taper In_WG', 'MMIOut1 Taper Out WG_Top', 'MMIOut1 Taper Out WG_Bot']
+                    TapersNames3 = ['MMIOut2 Taper In_WG', 'MMIOut2 Taper Out WG_Top', 'MMIOut2 Taper ut WG_Bot']
                     TapersNames = [TapersNames1, TapersNames2, TapersNames3]
                     
                     
@@ -4616,9 +4924,9 @@ class Constructor:
                             
                     # Names of the WGs
                     # Names of the WGs
-                    names1 = ['MMI_In_WG', 'MMI_Out_WG_Top', 'MMI_Out_WG_Bot']
-                    names2 = ['MMIOut1_In_WG', 'MMIOut1_Out_WG_Top', 'MMIOut1_Out_WG_Bot']
-                    names3 = ['MMIOut2_In_WG', 'MMIOut2_Out_WG_Top', 'MMIOut2_In_WG_Bot']
+                    names1 = ['MMI In_WG', 'MMI Out WG_Top', 'MMI Out WG_Bot']
+                    names2 = ['MMIOut1 In_WG', 'MMIOut1 Out WG_Top', 'MMIOut1 Out WG_Bot']
+                    names3 = ['MMIOut2 In_WG', 'MMIOut2 Out WG_Top', 'MMIOut2 In WG_Bot']
                     names = [names1, names2, names3]
                     
 
@@ -4637,13 +4945,69 @@ class Constructor:
                             pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
                             self.lum.set("poles", pole)
                             self.lum.set("material", MaterialSlab)
+                
+
+                self.lum.select("MMI In")
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select("MMI Out1")
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select("MMI Out2")
+                self.lum.addtogroup("Cascadet MMI")
+                
+                self.lum.select("MMI In_WG")
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMI Out WG_Top')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMI Out WG_Bot')
+                self.lum.addtogroup("Cascadet MMI")
+                
+                self.lum.select('MMIOut1 In_WG')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut1 Out WG_Top')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut1 Out WG_Bot')
+                self.lum.addtogroup("Cascadet MMI")
+                
+                self.lum.select('MMIOut2 In_WG')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut2 Out WG_Top')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut2 Out WG_Bot')
+                self.lum.addtogroup("Cascadet MMI")
+                
+                self.lum.select("S-Bend Top")
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select("S-Bend Bot")
+                self.lum.addtogroup("Cascadet MMI")
+
+                self.lum.select('MMI Taper In_WG')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMI Taper Out WG_Top')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMI Taper Out WG_Bot')
+                self.lum.addtogroup("Cascadet MMI")
+                
+                self.lum.select('MMIOut1 Taper In_WG')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut1 Taper Out WG_Top')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut1 Taper Out WG_Bot')
+                self.lum.addtogroup("Cascadet MMI")
+                
+                self.lum.select('MMIOut2 Taper In_WG')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut2 Taper Out WG_Top')
+                self.lum.addtogroup("Cascadet MMI")
+                self.lum.select('MMIOut2 Taper ut WG_Bot')
+                self.lum.addtogroup("Cascadet MMI")
+                    
 
             else:
                 raise ValueError(
                     "Incorect Taper input. Taper must be an boolen. You can choose from Taper = True or Taper = False!")
         
             
-
+            
             # create_cover
             self.lum.addrect()
             self.lum.set("name", "cladding")
