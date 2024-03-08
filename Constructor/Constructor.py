@@ -5640,7 +5640,7 @@ class Constructor:
         
         f_lense = Parameters["Focal Length"]
         Outter_R = Parameters["Ring Outter Radius"]
-        Iner_R   = Parameters["Ring Outter Radius"]
+        Iner_R   = Parameters["Ring Iner Radius"]
         Lense_Thickness = Parameters["Lense Thickness"]
         x_res = Parameters['x res'] 
         Wavelength = Parameters['Wavelength'] 
@@ -5814,11 +5814,12 @@ class Constructor:
         WG_X = self.lum.get("poles")
         x_Monitor = [WG_X[0][0] + 0.1e-6, WG_X[1][0] - 0.1e-6]
         
-        self.lum.select("substrate")
-        z_sub = self.lum.get("max z")
+        self.lum.select("Substrate")
+        z_sub = self.lum.get("z max")
         self.lum.select("SMF::core")
         z_Pos = self.lum.get("z min")
         
+
         
         for i in range(len(names)):
             self.lum.addpower()
@@ -5840,14 +5841,13 @@ class Constructor:
             self.lum.set('monitor type', '2D Z-normal')
             self.lum.set("y", Solver_Y)
             self.lum.set("y span", Solver_Y_Span)
-            self.lum.set("x", Solver_X)
+            self.lum.set("x", x_Pos)
             self.lum.set("x span", Solver_X_Span)
-            self.lum.set("z", WG_Z)
+            self.lum.set("z", z_Pos)
             self.lum.set('output Px', 1)
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
-            
             z_Pos = z_Pos/2
                 
             
