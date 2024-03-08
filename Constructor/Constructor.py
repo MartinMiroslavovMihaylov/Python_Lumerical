@@ -5714,8 +5714,7 @@ class Constructor:
         self.lum.set("theta start",0)
         self.lum.set("theta stop", 0)
         self.lum.set("material", Materials[2])
-        
-        
+         
         self.lum.addsphere()
         self.lum.set("name", "Lense")
         self.lum.set("override mesh order from material database", 1)
@@ -5734,7 +5733,6 @@ class Constructor:
         self.lum.select("Lense")
         self.lum.addtogroup('Funnel')
         
-        
         self.lum.select("Substrate")
         x_adj = self.lum.get("x min")
         self.lum.select("SMF")
@@ -5742,14 +5740,12 @@ class Constructor:
         self.lum.select("Funnel")
         self.lum.set("x", (Parameters["SMF Core Diameter"]/2) - abs(x_adj))
         
-        
         self.lum.select("SMF")
         x_Pos = self.lum.get("x")
         self.lum.select("SMF::core")
         y_Pos = self.lum.get("y")
         z_Pos = self.lum.get("z max")
         radius = self.lum.get("radius")
-        
         
         self.lum.select("Substrate")
         Solver_X = self.lum.get("x")
@@ -5818,6 +5814,12 @@ class Constructor:
         WG_X = self.lum.get("poles")
         x_Monitor = [WG_X[0][0] + 0.1e-6, WG_X[1][0] - 0.1e-6]
         
+        self.lum.select("substrate")
+        z_sub = self.lum.get("max z")
+        self.lum.select("SMF::core")
+        z_Pos = self.lum.get("z min")
+        
+        
         for i in range(len(names)):
             self.lum.addpower()
             self.lum.set('name', names[i])
@@ -5830,6 +5832,25 @@ class Constructor:
             self.lum.set('output Px', 1)
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
+            
+            
+        for i in range(3):
+            self.lum.addpower()
+            self.lum.set('name', "Power Beam " + str(i))
+            self.lum.set('monitor type', '2D Z-normal')
+            self.lum.set("y", Solver_Y)
+            self.lum.set("y span", Solver_Y_Span)
+            self.lum.set("x", Solver_X)
+            self.lum.set("x span", Solver_X_Span)
+            self.lum.set("z", WG_Z)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+            self.lum.set('output power', 1)
+            
+            z_Pos = z_Pos/2
+                
+            
 
 
 
