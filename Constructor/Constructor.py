@@ -893,6 +893,9 @@ class Constructor:
                     self.lum.set("material", MaterialSlab)
 
                     z_Offset = max_slabH + WG_Height / 2
+                    
+                    self.lum.select("Slab")
+                    self.lum.addtogroup("Straight Waveguide")
 
                     
                 else:
@@ -908,7 +911,7 @@ class Constructor:
 
 
 
-                names = ["Straight Waveguide"]
+                names = ["Waveguide"]
 
                 self.lum.addwaveguide()
                 self.lum.set("name", names[0])
@@ -923,6 +926,9 @@ class Constructor:
                 self.lum.set("material", MaterialWG)
                 self.lum.set("first axis", 'z')
                 self.lum.set("rotation 1", Side_Angle)
+                
+                self.lum.select("Waveguide")
+                self.lum.addtogroup("Straight Waveguide")
 
 
                 # # create_cover
@@ -973,6 +979,8 @@ class Constructor:
                     self.lum.set("material", MaterialSlab)
 
                     z_Offset = max_slabH + WG_Height / 2
+                    self.lum.select("Slab")
+                    self.lum.addtogroup("Straight Waveguide")
                     
                     
                     
@@ -985,7 +993,7 @@ class Constructor:
 
 
 
-                names = ["Straight Waveguide"]
+                names = ["Waveguide"]
 
                 self.lum.addwaveguide()
                 self.lum.set("name", names[0])
@@ -1000,8 +1008,9 @@ class Constructor:
                 self.lum.set("material", MaterialWG)
                 self.lum.set("first axis", 'z')
                 self.lum.set("rotation 1", Side_Angle)
-
-
+                
+                self.lum.select("Waveguide")
+                self.lum.addtogroup("Straight Waveguide")
 
 
                 # # create_cover
@@ -1066,6 +1075,9 @@ class Constructor:
                 
                 z_Offset = max_slabH
                 
+                self.lum.select("Slab")
+                self.lum.addtogroup("Straight Waveguide")
+                
             else:
             
                 z_Offset = max_subH + WG_Height / 2
@@ -1123,6 +1135,9 @@ class Constructor:
             self.lum.addplanarsolid(vtx, a)
             self.lum.set('material', MaterialWG)
             self.lum.set('name', "Taper")
+            
+            self.lum.select("Taper")
+            self.lum.addtogroup("Straight Waveguide")
 
 
 
@@ -5129,77 +5144,77 @@ class Constructor:
 
 
         # Check if Material Cable is given
-        if len(Material) == 2:
-            CoreIndex = CoreIndex
-            CladdingIndex = CladdingIndex
+        # if len(Material) == 2:
+        CoreIndex = CoreIndex
+        CladdingIndex = CladdingIndex
 
-            self.lum.addcircle()
-            self.lum.set("name", "core")
-            self.lum.set("override mesh order from material database", 1)
-            self.lum.set("mesh order", 4)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", 10)
-            self.lum.set("alpha", 1)
-            self.lum.set("radius", core_radius)
-            self.lum.set("index", CoreIndex)
-            self.lum.set("x", 0)
-            self.lum.set("y", 0)
-            self.lum.set("z", 0)
-            self.lum.set("z span", L)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", Theta)
+        self.lum.addcircle()
+        self.lum.set("name", "core")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 4)
+        self.lum.set("first axis", "y")
+        self.lum.set("rotation 1", 10)
+        self.lum.set("alpha", 1)
+        self.lum.set("radius", core_radius)
+        self.lum.set("index", CoreIndex)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", 0)
+        self.lum.set("z span", L)
+        self.lum.set("first axis", "y")
+        self.lum.set("rotation 1", Theta)
 
-            self.lum.addcircle()
-            self.lum.set("name", "cladding")
-            self.lum.set("override mesh order from material database", 1)
-            self.lum.set("mesh order", 5)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", 10)
-            self.lum.set("alpha", 0.35)
-            self.lum.set("radius", cladding_radius)
-            self.lum.set("index", CladdingIndex)
-            self.lum.set("x", 0)
-            self.lum.set("y", 0)
-            self.lum.set("z", 0)
-            self.lum.set("z span", L)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", Theta)
+        self.lum.addcircle()
+        self.lum.set("name", "cladding")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 5)
+        self.lum.set("first axis", "y")
+        self.lum.set("rotation 1", 10)
+        self.lum.set("alpha", 0.35)
+        self.lum.set("radius", cladding_radius)
+        self.lum.set("index", CladdingIndex)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", 0)
+        self.lum.set("z span", L)
+        self.lum.set("first axis", "y")
+        self.lum.set("rotation 1", Theta)
 
-        else:
-            CoreMaterial = Material[2]
-            CladdingMaterial = Material[3]
-
-            self.lum.addcircle()
-            self.lum.set("name", "core")
-            self.lum.set("override mesh order from material database", 1)
-            self.lum.set("mesh order", 4)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", 10)
-            self.lum.set("alpha", 1)
-            self.lum.set("radius", core_radius)
-            self.lum.set("material", CoreMaterial)
-            self.lum.set("x", 0)
-            self.lum.set("y", 0)
-            self.lum.set("z", 0)
-            self.lum.set("z span", L)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", Theta)
-
-            self.lum.addcircle()
-            self.lum.set("name", "cladding")
-            self.lum.set("override mesh order from material database", 1)
-            self.lum.set("mesh order", 5)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", 10)
-            self.lum.set("alpha", 0.35)
-            self.lum.set("radius", cladding_radius)
-            self.lum.set("material", CladdingMaterial)
-            self.lum.set("x", 0)
-            self.lum.set("y", 0)
-            self.lum.set("z", 0)
-            self.lum.set("z span", L)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", Theta)
+        # else:
+            # CoreMaterial = Material[2]
+            # CladdingMaterial = Material[3]
+            # 
+            # self.lum.addcircle()
+            # self.lum.set("name", "core")
+            # self.lum.set("override mesh order from material database", 1)
+            # self.lum.set("mesh order", 4)
+            # self.lum.set("first axis", "y")
+            # self.lum.set("rotation 1", 10)
+            # self.lum.set("alpha", 1)
+            # self.lum.set("radius", core_radius)
+            # self.lum.set("material", CoreMaterial)
+            # self.lum.set("x", 0)
+            # self.lum.set("y", 0)
+            # self.lum.set("z", 0)
+            # self.lum.set("z span", L)
+            # self.lum.set("first axis", "y")
+            # self.lum.set("rotation 1", Theta)
+            # 
+            # self.lum.addcircle()
+            # self.lum.set("name", "cladding")
+            # self.lum.set("override mesh order from material database", 1)
+            # self.lum.set("mesh order", 5)
+            # self.lum.set("first axis", "y")
+            # self.lum.set("rotation 1", 10)
+            # self.lum.set("alpha", 0.35)
+            # self.lum.set("radius", cladding_radius)
+            # self.lum.set("material", CladdingMaterial)
+            # self.lum.set("x", 0)
+            # self.lum.set("y", 0)
+            # self.lum.set("z", 0)
+            # self.lum.set("z span", L)
+            # self.lum.set("first axis", "y")
+            # self.lum.set("rotation 1", Theta)
 
         self.lum.select("core")
         self.lum.addtogroup('SMF')
@@ -5404,73 +5419,73 @@ class Constructor:
 
 
         # Check if Material Cable is given
-        if len(Material) == 2:
-            CoreIndex = CoreIndex
-            CladdingIndex = CladdingIndex
+        # if len(Material) == 2:
+        CoreIndex = CoreIndex
+        CladdingIndex = CladdingIndex
 
-            self.lum.addcircle()
-            self.lum.set("name", "core")
-            self.lum.set("override mesh order from material database", 1)
-            self.lum.set("mesh order", 4)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", 10)
-            self.lum.set("alpha", 1)
-            self.lum.set("radius", core_radius)
-            self.lum.set("index", CoreIndex)
-            self.lum.set("x", 0)
-            self.lum.set("y", 0)
-            self.lum.set("z", 0)
-            self.lum.set("z span", L)
-
-
-
-            self.lum.addcircle()
-            self.lum.set("name", "cladding")
-            self.lum.set("override mesh order from material database", 1)
-            self.lum.set("mesh order", 5)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", 10)
-            self.lum.set("alpha", 0.35)
-            self.lum.set("radius", cladding_radius)
-            self.lum.set("index", CladdingIndex)
-            self.lum.set("x", 0)
-            self.lum.set("y", 0)
-            self.lum.set("z", 0)
-            self.lum.set("z span", L)
+        self.lum.addcircle()
+        self.lum.set("name", "core")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 4)
+        self.lum.set("first axis", "y")
+        self.lum.set("rotation 1", 10)
+        self.lum.set("alpha", 1)
+        self.lum.set("radius", core_radius)
+        self.lum.set("index", CoreIndex)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", 0)
+        self.lum.set("z span", L)
 
 
-        else:
-            CoreMaterial = Material[2]
-            CladdingMaterial = Material[3]
 
-            self.lum.addcircle()
-            self.lum.set("name", "core")
-            self.lum.set("override mesh order from material database", 1)
-            self.lum.set("mesh order", 4)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", 10)
-            self.lum.set("alpha", 1)
-            self.lum.set("radius", core_radius)
-            self.lum.set("material", CoreMaterial)
-            self.lum.set("x", 0)
-            self.lum.set("y", 0)
-            self.lum.set("z", 0)
-            self.lum.set("z span", L)
+        self.lum.addcircle()
+        self.lum.set("name", "cladding")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 5)
+        self.lum.set("first axis", "y")
+        self.lum.set("rotation 1", 10)
+        self.lum.set("alpha", 0.35)
+        self.lum.set("radius", cladding_radius)
+        self.lum.set("index", CladdingIndex)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", 0)
+        self.lum.set("z span", L)
 
 
-            self.lum.addcircle()
-            self.lum.set("name", "cladding")
-            self.lum.set("override mesh order from material database", 1)
-            self.lum.set("mesh order", 5)
-            self.lum.set("first axis", "y")
-            self.lum.set("rotation 1", 10)
-            self.lum.set("alpha", 0.35)
-            self.lum.set("radius", cladding_radius)
-            self.lum.set("material", CladdingMaterial)
-            self.lum.set("x", 0)
-            self.lum.set("y", 0)
-            self.lum.set("z", 0)
-            self.lum.set("z span", L)
+        # else:
+        #     CoreMaterial = Material[2]
+        #     CladdingMaterial = Material[3]
+        # 
+        #     self.lum.addcircle()
+        #     self.lum.set("name", "core")
+        #     self.lum.set("override mesh order from material database", 1)
+        #     self.lum.set("mesh order", 4)
+        #     self.lum.set("first axis", "y")
+        #     self.lum.set("rotation 1", 10)
+        #     self.lum.set("alpha", 1)
+        #     self.lum.set("radius", core_radius)
+        #     self.lum.set("material", CoreMaterial)
+        #     self.lum.set("x", 0)
+        #     self.lum.set("y", 0)
+        #     self.lum.set("z", 0)
+        #     self.lum.set("z span", L)
+        # 
+        # 
+        #     self.lum.addcircle()
+        #     self.lum.set("name", "cladding")
+        #     self.lum.set("override mesh order from material database", 1)
+        #     self.lum.set("mesh order", 5)
+        #     self.lum.set("first axis", "y")
+        #     self.lum.set("rotation 1", 10)
+        #     self.lum.set("alpha", 0.35)
+        #     self.lum.set("radius", cladding_radius)
+        #     self.lum.set("material", CladdingMaterial)
+        #     self.lum.set("x", 0)
+        #     self.lum.set("y", 0)
+        #     self.lum.set("z", 0)
+        #     self.lum.set("z span", L)
 
 
         self.lum.select("core")
@@ -5620,6 +5635,199 @@ class Constructor:
         self.lum.set("rotation 1", 90)
 
 
+
+    def LenseModeSystem(self,Parameters):
+        
+        f_lense = Parameters["Focal Length"]
+        Outter_R = Parameters["Ring Outter Radius"]
+        Iner_R   = Parameters["Ring Outter Radius"]
+        Lense_Thickness = Parameters["Lense Thickness"]
+        x_res = Parameters['x res'] 
+        Wavelength = Parameters['Wavelength'] 
+        Port_Span = Parameters["Port Span"] 
+        Materials = Parameters['Material']
+
+
+        # SMF Parameters
+        Core_Diameter = Parameters["SMF Core Diameter"] 
+        Cladding_Diameter = Parameters["SMF Cladding Diameter"] 
+        Core_Index = Parameters["SMF Core Index"]
+        Cladding_Index = Parameters["SMF Cladding Index"] 
+        
+        
+        self.lum.select("Straight Waveguide::Waveguide")
+        z_Pos = self.lum.get("z")
+        
+        self.lum.addcircle()
+        self.lum.set("name", "core")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 4)
+        self.lum.set("alpha", 1)
+        self.lum.set("radius", Core_Diameter / 2)
+        self.lum.set("index", Core_Index)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z min", z_Pos + f_lense )
+        self.lum.set("z max", z_Pos + f_lense + 2e-6)
+        
+        
+        
+        self.lum.addcircle()
+        self.lum.set("name", "cladding")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 5)
+        self.lum.set("alpha", 0.35)
+        self.lum.set("radius", Cladding_Diameter / 2)
+        self.lum.set("index", Cladding_Index)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z min", z_Pos + f_lense)
+        self.lum.set("z max", z_Pos + f_lense + 2e-6)
+        
+        self.lum.select("core")
+        self.lum.addtogroup('SMF')
+        self.lum.select("cladding")
+        self.lum.addtogroup('SMF')
+        
+        
+        
+        # Extract SMF Positions
+        self.lum.select("SMF::core")
+        x_Pos = self.lum.get("x")
+        y_Pos = self.lum.get("y")
+        self.lum.select("Straight Waveguide::Waveguide")
+        z_Pos = self.lum.get("z")
+        
+        self.lum.addring()
+        self.lum.set("name", "Support Ring Lense")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 4)
+        self.lum.set("alpha", 0.7)
+        self.lum.set("x", x_Pos)
+        self.lum.set("y", y_Pos)
+        self.lum.set("z min", z_Pos)
+        self.lum.set("z max", z_Pos + f_lense)
+        self.lum.set("outer radius", Outter_R)
+        self.lum.set("inner radius", Iner_R)
+        self.lum.set("theta start",0)
+        self.lum.set("theta stop", 0)
+        self.lum.set("material", Materials[2])
+        
+        
+        self.lum.addsphere()
+        self.lum.set("name", "Lense")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 4)
+        self.lum.set("x", x_Pos)
+        self.lum.set("y", y_Pos)
+        self.lum.set("z", z_Pos + f_lense)
+        self.lum.set("radius", Iner_R)
+        self.lum.set("make ellipsoid", 1)
+        self.lum.set("radius 2", Iner_R)
+        self.lum.set("radius 3", Lense_Thickness)
+        self.lum.set("material", Materials[2])
+        
+        self.lum.select("Support Ring Lense")
+        self.lum.addtogroup('Funnel')
+        self.lum.select("Lense")
+        self.lum.addtogroup('Funnel')
+        
+        
+        self.lum.select("Substrate")
+        x_adj = self.lum.get("x min")
+        self.lum.select("SMF")
+        self.lum.set("x", (Parameters["SMF Core Diameter"]/2) -abs(x_adj))
+        self.lum.select("Funnel")
+        self.lum.set("x", (Parameters["SMF Core Diameter"]/2) - abs(x_adj))
+        
+        
+        self.lum.select("SMF")
+        x_Pos = self.lum.get("x")
+        self.lum.select("SMF::core")
+        y_Pos = self.lum.get("y")
+        z_Pos = self.lum.get("z max")
+        radius = self.lum.get("radius")
+        
+        
+        self.lum.select("Substrate")
+        Solver_X = self.lum.get("x")
+        Solver_X_Span = self.lum.get("x span")
+        Solver_Y = self.lum.get("y")
+        Solver_Y_Span = self.lum.get("y span")
+        Solver_Z = self.lum.get("z min")
+        
+
+        # Solver Object
+        self.lum.addfdtd()
+        self.lum.set("x", Solver_X)
+        self.lum.set("x span", Solver_X_Span)
+        self.lum.set("y", Solver_Y)
+        self.lum.set("y span", Solver_Y_Span)
+        self.lum.set('simulation temperature', 273.15 + 20)
+        self.lum.set("z min", Solver_Z)
+        self.lum.set("z max", z_Pos + 0.5e-6)
+        self.lum.set('z min bc', 'PML')
+        self.lum.set('z max bc', 'PML')
+        self.lum.set('mesh type', 'auto non-uniform')
+        self.lum.set('min mesh step', x_res)
+        self.lum.set('set simulation bandwidth', 0)
+        self.lum.set('global source center wavelength', Wavelength)
+        self.lum.set('global source wavelength span', 0)
+
+
+        # Add Gausssian Source
+        self.lum.addgaussian()
+        self.lum.set("injection axis", "z-axis")
+        self.lum.set("direction","Backward")
+        self.lum.set("x", x_Pos)
+        self.lum.set("x span", radius)
+        self.lum.set("y", y_Pos)
+        self.lum.set("y span", radius)
+        self.lum.set("z", z_Pos)
+        self.lum.set("waist radius w0", radius)
+        
+        
+        self.lum.select("Straight Waveguide::Waveguide")
+        WG_Z = self.lum.get("z")
+        # Add Movie monitor
+        self.lum.addmovie()
+        self.lum.set("name", "Movie")
+        self.lum.set("y", Solver_Y)
+        self.lum.set("y span", Solver_Y_Span)
+        self.lum.set("z", WG_Z)
+        self.lum.set("x", Solver_X)
+        self.lum.set("x span", Solver_X_Span)
+
+        # Add Power and Freq Monitor
+        self.lum.addpower()
+        self.lum.set('monitor type', '2D Z-normal')
+        self.lum.set("y", Solver_Y)
+        self.lum.set("y span", Solver_Y_Span)
+        self.lum.set("x", Solver_X)
+        self.lum.set("x span", Solver_X_Span)
+        self.lum.set("z", WG_Z)
+        self.lum.set('output Px', 1)
+        self.lum.set('output Py', 1)
+        self.lum.set('output Pz', 1)
+        self.lum.set('output power', 1)
+        
+        names = ["Input", "Output"]
+        self.lum.select("Straight Waveguide::Waveguide")
+        WG_X = self.lum.get("poles")
+        x_Monitor = [WG_X[0][0] + 0.1e-6, WG_X[1][0] - 0.1e-6]
+        
+        for i in range(len(names)):
+            self.lum.addpower()
+            self.lum.set('name', names[i])
+            self.lum.set('monitor type', '2D X-normal')
+            self.lum.set("x", x_Monitor[i] )
+            self.lum.set("y", Solver_Y)
+            self.lum.set("y span", Port_Span[1])
+            self.lum.set("z", WG_Z)
+            self.lum.set("z span", Port_Span[2])
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
 
 
 
