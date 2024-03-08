@@ -5697,6 +5697,8 @@ class Constructor:
         y_Pos = self.lum.get("y")
         self.lum.select("Straight Waveguide::Waveguide")
         z_Pos = self.lum.get("z")
+        self.lum.select("Substrate")
+        z_Sub = self.lum.get("z max")
         
         self.lum.addring()
         self.lum.set("name", "Support Ring Lense")
@@ -5705,7 +5707,7 @@ class Constructor:
         self.lum.set("alpha", 0.7)
         self.lum.set("x", x_Pos)
         self.lum.set("y", y_Pos)
-        self.lum.set("z min", z_Pos)
+        self.lum.set("z min", z_Sub)
         self.lum.set("z max", z_Pos + f_lense)
         self.lum.set("outer radius", Outter_R)
         self.lum.set("inner radius", Iner_R)
