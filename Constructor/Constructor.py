@@ -5759,9 +5759,9 @@ class Constructor:
 
         # Solver Object
         self.lum.addfdtd()
-        self.lum.set("x", Solver_X)
+        # self.lum.set("x", Solver_X)
         # self.lum.set("x span", Solver_X_Span)
-        self.lum.set("x min", Solver_X_max)
+        self.lum.set("x max", Solver_X_max)
         self.lum.set("x min", Solver_X_min - radius)
         self.lum.set("y", Solver_Y)
         self.lum.set("y span", Solver_Y_Span)
@@ -5856,7 +5856,7 @@ class Constructor:
         
         # Monitor Behind the Port 
         self.lum.addpower()
-        self.lum.set('name', "Power Beam back"))
+        self.lum.set('name', "Power Beam back")
         self.lum.set('monitor type', '2D Z-normal')
         self.lum.set("y", Solver_Y)
         self.lum.set("y span", Solver_Y_Span)
