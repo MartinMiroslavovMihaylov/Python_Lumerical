@@ -5817,7 +5817,7 @@ class Constructor:
         self.lum.select("Substrate")
         z_sub = self.lum.get("z max")
         self.lum.select("SMF::core")
-        z_Pos = self.lum.get("z min")
+        z_Min = self.lum.get("z min")
         
 
         
@@ -5843,13 +5843,26 @@ class Constructor:
             self.lum.set("y span", Solver_Y_Span)
             self.lum.set("x", x_Pos)
             self.lum.set("x span", Solver_X_Span)
-            self.lum.set("z", z_Pos)
+            self.lum.set("z", z_Min)
             self.lum.set('output Px', 1)
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
             self.lum.set('output power', 1)
-            z_Pos = z_Pos/2
+            z_Min = z_Min/2
                 
+        self.lum.addprofile()
+        self.lum.set('name', "Beam Profile Monitor ")
+        self.lum.set('monitor type', '2D Y-normal')
+        self.lum.set("y", 0)
+        self.lum.set("x", x_Pos)
+        self.lum.set("x span", Parameters["SMF Core Diameter"])
+        self.lum.set("z min", 0)
+        self.lum.set("z max", z_Pos + f_lense)
+        self.lum.set('output Px', 1)
+        self.lum.set('output Py', 1)
+        self.lum.set('output Pz', 1)
+        self.lum.set('output power', 1)
+        
             
 
 
@@ -7552,7 +7565,7 @@ class Constructor:
         self.lum.set("x min", X_min)
         self.lum.set("x max", TaperLength_PWB)
         self.lum.set("y", 0)
-        self.lum.set("y span", TaperWidthB + TaperWidthB/2)
+        self.lum.set("y span", 2*TaperWidthB )# + TaperWidthB/2
         self.lum.set('simulation temperature', 273.15 + 20)
         self.lum.set("z", Substrate_Height/2 + CoreDiameter/2 ) #Substrate_Height
         self.lum.set("z span", TaperHightB*2)
@@ -7589,9 +7602,9 @@ class Constructor:
         self.lum.set("direction", direction[0])
         self.lum.set("x", x[0])
         self.lum.set("y", 0)
-        self.lum.set("y span", yPort_Pos[0])
+        self.lum.set("y span",  2*TaperWidthB) # yPort_Pos[0]
         self.lum.set("z", zMid_Pos_Ports[0])
-        self.lum.set("z span", zPort_Pos[0])
+        self.lum.set("z span", TaperHightB*2) # zPort_Pos[0]
         self.lum.set("waist radius w0", CoreDiameter/2)
         self.lum. set("distance from waist",0)
     
