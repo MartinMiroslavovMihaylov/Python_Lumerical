@@ -1461,11 +1461,41 @@ class Constructor:
             self.lum.set("base width", WG_W)
             self.lum.set("base height", WG_Height)
             self.lum.set("base angle", 90 - angle)
-            pole = np.array([[radius * 0, radius * 1], [radius * m, radius * 1], [radius * 1, radius * m], [radius * 1, radius * 0]])
+            pole = np.array([[radius * 0, radius * 1], [radius * m, radius * 1], [radius * 1, radius * m],
+                             [radius * 1, radius * 0]])
             self.lum.set("poles", pole)
             self.lum.set("material", MaterialWG)
             
+
+            self.lum.addwaveguide()
+            self.lum.set("name", "In_STR")
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", z_Offset)
+            self.lum.set("base width", WG_W)
+            self.lum.set("base height", WG_Height)
+            self.lum.set("base angle", 90 - angle)
+            pole = np.array([[0, radius * 1], [-1e-6, radius * 1]])
+            self.lum.set("poles", pole)
+            self.lum.set("material", MaterialWG)
+
+            self.lum.addwaveguide()
+            self.lum.set("name", "Out_STR")
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", z_Offset)
+            self.lum.set("base width", WG_W)
+            self.lum.set("base height", WG_Height)
+            self.lum.set("base angle", 90 - angle)
+            pole = np.array([[radius * 1, 0], [radius * 1 , -1e-6]])
+            self.lum.set("poles", pole)
+            self.lum.set("material", MaterialWG)
+
             self.lum.select('Bend_Waveguide')
+            self.lum.addtogroup("90 Grad Bend")
+            self.lum.select('In_STR')
+            self.lum.addtogroup("90 Grad Bend")
+            self.lum.select('Out_STR')
             self.lum.addtogroup("90 Grad Bend")
 
 
@@ -1571,6 +1601,8 @@ class Constructor:
             self.lum.set("material", MaterialWG)
             self.lum.set("first axis", 'z')
             self.lum.set("rotation 1", 90)
+
+
             
             
             self.lum.select('Arc Waveguide1')
@@ -5759,9 +5791,9 @@ class Constructor:
 
         # Solver Object
         self.lum.addfdtd()
-        self.lum.set("x", Solver_X)
+        # self.lum.set("x", Solver_X)
         # self.lum.set("x span", Solver_X_Span)
-        self.lum.set("x min", Solver_X_max)
+        self.lum.set("x max", Solver_X_max)
         self.lum.set("x min", Solver_X_min - radius)
         self.lum.set("y", Solver_Y)
         self.lum.set("y span", Solver_Y_Span)
@@ -5856,7 +5888,7 @@ class Constructor:
         
         # Monitor Behind the Port 
         self.lum.addpower()
-        self.lum.set('name', "Power Beam back"))
+        self.lum.set('name', "Power Beam back")
         self.lum.set('monitor type', '2D Z-normal')
         self.lum.set("y", Solver_Y)
         self.lum.set("y span", Solver_Y_Span)
@@ -6267,12 +6299,12 @@ class Constructor:
             # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
             self.lum.addfdtd()
             self.lum.set("x", m * radius)
-            self.lum.set("x span", (m * radius * 2 + WG_Width))
+            self.lum.set("x span", (m * radius * 2 + WG_Width)+2e-6)
             self.lum.set("y", radius * m)
             self.lum.set("y span", m * radius * 2 + WG_Width)
             self.lum.set('simulation temperature', 273.15 + 20)
             self.lum.set("z", Substrate_Height)
-            self.lum.set("z span", 4e-6)
+            self.lum.set("z span", Substrate_Height + WG_Height*2)
             self.lum.set('z min bc', 'PML')
             self.lum.set('z max bc', 'PML')
             self.lum.set('mesh type', 'auto non-uniform')
@@ -6281,11 +6313,12 @@ class Constructor:
             self.lum.set('global source center wavelength', WaveLength)
             self.lum.set('global source wavelength span', 0)
 
-            x = [0, radius]
+            x = [0-0.2e-6, radius]
             direction = ['Forward', 'Forward']
             name = ['Input', 'Output']
-            y = [radius, 0]
+            y = [radius, 0-0.2e-6]
 
+            # Port 1
             self.lum.addport()
             self.lum.set('name', name[0])
             self.lum.set("injection axis", "x-axis")
@@ -6296,12 +6329,12 @@ class Constructor:
             self.lum.set("z span", z_Port_Span)
             self.lum.set('direction', direction[0])
             self.lum.set('mode selection', Mode)
-            self.lum.set("bent waveguide", 1)
-            self.lum.set("bend radius", radius)
+            # self.lum.set("bent waveguide", 1)
+            # self.lum.set("bend radius", radius)
 
 
 
-            # Power Monitor Port 1
+            # Time Monitor Port 1
             self.lum.addtime()
             self.lum.set('name', name[0])
             self.lum.set("x", x[0] + 0.2e-6)
@@ -6311,6 +6344,24 @@ class Constructor:
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
 
+
+
+            # Power Monitor Port 1
+            self.lum.addpower()
+            self.lum.set('name', "2D X-mormal Input Power Monitor")
+            self.lum.set("monitor type", "2D X-normal")
+            self.lum.set("x", x[0] + 0.1e-6)
+            self.lum.set("y", y[0])
+            self.lum.set("y span", y_Port_Span)
+            self.lum.set("z", MonitorHeight)
+            self.lum.set("z span", z_Port_Span)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+
+
+
+            #  Port 2
             self.lum.addport()
             self.lum.set('name', name[1])
             self.lum.set("injection axis", "y-axis")
@@ -6321,12 +6372,12 @@ class Constructor:
             self.lum.set("z span", z_Port_Span)
             self.lum.set('direction', direction[1])
             self.lum.set('mode selection', Mode)
-            self.lum.set("bent waveguide", 1)
-            self.lum.set("bend radius", radius)
-            self.lum.set("bend orientation", 90)
+            # self.lum.set("bent waveguide", 1)
+            # self.lum.set("bend radius", radius)
+            # self.lum.set("bend orientation", 90)
 
 
-            # Power Monitor Port 1
+            # Time Monitor Port 2
             self.lum.addtime()
             self.lum.set('name', name[1])
             self.lum.set("x", x[1])
@@ -6336,6 +6387,21 @@ class Constructor:
             self.lum.set('output Py', 1)
             self.lum.set('output Pz', 1)
 
+            # Power Monitor Port 2
+            self.lum.addpower()
+            self.lum.set('name', "2D Y-mormal Input Power Monitor")
+            self.lum.set("monitor type","2D Y-normal")
+            self.lum.set("x", x[1])
+            self.lum.set("x span", y_Port_Span)  # Only becouse we just rotate the previus WG on 90 degrees!!!
+            self.lum.set("y", y[1]+0.1e-6)
+            self.lum.set("z", MonitorHeight)
+            self.lum.set("z span", z_Port_Span)
+            self.lum.set('output Px', 1)
+            self.lum.set('output Py', 1)
+            self.lum.set('output Pz', 1)
+
+
+            # Add Movie Monitor
             self.lum.addmovie()
             self.lum.set("y", (m * radius))
             self.lum.set("y span", m * radius * 2 + WG_Width)
@@ -6371,7 +6437,7 @@ class Constructor:
             self.lum.set("y span", m * radius * 2 + WG_Width)
             self.lum.set('simulation temperature', 273.15 + 20)
             self.lum.set("z", Substrate_Height)
-            self.lum.set("z span", 4e-6)
+            self.lum.set("z span", Substrate_Height + WG_Height*2)
             self.lum.set('z min bc', 'PML')
             self.lum.set('z max bc', 'PML')
             self.lum.set('mesh type', 'auto non-uniform')
