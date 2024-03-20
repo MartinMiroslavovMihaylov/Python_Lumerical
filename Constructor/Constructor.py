@@ -5899,9 +5899,11 @@ class Constructor:
         self.lum.set('output Py', 1)
         self.lum.set('output Pz', 1)
         self.lum.set('output power', 1)
-                
+              
+
+        # Monitor Mode  
         self.lum.addprofile()
-        self.lum.set('name', "Beam Profile Monitor ")
+        self.lum.set('name', "Beam Profile Monitor")
         self.lum.set('monitor type', '2D Y-normal')
         self.lum.set("y", 0)
         self.lum.set("x", x_Pos)
@@ -5912,6 +5914,20 @@ class Constructor:
         self.lum.set('output Py', 1)
         self.lum.set('output Pz', 1)
         self.lum.set('output power', 1)
+        
+        # Monitor Index  
+        self.lum.addprofile()
+        self.lum.set('name', "index_monitor")
+        self.lum.set('monitor type', '3D')
+        self.lum.set("x max", Solver_X_max)
+        self.lum.set("x min", Solver_X_min - radius)
+        self.lum.set("y", Solver_Y)
+        self.lum.set("y span", Solver_Y_Span)
+        self.lum.set("z min", Solver_Z)
+        self.lum.set("z max", z_Pos + 0.5e-6)
+  
+        
+        
         
             
 
