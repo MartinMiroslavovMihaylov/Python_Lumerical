@@ -5916,7 +5916,7 @@ class Constructor:
         self.lum.set('output power', 1)
         
         # Monitor Index  
-        self.lum.addprofile()
+        self.lum.addindex()
         self.lum.set('name', "index_monitor")
         self.lum.set('monitor type', '3D')
         self.lum.set("x max", Solver_X_max)
