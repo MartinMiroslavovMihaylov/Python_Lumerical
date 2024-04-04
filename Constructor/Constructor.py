@@ -6323,7 +6323,7 @@ class Constructor:
                     # Add Movie monitor
                     self.lum.addmovie()
                     self.lum.set("y", 0)
-                    self.lum.set("y span", Device_Width)
+                    self.lum.set("y span", 2*TaperWidthB + WaveLength * 2)
                     self.lum.set("z", MonitorHeight)
                     self.lum.set("x", 0)
                     self.lum.set("x span", TaperLength)
@@ -6332,7 +6332,7 @@ class Constructor:
                     self.lum.addpower()
                     self.lum.set('monitor type', '2D Z-normal')
                     self.lum.set("y",0)
-                    self.lum.set("y span", Device_Width)
+                    self.lum.set("y span", 2*TaperWidthB + WaveLength * 2)
                     self.lum.set("x", 0)
                     self.lum.set("x span", TaperLength)
                     self.lum.set("z", MonitorHeight)
