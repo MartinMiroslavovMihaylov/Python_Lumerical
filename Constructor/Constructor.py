@@ -755,19 +755,19 @@ class Constructor:
             self.lum.set("x max", maxWGL)
             self.lum.set("material", MaterialSub)
 
-            # Create Cladding
-            self.lum.addrect()
-            self.lum.set("name", "cladding")
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set('z', max_WGH / 2 + min_WGH)
-            self.lum.set('z span', 2 * WG_Height)
-            self.lum.set("x min", minWGL)
-            self.lum.set("x max", maxWGL)
-            self.lum.set("material", MaterialClad)
-            self.lum.set("override mesh order from material database", True)
-            self.lum.set("mesh order", 4)
-            self.lum.set("alpha", 0.7)
+            # # Create Cladding
+            # self.lum.addrect()
+            # self.lum.set("name", "cladding")
+            # self.lum.set("y min", min_subW)
+            # self.lum.set("y max", max_subW)
+            # self.lum.set('z', max_WGH / 2 + min_WGH)
+            # self.lum.set('z span', 2 * WG_Height)
+            # self.lum.set("x min", minWGL)
+            # self.lum.set("x max", maxWGL)
+            # self.lum.set("material", MaterialClad)
+            # self.lum.set("override mesh order from material database", True)
+            # self.lum.set("mesh order", 4)
+            # self.lum.set("alpha", 0.7)
             
             
 
@@ -836,6 +836,17 @@ class Constructor:
         Material = Parameters['Material']
         WaveLength = Parameters["Wavelength"]
         Side_Angle = Parameters["Waveguide Angle"]
+        if Parameters["Taper Type"] == None:
+            TaperType = "Normal"
+        else:
+            TaperType = "Inverse"
+            TaperWidthF = Parameters['PWB Taper Width Front']
+            TaperWidthB = Parameters['PWB Taper Width Back']
+            TaperHightB = Parameters['PWB Taper Hight Back']
+            TaperHightF = Parameters['PWB Taper Hight Front']
+            TaperLength_PWB = Parameters['PWB Taper Length']
+            
+        
 
 
         # Material definition
@@ -1090,54 +1101,119 @@ class Constructor:
                 
                 z_Offset = max_subH
             
+            if TaperType == "Normal":
+                # PWD Taper Hights
+                TaperZmin = z_Offset
+                TaperZmax = z_Offset + WG_Height
 
-            # PWD Taper Hights
-            TaperZmin = z_Offset
-            TaperZmax = z_Offset + WG_Height
+                # PWB Taper Length
+                TaperXmax =  TaperLength/2
+                TaperXmin =  -TaperLength/2
 
-            # PWB Taper Length
-            TaperXmax =  TaperLength/2
-            TaperXmin =  -TaperLength/2
+                # Create PWB Taper
+                ymin_bot_l =  - WG_W / 2
+                ymax_bot_l =    WG_W / 2
 
-            # Create PWB Taper
-            ymin_bot_l =  - WG_W / 2
-            ymax_bot_l =    WG_W / 2
+                ymin_bot_r =  - TaperSideWidth / 2
+                ymax_bot_r =    TaperSideWidth / 2
 
-            ymin_bot_r =  - TaperSideWidth / 2
-            ymax_bot_r =    TaperSideWidth / 2
+                ymin_top_l =  - WG_Width / 2
+                ymax_top_l =    WG_Width / 2
 
-            ymin_top_l =  - WG_Width / 2
-            ymax_top_l =    WG_Width / 2
-
-            ymin_top_r =  - TaperWidth / 2
-            ymax_top_r =    TaperWidth / 2
-
-
-
-            vtx = np.array([[TaperXmin, ymin_bot_l, TaperZmin],  # 1
-                            [TaperXmax, ymin_bot_r, TaperZmin],  # 2
-                            [TaperXmax, ymax_bot_r, TaperZmin],  # 3
-                            [TaperXmin, ymax_bot_l, TaperZmin],  # 4
-                            [TaperXmin, ymin_top_l, TaperZmax],  # 5
-                            [TaperXmax, ymin_top_r, TaperZmax],  # 6
-                            [TaperXmax, ymax_top_r, TaperZmax],  # 7
-                            [TaperXmin, ymax_top_l, TaperZmax],  # 8
-                            ])
-            a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
-                 [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
-                 [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
+                ymin_top_r =  - TaperWidth / 2
+                ymax_top_r =    TaperWidth / 2
 
 
 
-            # Send Values to Lumerical and create solid
-            self.lum.putv('vertices', vtx)
-            self.lum.putv('facets', a)
-            self.lum.addplanarsolid(vtx, a)
-            self.lum.set('material', MaterialWG)
-            self.lum.set('name', "Taper")
+                vtx = np.array([[TaperXmin, ymin_bot_l, TaperZmin],  # 1
+                                [TaperXmax, ymin_bot_r, TaperZmin],  # 2
+                                [TaperXmax, ymax_bot_r, TaperZmin],  # 3
+                                [TaperXmin, ymax_bot_l, TaperZmin],  # 4
+                                [TaperXmin, ymin_top_l, TaperZmax],  # 5
+                                [TaperXmax, ymin_top_r, TaperZmax],  # 6
+                                [TaperXmax, ymax_top_r, TaperZmax],  # 7
+                                [TaperXmin, ymax_top_l, TaperZmax],  # 8
+                                ])
+                a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
+                     [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
+                     [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
+
+
+
+                # Send Values to Lumerical and create solid
+                self.lum.putv('vertices', vtx)
+                self.lum.putv('facets', a)
+                self.lum.addplanarsolid(vtx, a)
+                self.lum.set('material', MaterialWG)
+                self.lum.set('name', "Taper")
+                
+                self.lum.select("Taper")
+                self.lum.addtogroup("Straight Waveguide")
             
-            self.lum.select("Taper")
-            self.lum.addtogroup("Straight Waveguide")
+            else:
+            
+                # PWB Taper Length
+                PWB_TaperXmax =  TaperLength/2
+                PWB_TaperXmin =  -TaperLength/2
+                
+                        
+                # PWB Taper Hights
+                TaperZmin = z_Offset
+                TaperZmaxF =  TaperHightF + Substrate_Height
+                TaperZmaxB =  TaperHightB + Substrate_Height
+                
+                        
+                # PWD Taper Y-Parameters
+                PWB_TaperPosYMax_BotR = [(TaperWidthF / 2)]
+                PWB_TaperPosYMin_BotR = [(- TaperWidthF / 2)]
+                PWB_TaperPosYMax_TopR = [(TaperWidthF / 2)]
+                PWB_TaperPosYMin_TopR = [(- TaperWidthF / 2)]
+                PWB_TaperPosYMax_BotL = [(TaperWidthB / 2)]
+                PWB_TaperPosYMin_BotL = [(- TaperWidthB / 2)]
+                PWB_TaperPosYMax_TopL = [(TaperWidthB / 2)]
+                PWB_TaperPosYMin_TopL = [(- TaperWidthB / 2)]
+                
+                # Create PWB Taper
+                ymin_bot_l = PWB_TaperPosYMin_BotL[0]
+                ymax_bot_l = PWB_TaperPosYMax_BotL[0]
+
+                ymin_bot_r = PWB_TaperPosYMin_BotR[0]
+                ymax_bot_r = PWB_TaperPosYMax_BotR[0]
+
+                ymin_top_l = PWB_TaperPosYMin_TopL[0]
+                ymax_top_l = PWB_TaperPosYMax_TopL[0]
+
+                ymin_top_r = PWB_TaperPosYMin_TopR[0]
+                ymax_top_r = PWB_TaperPosYMax_TopR[0]
+
+                vtx = np.array([[PWB_TaperXmin, ymin_bot_l, TaperZmin],  # 1
+                                [PWB_TaperXmax, ymin_bot_r, TaperZmin],  # 2
+                                [PWB_TaperXmax, ymax_bot_r, TaperZmin],  # 3
+                                [PWB_TaperXmin, ymax_bot_l, TaperZmin],  # 4
+                                [PWB_TaperXmin, ymin_top_l, TaperZmaxB],  # 5
+                                [PWB_TaperXmax, ymin_top_r, TaperZmaxF],  # 6
+                                [PWB_TaperXmax, ymax_top_r, TaperZmaxF],  # 7
+                                [PWB_TaperXmin, ymax_top_l, TaperZmaxB],  # 8
+                                ])
+                a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
+                     [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
+                     [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
+
+                # Send Values to Lumerical and create solid
+                self.lum.putv('vertices', vtx)
+                self.lum.putv('facets', a)
+                self.lum.addplanarsolid(vtx, a)
+                self.lum.set('material', MaterialWG)
+                self.lum.set("override mesh order from material database",1)
+                self.lum.set("mesh order",3)
+                self.lum.set('name',  "Taper")
+
+
+   
+                
+                self.lum.select("Taper")
+                self.lum.addtogroup("Straight Waveguide")
+                
 
 
 
@@ -5995,6 +6071,16 @@ class Constructor:
         Taper = Parameters['Taper']
         TaperWidth = Parameters['Taper Width']
         TaperLength = Parameters['Taper Length']
+        if Parameters["Taper Type"] == None:
+            TaperType = "Normal"
+        else:
+            TaperType = "Inverse"
+            TaperWidthF = Parameters['PWB Taper Width Front']
+            TaperWidthB = Parameters['PWB Taper Width Back']
+            TaperHightB = Parameters['PWB Taper Hight Back']
+            TaperHightF = Parameters['PWB Taper Hight Front']
+            TaperLength_PWB = Parameters['PWB Taper Length']
+            
 
 
 
@@ -6174,80 +6260,167 @@ class Constructor:
             MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
             EME_WGLength = TaperLength * np.cos(angle * np.pi / 180)
 
-            # Adds a FDTD Solver
-            self.lum.addfdtd()
-            self.lum.set("x", 0)
-            self.lum.set("x span", TaperLength)
-            self.lum.set("y", 0)
-            self.lum.set("y span", Device_Width)
-            self.lum.set('simulation temperature', 273.15 + 20)
-            self.lum.set("z", Substrate_Height)
-            self.lum.set("z span", 4e-6)
-            self.lum.set('z min bc', 'PML')
-            self.lum.set('z max bc', 'PML')
-            self.lum.set('mesh type', 'auto non-uniform')
-            self.lum.set('min mesh step', x_res)
-            self.lum.set('set simulation bandwidth', 0)
-            self.lum.set('global source center wavelength', WaveLength)
-            self.lum.set('global source wavelength span', 0)
+
+            
+            
+            
+            if TaperType == "Normal":
+            
+                # Adds a FDTD Solver
+                self.lum.addfdtd()
+                self.lum.set("x", 0)
+                self.lum.set("x span", TaperLength)
+                self.lum.set("y", 0)
+                self.lum.set("y span", Device_Width)
+                self.lum.set('simulation temperature', 273.15 + 20)
+                self.lum.set("z", Substrate_Height)
+                self.lum.set("z span", 4e-6)
+                self.lum.set('z min bc', 'PML')
+                self.lum.set('z max bc', 'PML')
+                self.lum.set('mesh type', 'auto non-uniform')
+                self.lum.set('min mesh step', x_res)
+                self.lum.set('set simulation bandwidth', 0)
+                self.lum.set('global source center wavelength', WaveLength)
+                self.lum.set('global source wavelength span', 0)
+            
+                # Define Ports
+                Diff_Span = y_Port_Span - WG_Width
+                x = [-TaperLength/2+ 0.1e-6 , TaperLength/2 - 0.1e-6]
+                x_Monitor = [-TaperLength/2+ 0.1e-6+0.1e-6,TaperLength/2 - 0.1e-6 - 0.1e-6]
+                yPos = [0, 0]
+                yPos_span = [y_Port_Span, TaperWidth + Diff_Span]
+                theta = [0, 0]
+                direction = ['Forward', 'Backward']
+                name = ['Input', 'Output']
+                
+                
+                for i in range(2):
+                    self.lum.addport()
+                    self.lum.set('name', name[i])
+                    self.lum.set("injection axis", "x-axis")
+                    self.lum.set("x", x[i])
+                    self.lum.set("y", yPos[i])
+                    self.lum.set("y span", yPos_span[i])
+                    self.lum.set("z", MonitorHeight)
+                    self.lum.set("z span", z_Port_Span)
+                    self.lum.set('direction', direction[i])
+                    self.lum.set('mode selection', Mode)
 
 
 
-            # Define Ports
-            Diff_Span = y_Port_Span - WG_Width
-            x = [-TaperLength/2+ 0.1e-6 , TaperLength/2 - 0.1e-6]
-            x_Monitor = [-TaperLength/2+ 0.1e-6+0.1e-6,TaperLength/2 - 0.1e-6 - 0.1e-6]
-            yPos = [0, 0]
-            yPos_span = [y_Port_Span, TaperWidth + Diff_Span]
-            theta = [0, 0]
-            direction = ['Forward', 'Backward']
-            name = ['Input', 'Output']
+                    # Power Monitor Port 1
+                    self.lum.addtime()
+                    self.lum.set('name', name[i])
+                    self.lum.set("x", x_Monitor[i] )
+                    self.lum.set("y", yPos[i])
+                    self.lum.set("z", MonitorHeight)
+                    self.lum.set('output Px', 1)
+                    self.lum.set('output Py', 1)
+                    self.lum.set('output Pz', 1)
+                    
+                    
+                    
+                    # Add Movie monitor
+                    self.lum.addmovie()
+                    self.lum.set("y", 0)
+                    self.lum.set("y span", Device_Width)
+                    self.lum.set("z", MonitorHeight)
+                    self.lum.set("x", 0)
+                    self.lum.set("x span", TaperLength)
 
-            for i in range(2):
-                self.lum.addport()
-                self.lum.set('name', name[i])
-                self.lum.set("injection axis", "x-axis")
-                self.lum.set("x", x[i])
-                self.lum.set("y", yPos[i])
-                self.lum.set("y span", yPos_span[i])
-                self.lum.set("z", MonitorHeight)
-                self.lum.set("z span", z_Port_Span)
-                self.lum.set('direction', direction[i])
-                self.lum.set('mode selection', Mode)
+                    # Add Power and Freq Monitor
+                    self.lum.addpower()
+                    self.lum.set('monitor type', '2D Z-normal')
+                    self.lum.set("y",0)
+                    self.lum.set("y span", Device_Width)
+                    self.lum.set("x", 0)
+                    self.lum.set("x span", TaperLength)
+                    self.lum.set("z", MonitorHeight)
+                    self.lum.set('output Px', 1)
+                    self.lum.set('output Py', 1)
+                    self.lum.set('output Pz', 1)
+                    self.lum.set('output power', 1)
+
+                    
+            else:
+            
+                # Adds a FDTD Solver
+                self.lum.addfdtd()
+                self.lum.set("x", 0)
+                self.lum.set("x span", TaperLength)
+                self.lum.set("y", 0)
+                self.lum.set("y span", 2*TaperWidthB + WaveLength * 2)
+                self.lum.set('simulation temperature', 273.15 + 20)
+                self.lum.set("z", Substrate_Height + max_slabH + TaperHightB/2)
+                self.lum.set("z span", 2e-6 +  TaperHightB  )
+                self.lum.set('z min bc', 'PML')
+                self.lum.set('z max bc', 'PML')
+                self.lum.set('mesh type', 'auto non-uniform')
+                self.lum.set('min mesh step', x_res)
+                self.lum.set('set simulation bandwidth', 0)
+                self.lum.set('global source center wavelength', WaveLength)
+                self.lum.set('global source wavelength span', 0)
+                
+                
+                # Define Ports
+                Diff_Span = y_Port_Span - WG_Width
+                x = [-TaperLength/2+ 0.1e-6 , TaperLength/2 - 0.1e-6]
+                x_Monitor = [-TaperLength/2+ 0.1e-6+0.1e-6,TaperLength/2 - 0.1e-6 - 0.1e-6]
+                yPos = [0, 0]
+                yPos_span = [y_Port_Span, TaperWidth + Diff_Span]
+                theta = [0, 0]
+                direction = ['Forward', 'Backward']
+                name = ['Input', 'Output']
+                
+                yPos_span = [ TaperWidthB + Diff_Span , y_Port_Span ]
+                z_Pos = [Substrate_Height + max_slabH + TaperHightB/2, Substrate_Height + max_slabH + TaperHightF/2 ]
+                z_Span = [ TaperHightB + z_Port_Span , TaperHightF/2  + z_Port_Span]
+                for i in range(2):
+                    self.lum.addport()
+                    self.lum.set('name', name[i])
+                    self.lum.set("injection axis", "x-axis")
+                    self.lum.set("x", x[i])
+                    self.lum.set("y", yPos[i])
+                    self.lum.set("y span", yPos_span[i])
+                    self.lum.set("z", z_Pos[i])
+                    self.lum.set("z span", z_Span[i])
+                    self.lum.set('direction', direction[i])
+                    self.lum.set('mode selection', Mode)
 
 
 
-                # Power Monitor Port 1
-                self.lum.addtime()
-                self.lum.set('name', name[i])
-                self.lum.set("x", x_Monitor[i] )
-                self.lum.set("y", yPos[i])
-                self.lum.set("z", MonitorHeight)
+                    # Power Monitor Port 1
+                    self.lum.addtime()
+                    self.lum.set('name', name[i])
+                    self.lum.set("x", x_Monitor[i] )
+                    self.lum.set("y", yPos[i])
+                    self.lum.set("z", z_Pos[i])
+                    self.lum.set('output Px', 1)
+                    self.lum.set('output Py', 1)
+                    self.lum.set('output Pz', 1)
+                
+
+
+                # Add Movie monitor
+                self.lum.addmovie()
+                self.lum.set("y", 0)
+                self.lum.set("y span", Device_Width)
+                self.lum.set("z", z_Pos[1])
+                self.lum.set("x", 0)
+                self.lum.set("x span", TaperLength)
+
+                # Add Power and Freq Monitor
+                self.lum.addpower()
+                self.lum.set('monitor type', '2D Z-normal')
+                self.lum.set("y",0)
+                self.lum.set("y span", Device_Width)
+                self.lum.set("x", 0)
+                self.lum.set("x span", TaperLength)
+                self.lum.set("z", z_Pos[1])
                 self.lum.set('output Px', 1)
                 self.lum.set('output Py', 1)
                 self.lum.set('output Pz', 1)
-
-
-            # Add Movie monitor
-            self.lum.addmovie()
-            self.lum.set("y", 0)
-            self.lum.set("y span", Device_Width)
-            self.lum.set("z", MonitorHeight)
-            self.lum.set("x", 0)
-            self.lum.set("x span", TaperLength)
-
-            # Add Power and Freq Monitor
-            self.lum.addpower()
-            self.lum.set('monitor type', '2D Z-normal')
-            self.lum.set("y",0)
-            self.lum.set("y span", Device_Width)
-            self.lum.set("x", 0)
-            self.lum.set("x span", TaperLength)
-            self.lum.set("z", MonitorHeight)
-            self.lum.set('output Px', 1)
-            self.lum.set('output Py', 1)
-            self.lum.set('output Pz', 1)
-            self.lum.set('output power', 1)
+                self.lum.set('output power', 1)
 
 
 
