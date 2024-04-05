@@ -6107,14 +6107,19 @@ class Constructor:
                 self.lum.set('simulation temperature', 273.15 + 20)
                 self.lum.set("z", Substrate_Height)
                 self.lum.set("z span", 4e-6)
+                self.lum.set('x min bc', 'PML')
+                self.lum.set('x max bc', 'PML')
+                self.lum.set('y min bc', 'Anti-Symmetric')
+                self.lum.set('y max bc', 'PML')
                 self.lum.set('z min bc', 'PML')
                 self.lum.set('z max bc', 'PML')
+
                 self.lum.set('mesh type', 'auto non-uniform')
                 self.lum.set('min mesh step', x_res)
                 self.lum.set('set simulation bandwidth', 0)
                 self.lum.set('global source center wavelength', WaveLength)
                 self.lum.set('global source wavelength span', 0)
-
+                
 
 
                 # Define Ports
@@ -6275,8 +6280,13 @@ class Constructor:
                 self.lum.set('simulation temperature', 273.15 + 20)
                 self.lum.set("z", Substrate_Height)
                 self.lum.set("z span", 4e-6)
+                self.lum.set('x min bc', 'PML')
+                self.lum.set('x max bc', 'PML')
+                self.lum.set('y min bc', 'Anti-Symmetric')
+                self.lum.set('y max bc', 'PML')
                 self.lum.set('z min bc', 'PML')
                 self.lum.set('z max bc', 'PML')
+
                 self.lum.set('mesh type', 'auto non-uniform')
                 self.lum.set('min mesh step', x_res)
                 self.lum.set('set simulation bandwidth', 0)
@@ -6353,8 +6363,13 @@ class Constructor:
                 self.lum.set('simulation temperature', 273.15 + 20)
                 self.lum.set("z", Substrate_Height + max_slabH + TaperHightB/2)
                 self.lum.set("z span", 2e-6 +  TaperHightB  )
+                self.lum.set('x min bc', 'PML')
+                self.lum.set('x max bc', 'PML')
+                self.lum.set('y min bc', 'Anti-Symmetric')
+                self.lum.set('y max bc', 'PML')
                 self.lum.set('z min bc', 'PML')
                 self.lum.set('z max bc', 'PML')
+
                 self.lum.set('mesh type', 'auto non-uniform')
                 self.lum.set('min mesh step', x_res)
                 self.lum.set('set simulation bandwidth', 0)
