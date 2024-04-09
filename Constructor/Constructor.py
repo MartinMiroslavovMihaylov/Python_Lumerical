@@ -4422,8 +4422,8 @@ class Constructor:
 
         # PWB Taper Hights
         TaperZmin = z_Offset
-        TaperZmaxF =  TaperHightF + Substrate_Height
-        TaperZmaxB =  TaperHightB + Substrate_Height
+        TaperZmaxF =  TaperHightF + TaperZmin
+        TaperZmaxB =  TaperHightB + TaperZmin
 
         # Inverse Taper Hights
         TaperZmin = z_Offset
