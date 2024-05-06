@@ -31,12 +31,16 @@ def arange(start, stop, step=1, endpoint=True):
 class Constructor:
 
     # Init Programm
-    def __init__(self, file, MaterialLib, Mode):
+    def __init__(self, file, Mode, MaterialLib = None):
         '''
         Path to the umerical python file
         '''
         self.file = file
         self.MaterialLib = MaterialLib
+        if self.MaterialLib is None:
+            pass
+        else:
+            self.MaterialLib = MaterialLib
         self.lumpai = imp.load_source('lumapi', self.file)
         self.Mode = Mode
         self.Struct = None
@@ -105,12 +109,18 @@ class Constructor:
     # Choose Solver! Only FDTD and EME supported
     def FDTD(self):
         self.lum = self.lumpai.FDTD()
-        self.lum.importmaterialdb(self.MaterialLib)
+        if self.MaterialLib is None:
+            pass
+        else:
+            self.lum.importmaterialdb(self.MaterialLib)
         print('Lumerical FDTD API is started')
 
     def EME(self):
         self.lum = self.lumpai.MODE()
-        self.lum.importmaterialdb(self.MaterialLib)
+        if self.MaterialLib is None:
+            pass
+        else:
+            self.lum.importmaterialdb(self.MaterialLib)
         print('Lumerical EME API is started')
 
 
