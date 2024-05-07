@@ -12,6 +12,23 @@ import sys
 
 
 def loadingBar(count, total, size=1):
+    """
+    
+
+    Parameters
+    ----------
+    count : int
+        count is the loop iteration variable. For example count = i in case "for i in range(...):" is used.
+    total : int
+        Total number of bars that must be loaded for the respective process. For example total = 10 in case "for i in range(10):" 
+    size : int, optional
+        Defines how many "=" signs are used when the loading bar is printed in the console. The default is 1.
+
+    Returns
+    -------
+    None.
+
+    """
     percent = float(count+1) / float(total) * 100
     sys.stdout.write("\r" + str(int(count+1)).rjust(3, '0') + "/" +
                      str(int(total)).rjust(3, '0') + ' [' + '=' * int(percent / 10) *
@@ -33,8 +50,28 @@ class Constructor:
     # Init Programm
     def __init__(self, file, Mode, MaterialLib = None):
         '''
-        Path to the umerical python file
+        
+
+        Parameters
+        ----------
+        file : str
+            Path to the lumerical python file.
+        Mode : str
+            Solver Type, can be set to FDTD or EME.
+        MaterialLib : str, optional
+            Path to the lumerical material lib. The default is None.
+
+        Raises
+        ------
+        ValueError
+            Error when wrong solver is given.
+
+        Returns
+        -------
+        None.
+
         '''
+
         self.file = file
         self.MaterialLib = MaterialLib
         if self.MaterialLib is None:
@@ -53,11 +90,18 @@ class Constructor:
             self.EME()
             self.SolverInfo["Solver Used"] = "EME"
         else:
-            raise ValueError(
-                "Non Valid Solver was choosen. Please pass on one of the two supported solvers ['FDTD' or 'EME']")
+            raise ValueError("Non Valid Solver was choosen. Please pass on one of the two supported solvers ['FDTD' or 'EME']")
 
     # Close Programm
     def Close(self):
+        '''
+        
+
+        Returns
+        -------
+        Close Lumerical GUI
+
+        '''
         self.lum.close()
         print('Lumerical API is closed')
 
@@ -108,14 +152,33 @@ class Constructor:
 
     # Choose Solver! Only FDTD and EME supported
     def FDTD(self):
+        '''
+        
+        Calls the FDTD Solver.
+
+        Returns
+        -------
+        None.
+
+        '''
         self.lum = self.lumpai.FDTD()
         if self.MaterialLib is None:
             pass
         else:
             self.lum.importmaterialdb(self.MaterialLib)
         print('Lumerical FDTD API is started')
+        
+        
 
     def EME(self):
+        '''
+        Calls the EME solver.
+
+        Returns
+        -------
+        None.
+
+        '''
         self.lum = self.lumpai.MODE()
         if self.MaterialLib is None:
             pass
@@ -127,6 +190,27 @@ class Constructor:
 
     #   Solvers Function
     def Solver(self, Structure, Type, Parameters):
+        """
+        
+
+        Parameters
+        ----------
+        Structure : str
+            Object that will be simulated. 
+        Type : str
+            Solver Type.
+        Parameters : dict
+            Dictionary of solver parameters.
+
+        Raises
+        ------
+        ValueError
+            Error when wrong solver type selected.
+        Returns
+        -------
+        None.
+
+        """
         if Type == "FDTD":
             self.FDTD_Solver(Structure, Parameters)
         elif Type == "EME":
@@ -142,6 +226,24 @@ class Constructor:
 
 
     def StartSimFunction(self, Type):
+        '''
+        
+
+        Parameters
+        ----------
+        Type : str
+            Solver Type.
+
+        Raises
+        ------
+        ValueError
+            Error when wrong solver type selected.
+
+        Returns
+        -------
+        None.
+
+        '''
         if Type == "FDTD":
             self.StartFDTDSimulation()
             self.SolverInfo["Simulation Type"]  = "FDTD Simulation"
@@ -157,6 +259,27 @@ class Constructor:
 
 
     def ExtrtactData(self, Type, Parameters):
+        '''
+        
+
+        Parameters
+        ----------
+        Type : str
+            Solver Type.
+        Parameters : boolen
+            Need to be set True if S-Parameter analysis in FDTD solver is wanted. Otherwise False.
+
+        Raises
+        ------
+        ValueError
+            DESCRIPTION.
+
+        Returns
+        -------
+        TYPE
+            Error when wrong structure was selected.
+
+        '''
         if Type == "FDTD":
             if self.Struct == "MMI2x1" or self.Struct == "MMI2x1_Trapez":
                 S_Param3, Power3 = self.ExtractFDTDResults(3, Parameters)
@@ -188,14 +311,26 @@ class Constructor:
 
 
     def OverlapFDEModes(self, Parameters):
+        '''
+        
+
+        Parameters
+        ----------
+        Parameters : dict
+            Dictionary with parameters needed for the FDE analysis.
+
+        Returns
+        -------
+        None.
+
+        '''
         self.Waveguide(Parameters)
         self.FDE_Solver("Waveguide", Parameters)
         self.StartFDESimulation()
         TEModes, TMModes = self.ExtractFDEModes(EffIndexValue=Parameters["Effective Index"])
         self.CoppyDcard(list(TEModes.keys())[0], list(TMModes.keys())[0])
         self.removeObject()
-        print(
-            f"TE Mode {list(TEModes.keys())[0]} and TM Mode {list(TMModes.keys())[0]} have been copyed to the Lumerical Dcard.")
+        print(f"TE Mode {list(TEModes.keys())[0]} and TM Mode {list(TMModes.keys())[0]} have been copyed to the Lumerical Dcard.")
 
     # =============================================================================
     # Selection of possible Functions
@@ -204,6 +339,26 @@ class Constructor:
 
 
     def FDTD_Solver(self, Structure, Parameters):
+        '''
+        
+
+        Parameters
+        ----------
+        Structure : str
+            Structure to be simulated.
+        Parameters : dict
+            Dictionary with solver parameters.
+
+        Raises
+        ------
+        ValueError
+            Error when wrong structure was selected.
+
+        Returns
+        -------
+        None.
+
+        '''
         if Structure == "MMI2x1" or Structure == "MMI2x1_Trapez":
             self.Struct = "MMI2x1"
             self.setMMI2x1FDTDSolver(Parameters)
@@ -244,10 +399,30 @@ class Constructor:
             self.setRingGratingCouplerFDTDSolver(Parameters)
             self.SolverInfo["Simulated Object"] = "RingGratingCoupler"   
         else:
-            raise ValueError("Invalid Strucute for FDTD Solver is selected. Possible Strucures are MMI2x1 or MMI2x2")
+            raise ValueError("Invalid Strucute for FDTD Solver is selected. Possible Strucures are MMI2x1, MMI2x2, DirectionalCoupler, BendWaveguide, ArcWaveguide, StraightWaveguide, InverseTaper, GratingCoupler and RingGratingCoupler")
 
 
     def EME_Solver(self, Structure, Parameters):
+        '''
+        
+
+        Parameters
+        ----------
+        Structure : str
+            Structure to be simulated.
+        Parameters : dict
+            Dictionary with solver parameters.
+
+        Raises
+        ------
+        ValueError
+            Error when wrong structure was selected.
+
+        Returns
+        -------
+        None.
+
+        '''
         if Structure == "MMI2x1" or Structure == "MMI2x1_Trapez":
             self.setMMI2x1EMESolver(Parameters)
             self.SolverInfo["Simulated Object"] = "MMI2x1"
@@ -267,12 +442,31 @@ class Constructor:
             self.setInverseTaperEMESolver(Parameters)
             self.SolverInfo["Simulated Object"] = "Inverse Tapers"
         else:
-            raise ValueError(
-                "Invalid Structure for EME Solver is selected. Possible Strucutres are MMI2x1, MMI2x2 and DirectionalCoupler")
+            raise ValueError("Invalid Structure for EME Solver is selected. Possible Strucutres are MMI2x1, MMI2x2, DirectionalCoupler, WDM, StraightWaveguide andInverseTaper ")
 
 
 
     def FDE_Solver(self, Structure, Parameters):
+        '''
+        
+
+        Parameters
+        ----------
+        Structure : str
+            Structure to be simulated.
+        Parameters : dict
+            Dictionary with solver parameters.
+
+        Raises
+        ------
+        ValueError
+            Error when wrong structure was selected.
+
+        Returns
+        -------
+        None
+
+        '''
         if Structure == "Waveguide":
             self.setWaveguideFDESolver(Parameters)
             self.SolverInfo["Simulated Object"] = "Waveguide"
@@ -282,6 +476,26 @@ class Constructor:
 
 
     def varFDTD_Solver(self, Structure, Parameters):
+        '''
+        
+
+        Parameters
+        ----------
+        Structure : str
+            Structure to be simulated.
+        Parameters : dict
+            Dictionary with solver parameters.
+
+        Raises
+        ------
+        ValueError
+            Error when wrong structure was selected.
+
+        Returns
+        -------
+        None
+
+        '''
         if Structure == "MMI2x1":
             self.setMMI1x2VarFDTDSolver(Parameters)
         elif Structure == "MMI2x2":
@@ -291,10 +505,29 @@ class Constructor:
 
 
     def ReturnLogInfo(self):
+        '''
+        
+
+        Returns
+        -------
+        TYPE
+            Solver log information from last simulation.
+
+        '''
         return self.SolverInfo
 
 
+
     def Script(self):
+        '''
+        
+
+        Returns
+        -------
+        myscript : str
+            small script syntax for creating Tapers tooken from Lumerical . It is used only for check comperisons.
+
+        '''
         myscript = 'delta_w = 2*thickness*tan((angle_side)*pi/180); \n'
         myscript = myscript + '?"width_l = " + num2str(width_l); \n'
         myscript = myscript + '?"width_r = " + num2str(width_r) + endl; \n'
@@ -338,271 +571,13 @@ class Constructor:
 
 
 
-
-    def Grating_Script(self):
-        myscriptGC = 'n_periods = %n periods%; \n'
-        myscriptGC = myscriptGC + 'add_coating = %add coating%; \n'
-        myscriptGC = myscriptGC + 'thickness_coating = %thickness coating%; \n'
-        myscriptGC = myscriptGC + 'z_span_grating = %z span grating%; \n'
-        myscriptGC = myscriptGC + 'index_coating = %index coating%; \n'
-        myscriptGC = myscriptGC + 'index_grating = %index grating%; \n'
-        myscriptGC = myscriptGC + 'mat_coating = %mat coating%; \n'
-        myscriptGC = myscriptGC + 'mat_grating = %mat grating%; \n'
-        myscriptGC = myscriptGC + 'sidewall = %specify sidewall oxide coating%; \n'
-        myscriptGC = myscriptGC + 'os = %sidewall oxide thickness%; \n'
-        myscriptGC = myscriptGC + 'duty_cycle = %duty cycle%; \n'
-        myscriptGC = myscriptGC + 'tooth_angle = %tooth angle%; \n'
-        myscriptGC = myscriptGC + 'substrate_thickness = %substrate thickness%; \n'
-        myscriptGC = myscriptGC + 'fill=duty_cycle*period; \n'
-        myscriptGC = myscriptGC + 'theta = tooth_angle*pi/180; \n'
-        myscriptGC = myscriptGC + 'a=z_span_grating/tan(theta); \n'
-        myscriptGC = myscriptGC + 'n_periods=n_periods-1; \n'
-        myscriptGC = myscriptGC + 'if ( sidewall==0){' \
-                                  'os=thickness_coating*(1-sin(theta));' \
-                                  '} \n'
-        myscriptGC = myscriptGC + 'V=matrix(4,2); \n'
-        myscriptGC = myscriptGC + 'V(1,1:2)=[-fill/2,0]; \n'
-        myscriptGC = myscriptGC + 'V(2,1:2)=[-fill/2+a,z_span_grating]; \n'
-        myscriptGC = myscriptGC + 'V(3,1:2)=[fill/2-a,z_span_grating]; \n'
-        myscriptGC = myscriptGC + 'V(4,1:2)=[fill/2,0]; \n'
-        myscriptGC = myscriptGC + 'Vc=matrix(12,2); \n'
-        myscriptGC = myscriptGC + 'Vc(1,1:2)=[-period/2,thickness_coating]; \n'
-        myscriptGC = myscriptGC + 'Vc(2,1:2)=[-fill/2-os,thickness_coating]; \n'
-        myscriptGC = myscriptGC + 'Vc(3,1:2)=[-fill/2+a-os,z_span_grating+thickness_coating]; \n'
-        myscriptGC = myscriptGC + 'Vc(4,1:2)=[fill/2-a+os,z_span_grating+thickness_coating]; \n'
-        myscriptGC = myscriptGC + 'Vc(5,1:2)=[fill/2+os,thickness_coating]; \n'
-        myscriptGC = myscriptGC + 'Vc(6,1:2)=[period/2,thickness_coating]; \n'
-        myscriptGC = myscriptGC + 'Vc(7,1:2)=[period/2,0]; \n'
-        myscriptGC = myscriptGC + 'Vc(8,1:2)=[fill/2,0]; \n'
-        myscriptGC = myscriptGC + 'Vc(9,1:2)=[fill/2-a,z_span_grating]; \n'
-        myscriptGC = myscriptGC + 'Vc(10,1:2)=[-fill/2+a,z_span_grating];   \n'
-        myscriptGC = myscriptGC + 'Vc(11,1:2)=[-fill/2,0]; \n'
-        myscriptGC = myscriptGC + 'Vc(12,1:2)=[-period/2,0]; \n'
-        myscriptGC = myscriptGC + 'for(i=-n_periods/2:n_periods/2){ ' \
-                              'addpoly; set("name","post");' \
-                              ' set("x",period*i); ' \
-                              'set("y",0);' \
-                              ' set("z span",width);' \
-                              ' set("vertices",V); ' \
-                              ' set("material",mat_grating);' \
-                              ' if(get("material")=="<Object defined dielectric>") ' \
-                              '{ set("index",index_grating); } ' \
-                              'if (add_coating) {' \
-                              'addpoly;' \
-                              'set("name","coating");' \
-                              'set("x",period*i);' \
-                              'set("y",0);' \
-                              'set("z span",width);' \
-                              'set("vertices",Vc);' \
-                              'set("material",mat_coating);' \
-                              ' if(get("material")=="<Object defined dielectric>") ' \
-                              '{ set("index",index_coating); }' \
-                              ' }' \
-                              '}   \n'
-
-        myscriptGC = myscriptGC + 'addrect; \n'
-        myscriptGC = myscriptGC + 'set("x",0); \n'
-        myscriptGC = myscriptGC + 'set("y",-substrate_thickness/2); \n'
-        myscriptGC = myscriptGC + 'set("x span",(n_periods+1)*period); \n'
-        myscriptGC = myscriptGC + 'set("y span",substrate_thickness); \n'
-        myscriptGC = myscriptGC + 'set("z span",width); \n'
-        myscriptGC = myscriptGC + 'set("material",mat_grating); \n'
-        myscriptGC = myscriptGC + 'if(get("material")=="<Object defined dielectric>"){ set("index",index_grating); }  \n'
-
-
-        return myscriptGC
-
-
-
-
-    def Simple_Grating_Coupler_Script(self):
-        myscriptGC = 'n_periods = ceil(%target length%/pitch); \n'
-        myscriptGC = myscriptGC + 'fill_width = pitch*%duty cycle%; \n'
-        myscriptGC = myscriptGC + 'etch_width = pitch*(1-%duty cycle%); \n'
-        myscriptGC = myscriptGC + 'L = n_periods*pitch + etch_width; \n'
-        myscriptGC = myscriptGC + 'if(%etch depth% > %h total%) { ' \
-                     '%etch depth% = %h total%;' \
-                     '} \n'
-        myscriptGC = myscriptGC + 'addrect; \n'
-        myscriptGC = myscriptGC + 'set("name","input waveguide"); \n'
-        myscriptGC = myscriptGC + 'set("x min",-%input length%); \n'
-        myscriptGC = myscriptGC + 'set("x max",0); \n'
-        myscriptGC = myscriptGC + 'set("y min",0); \n'
-        myscriptGC = myscriptGC + 'set("y max",%h total%); \n'
-        myscriptGC = myscriptGC + 'if(%etch depth% < %h total%) { ' \
-                     'addrect;' \
-                     'set("name","lower layer");' \
-                     'set("x min",0);' \
-                     'set("x max",L);' \
-                     'set("y min",0);' \
-                     'set("y max",%h total%-%etch depth%);' \
-                     '} \n'
-        myscriptGC = myscriptGC + 'addrect; \n'
-        myscriptGC = myscriptGC + 'set("name","output waveguide"); \n'
-        myscriptGC = myscriptGC + 'set("x min",L); \n'
-        myscriptGC = myscriptGC + 'set("x max",L+%output length%); \n'
-        myscriptGC = myscriptGC + 'set("y min",0); \n'
-        myscriptGC = myscriptGC + 'set("y max",%h total%); \n'
-        myscriptGC = myscriptGC + 'for(i=1:n_periods){' \
-                     'addrect;' \
-                     'set("name","post");' \
-                     'set("x min",pitch*(i-1)+etch_width);' \
-                     'set("x max",pitch*i);' \
-                     'set("y min",%h total%-%etch depth%);' \
-                     'set("y max",%h total%);' \
-                     '} \n'
-        myscriptGC = myscriptGC + 'selectall; \n'
-        myscriptGC = myscriptGC + 'set("material",material); \n'
-        myscriptGC = myscriptGC + 'if(get("material")=="<Object defined dielectric>") ' \
-                     '{ set("index",index); }  \n'
-        myscriptGC = myscriptGC + 'set("z",0); \n'
-        myscriptGC = myscriptGC + 'set("z span",50e-6); \n'
-        # myscriptGC = myscriptGC + 'addrect; \n'
-        # myscriptGC = myscriptGC + 'set("name","substrate"); \n'
-        # myscriptGC = myscriptGC + 'set("x",-%target length%/2); \n'
-        # myscriptGC = myscriptGC + 'set("x span",L+%output length% + %input length%); \n'
-        # myscriptGC = myscriptGC + 'set("y",0); \n'
-        # myscriptGC = myscriptGC + 'set("y span", 1e-6); \n'
-        # myscriptGC = myscriptGC + 'set("z",-0.5e-6); \n'
-        # myscriptGC = myscriptGC + 'set("z span",50e-6); \n'
-        # myscriptGC = myscriptGC + 'set("material",material_slab); \n'
-        #
-
-
-        return myscriptGC
-
-
-
-    def Grating_Coupler_curved_Script(self):
-        myscriptGC = 'n_periods = ceil(%target length%/pitch); \n'
-        myscriptGC = myscriptGC + 'fill_width = pitch*%duty cycle%; \n'
-        myscriptGC = myscriptGC + 'etch_width = pitch*(1-%duty cycle%); \n'
-        myscriptGC = myscriptGC + 'L = n_periods*pitch + etch_width; \n'
-        myscriptGC = myscriptGC + 'theta = asin( 0.5*%y span%/radius ) * 180/pi; \n'
-        myscriptGC = myscriptGC + 'addrect; \n'
-        myscriptGC = myscriptGC + 'set("name","waveguide"); \n'
-        myscriptGC = myscriptGC + 'set("x min",-%waveguide length%); \n'
-        myscriptGC = myscriptGC + 'set("x max",0); \n'
-        myscriptGC = myscriptGC + 'set("y",0); \n'
-        myscriptGC = myscriptGC + 'set("y span",%waveguide width%); \n'
-        myscriptGC = myscriptGC + 'set("z min",0); \n'
-        myscriptGC = myscriptGC + 'set("z max",%h total%); \n'
-        myscriptGC = myscriptGC + 'addcustom; \n'
-        myscriptGC = myscriptGC + 'set("x min",0); \n'
-        myscriptGC = myscriptGC + 'set("x max",radius * cos(theta*pi/180)); \n'
-        myscriptGC = myscriptGC + 'set("z min",0); \n'
-        myscriptGC = myscriptGC + 'set("z max",%h total%); \n'
-        myscriptGC = myscriptGC + 'set("y span",%y span%); \n'
-        myscriptGC = myscriptGC + 'Ltaper = get("x span")*1e6; \n'
-        myscriptGC = myscriptGC + 'w1 = %waveguide width%*1e6/2; \n'
-        myscriptGC = myscriptGC + 'w2 = %y span%*1e6/2; \n'
-        myscriptGC = myscriptGC + 'x0 = Ltaper/2; \n'
-        myscriptGC = myscriptGC + 'a = w2; \n'
-        myscriptGC = myscriptGC + 'alpha = (w1-w2)/Ltaper^m; \n'
-        myscriptGC = myscriptGC + 'format long; \n'
-        myscriptGC = myscriptGC + 'equation = num2str(alpha)+"*("+num2str(x0)+"-x)^"+num2str(m)+"+"+num2str(a); \n'
-        myscriptGC = myscriptGC + 'set("equation 1",equation); \n'
-        myscriptGC = myscriptGC + 'format short; \n'
-        myscriptGC = myscriptGC + 'addring; \n'
-        myscriptGC = myscriptGC + 'set("name","input section"); \n'
-        myscriptGC = myscriptGC + 'set("inner radius",radius * cos(theta*pi/180)); \n'
-        myscriptGC = myscriptGC + 'set("outer radius",radius); \n'
-        myscriptGC = myscriptGC + 'set("x",0); \n'
-        myscriptGC = myscriptGC + 'set("y",0); \n'
-        myscriptGC = myscriptGC + 'set("z min",0); \n'
-        myscriptGC = myscriptGC + 'set("z max",%h total%); \n'
-        myscriptGC = myscriptGC + 'set("theta start",-theta); \n'
-        myscriptGC = myscriptGC + 'set("theta stop",theta); \n'
-        myscriptGC = myscriptGC + 'if(%etch depth% < %h total%) {' \
-                                  'copy;' \
-                                  'set("name","lower layer");' \
-                                  'set("inner radius",radius);' \
-                                  'set("outer radius",radius+L);' \
-                                  'set("z min",0);' \
-                                  'set("z max",%h total%-%etch depth%);' \
-                                  '} \n'
-        myscriptGC = myscriptGC + 'copy; \n'
-        myscriptGC = myscriptGC + 'set("name","output section"); \n'
-        myscriptGC = myscriptGC + 'set("inner radius",radius+L); \n'
-        myscriptGC = myscriptGC + 'set("outer radius",radius+L+%L extra%); \n'
-        myscriptGC = myscriptGC + 'set("z max",%h total%); \n'
-        myscriptGC = myscriptGC + 'for(i=1:n_periods){' \
-                                  'addring;' \
-                                  'set("x",0);' \
-                                  'set("y",0);' \
-                                  'set("z min",%h total%-%etch depth%);' \
-                                  'set("z max",%h total%);' \
-                                  'set("theta start",-theta);' \
-                                  'set("theta stop",theta);' \
-                                  'set("inner radius",radius + pitch*(i-1)+etch_width);' \
-                                  'set("outer radius",radius + pitch*i);' \
-                                  '} \n'
-        myscriptGC = myscriptGC + 'selectall; \n'
-        myscriptGC = myscriptGC + 'set("material",material);  \n'
-        myscriptGC = myscriptGC + 'if(get("material")=="<Object defined dielectric>") ' \
-                                  '{ set("index",index); }  \n'
-        myscriptGC = myscriptGC + 'move(-radius,0,0); \n'
-
-        return myscriptGC
-
-
-
-    def Fiber_Script(self):
-        myscriptSMF = 'core_index = %core index%; \n'
-        myscriptSMF = myscriptSMF + 'cladding_index = %cladding index%; \n'
-        myscriptSMF = myscriptSMF + 'core_radius = %core diameter%/2.0; \n'
-        myscriptSMF = myscriptSMF + 'cladding_radius = %cladding diameter%/2.0; \n'
-        myscriptSMF = myscriptSMF + 'theta_rad = theta/(180/pi); \n'
-        myscriptSMF = myscriptSMF + 'L = %z span%/cos(theta_rad); \n'
-        myscriptSMF = myscriptSMF + 'addcircle; \n'
-        myscriptSMF = myscriptSMF + 'set("name", "core"); \n'
-        myscriptSMF = myscriptSMF + 'set("override mesh order from material database",1); \n'
-        myscriptSMF = myscriptSMF + 'set("mesh order",4); \n'
-        myscriptSMF = myscriptSMF + 'set("first axis","y"); \n'
-        myscriptSMF = myscriptSMF + 'set("rotation 1",10); \n'
-        myscriptSMF = myscriptSMF + 'set("alpha", 1); \n'
-        myscriptSMF = myscriptSMF + 'addcircle; \n'
-        myscriptSMF = myscriptSMF + 'set("name", "cladding"); \n'
-        myscriptSMF = myscriptSMF + 'set("override mesh order from material database",1); \n'
-        myscriptSMF = myscriptSMF + 'set("mesh order",5); \n'
-        myscriptSMF = myscriptSMF + 'set("first axis","y"); \n'
-        myscriptSMF = myscriptSMF + 'set("rotation 1",10); \n'
-        myscriptSMF = myscriptSMF + 'set("alpha", 0.35); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("core","radius",core_radius); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("core","index",core_index); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("core","x",0.0); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("core","y",0.0); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("core","z",0.0); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("core","z span",L); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("core","first axis","y"); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("core","rotation 1",theta); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("cladding","radius",cladding_radius); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("cladding","index",cladding_index); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("cladding","x",0.0); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("cladding","y",0.0); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("cladding","z",0.0); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("cladding","z span",L); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("cladding","first axis","y"); \n'
-        myscriptSMF = myscriptSMF + 'setnamed("cladding","rotation 1",theta); \n'
-
-        return myscriptSMF
-
-
-
-
-
-
-
-
-
-
-
 # =============================================================================
 # Structures
 # =============================================================================
 
 
     def Waveguide(self, Parameters):
+        
 
 
         '''
@@ -1855,7 +1830,7 @@ class Constructor:
            
             z_Offset = max_slabH + max_MMIH / 2
             self.lum.select('Slab')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             
             
         # Triangle EQ for MMI Width
@@ -1895,9 +1870,9 @@ class Constructor:
                 self.lum.deleteall()
                 raise ValueError('You are Trying to move the Waveguide outside the MMI. This is not possible!')
 
-            elif offset_WG2 <0.5e-6:
-                self.lum.deleteall()
-                raise ValueError('The distance between the Tapers is less then 1 um !')
+            # elif offset_WG2 <0.5e-6:
+            #     self.lum.deleteall()
+            #     raise ValueError('The distance between the Tapers is less then 1 um !')
 
 
 
@@ -1942,15 +1917,17 @@ class Constructor:
             
             
             self.lum.select('MMI')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Input WG_L')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Input WG_R')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Output WG_L')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Output WG_R')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
+            self.lum.select('cladding')
+            self.lum.addtogroup("MMI Object")
 
 
 
@@ -2007,7 +1984,7 @@ class Constructor:
                 z_Offset = max_slabH + max_MMIH / 2
                 
                 self.lum.select('Slab')
-                self.lum.addtogroup("MMI")
+                self.lum.addtogroup("MMI Object")
             
 
             # Triangle EQ for MMI Width
@@ -2070,12 +2047,13 @@ class Constructor:
             # offset_Set_R = posOffset/2+TaperWidth/2
 
             # if OffsetInpit <= OffMin or OffsetInpit >= OffMax or posOffset <= OffMin or posOffset >= OffMax:
-            if BotCornerDistance < 1e-6:
-                self.lum.deleteall()
-                raise ValueError('The distance between the Tapers is less then 1 um !')
-            elif offset_Taper > OffMax:
+            if offset_Taper > OffMax:
                 self.lum.deleteall()
                 raise ValueError('You are Trying to move the Taper outside the MMI. This is not possible!')
+            # elif BotCornerDistance < 1e-6:
+            #     self.lum.deleteall()
+            #     raise ValueError('The distance between the Tapers is less then 1 um !')
+            
 
 
 
@@ -2142,23 +2120,23 @@ class Constructor:
                 
 
             self.lum.select('MMI')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Input WG_L')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Input WG_R')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Output WG_L')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Output WG_R')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Taper Input WG_L')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Taper Input WG_R')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Taper Output WG_L')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select('Taper Output WG_R')
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
 
 
             # create_cover
@@ -2174,6 +2152,9 @@ class Constructor:
             self.lum.set("override mesh order from material database", True)
             self.lum.set("mesh order", 4)
             self.lum.set("alpha", 0.7)
+            
+            self.lum.select('cladding')
+            self.lum.addtogroup("MMI Object")
         else:
             raise ValueError(
                 "Incorect Taper input. Taper must be an boolen. You can choose from Taper = True or Taper = False!")
@@ -2817,7 +2798,10 @@ class Constructor:
         TaperLength = Parameters['Taper Length']
         TaperWidth = Parameters['Taper Width']
         Taper = Parameters['Taper']
-        OffsetOutput = Parameters['Offset Output']
+        if 'Offset Output' not in list(Parameters.keys()):
+            OffsetOutput = None
+        else:
+            OffsetOutput = Parameters['Offset Output']
 
 
 
@@ -2883,7 +2867,7 @@ class Constructor:
             z_Offset = max_slabH + max_MMIH / 2
             
             self.lum.select("Slab")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             
             
 
@@ -2932,7 +2916,10 @@ class Constructor:
             maxWGL = [WG_Length, 0, 0]
             minWGL = [0, -WG_Length, -WG_Length]
             xPos = [max_MMIL, min_MMIL, min_MMIL]
-            yPos = [0 + OffsetInput, (WG_Width / 2 + posOffset / 2) + OffsetOutput, (- WG_Width / 2 - posOffset / 2) + OffsetOutput ]
+            if OffsetOutput == None:
+                yPos = [0 + OffsetInput, (WG_Width / 2 + posOffset / 2) , (- WG_Width / 2 - posOffset / 2)  ]
+            else:
+                yPos = [0 + OffsetInput, (WG_Width / 2 + posOffset / 2) + OffsetOutput, (- WG_Width / 2 - posOffset / 2) + OffsetOutput ]
 
             # Names of the WGs
             names = ['Input WG', 'Output WG_L', 'Output WG_R']
@@ -2953,13 +2940,13 @@ class Constructor:
 
 
             self.lum.select("MMI")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select("Input WG")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select("Output WG_L")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select("Output WG_R")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             
             
 
@@ -3019,7 +3006,7 @@ class Constructor:
                     
                     z_Offset = max_slabH + max_MMIH / 2
                     self.lum.select("Slab")
-                    self.lum.addtogroup("MMI")
+                    self.lum.addtogroup("MMI Object")
                     
                     
 
@@ -3135,19 +3122,19 @@ class Constructor:
                     
                     
             self.lum.select("MMI")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select("Input WG")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select("Output WG_L")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select("Output WG_R")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select("Taper Input WG")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select("Taper Output WG_L")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
             self.lum.select("Taper Output WG_R")
-            self.lum.addtogroup("MMI")
+            self.lum.addtogroup("MMI Object")
 
         else:
             raise ValueError(
@@ -3166,6 +3153,9 @@ class Constructor:
         self.lum.set("override mesh order from material database", True)
         self.lum.set("mesh order", 4)
         self.lum.set("alpha", 0.7)
+        
+        self.lum.select("cladding")
+        self.lum.addtogroup("MMI Object")
 
 
 
@@ -5441,9 +5431,7 @@ class Constructor:
         # Create the MMI L2 Tapers for the Trapezoid
         GCNames = "Grating Coupler"
         FiberName = "SMF"
-        myscript = self.Simple_Grating_Coupler_Script()
-        SMF_Script = self.Fiber_Script()
-
+    
 
 
         # Make the Grating Coupler
@@ -7203,7 +7191,11 @@ class Constructor:
         Mode = Parameters["Mode"]
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
-        OffsetOutput = Parameters['Offset Output']
+        if 'Offset Output' not in list(Parameters.keys()):
+            OffsetOutput = None
+        else:
+            OffsetOutput = Parameters['Offset Output']
+        
 
 
         if Taper == False:
@@ -7243,8 +7235,11 @@ class Constructor:
             direction = ['Backward', 'Forward', 'Forward']
 
             name = ['Input', 'Output_L', 'Output_R']
-
-            yPort_vec = [OffsetInput, -(posOffset / 2 + WG_Width / 2) + OffsetOutput, (posOffset / 2 + WG_Width / 2) + OffsetOutput]
+            
+            if OffsetOutput == None:
+                yPort_vec = [OffsetInput, -(posOffset / 2 + WG_Width / 2) , (posOffset / 2 + WG_Width / 2)  ]
+            else:
+                yPort_vec = [OffsetInput, -(posOffset / 2 + WG_Width / 2) + OffsetOutput, (posOffset / 2 + WG_Width / 2) + OffsetOutput]
 
             overLapp = yPort_vec[2] - y_Port_Span/2
             if overLapp < 0:
