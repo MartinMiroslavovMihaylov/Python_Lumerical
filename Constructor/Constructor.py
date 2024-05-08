@@ -281,10 +281,10 @@ class Constructor:
 
         '''
         if Type == "FDTD":
-            if self.Struct == "MMI2x1" or self.Struct == "MMI2x1_Trapez":
+            if self.Struct == "MMI2x1":
                 S_Param3, Power3 = self.ExtractFDTDResults(3, Parameters)
                 return S_Param3, Power3
-            elif self.Struct == "MMI2x2" or self.Struct == "MMI2x2_Trapez":
+            elif self.Struct == "MMI2x2":
                 S_Param4 = self.ExtractFDTDResults(4, Parameters)
                 return S_Param4
             elif self.Struct == "DirectionalCoupler":
@@ -359,11 +359,11 @@ class Constructor:
         None.
 
         '''
-        if Structure == "MMI2x1" or Structure == "MMI2x1_Trapez":
+        if Structure == "MMI2x1":
             self.Struct = "MMI2x1"
             self.setMMI2x1FDTDSolver(Parameters)
             self.SolverInfo["Simulated Object"] = "MMI2x1"
-        elif Structure == "MMI2x2" or Structure == "MMI2x2_Trapez":
+        elif Structure == "MMI2x2":
             self.Struct = "MMI2x2"
             self.setMMI2x2FDTDSolver(Parameters)
             self.SolverInfo["Simulated Object"] = "MMI2x2"
@@ -423,10 +423,10 @@ class Constructor:
         None.
 
         '''
-        if Structure == "MMI2x1" or Structure == "MMI2x1_Trapez":
+        if Structure == "MMI2x1":
             self.setMMI2x1EMESolver(Parameters)
             self.SolverInfo["Simulated Object"] = "MMI2x1"
-        elif Structure == "MMI2x2" or Structure == "MMI2x2_Trapez":
+        elif Structure == "MMI2x2":
             self.setMMI2x2EMESolver(Parameters)
             self.SolverInfo["Simulated Object"] = "MMI2x2"
         elif Structure == "DirectionalCoupler":
@@ -585,6 +585,8 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
+        Parameters['Substrate Height'] : int7float
+            Height of the substrate.
         Parameters['WG Length']: int/float
             Length of the Waveguide.
         Parameters['WG Height'] : int/float
@@ -617,6 +619,12 @@ class Constructor:
         Slab_Height = Parameters['Slab Height']
         Material = Parameters['Material']
         SubstrateHight = Parameters['Substrate Height']
+        
+        
+        if "Cladding" in list(Parameters.keys()):
+            Cladding = True
+        else:
+            Cladding = False
 
 
         # Material defginition
@@ -680,19 +688,22 @@ class Constructor:
             self.lum.set("x max", maxWGL)
             self.lum.set("material", MaterialSub)
 
-            # create_cover
-            # self.lum.addrect()
-            # self.lum.set("name", "cladding")
-            # self.lum.set("y min", min_subW)
-            # self.lum.set("y max", max_subW)
-            # self.lum.set('z', max_WGH / 2 + min_WGH)
-            # self.lum.set('z span', 2 * WG_Height)
-            # self.lum.set("x min", minWGL)
-            # self.lum.set("x max", maxWGL)
-            # self.lum.set("material", MaterialClad)
-            # self.lum.set("override mesh order from material database", True)
-            # self.lum.set("mesh order", 4)
-            # self.lum.set("alpha", 0.7)
+            if Cladding == True:
+                # create_cover
+                self.lum.addrect()
+                self.lum.set("name", "cladding")
+                self.lum.set("y min", min_subW)
+                self.lum.set("y max", max_subW)
+                self.lum.set('z', max_WGH / 2 + min_WGH)
+                self.lum.set('z span', 2 * WG_Height)
+                self.lum.set("x min", minWGL)
+                self.lum.set("x max", maxWGL)
+                self.lum.set("material", MaterialClad)
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+            else: 
+                pass
 
 
         else:
@@ -739,20 +750,23 @@ class Constructor:
             self.lum.set("x min", minWGL)
             self.lum.set("x max", maxWGL)
             self.lum.set("material", MaterialSub)
-
-            # # Create Cladding
-            # self.lum.addrect()
-            # self.lum.set("name", "cladding")
-            # self.lum.set("y min", min_subW)
-            # self.lum.set("y max", max_subW)
-            # self.lum.set('z', max_WGH / 2 + min_WGH)
-            # self.lum.set('z span', 2 * WG_Height)
-            # self.lum.set("x min", minWGL)
-            # self.lum.set("x max", maxWGL)
-            # self.lum.set("material", MaterialClad)
-            # self.lum.set("override mesh order from material database", True)
-            # self.lum.set("mesh order", 4)
-            # self.lum.set("alpha", 0.7)
+            
+            if Cladding == True:
+                # Create Cladding
+                self.lum.addrect()
+                self.lum.set("name", "cladding")
+                self.lum.set("y min", min_subW)
+                self.lum.set("y max", max_subW)
+                self.lum.set('z', max_WGH / 2 + min_WGH)
+                self.lum.set('z span', 2 * WG_Height)
+                self.lum.set("x min", minWGL)
+                self.lum.set("x max", maxWGL)
+                self.lum.set("material", MaterialClad)
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+            else:
+                pass
             
             
 
@@ -797,6 +811,16 @@ class Constructor:
                 Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
                 If Waveguide Angle is different then 0, then the straight waveguide will be tilted
                 at the choosen degrees.
+            Parameters["Cladding"] : anything, optional
+                This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+                and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+                will be set.
+            Parameters["Taper Type"] : anything, optional
+                This function will check if you have set Parameters["Taper Type"] to anaything, for example "Parameters["Taper Type"]=1" 
+                and if so it will design an Inverse Taper Structure with no Cladding. Here the option "Cladding" is not active and will be ignored.
+                If the user didnt give the "Taper Type" as dictionary key, then an normal taper structure will be simulated.
+               
+             
         Raises
         ------
         ValueError
@@ -821,15 +845,21 @@ class Constructor:
         Material = Parameters['Material']
         WaveLength = Parameters["Wavelength"]
         Side_Angle = Parameters["Waveguide Angle"]
-        if Parameters["Taper Type"] == None:
-            TaperType = "Normal"
+        if "Cladding" in list(Parameters.keys()):
+            Cladding = True
         else:
-            TaperType = "Inverse"
-            TaperWidthF = Parameters['PWB Taper Width Front']
-            TaperWidthB = Parameters['PWB Taper Width Back']
-            TaperHightB = Parameters['PWB Taper Hight Back']
-            TaperHightF = Parameters['PWB Taper Hight Front']
-            TaperLength_PWB = Parameters['PWB Taper Length']
+            Cladding = False
+            
+        if "Taper Type" in list(Parameters.keys()):
+                TaperType = "Inverse"
+                TaperWidthF = Parameters['PWB Taper Width Front']
+                TaperWidthB = Parameters['PWB Taper Width Back']
+                TaperHightB = Parameters['PWB Taper Hight Back']
+                TaperHightF = Parameters['PWB Taper Hight Front']
+                TaperLength_PWB = Parameters['PWB Taper Length']
+        else:
+            TaperType = "Normal"
+        
             
         
 
@@ -849,7 +879,7 @@ class Constructor:
 
 
         # Device specifications
-        Device_Width = 2*WG_Length + WaveLength * 2  # MMI_Width
+        Device_Width = 2*WG_Length #+ 1e-6 * 2  
 
         # creating the substrate
         max_subH = Substrate_Height
@@ -892,12 +922,50 @@ class Constructor:
                     
                     self.lum.select("Slab")
                     self.lum.addtogroup("Straight Waveguide")
+                    
+                    if Cladding == True:
+                        # create_cover
+                        self.lum.addrect()
+                        self.lum.set("name", "cladding")
+                        self.lum.set("material", MaterialClad)
+                        self.lum.set("y", 0)
+                        self.lum.set("y span", Device_Width)
+                        self.lum.set("z min", max_slabH)
+                        self.lum.set("z max", max_slabH*2)
+                        self.lum.set("x", WG_Length / 2)
+                        self.lum.set("x span", WG_Length + 1e-6)
+                        self.lum.set("override mesh order from material database", True)
+                        self.lum.set("mesh order", 4)
+                        self.lum.set("alpha", 0.7)
+                        self.lum.select("cladding")
+                        self.lum.addtogroup("Straight Waveguide")
+                    else:
+                        pass
 
                     
                 else:
                     z_Offset = max_subH + WG_Height / 2
                     
-                    
+                    if Cladding == True:
+                        # create_cover
+                        self.lum.addrect()
+                        self.lum.set("name", "cladding")
+                        self.lum.set("material", MaterialClad)
+                        self.lum.set("y", 0)
+                        self.lum.set("y span", Device_Width)
+                        self.lum.set("z min", max_subH)
+                        self.lum.set("z max", max_subH*2)
+                        self.lum.set("x", WG_Length / 2)
+                        self.lum.set("x span", WG_Length + 1e-6)
+                        self.lum.set("override mesh order from material database", True)
+                        self.lum.set("mesh order", 4)
+                        self.lum.set("alpha", 0.7)
+                        self.lum.select("cladding")
+                        self.lum.addtogroup("Straight Waveguide")
+                    else:
+                        pass
+                        
+                        
                     
                 # Triangle EQ for waveguide Width
                 x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -925,23 +993,11 @@ class Constructor:
                 
                 self.lum.select("Waveguide")
                 self.lum.addtogroup("Straight Waveguide")
+                
+                
 
-
-                # # create_cover
-                # self.lum.addrect()
-                # self.lum.set("name", "cladding")
-                # self.lum.set("material", MaterialClad)
-                # self.lum.set("y", 0)
-                # self.lum.set("y span", Device_Width)
-                # self.lum.set("z min", min_slabH)
-                # self.lum.set("z max", min_slabH*2)
-                # self.lum.set("x", WG_Length / 2)
-                # self.lum.set("x span", WG_Length)
-                # self.lum.set("override mesh order from material database", True)
-                # self.lum.set("mesh order", 4)
-                # self.lum.set("alpha", 0.7)
-
-
+                
+                
 
             else:
                 self.lum.addrect()
@@ -1008,21 +1064,24 @@ class Constructor:
                 self.lum.select("Waveguide")
                 self.lum.addtogroup("Straight Waveguide")
 
-
-                # # create_cover
-                # self.lum.addrect()
-                # self.lum.set("name", "cladding")
-                # self.lum.set("material", MaterialClad)
-                # self.lum.set("y", WG_Length / 4)
-                # self.lum.set("y span", Device_Width)
-                # self.lum.set("z min", min_slabH)
-                # self.lum.set("z max", min_slabH*2)
-                # self.lum.set("x", WG_Length / 2)
-                # self.lum.set("x span", WG_Length + WG_Width)
-                # self.lum.set("override mesh order from material database", True)
-                # self.lum.set("mesh order", 4)
-                # self.lum.set("alpha", 0.7)
-
+                if Cladding == True:
+                    # create_cover
+                    self.lum.addrect()
+                    self.lum.set("name", "cladding")
+                    self.lum.set("material", MaterialClad)
+                    self.lum.set("y", WG_Length / 4)
+                    self.lum.set("y span", Device_Width)
+                    self.lum.set("z min", min_slabH)
+                    self.lum.set("z max", min_slabH*2)
+                    self.lum.set("x", WG_Length / 2)
+                    self.lum.set("x span", WG_Length + WG_Width)
+                    self.lum.set("override mesh order from material database", True)
+                    self.lum.set("mesh order", 4)
+                    self.lum.set("alpha", 0.7)
+                    self.lum.select("cladding")
+                    self.lum.addtogroup("Straight Waveguide")
+                else:
+                    pass
 
         elif Taper == True:
 
@@ -1074,6 +1133,26 @@ class Constructor:
                 self.lum.select("Slab")
                 self.lum.addtogroup("Straight Waveguide")
                 
+                
+                if Cladding == True:
+                    # create_cover
+                    self.lum.addrect()
+                    self.lum.set("name", "cladding")
+                    self.lum.set("material", MaterialClad)
+                    self.lum.set("y", 0)
+                    self.lum.set("y span", Device_Width)
+                    self.lum.set("z min", max_slabH)
+                    self.lum.set("z max", max_slabH*2)
+                    self.lum.set("x",0)
+                    self.lum.set("x span", TaperLength + WG_Width)
+                    self.lum.set("override mesh order from material database", True)
+                    self.lum.set("mesh order", 4)
+                    self.lum.set("alpha", 0.7)
+                    self.lum.select("cladding")
+                    self.lum.addtogroup("Straight Waveguide")
+                else:
+                    pass
+                
             else:
             
                 z_Offset = max_subH + WG_Height / 2
@@ -1085,6 +1164,29 @@ class Constructor:
                 WG_W = WG_Width + 2 * extention
                 
                 z_Offset = max_subH
+                
+                if Cladding == True:
+                    # create_cover
+                    self.lum.addrect()
+                    self.lum.set("name", "cladding")
+                    self.lum.set("material", MaterialClad)
+                    self.lum.set("y", 0)
+                    self.lum.set("y span", Device_Width)
+                    self.lum.set("z min", max_subH)
+                    self.lum.set("z max", max_subH*2)
+                    self.lum.set("x",0)
+                    self.lum.set("x span", TaperLength + WG_Width)
+                    self.lum.set("override mesh order from material database", True)
+                    self.lum.set("mesh order", 4)
+                    self.lum.set("alpha", 0.7)
+                    self.lum.select("cladding")
+                    self.lum.addtogroup("Straight Waveguide")
+                else:
+                    pass
+            
+            
+            
+            
             
             if TaperType == "Normal":
                 # PWD Taper Hights
@@ -1134,6 +1236,8 @@ class Constructor:
                 
                 self.lum.select("Taper")
                 self.lum.addtogroup("Straight Waveguide")
+                
+                
             
             else:
             
@@ -1193,19 +1297,14 @@ class Constructor:
                 self.lum.set("mesh order",3)
                 self.lum.set('name',  "Taper")
 
-
-   
-                
                 self.lum.select("Taper")
                 self.lum.addtogroup("Straight Waveguide")
                 
-
-
-
-
-
-
-
+                self.lum.select("Straight Waveguide::cladding")
+                self.lum.delete()
+                
+                
+               
 
     def BendWaveguide(self, Parameters):
         '''
@@ -1230,8 +1329,6 @@ class Constructor:
                 Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
                 If Waveguide Angle is different then 0, then the straight waveguide will be tilted
                 at the choosen degrees.
-            Parameters["Wavelength"] : int/float
-                Wavelength
             Parameters["x span"] : int/float
                 Length of the S Curve. Span of the object.
             Parameters["y span"] : int/float
@@ -1240,6 +1337,10 @@ class Constructor:
                 If Parameters["poles"] = True an Bezier Curbe will be made.
                 if Parameters["poles"] = False an Cosinus Curve = y_span*(cos((pi/(2*x_span))*t)^2) will be made. Where
                 t is in the range of 0 - y_span
+            Parameters["Cladding"] : anything, optional
+                This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+                and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+                will be set.
 
         Raises
         ------
@@ -1258,10 +1359,13 @@ class Constructor:
         angle = Parameters['angle']
         Slab_Height = Parameters['Slab Height']
         Material = Parameters['Material']
-        WaveLength = Parameters["Wavelength"]
         x_span = Parameters["x span"]
         y_span = Parameters["y span"]
         polesList = Parameters["poles"]
+        if "Cladding" in list(Parameters.keys()):
+            Cladding = True
+        else:
+            Cladding = False
 
 
 
@@ -1289,7 +1393,7 @@ class Constructor:
 
 
         # Device specifications
-        Device_Width = y_span + WaveLength * 2  # MMI_Width
+        Device_Width = y_span + 3e-6  # MMI_Width
 
         # creating the substrate
         max_subH = Substrate_Height
@@ -1358,25 +1462,31 @@ class Constructor:
         #     pole = np.array(polesList)
         #     self.lum.set("poles", pole)
         #     self.lum.set("material", MaterialWG)
+        
+        if Cladding == True:
+            # create_cover
+            self.lum.addrect()
+            self.lum.set("name", "Cladding")
+            self.lum.set("material", MaterialClad)
+            self.lum.set("y", y_span / 2)
+            self.lum.set("y span", Device_Width)
+            self.lum.set("z", z_Offset)
+            self.lum.set("z span", WG_Height*2)
+            self.lum.set("x", x_span / 2)
+            self.lum.set("x span", max_subL)
+            self.lum.set("override mesh order from material database", True)
+            self.lum.set("mesh order", 4)
+            self.lum.set("alpha", 0.7)
+            self.lum.select("Cladding")
+            self.lum.addtogroup("S Bend")
+        else:
+            pass
 
-        # create_cover
-        self.lum.addrect()
-        self.lum.set("name", "Cladding")
-        self.lum.set("material", MaterialClad)
-        self.lum.set("y", y_span / 2)
-        self.lum.set("y span", Device_Width)
-        self.lum.set("z", z_Offset)
-        self.lum.set("z span", WG_Height*2)
-        self.lum.set("x", x_span / 2)
-        self.lum.set("x span", max_subL)
-        self.lum.set("override mesh order from material database", True)
-        self.lum.set("mesh order", 4)
-        self.lum.set("alpha", 0.7)
+        
         
         self.lum.select("S-Bend")
         self.lum.addtogroup("S Bend")
-        self.lum.select("Cladding")
-        self.lum.addtogroup("S Bend")
+        
 
 
 
@@ -1411,6 +1521,10 @@ class Constructor:
                 Radius of the Circle in um
             Parameters['Arc deg'] : int
                 Can be 90 or 180 for 1/4 of a cirle or 1/2 of a circle.
+            Parameters["Cladding"] : anything, optional
+                This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+                and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+                will be set.
 
         Raises
         ------
@@ -1431,6 +1545,11 @@ class Constructor:
         Material = Parameters['Material']
         radius = Parameters["S_Band Radius"]
         arc = Parameters['Arc deg']
+        
+        if "Cladding" in list(Parameters.keys()):
+            Cladding = True
+        else:
+            Cladding = False
 
 
 
@@ -1449,8 +1568,7 @@ class Constructor:
 
         if arc == 90:
 
-            # Device specifications
-            # Device_Width = 2 * radius + WaveLength * 2 + WG_Width * 2  # MMI_Width
+           
 
             # magic number
             # The cubic Bezier curve using this magic number in the pole points approximates the semi-circile with least error
@@ -1558,22 +1676,26 @@ class Constructor:
             self.lum.addtogroup("90 Grad Bend")
             self.lum.select('Out_STR')
             self.lum.addtogroup("90 Grad Bend")
-
-
-            # # create_cover
-            # self.lum.addrect()
-            # self.lum.set("name", "cladding")
-            # self.lum.set("material", MaterialClad)
-            # self.lum.set("y", radius * m)
-            # self.lum.set("y span", m * radius * 2 + WG_Width)
-            # self.lum.set("z min", max_slabH)
-            # self.lum.set("z max", max_slabH*2)
-            # self.lum.set("x", m * radius)
-            # self.lum.set("x span", (m * radius * 2 + WG_Width))
-            # self.lum.set("override mesh order from material database", True)
-            # self.lum.set("mesh order", 4)
-            # self.lum.set("alpha", 0.7)
-
+            
+            
+            if Cladding == True:
+               # create_cover
+                self.lum.addrect()
+                self.lum.set("name", "cladding")
+                self.lum.set("material", MaterialClad)
+                self.lum.set("y", radius * m)
+                self.lum.set("y span", m * radius * 2 + WG_Width)
+                self.lum.set("z min", max_slabH)
+                self.lum.set("z max", max_slabH*2)
+                self.lum.set("x", m * radius)
+                self.lum.set("x span", (m * radius * 2 + WG_Width))
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+                self.lum.select('cladding')
+                self.lum.addtogroup("180 Grad Bend")
+            else:
+                pass
 
 
 
@@ -1670,21 +1792,26 @@ class Constructor:
             self.lum.addtogroup("180 Grad Bend")
             self.lum.select('Arc Waveguie2')
             self.lum.addtogroup("180 Grad Bend")
+            
+            if Cladding == True:
+               # create_cover
+                self.lum.addrect()
+                self.lum.set("name", "cladding")
+                self.lum.set("material", MaterialClad)
+                self.lum.set("y", radius * m)
+                self.lum.set("y span", m * radius * 2 + WG_Width)
+                self.lum.set("z min", max_slabH)
+                self.lum.set("z max", max_slabH*2)
+                self.lum.set("x", 0)
+                self.lum.set("x span", (m * radius * 2 + WG_Width)*2)
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+                self.lum.select('cladding')
+                self.lum.addtogroup("180 Grad Bend")
+            else:
+                pass
 
-
-            # # create_cover
-            # self.lum.addrect()
-            # self.lum.set("name", "cladding")
-            # self.lum.set("material", MaterialClad)
-            # self.lum.set("y", radius * m)
-            # self.lum.set("y span", m * radius * 2 + WG_Width)
-            # self.lum.set("z min", max_slabH)
-            # self.lum.set("z max", max_slabH*2)
-            # self.lum.set("x", 0)
-            # self.lum.set("x span", (m * radius * 2 + WG_Width)*2)
-            # self.lum.set("override mesh order from material database", True)
-            # self.lum.set("mesh order", 4)
-            # self.lum.set("alpha", 0.7)
 
         else:
             raise ValueError(
@@ -1702,46 +1829,47 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters
-                ----------
-                Parameters['Material'] : list of str
-                    List of Materials. the list should be with names (str) of a valid Lumerical materials.
-                    Check the names in Lumerical Materials viewer.
-                 Parameters['Substrate Height'] : int/float
-                    Substrate height.
-                Parameters['MMI Width'] : int/float
-                    Width of the MMI.
-                Parameters['MMI Length'] : int/float
-                    Length of the MMI.
-                Parameters['angle'] : int/float
-                    Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                    For anfle = 90 we get a perfect rect!
-                Parameters['WG Height'] : int/float
-                    Waveguide hight. Also the height of the MMI section
-                Parameters['WG Width'] : int/float
-                    Waveguide width.
-                Parameters['WG Length'] : int/float
-                    Waveguide length.
-                Parameters['Position Offset'] : int/float
-                    Offset between the waveguides. If Taper == True then this become the offset
-                    betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-                    the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-                    becouse of manufactering restrictions in the University.
-                 Parameters['Slab Height'] : int/float
-                    Height of the slab.
-                 Parameters['Wavelength'] : int/float
-                    Wavelength
-                Parameters['Taper'] : boolen
-                    Taper can be set to be True ot False.
-                    if Taper == False - No Taper used
-                    if Taper == True - Taper placed
-                Parameters['Taper Length'] : int/float
-                    If Taper == True, then this will set the Tapers length. If Taper == False
-                    this will be ignored and some random value can be given.
-                Parameters['Taper Width'] : int/float
-                    If Taper == True, then this will set the Tapers width. If Taper == False
-                    this will be ignored and some random value can be given.
-
+        Parameters
+        ----------
+        Parameters['Material'] : list of str
+            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            Check the names in Lumerical Materials viewer.
+         Parameters['Substrate Height'] : int/float
+            Substrate height.
+        Parameters['MMI Width'] : int/float
+            Width of the MMI.
+        Parameters['MMI Length'] : int/float
+            Length of the MMI.
+        Parameters['angle'] : int/float
+            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+            For anfle = 90 we get a perfect rect!
+        Parameters['WG Height'] : int/float
+            Waveguide hight. Also the height of the MMI section
+        Parameters['WG Width'] : int/float
+            Waveguide width.
+        Parameters['WG Length'] : int/float
+            Waveguide length.
+        Parameters['Position Offset'] : int/float
+            Offset between the waveguides. If Taper == True then this become the offset
+            betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+            the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+            becouse of manufactering restrictions in the University.
+         Parameters['Slab Height'] : int/float
+            Height of the slab.
+        Parameters['Taper'] : boolen
+            Taper can be set to be True ot False.
+            if Taper == False - No Taper used
+            if Taper == True - Taper placed
+        Parameters['Taper Length'] : int/float
+            If Taper == True, then this will set the Tapers length. If Taper == False
+            this will be ignored and some random value can be given.
+        Parameters['Taper Width'] : int/float
+            If Taper == True, then this will set the Tapers width. If Taper == False
+            this will be ignored and some random value can be given.
+        Parameters["Cladding"] : anything, optional
+                This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+                and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+                will be set.
 
         Raises
         ------
@@ -1764,10 +1892,14 @@ class Constructor:
         WG_Length = Parameters['WG Length']
         posOffset = Parameters['Position Offset']
         Slab_Height = Parameters['Slab Height']
-        WaveLength = Parameters['Wavelength']
         TaperLength = Parameters['Taper Length']
         TaperWidth = Parameters['Taper Width']
         Taper = Parameters['Taper']
+        
+        if "Cladding" in list(Parameters.keys()):
+            Cladding = True
+        else:
+            Cladding = False
 
 
 
@@ -1784,7 +1916,7 @@ class Constructor:
 
         # Device specifications
         Device_Length = MMI_Length + 2 * WG_Length
-        Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
+        Device_Width = MMI_Width + 3e-6  # MMI_Width
 
         # creating the substrate
         max_subH = Substrate_Height
@@ -1900,22 +2032,7 @@ class Constructor:
                     pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
                     self.lum.set("poles", pole)
                     self.lum.set("material", MaterialSlab)
-
-            # create_cover
-            self.lum.addrect()
-            self.lum.set("name", "cladding")
-            self.lum.set("material", MaterialClad)
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW )
-            self.lum.set("z", z_Offset)
-            self.lum.set("z span", max_MMIH * 2)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("override mesh order from material database", True)
-            self.lum.set("mesh order", 4)
-            self.lum.set("alpha", 0.7)
-            
-            
+                    
             self.lum.select('MMI')
             self.lum.addtogroup("MMI Object")
             self.lum.select('Input WG_L')
@@ -1926,9 +2043,28 @@ class Constructor:
             self.lum.addtogroup("MMI Object")
             self.lum.select('Output WG_R')
             self.lum.addtogroup("MMI Object")
-            self.lum.select('cladding')
-            self.lum.addtogroup("MMI Object")
+                    
+            if Cladding == True:
+               # create_cover
+                self.lum.addrect()
+                self.lum.set("name", "cladding")
+                self.lum.set("material", MaterialClad)
+                self.lum.set("y min", min_subW)
+                self.lum.set("y max", max_subW )
+                self.lum.set("z", z_Offset)
+                self.lum.set("z span", max_MMIH * 2)
+                self.lum.set("x min", min_subL)
+                self.lum.set("x max", max_subL)
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+                self.lum.select('cladding')
+                self.lum.addtogroup("MMI Object")
+            else:
+                pass
 
+           
+            
 
 
         elif Taper == True:
@@ -1937,7 +2073,7 @@ class Constructor:
             self.lum.deleteall()
             # Device specifications
             Device_Length = MMI_Length + 2 * WG_Length + 2 * TaperLength
-            Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
+            Device_Width = MMI_Width + 3e-6  # MMI_Width
 
             # creating the substrate
             max_subH = Substrate_Height
@@ -2137,586 +2273,34 @@ class Constructor:
             self.lum.addtogroup("MMI Object")
             self.lum.select('Taper Output WG_R')
             self.lum.addtogroup("MMI Object")
-
-
-            # create_cover
-            self.lum.addrect()
-            self.lum.set("name", "cladding")
-            self.lum.set("material", MaterialClad)
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set("z", z_Offset)
-            self.lum.set("z span", max_MMIH * 2)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("override mesh order from material database", True)
-            self.lum.set("mesh order", 4)
-            self.lum.set("alpha", 0.7)
             
-            self.lum.select('cladding')
-            self.lum.addtogroup("MMI Object")
-        else:
-            raise ValueError(
-                "Incorect Taper input. Taper must be an boolen. You can choose from Taper = True or Taper = False!")
-
-
-
-
-
-
-    def MMI2x2_Trapez(self, Parameters):
-        '''
-
-
-        Parameters
-        ----------
-        Parameters : Dictionary
-            Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters
-                ----------
-                Parameters['Material'] : list of str
-                    List of Materials. the list should be with names (str) of a valid Lumerical materials.
-                    Check the names in Lumerical Materials viewer.
-                 Parameters['Substrate Height'] : int/float
-                    Substrate height.
-                Parameters['MMI Width'] : int/float
-                    Width of the MMI.
-                Parameters['MMI Length'] : int/float
-                    Length of the MMI.
-                Parameters['Middle MMI Length'] : int/float
-                    Length of the MMI in the Middle Part due to inperfection by manufacturing
-                Parameters['angle'] : int/float
-                    Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                    For anfle = 90 we get a perfect rect!
-                Parameters['WG Height'] : int/float
-                    Waveguide hight. Also the height of the MMI section
-                Parameters['WG Width'] : int/float
-                    Waveguide width.
-                Parameters['WG Length'] : int/float
-                    Waveguide length.
-                Parameters['Position Offset'] : int/float
-                    Offset between the waveguides. If Taper == True then this become the offset
-                    betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-                    the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-                    becouse of manufactering restrictions in the University.
-                 Parameters['Slab Height'] : int/float
-                    Height of the slab.
-                 Parameters['Wavelength'] : int/float
-                    Wavelength
-                Parameters['Taper'] : boolen
-                    Taper can be set to be True ot False.
-                    if Taper == False - No Taper used
-                    if Taper == True - Taper placed
-                Parameters['Taper Length'] : int/float
-                    If Taper == True, then this will set the Tapers length. If Taper == False
-                    this will be ignored and some random value can be given.
-                Parameters['Taper Width'] : int/float
-                    If Taper == True, then this will set the Tapers width. If Taper == False
-                    this will be ignored and some random value can be given.
-        Raises
-        ------
-        ValueError
-            Value Error.
-
-        Returns
-        -------
-        None.
-
-        '''
-
-        Substrate_Height = Parameters['Substrate Height']
-        Material = Parameters['Material']
-        MMI_Width = Parameters['MMI Width']
-        MMI_Length = Parameters['MMI Length']
-        MMI_Length2 = Parameters['Middle MMI Length']
-        angle = Parameters['angle']
-        WG_Height = Parameters['WG Height']
-        WG_Width = Parameters['WG Width']
-        WG_Length = Parameters['WG Length']
-        posOffset = Parameters['Position Offset']
-        Slab_Height = Parameters['Slab Height']
-        WaveLength = Parameters['Wavelength']
-        TaperLength = Parameters['Taper Length']
-        TaperWidth = Parameters['Taper Width']
-        Taper = Parameters['Taper']
-
-
-
-        # Material definition
-        if len(Material) < 2:
-            raise ValueError(
-                "List of materials must contain at least 2 materials!, Parameters['Material'] = ['Cladding/Substrat', 'Object Material']")
-        else:
-            MaterialSub = Material[0]
-            MaterialClad = Material[0]
-            MaterialSlab = Material[1]
-            MaterialWG = MaterialSlab
-
-
-        # Device specifications
-        Device_Length = MMI_Length + 2 * WG_Length
-        Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
-
-        # creating the substrate
-        max_subH = Substrate_Height
-        min_subH = -Substrate_Height
-        max_subW = Device_Width / 2
-        min_subW = -Device_Width / 2
-        min_subL = -Device_Length / 2
-        max_subL = Device_Length / 2
-
-
-        self.lum.addrect()
-        self.lum.set("name", "Substrate")
-        self.lum.set("y min", min_subW)
-        self.lum.set("y max", max_subW)
-        self.lum.set("z min", min_subH)
-        self.lum.set("z max", max_subH)
-        self.lum.set("x min", min_subL)
-        self.lum.set("x max", max_subL)
-        self.lum.set("material", MaterialSub)
-        
-        
-        # creating the MMI
-        max_MMIH = WG_Height
-        max_MMIL = MMI_Length / 2
-        min_MMIL = -MMI_Length / 2
-
-
-        if Slab_Height == 0:
-            z_Offset = max_subH + max_MMIH / 2
-        else:
-            # creating the thin film
-            min_slabH = max_subH
-            max_slabH = max_subH + Slab_Height
-
-            self.lum.addrect()
-            self.lum.set("name", "Slab")
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set("z min", min_slabH)
-            self.lum.set("z max", max_slabH)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("material", MaterialSlab)
-
-            z_Offset = max_slabH + max_MMIH / 2
-            
-            self.lum.select("Slab")
-            self.lum.addtogroup("MMI")
-           
-           
-
-        # Triangle EQ for MMI Width
-        x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
-        extention = np.sqrt(x ** 2 - max_MMIH ** 2)
-        MMI_Wid = MMI_Width + 2 * extention
-
-        self.lum.addwaveguide()
-        self.lum.set("name", "MMI")
-        self.lum.set("base height", max_MMIH)
-        self.lum.set("base angle", 90 - angle)
-        self.lum.set("x", 0)
-        self.lum.set("y", 0)
-        self.lum.set("z", z_Offset)
-        pole = np.array([[max_MMIL, 0], [min_MMIL, 0]])
-        self.lum.set("poles", pole)
-        self.lum.set("material", MaterialWG)
-        self.lum.set("base width", MMI_Wid)
-
-
-        #Create the MMI L2 Tapers for the Trapezoid
-        TaperNames = ["Input Trapez", "Output Trapez"]
-        myscript = self.Script()
-
-
-        self.lum.addstructuregroup()
-        self.lum.set("name",TaperNames[0])
-        self.lum.set("construction group",1)
-        self.lum.adduserprop("thickness",2, WG_Height)
-        self.lum.adduserprop("angle_side",0, angle)
-        self.lum.adduserprop("width_l",2, WG_Width)
-        self.lum.adduserprop("width_r",2, MMI_Width)
-        self.lum.adduserprop("hfrac_ref",0,1)
-        self.lum.adduserprop("len",2, MMI_Length2)
-        self.lum.adduserprop("material",5,MaterialWG)
-        self.lum.adduserprop("index",0,1)
-        self.lum.set("script",myscript)
-        self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2)
-        self.lum.set("z", z_Offset)
-        self.lum.set("y", 0)
-
-
-        self.lum.addstructuregroup()
-        self.lum.set("name",TaperNames[1])
-        self.lum.set("construction group",1)
-        self.lum.adduserprop("thickness",2, WG_Height)
-        self.lum.adduserprop("angle_side",0, angle)
-        self.lum.adduserprop("width_l",2, WG_Width)
-        self.lum.adduserprop("width_r",2, MMI_Width)
-        self.lum.adduserprop("hfrac_ref",0,1)
-        self.lum.adduserprop("len",2, MMI_Length2)
-        self.lum.adduserprop("material",5,MaterialWG)
-        self.lum.adduserprop("index",0,1)
-        self.lum.set("script",myscript)
-        self.lum.set("first axis", "z")
-        self.lum.set("rotation 1",180)
-        self.lum.set("x", MMI_Length / 2 + MMI_Length2/2)
-        self.lum.set("z", z_Offset)
-        self.lum.set("y", 0)
-
-
-
-        # Positions of the Input and Output WGs
-        # Triangle EQ for MMI Width
-        x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
-        extention = np.sqrt(x ** 2 - max_MMIH ** 2)
-        WG_W = WG_Width + 2 * extention
-        WG_Width_top = WG_W
-        OffMax = MMI_Width / 2
-
-        if Taper == False:
-
-            #Too Fara and Too close
-            offset_WG = posOffset / 2 + WG_Width / 2 + WG_W / 2
-            offset_WG2 = posOffset / 2
-
-
-
-            if offset_WG > MMI_Wid / 2:
-                self.lum.deleteall()
-                raise ValueError('You are Trying to move the Waveguide outside the MMI. This is not possible!')
-
-            elif offset_WG2 <0.5e-6:
-                self.lum.deleteall()
-                raise ValueError('The distance between the Tapers is less then 1 um !')
-
-
-
-            else:
-                # Mirror the In and Out WG on both sides
-                maxWGL = [WG_Length, WG_Length, 0, 0]
-                minWGL = [0, 0, -WG_Length, -WG_Length]
-                xPos = [max_MMIL, max_MMIL, min_MMIL, min_MMIL]
-                yPos = [WG_Width / 2 + posOffset / 2, -(WG_Width / 2 + posOffset / 2), WG_Width / 2 + posOffset / 2,
-                        -(WG_Width / 2 + posOffset / 2)]
-
-                # Names of the WGs
-                names = ['Input WG_L', 'Input WG_R', 'Output WG_L', 'Output WG_R']
-
-                # create loop
-                for i in range(len(xPos)):
-                    self.lum.addwaveguide()
-                    self.lum.set("name", names[i])
-                    self.lum.set("x", xPos[i])
-                    self.lum.set("y", yPos[i])
-                    self.lum.set("z", z_Offset)
-                    self.lum.set("base width", WG_Width_top)
-                    self.lum.set("base height", max_MMIH)
-                    self.lum.set("base angle", 90 - angle)
-                    pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
-                    self.lum.set("poles", pole)
-                    self.lum.set("material", MaterialSlab)
-                    
-            self.lum.select('MMI')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Input WG_L')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Input WG_R')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Output WG_L')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Output WG_R')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Input Trapez')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Output Trapez')
-            self.lum.addtogroup("MMI")
-
-
-            # create_cover
-            self.lum.addrect()
-            self.lum.set("name", "cladding")
-            self.lum.set("material", MaterialClad)
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW )
-            self.lum.set("z", z_Offset)
-            self.lum.set("z span", max_MMIH * 2)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("override mesh order from material database", True)
-            self.lum.set("mesh order", 4)
-            self.lum.set("alpha", 0.7)
-
-
-
-
-        elif Taper == True:
-
-            # Delate the Structure to start new
-            self.lum.deleteall()
-            # Device specifications
-            Device_Length = MMI_Length + 2 * WG_Length + 2 * TaperLength
-            Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
-
-            # creating the substrate
-            max_subH = Substrate_Height
-            min_subH = -Substrate_Height
-            max_subW = Device_Width / 2
-            min_subW = -Device_Width / 2
-            min_subL = -Device_Length / 2
-            max_subL = Device_Length / 2
-
-            self.lum.addrect()
-            self.lum.set("name", "Substrate")
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set("z min", min_subH)
-            self.lum.set("z max", max_subH)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("material", MaterialSub)
-            
-            # creating the MMI
-            max_MMIH = WG_Height
-            max_MMIL = MMI_Length / 2
-            min_MMIL = -MMI_Length / 2
-            
-            
-            if Slab_Height == 0:
-                z_Offset = max_subH + max_MMIH / 2
-            else:
-                # creating the thin film
-                min_slabH = max_subH
-                max_slabH = max_subH + Slab_Height
-
+            if Cladding == True:
+                # create_cover
                 self.lum.addrect()
-                self.lum.set("name", "Slab")
+                self.lum.set("name", "cladding")
+                self.lum.set("material", MaterialClad)
                 self.lum.set("y min", min_subW)
                 self.lum.set("y max", max_subW)
-                self.lum.set("z min", min_slabH)
-                self.lum.set("z max", max_slabH)
+                self.lum.set("z", z_Offset)
+                self.lum.set("z span", max_MMIH * 2)
                 self.lum.set("x min", min_subL)
                 self.lum.set("x max", max_subL)
-                self.lum.set("material", MaterialSlab)
-
-                z_Offset = max_slabH + max_MMIH / 2
-                self.lum.select("Slab")
-                self.lum.addtogroup("MMI")
-
-
-
-            # Triangle EQ for MMI Width
-            x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
-            extention = np.sqrt(x ** 2 - max_MMIH ** 2)
-            MMI_Wid = MMI_Width + 2 * extention
-
-            self.lum.addwaveguide()
-            self.lum.set("name", "MMI")
-            self.lum.set("x", 0)
-            self.lum.set("y", 0)
-            self.lum.set("z", z_Offset)
-            self.lum.set("base height", max_MMIH)
-            self.lum.set("base angle", 90 - angle)
-            pole = np.array([[max_MMIL, 0], [min_MMIL, 0]])
-            self.lum.set("poles", pole)
-            self.lum.set("material", MaterialWG)
-            self.lum.set("base width", MMI_Wid)
-
-
-            #Create the MMI L2 Tapers for the Trapezoid
-            TaperNames = ["Input Trapez", "Output Trapez"]
-            myscript = self.Script()
-
-
-            self.lum.addstructuregroup()
-            self.lum.set("name",TaperNames[0])
-            self.lum.set("construction group",1)
-            self.lum.adduserprop("thickness",2, WG_Height)
-            self.lum.adduserprop("angle_side",0, angle)
-            self.lum.adduserprop("width_l",2, WG_Width)
-            self.lum.adduserprop("width_r",2, MMI_Width)
-            self.lum.adduserprop("hfrac_ref",0,1)
-            self.lum.adduserprop("len",2, MMI_Length2)
-            self.lum.adduserprop("material",5,MaterialWG)
-            self.lum.adduserprop("index",0,1)
-            self.lum.set("script",myscript)
-            self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2)
-            self.lum.set("z", z_Offset)
-            self.lum.set("y", 0)
-
-
-            self.lum.addstructuregroup()
-            self.lum.set("name",TaperNames[1])
-            self.lum.set("construction group",1)
-            self.lum.adduserprop("thickness",2, WG_Height)
-            self.lum.adduserprop("angle_side",0, angle)
-            self.lum.adduserprop("width_l",2, WG_Width)
-            self.lum.adduserprop("width_r",2, MMI_Width)
-            self.lum.adduserprop("hfrac_ref",0,1)
-            self.lum.adduserprop("len",2, MMI_Length2)
-            self.lum.adduserprop("material",5,MaterialWG)
-            self.lum.adduserprop("index",0,1)
-            self.lum.set("script",myscript)
-            self.lum.set("first axis", "z")
-            self.lum.set("rotation 1",180)
-            self.lum.set("x", MMI_Length / 2 + MMI_Length2/2)
-            self.lum.set("z", z_Offset)
-            self.lum.set("y", 0)
-
-            # New x Length of the Tapers
-            maxLength = max_MMIL + TaperLength
-            minLength = min_MMIL - TaperLength
-
-            # Mirror the In and Out WG on both sides
-            maxWGL = [WG_Length, WG_Length, 0, 0]
-            minWGL = [0, 0, -WG_Length, -WG_Length]
-            xPos = [maxLength, maxLength, minLength, minLength]
-            yPos = [WG_Width / 2 + posOffset / 2, -(WG_Width / 2 + posOffset / 2), WG_Width / 2 + posOffset / 2,
-                    -(WG_Width / 2 + posOffset / 2)]
-
-            # Names of the WGs
-            names = ['Input WG_L', 'Input WG_R', 'Output WG_L', 'Output WG_R']
-            TapersNames = ['Taper Input WG_L', 'Taper Input WG_R', 'Taper Output WG_L', 'Taper Output WG_R']
-
-            # Taper Widths on Bott Cal
-            x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
-            extention = np.sqrt(x ** 2 - max_MMIH ** 2)
-            TaperSideWidth = TaperWidth + 2 * extention
-
-            TaperPosXmin = [max_MMIL, max_MMIL, min_MMIL, min_MMIL]
-            TaperPosXmax = [max_MMIL + TaperLength, max_MMIL + TaperLength, min_MMIL - TaperLength,
-                            min_MMIL - TaperLength]
-
-            PosOffset = [(posOffset / 2 + WG_Width / 2), - (posOffset / 2 + WG_Width / 2),
-                         (posOffset / 2 + WG_Width / 2), -(posOffset / 2 + WG_Width / 2)]
-            TaperPosYMax_BotR = [(WG_W / 2), (WG_W / 2), (- WG_W / 2), (- WG_W / 2)]
-            TaperPosYMin_BotR = [(- WG_W / 2), (-WG_W / 2), (WG_W / 2), (WG_W / 2)]
-            TaperPosYMax_TopR = [(WG_Width / 2), (WG_Width / 2), (-WG_Width / 2), (- WG_Width / 2)]
-            TaperPosYMin_TopR = [(- WG_Width / 2), (-WG_Width / 2), (WG_Width / 2), (WG_Width / 2)]
-
-            TaperPosYMax_BotL = [(TaperSideWidth / 2), (TaperSideWidth / 2), (- TaperSideWidth / 2),
-                                 (- TaperSideWidth / 2)]
-            TaperPosYMin_BotL = [(- TaperSideWidth / 2), (- TaperSideWidth / 2), (TaperSideWidth / 2),
-                                 (TaperSideWidth / 2)]
-            TaperPosYMax_TopL = [(TaperWidth / 2), (TaperWidth / 2), (- TaperWidth / 2), (- TaperWidth / 2)]
-            TaperPosYMin_TopL = [(- TaperWidth / 2), (- TaperWidth / 2), (TaperWidth / 2), (TaperWidth / 2)]
-
-            offset_Taper = posOffset / 2 + WG_Width / 2 + TaperWidth / 2  # + WG_W / 2
-            BotCornerDistance = posOffset - TaperWidth / 2
-            # offset_Set_R = posOffset/2+TaperWidth/2
-
-            # if OffsetInpit <= OffMin or OffsetInpit >= OffMax or posOffset <= OffMin or posOffset >= OffMax:
-            if BotCornerDistance < 1e-6:
-                self.lum.deleteall()
-                raise ValueError('The distance between the Tapers is less then 1 um !')
-            elif offset_Taper > OffMax:
-                self.lum.deleteall()
-                raise ValueError('You are Trying to move the Taper outside the MMI. This is not possible!')
-
-
-
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+                
+                self.lum.select('cladding')
+                self.lum.addtogroup("MMI Object")
             else:
-                # Mirror the In and Out WG on both sides
-                maxWGL = [WG_Length, WG_Length, 0, 0]
-                minWGL = [0, 0, -WG_Length, -WG_Length]
-                # xPos = [max_MMIL, max_MMIL, min_MMIL, min_MMIL]
-                xPos = [maxLength, maxLength, minLength, minLength]
+                pass
 
-                for i in range(len(xPos)):
-                    TaperZmin = max_slabH
-                    TaperZmax = max_slabH + max_MMIH
 
-                    TaperXmin = TaperPosXmin[i]
-                    TaperXmax = TaperPosXmax[i]
-
-                    ymin_bot_l = TaperPosYMin_BotL[i]
-                    ymax_bot_l = TaperPosYMax_BotL[i]
-
-                    ymin_bot_r = TaperPosYMin_BotR[i]
-                    ymax_bot_r = TaperPosYMax_BotR[i]
-
-                    ymin_top_l = TaperPosYMin_TopL[i]
-                    ymax_top_l = TaperPosYMax_TopL[i]
-
-                    ymin_top_r = TaperPosYMin_TopR[i]
-                    ymax_top_r = TaperPosYMax_TopR[i]
-
-                    vtx = np.array([[TaperXmin, ymin_bot_l, TaperZmin],  # 1
-                                    [TaperXmax, ymin_bot_r, TaperZmin],  # 2
-                                    [TaperXmax, ymax_bot_r, TaperZmin],  # 3
-                                    [TaperXmin, ymax_bot_l, TaperZmin],  # 4
-                                    [TaperXmin, ymin_top_l, TaperZmax],  # 5
-                                    [TaperXmax, ymin_top_r, TaperZmax],  # 6
-                                    [TaperXmax, ymax_top_r, TaperZmax],  # 7
-                                    [TaperXmin, ymax_top_l, TaperZmax],  # 8
-                                    ])
-                    a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
-                         [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
-                         [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
-
-                    # Send Values to Lumerical and create solid
-                    self.lum.putv('vertices', vtx)
-                    self.lum.putv('facets', a)
-                    self.lum.addplanarsolid(vtx, a)
-                    self.lum.set('material', MaterialWG)
-                    self.lum.set('name', TapersNames[i])
-                    self.lum.set('y', PosOffset[i])
-
-                # create loop
-                for i in range(len(xPos)):
-                    self.lum.addwaveguide()
-                    self.lum.set("name", names[i])
-                    self.lum.set("x", xPos[i])
-                    self.lum.set("y", yPos[i])
-                    self.lum.set("z", z_Offset)
-                    self.lum.set("base width", WG_Width_top)
-                    self.lum.set("base height", max_MMIH)
-                    self.lum.set("base angle", 90 - angle)
-                    pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
-                    self.lum.set("poles", pole)
-                    self.lum.set("material", MaterialSlab)
-                    
-                    
-            self.lum.select('MMI')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Input WG_L')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Input WG_R')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Output WG_L')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Output WG_R')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Input Trapez')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Output Trapez')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Taper Input WG_L')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Taper Input WG_R')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Taper Output WG_L')
-            self.lum.addtogroup("MMI")
-            self.lum.select('Taper Output WG_R')
-            self.lum.addtogroup("MMI")
-
-            # create_cover
-            self.lum.addrect()
-            self.lum.set("name", "cladding")
-            self.lum.set("material", MaterialClad)
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set("z", z_Offset)
-            self.lum.set("z span", max_MMIH * 2)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("override mesh order from material database", True)
-            self.lum.set("mesh order", 4)
-            self.lum.set("alpha", 0.7)
+            
         else:
             raise ValueError(
                 "Incorect Taper input. Taper must be an boolen. You can choose from Taper = True or Taper = False!")
+
+
 
 
 
@@ -2730,47 +2314,52 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters
-                ----------
-                Parameters['Material'] : list of str
-                    List of Materials. the list should be with names (str) of a valid Lumerical materials.
-                    Check the names in Lumerical Materials viewer.
-                Parameters['Substrate Height'] : int/float
-                    Substrate height.
-                Parameters['MMI Width'] : int/float
-                    Width of the MMI.
-                Parameters['MMI Length'] : int/float
-                    Length of the MMI.
-                Parameters['angle'] : int/float
-                    Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                    For anfle = 90 we get a perfect rect!
-                Parameters['WG Height'] : int/float
-                    Waveguide hight. Also the height of the MMI section
-                 Parameters['WG Width'] : int/float
-                    Waveguide width.
-                Parameters['WG Length'] : int/float
-                    Waveguide length.
-                Parameters['Position Offset'] : int/float
-                    Offset between the waveguides. If Taper == True then this become the offset
-                    betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-                    the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-                    becouse of manufactering restrictions in the University.
-                Parameters['Offset Input'] : int/float
-                    Offset of the input waveguide.
-                Parameters['Slab Height'] : int/float
-                    Height of the slab.
-                Parameters['Wavelength'] : int/float
-                    Wavelength
-                Parameters['Taper'] : boolen
-                    Taper can be set to be True ot False.
-                    if Taper == False - No Taper used
-                    if Taper == True - Taper placed
-                Parameters['Taper Length'] : int/float
-                    If Taper == True, then this will set the Tapers length. If Taper == False
-                    this will be ignored and some random value can be given.
-                Parameters['Taper Width'] : int/float
-                    If Taper == True, then this will set the Tapers width. If Taper == False
-                    this will be ignored and some random value can be given.
+        Parameters
+        ----------
+        Parameters['Material'] : list of str
+            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            Check the names in Lumerical Materials viewer.
+        Parameters['Substrate Height'] : int/float
+            Substrate height.
+        Parameters['MMI Width'] : int/float
+            Width of the MMI.
+        Parameters['MMI Length'] : int/float
+            Length of the MMI.
+        Parameters['angle'] : int/float
+            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+            For anfle = 90 we get a perfect rect!
+        Parameters['WG Height'] : int/float
+            Waveguide hight. Also the height of the MMI section
+         Parameters['WG Width'] : int/float
+            Waveguide width.
+        Parameters['WG Length'] : int/float
+            Waveguide length.
+        Parameters['Position Offset'] : int/float
+            Offset between the waveguides. If Taper == True then this become the offset
+            betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+            the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+            becouse of manufactering restrictions in the University.
+        Parameters['Offset Input'] : int/float
+            Offset of the input waveguide.
+        Parameters['Slab Height'] : int/float
+            Height of the slab.
+        Parameters['Taper'] : boolen
+            Taper can be set to be True ot False.
+            if Taper == False - No Taper used
+            if Taper == True - Taper placed
+        Parameters['Taper Length'] : int/float
+            If Taper == True, then this will set the Tapers length. If Taper == False
+            this will be ignored and some random value can be given.
+        Parameters['Taper Width'] : int/float
+            If Taper == True, then this will set the Tapers width. If Taper == False
+            this will be ignored and some random value can be given.
+        Parameters["Cladding"] : anything, optional
+            This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+            and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+            will be set.
+        Parameters["Offset Output"] : anything, optional
+            This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only 
+            becouse the maschine of our physic departmant had some proiblems with the LNOI objects design. 
 
         Raises
         ------
@@ -2798,6 +2387,12 @@ class Constructor:
         TaperLength = Parameters['Taper Length']
         TaperWidth = Parameters['Taper Width']
         Taper = Parameters['Taper']
+        
+        if "Cladding" in list(Parameters.keys()):
+            Cladding = True
+        else:
+            Cladding = False
+        
         if 'Offset Output' not in list(Parameters.keys()):
             OffsetOutput = None
         else:
@@ -2820,7 +2415,7 @@ class Constructor:
 
         # Device specifications
         Device_Length = MMI_Length + 2 * WG_Length
-        Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
+        Device_Width = MMI_Width + 3e-6  # MMI_Width
 
         # creating the substrate
         max_subH = Substrate_Height
@@ -2948,6 +2543,26 @@ class Constructor:
             self.lum.select("Output WG_R")
             self.lum.addtogroup("MMI Object")
             
+            if Cladding == True:
+                # create_cover
+                self.lum.addrect()
+                self.lum.set("name", "cladding")
+                self.lum.set("material", MaterialClad)
+                self.lum.set("y min", min_subW)
+                self.lum.set("y max", max_subW)
+                self.lum.set("z", z_Offset)
+                self.lum.set("z span", max_MMIH + 0.4e-6)
+                self.lum.set("x min", min_subL)
+                self.lum.set("x max", max_subL)
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+                
+                self.lum.select("cladding")
+                self.lum.addtogroup("MMI Object")
+            else:
+                pass
+            
             
 
         elif Taper == True:
@@ -2959,7 +2574,7 @@ class Constructor:
                 self.lum.deleteall()
                 # Device specifications
                 Device_Length = MMI_Length + 2 * WG_Length + 2*TaperLength
-                Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
+                Device_Width = MMI_Width + 3e-6 # WaveLength * 2  
 
                 # creating the substrate
                 max_subH = Substrate_Height
@@ -3135,552 +2750,32 @@ class Constructor:
             self.lum.addtogroup("MMI Object")
             self.lum.select("Taper Output WG_R")
             self.lum.addtogroup("MMI Object")
+            
+            if Cladding == True:
+                # create_cover
+                self.lum.addrect()
+                self.lum.set("name", "cladding")
+                self.lum.set("material", MaterialClad)
+                self.lum.set("y min", min_subW)
+                self.lum.set("y max", max_subW)
+                self.lum.set("z", z_Offset)
+                self.lum.set("z span", max_MMIH + 0.4e-6)
+                self.lum.set("x min", min_subL)
+                self.lum.set("x max", max_subL)
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+                
+                self.lum.select("cladding")
+                self.lum.addtogroup("MMI Object")
+            else:
+                pass
 
         else:
             raise ValueError(
                 "Incorect Taper input. Taper must be an boolen. You can choose from Taper = True or Taper = False!")
 
-        # create_cover
-        self.lum.addrect()
-        self.lum.set("name", "cladding")
-        self.lum.set("material", MaterialClad)
-        self.lum.set("y min", min_subW)
-        self.lum.set("y max", max_subW)
-        self.lum.set("z", z_Offset)
-        self.lum.set("z span", max_MMIH + 0.4e-6)
-        self.lum.set("x min", min_subL)
-        self.lum.set("x max", max_subL)
-        self.lum.set("override mesh order from material database", True)
-        self.lum.set("mesh order", 4)
-        self.lum.set("alpha", 0.7)
-        
-        self.lum.select("cladding")
-        self.lum.addtogroup("MMI Object")
 
-
-
-
-
-
-
-    def MMI2x1_Trapez(self, Parameters):
-        '''
-
-
-        Parameters
-        ----------
-        Parameters : Dictionary
-            Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters
-                ----------
-                Parameters['Material'] : list of str
-                    List of Materials. the list should be with names (str) of a valid Lumerical materials.
-                    Check the names in Lumerical Materials viewer.
-                Parameters['Substrate Height'] : int/float
-                    Substrate height.
-                Parameters['MMI Width'] : int/float
-                    Width of the MMI.
-                Parameters['MMI Length'] : int/float
-                    Length of the MMI.
-                Parameters['Middle MMI Length']: int/float
-                    Length of the MMI in the Middle Part due to inperfection by manufacturing
-                Parameters['angle'] : int/float
-                    Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                    For anfle = 90 we get a perfect rect!
-                Parameters['WG Height'] : int/float
-                    Waveguide hight. Also the height of the MMI section
-                 Parameters['WG Width'] : int/float
-                    Waveguide width.
-                Parameters['WG Length'] : int/float
-                    Waveguide length.
-                Parameters['Position Offset'] : int/float
-                    Offset between the waveguides. If Taper == True then this become the offset
-                    betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-                    the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-                    becouse of manufactering restrictions in the University.
-                Parameters['Offset Input'] : int/float
-                    Offset of the input waveguide.
-                Parameters['Slab Height'] : int/float
-                    Height of the slab.
-                Parameters['Wavelength'] : int/float
-                    Wavelength
-                Parameters['Taper'] : boolen
-                    Taper can be set to be True ot False.
-                    if Taper == False - No Taper used
-                    if Taper == True - Taper placed
-                Parameters['Taper Length'] : int/float
-                    If Taper == True, then this will set the Tapers length. If Taper == False
-                    this will be ignored and some random value can be given.
-                Parameters['Taper Width'] : int/float
-                    If Taper == True, then this will set the Tapers width. If Taper == False
-                    this will be ignored and some random value can be given.
-
-        Raises
-        ------
-        ValueError
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        '''
-
-        Material = Parameters['Material']
-        Substrate_Height = Parameters['Substrate Height']
-        MMI_Width = Parameters['MMI Width']
-        MMI_Length = Parameters['MMI Length']
-        MMI_Length2 = Parameters['Middle MMI Length']
-        angle = Parameters['angle']
-        WG_Height = Parameters['WG Height']
-        WG_Width = Parameters['WG Width']
-        WG_Length = Parameters['WG Length']
-        OffsetInput = Parameters['Offset Input']
-        posOffset = Parameters['Position Offset']
-        Slab_Height = Parameters['Slab Height']
-        WaveLength = Parameters['Wavelength']
-        TaperLength = Parameters['Taper Length']
-        TaperWidth = Parameters['Taper Width']
-        Taper = Parameters['Taper']
-
-
-
-        # Material definition
-        if len(Material) < 2:
-            raise ValueError(
-                "List of materials must contain at least 2 materials!, Parameters['Material'] = ['Cladding/Substrat', 'Object Material']")
-        else:
-            MaterialSub = Material[0]
-            MaterialClad = Material[0]
-            MaterialSlab = Material[1]
-            MaterialWG = MaterialSlab
-
-
-
-        # Device specifications
-        Device_Length = MMI_Length + 2 * WG_Length
-        Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
-
-        # creating the substrate
-        max_subH = Substrate_Height
-        min_subH = -Substrate_Height
-        max_subW = Device_Width / 2
-        min_subW = -Device_Width / 2
-        min_subL = -Device_Length / 2
-        max_subL = Device_Length / 2
-
-        self.lum.addrect()
-        self.lum.set("name", "Substrate")
-        self.lum.set("y min", min_subW)
-        self.lum.set("y max", max_subW)
-        self.lum.set("z min", min_subH)
-        self.lum.set("z max", max_subH)
-        self.lum.set("x min", min_subL)
-        self.lum.set("x max", max_subL)
-        self.lum.set("material", MaterialSub)
-        
-        # creating the MMI
-        max_MMIH = WG_Height
-        max_MMIL = MMI_Length / 2
-        min_MMIL = -MMI_Length / 2
-        
-        if Slab_Height == 0:
-            z_Offset = max_subH + max_MMIH / 2
-        else:
-
-            # creating the thin film
-            min_slabH = max_subH
-            max_slabH = max_subH + Slab_Height
-
-            self.lum.addrect()
-            self.lum.set("name", "Slab")
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set("z min", min_slabH)
-            self.lum.set("z max", max_slabH)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("material", MaterialSlab)
-
-            z_Offset = max_slabH + max_MMIH / 2
-            self.lum.select("MMI")
-            self.lum.addtogroup("Slab")
-            
-
-        # Triangle EQ for MMI Width
-        x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
-        extention = np.sqrt(x ** 2 - max_MMIH ** 2)
-        MMI_Wid = MMI_Width + 2 * extention
-
-
-        self.lum.addwaveguide()
-        self.lum.set("name", "MMI")
-        self.lum.set("x", 0)
-        self.lum.set("y", 0)
-        self.lum.set("z", z_Offset)
-        self.lum.set("base height", max_MMIH)
-        self.lum.set("base angle", 90 - angle)
-        pole = np.array([[max_MMIL, 0], [min_MMIL, 0]])
-        self.lum.set("poles", pole)
-        self.lum.set("material", MaterialWG)
-        self.lum.set("base width", MMI_Wid)
-
-
-
-        #Create the MMI L2 Tapers for the Trapezoid
-        TaperNames = ["Input Trapez", "Output Trapez"]
-        myscript = self.Script()
-
-
-        self.lum.addstructuregroup()
-        self.lum.set("name",TaperNames[0])
-        self.lum.set("construction group",1)
-        self.lum.adduserprop("thickness",2, WG_Height)
-        self.lum.adduserprop("angle_side",0, angle)
-        self.lum.adduserprop("width_l",2, WG_Width)
-        self.lum.adduserprop("width_r",2, MMI_Width)
-        self.lum.adduserprop("hfrac_ref",0,1)
-        self.lum.adduserprop("len",2, MMI_Length2)
-        self.lum.adduserprop("material",5,MaterialWG)
-        self.lum.adduserprop("index",0,1)
-        self.lum.set("script",myscript)
-        self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2)
-        self.lum.set("z", z_Offset)
-        self.lum.set("y", 0)
-
-
-        self.lum.addstructuregroup()
-        self.lum.set("name",TaperNames[1])
-        self.lum.set("construction group",1)
-        self.lum.adduserprop("thickness",2, WG_Height)
-        self.lum.adduserprop("angle_side",0, angle)
-        self.lum.adduserprop("width_l",2, WG_Width)
-        self.lum.adduserprop("width_r",2, MMI_Width)
-        self.lum.adduserprop("hfrac_ref",0,1)
-        self.lum.adduserprop("len",2, MMI_Length2)
-        self.lum.adduserprop("material",5,MaterialWG)
-        self.lum.adduserprop("index",0,1)
-        self.lum.set("script",myscript)
-        self.lum.set("first axis", "z")
-        self.lum.set("rotation 1",180)
-        self.lum.set("x", MMI_Length / 2 + MMI_Length2/2)
-        self.lum.set("z", z_Offset)
-        self.lum.set("y", 0)
-
-
-
-
-
-        # Positions of the Input and Output WGs
-        # Triangle EQ for MMI Width
-        x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
-        extention = np.sqrt(x ** 2 - max_MMIH ** 2)
-        WG_W = WG_Width + 2 * extention
-        WG_Width_top = WG_W
-        OffMax = MMI_Width / 2
-
-        offset_Taper = posOffset / 2 + WG_Width / 2 + TaperWidth / 2  # + WG_W / 2
-        BotCornerDistance = posOffset/2 - TaperWidth / 2
-        offset_WG = posOffset / 2 + WG_Width / 2 + WG_W / 2
-        offset_WG2 = posOffset / 2
-
-        if offset_WG2 < 0.5e-6:
-            self.lum.deleteall()
-            raise ValueError('The distance between the Tapers is less then 1 um !')
-        else:
-
-            if Taper == False:
-
-                if offset_WG > OffMax:
-                    self.lum.deleteall()
-                    raise ValueError('You are Trying to move the Waveguide outside the MMI. This is not possible!')
-                else:
-                    # Mirror the In and Out WG on both sides
-                    maxWGL = [WG_Length, 0, 0]
-                    minWGL = [0, -WG_Length, -WG_Length]
-                    xPos = [max_MMIL, min_MMIL, min_MMIL]
-                    yPos = [0 + OffsetInput, WG_Width / 2 + posOffset / 2, - WG_Width / 2 - posOffset / 2]
-
-                    # Names of the WGs
-                    names = ['LN Input WG', 'LN Output WG_L', 'LN Output WG_R']
-
-                    # create loop
-                    for i in range(len(xPos)):
-                        self.lum.addwaveguide()
-                        self.lum.set("name", names[i])
-                        self.lum.set("x", xPos[i])
-                        self.lum.set("y", yPos[i])
-                        self.lum.set("z", z_Offset)
-                        self.lum.set("base width", WG_Width_top)
-                        self.lum.set("base height", max_MMIH)
-                        self.lum.set("base angle", 90 - angle)
-                        pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
-                        self.lum.set("poles", pole)
-                        self.lum.set("material", MaterialSlab)
-                    
-                    
-                self.lum.select("MMI")
-                self.lum.addtogroup("MMI")
-                self.lum.select("LN Input WG")
-                self.lum.addtogroup("MMI")
-                self.lum.select("LN Output WG_L")
-                self.lum.addtogroup("MMI")
-                self.lum.select("LN Output WG_R")
-                self.lum.addtogroup("MMI")
-                self.lum.select("Input Trapez")
-                self.lum.addtogroup("MMI")
-                self.lum.select("Output Trapez")
-                self.lum.addtogroup("MMI")
-                
-
-
-
-
-            elif Taper == True:
-                if offset_Taper > OffMax:
-                    self.lum.deleteall()
-                    raise ValueError('You are Trying to move the Taper outside the MMI. This is not possible!')
-                else:
-                    # Delate the Structure to start new
-                    self.lum.deleteall()
-                    # Device specifications
-                    Device_Length = MMI_Length + 2 * WG_Length + 2*TaperLength
-                    Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
-
-                    # creating the substrate
-                    max_subH = Substrate_Height
-                    min_subH = -Substrate_Height
-                    max_subW = Device_Width / 2
-                    min_subW = -Device_Width / 2
-                    min_subL = -Device_Length / 2
-                    max_subL = Device_Length / 2
-
-                    self.lum.addrect()
-                    self.lum.set("name", "Substrate")
-                    self.lum.set("y min", min_subW)
-                    self.lum.set("y max", max_subW)
-                    self.lum.set("z min", min_subH)
-                    self.lum.set("z max", max_subH)
-                    self.lum.set("x min", min_subL)
-                    self.lum.set("x max", max_subL)
-                    self.lum.set("material", MaterialSub)
-                    
-                    # creating the MMI
-                    max_MMIH = WG_Height
-                    max_MMIL = MMI_Length / 2
-                    min_MMIL = -MMI_Length / 2
-                    
-                    
-                    if Slab_Height == 0:
-                        z_Offset = max_subH + max_MMIH / 2
-                        
-                    else:
-                        # creating the thin film
-                        min_slabH = max_subH
-                        max_slabH = max_subH + Slab_Height
-
-                        self.lum.addrect()
-                        self.lum.set("name", "Slab")
-                        self.lum.set("y min", min_subW)
-                        self.lum.set("y max", max_subW)
-                        self.lum.set("z min", min_slabH)
-                        self.lum.set("z max", max_slabH)
-                        self.lum.set("x min", min_subL)
-                        self.lum.set("x max", max_subL)
-                        self.lum.set("material", MaterialSlab)
-
-                        z_Offset = max_slabH + max_MMIH / 2
-                        self.lum.select("Slab")
-                        self.lum.addtogroup("MMI")
-
-                    # Triangle EQ for MMI Width
-                    x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
-                    extention = np.sqrt(x ** 2 - max_MMIH ** 2)
-                    MMI_Wid = MMI_Width + 2 * extention
-
-                    self.lum.addwaveguide()
-                    self.lum.set("name", "MMI")
-                    self.lum.set("x", 0)
-                    self.lum.set("y", 0)
-                    self.lum.set("z", z_Offset)
-                    self.lum.set("base height", max_MMIH)
-                    self.lum.set("base angle", 90 - angle)
-                    pole = np.array([[max_MMIL, 0], [min_MMIL, 0]])
-                    self.lum.set("poles", pole)
-                    self.lum.set("material", MaterialWG)
-                    self.lum.set("base width", MMI_Wid)
-
-                    #Create the MMI L2 Tapers for the Trapezoid
-                    TaperNames = ["Input Trapez", "Output Trapez"]
-
-                    self.lum.addstructuregroup()
-                    self.lum.set("name",TaperNames[0])
-                    self.lum.set("construction group",1)
-                    self.lum.adduserprop("thickness",2, WG_Height)
-                    self.lum.adduserprop("angle_side",0, angle)
-                    self.lum.adduserprop("width_l",2, WG_Width)
-                    self.lum.adduserprop("width_r",2, MMI_Width)
-                    self.lum.adduserprop("hfrac_ref",0,1)
-                    self.lum.adduserprop("len",2, MMI_Length2)
-                    self.lum.adduserprop("material",5,MaterialWG)
-                    self.lum.adduserprop("index",0,1)
-                    self.lum.set("script",myscript)
-                    # self.lum.set("first axis", "z")
-                    # self.lum.set("rotation 1",angleTheta)
-                    self.lum.set("x", -MMI_Length / 2 - MMI_Length2/2) #-MMI_Length / 2
-                    self.lum.set("z", z_Offset)
-                    self.lum.set("y", 0)
-
-
-                    self.lum.addstructuregroup()
-                    self.lum.set("name",TaperNames[1])
-                    self.lum.set("construction group",1)
-                    self.lum.adduserprop("thickness",2, WG_Height)
-                    self.lum.adduserprop("angle_side",0, angle)
-                    self.lum.adduserprop("width_l",2, WG_Width)
-                    self.lum.adduserprop("width_r",2, MMI_Width)
-                    self.lum.adduserprop("hfrac_ref",0,1)
-                    self.lum.adduserprop("len",2, MMI_Length2)
-                    self.lum.adduserprop("material",5,MaterialWG)
-                    self.lum.adduserprop("index",0,1)
-                    self.lum.set("script",myscript)
-                    self.lum.set("first axis", "z")
-                    self.lum.set("rotation 1",180)
-                    self.lum.set("x", MMI_Length / 2 + MMI_Length2/2) #-MMI_Length / 2
-                    self.lum.set("z", z_Offset)
-                    self.lum.set("y", 0)
-
-
-                    # New x Length of the Tapers
-                    maxLength = max_MMIL + TaperLength
-                    minLength = min_MMIL - TaperLength
-
-                    # Mirror the In and Out WG on both sides
-                    maxWGL = [WG_Length, 0, 0]
-                    minWGL = [0, -WG_Length, -WG_Length]
-                    xPos = [maxLength, minLength, minLength]
-                    yPos = [0 + OffsetInput, WG_Width / 2 + posOffset / 2, - WG_Width / 2 - posOffset / 2]
-
-                    # Names of the WGs
-                    names = ['LN Input WG', 'LN Output WG_L', 'LN Output WG_R']
-                    TapersNames = ['Taper Input WG', 'Taper Output WG_L', 'Taper Output WG_R']
-
-                    # Taper loop
-                    # Taper Widths on Bott Cal
-                    x = abs(max_MMIH / (np.cos((angle) * np.pi / 180)))  # in Radians
-                    extention = np.sqrt(x ** 2 - max_MMIH ** 2)
-                    TaperSideWidth = TaperWidth + 2 * extention
-
-                    TaperPosXmin = [max_MMIL, min_MMIL, min_MMIL]
-                    TaperPosXmax = [max_MMIL + TaperLength, min_MMIL - TaperLength, min_MMIL - TaperLength]
-
-                    PosOffset = [0, (posOffset / 2 + WG_Width / 2), -(posOffset / 2 + WG_Width / 2)]
-                    TaperPosYMax_BotR = [(0 + OffsetInput + WG_W / 2), (-WG_W / 2), (-WG_W / 2)]
-                    TaperPosYMin_BotR = [(0 + OffsetInput - WG_W / 2), (WG_W / 2), (WG_W / 2)]
-                    TaperPosYMax_TopR = [(0 + OffsetInput + WG_Width / 2), (-WG_Width / 2), (-WG_Width / 2)]
-                    TaperPosYMin_TopR = [(0 + OffsetInput - WG_Width / 2), (+WG_Width / 2), (+WG_Width / 2)]
-
-                    TaperPosYMax_BotL = [(0 + OffsetInput + TaperSideWidth / 2), (-TaperSideWidth / 2),
-                                         (-TaperSideWidth / 2)]
-                    TaperPosYMin_BotL = [(0 + OffsetInput - TaperSideWidth / 2), (+TaperSideWidth / 2),
-                                         (+TaperSideWidth / 2)]
-                    TaperPosYMax_TopL = [(0 + OffsetInput + TaperWidth / 2), (-TaperWidth / 2), (-TaperWidth / 2)]
-                    TaperPosYMin_TopL = [(0 + OffsetInput - TaperWidth / 2), (+TaperWidth / 2), (+TaperWidth / 2)]
-
-                    for i in range(len(xPos)):
-                        TaperZmin = max_slabH
-                        TaperZmax = max_slabH + max_MMIH
-
-                        TaperXmin = TaperPosXmin[i]
-                        TaperXmax = TaperPosXmax[i]
-
-                        ymin_bot_l = TaperPosYMin_BotL[i]
-                        ymax_bot_l = TaperPosYMax_BotL[i]
-
-                        ymin_bot_r = TaperPosYMin_BotR[i]
-                        ymax_bot_r = TaperPosYMax_BotR[i]
-
-                        ymin_top_l = TaperPosYMin_TopL[i]
-                        ymax_top_l = TaperPosYMax_TopL[i]
-
-                        ymin_top_r = TaperPosYMin_TopR[i]
-                        ymax_top_r = TaperPosYMax_TopR[i]
-
-                        vtx = np.array([[TaperXmin, ymin_bot_l, TaperZmin],  # 1
-                                        [TaperXmax, ymin_bot_r, TaperZmin],  # 2
-                                        [TaperXmax, ymax_bot_r, TaperZmin],  # 3
-                                        [TaperXmin, ymax_bot_l, TaperZmin],  # 4
-                                        [TaperXmin, ymin_top_l, TaperZmax],  # 5
-                                        [TaperXmax, ymin_top_r, TaperZmax],  # 6
-                                        [TaperXmax, ymax_top_r, TaperZmax],  # 7
-                                        [TaperXmin, ymax_top_l, TaperZmax],  # 8
-                                        ])
-                        a = [[np.array([[1, 4, 3, 2]], dtype=object)], [np.array([[1, 5, 8, 4]], dtype=object)],
-                             [np.array([[1, 2, 6, 5]], dtype=object)], [np.array([[2, 6, 7, 3]], dtype=object)],
-                             [np.array([[3, 4, 8, 7]], dtype=object)], [np.array([[5, 6, 7, 8]], dtype=object)]]
-
-
-
-                        # Send Values to Lumerical and create solid
-                        self.lum.putv('vertices', vtx)
-                        self.lum.putv('facets', a)
-                        self.lum.addplanarsolid(vtx, a)
-                        self.lum.set('material', MaterialWG)
-                        self.lum.set('name', TapersNames[i])
-                        self.lum.set('y', PosOffset[i])
-
-                    # create loop
-                    for i in range(len(xPos)):
-                        self.lum.addwaveguide()
-                        self.lum.set("name", names[i])
-                        self.lum.set("x", xPos[i])
-                        self.lum.set("y", yPos[i])
-                        self.lum.set("z", z_Offset)
-                        self.lum.set("base width", WG_Width_top)
-                        self.lum.set("base height", max_MMIH)
-                        self.lum.set("base angle", 90 - angle)
-                        pole = np.array([[maxWGL[i], 0], [minWGL[i], 0]])
-                        self.lum.set("poles", pole)
-                        self.lum.set("material", MaterialSlab)
-            
-            
-                self.lum.select("MMI")
-                self.lum.addtogroup("MMI")
-                self.lum.select("LN Input WG")
-                self.lum.addtogroup("MMI")
-                self.lum.select("LN Output WG_L")
-                self.lum.addtogroup("MMI")
-                self.lum.select("LN Output WG_R")
-                self.lum.addtogroup("MMI")
-                self.lum.select("Taper Input WG")
-                self.lum.addtogroup("MMI")
-                self.lum.select("Taper Output WG_L")
-                self.lum.addtogroup("MMI")
-                self.lum.select("Taper Output WG_R")
-                self.lum.addtogroup("MMI")
-                self.lum.select("Input Trapez")
-                self.lum.addtogroup("MMI")
-                self.lum.select("Output Trapez")
-                self.lum.addtogroup("MMI")
-
-
-            else:
-                raise ValueError(
-                    "Incorect Taper input. Taper must be an boolen. You can choose from Taper = True or Taper = False!")
-
-            # create_cover
-            self.lum.addrect()
-            self.lum.set("name", "cladding")
-            self.lum.set("material", MaterialClad)
-            self.lum.set("y min", min_subW)
-            self.lum.set("y max", max_subW)
-            self.lum.set("z", z_Offset)
-            self.lum.set("z span", max_MMIH * 2)
-            self.lum.set("x min", min_subL)
-            self.lum.set("x max", max_subL)
-            self.lum.set("override mesh order from material database", True)
-            self.lum.set("mesh order", 4)
-            self.lum.set("alpha", 0.7)
 
 
 
@@ -3693,31 +2788,35 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters
-                ----------
-                Parameters['Material'] : list of str
-                    List of Materials. the list should be with names (str) of a valid Lumerical materials.
-                    Check the names in Lumerical Materials viewer.
-                Parameters['Substrate Height'] : int/float
-                    Substrate height.
-                Parameters['Substrate Width'] : int/float
-                    Substrate Width.
-                Parameters['DC Length'] : int/float
-                    Length of the directional coupler
-                Parameters['angle'] : int/float
-                    Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                    For anfle = 90 we get a perfect rect!
-                Parameters['WG Height'] : int/float
-                    Waveguide hight. Also the height of the MMI section
-                Parameters['WG Width'] : int/float
-                    Waveguide width.
-                Parameters['Position Offset'] : int/float
-                    Offset between the waveguides. The minimum distance between Waveguides is 1 um
-                    becouse of manufactering restrictions in the University.
-                Parameters['Slab Height'] : int/float
-                    Height of the slab.
-                Parameters['Wavelength'] : int/float
-                    Wavelength
+        Parameters
+        ----------
+        Parameters['Material'] : list of str
+            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            Check the names in Lumerical Materials viewer.
+        Parameters['Substrate Height'] : int/float
+            Substrate height.
+        Parameters['Substrate Width'] : int/float
+            Substrate Width.
+        Parameters['DC Length'] : int/float
+            Length of the directional coupler
+        Parameters['angle'] : int/float
+            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+            For anfle = 90 we get a perfect rect!
+        Parameters['WG Height'] : int/float
+            Waveguide hight. Also the height of the MMI section
+        Parameters['WG Width'] : int/float
+            Waveguide width.
+        Parameters['Position Offset'] : int/float
+            Offset between the waveguides. The minimum distance between Waveguides is 1 um
+            becouse of manufactering restrictions in the University.
+        Parameters['Slab Height'] : int/float
+            Height of the slab.
+        Parameters['Wavelength'] : int/float
+            Wavelength
+        Parameters["Cladding"] : anything, optional
+            This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+            and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+            will be set.
 
 
         Raises
@@ -3741,7 +2840,10 @@ class Constructor:
         posOffset = Parameters['Position Offset']
         Slab_Height = Parameters['Slab Height']
 
-
+        if "Cladding" in list(Parameters.keys()):
+            Cladding = True
+        else:
+            Cladding = False
 
         # Material definition
         if len(Material) < 2:
@@ -3842,6 +2944,28 @@ class Constructor:
             self.lum.addtogroup("Directional Coupler")
             self.lum.select("Bottom WG")
             self.lum.addtogroup("Directional Coupler")
+            
+            
+            if Cladding == True:
+                # create_cover
+                self.lum.addrect()
+                self.lum.set("name", "cladding")
+                self.lum.set("material", MaterialClad)
+                self.lum.set("y min", min_subW)
+                self.lum.set("y max", max_subW)
+                self.lum.set("z min", max_subH)
+                self.lum.set("z max", 2e-6)
+       
+                self.lum.set("x min", min_subL)
+                self.lum.set("x max", max_subL)
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+                
+                self.lum.select("cladding")
+                self.lum.addtogroup("Directional Coupler")
+            else:
+                pass
 
 
 
@@ -3853,37 +2977,42 @@ class Constructor:
         Parameters
         ----------
         Parameters : Dictionary
-            Parameters['Material'] : list of str
-                List of Materials. the list should be with names (str) of a valid Lumerical materials.
-                Check the names in Lumerical Materials viewer.
-            Parameters['Substrate Height'] : int/float
-                Substrate height.
-            Parameters['MMI Width'] : int/float
-                Width of the MMI.
-            Parameters['MMI Length'] : int/float
-                Length of the MMI.
-            Parameters['angle'] : int/float
-                Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                For anfle = 90 we get a perfect rect!
-            Parameters['WG Height'] : int/float
-                Waveguide hight. Also the height of the MMI section
-             Parameters['WG Width'] : int/float
-                Waveguide width.
-            Parameters['WG Length'] : int/float
-                Waveguide length.
-            Parameters['Slab Height'] : int/float
-                Height of the slab.
-            Parameters['Wavelength'] : int/float
-                Wavelength
-            Parameters['Angle Thetha'] :
-                Input and output angle of the waveguide. This is only temporally
-            Parameters['Taper Width'] : int/float
-                Backside width of the Taper, frontside width is the waveguide width
-            Parameters['Taper Length'] : int/float
-                Length of the Taper.
-            Parameters['Taper'] : boolen
-                If Taper == False, no Taper will be placed with the Waveguides.
-                If Taper == True, tapers will be placed with the waveguides
+            Dictionary with all the data needet for the Bend Wavaguide. Data needet:
+        Parameters
+        ----------
+        Parameters['Material'] : list of str
+            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            Check the names in Lumerical Materials viewer.
+        Parameters['Substrate Height'] : int/float
+            Substrate height.
+        Parameters['MMI Width'] : int/float
+            Width of the MMI.
+        Parameters['MMI Length'] : int/float
+            Length of the MMI.
+        Parameters['angle'] : int/float
+            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+            For anfle = 90 we get a perfect rect!
+        Parameters['WG Height'] : int/float
+            Waveguide hight. Also the height of the MMI section
+         Parameters['WG Width'] : int/float
+            Waveguide width.
+        Parameters['WG Length'] : int/float
+            Waveguide length.
+        Parameters['Slab Height'] : int/float
+            Height of the slab.
+        Parameters['Angle Thetha'] :
+            Input and output angle of the waveguide. This is only temporally
+        Parameters['Taper Width'] : int/float
+            Backside width of the Taper, frontside width is the waveguide width
+        Parameters['Taper Length'] : int/float
+            Length of the Taper.
+        Parameters['Taper'] : boolen
+            If Taper == False, no Taper will be placed with the Waveguides.
+            If Taper == True, tapers will be placed with the waveguides
+        Parameters["Cladding"] : anything, optional
+            This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+            and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+            will be set.
 
         Raises
         ------
@@ -3900,16 +3029,22 @@ class Constructor:
         Substrate_Height = Parameters['Substrate Height']
         MMI_Width = Parameters['MMI Width']
         MMI_Length = Parameters['MMI Length']
+        WaveLength = Parameters['Wavelength']
         angle = Parameters['angle']
         WG_Height = Parameters['WG Height']
         WG_Width = Parameters['WG Width']
         WG_Length = Parameters['WG Length']
         Slab_Height = Parameters['Slab Height']
-        WaveLength = Parameters['Wavelength']
+       
         angleTheta = Parameters['Angle Thetha']
         TaperLength = Parameters['Taper Length']
         TaperWidth = Parameters['Taper Width']
         Taper = Parameters['Taper']
+        
+        if "Cladding" in list(Parameters.keys()):
+            Cladding = True
+        else:
+            Cladding = False
 
         # Material definition
         if len(Material) < 2:
@@ -3927,7 +3062,7 @@ class Constructor:
 
             # Device specifications
             Device_Length = MMI_Length + 4 * WG_Length
-            Device_Width = MMI_Width + 2*WG_Length + WaveLength * 2  # MMI_Width
+            Device_Width = MMI_Width + 2*WG_Length + 3e-6  # MMI_Width
 
             # creating the substrate
             max_subH = Substrate_Height
@@ -3943,13 +3078,16 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set("material", MaterialSub)
+            self.lum.select("Substrate")
+            self.lum.addtogroup("WDM")
+            
 
             # creating the thin film
             min_slabH = max_subH
             max_slabH = max_subH + Slab_Height
 
             self.lum.addrect()
-            self.lum.set("name", "LN_slab")
+            self.lum.set("name", "Slab")
             self.lum.set("z min", min_slabH)
             self.lum.set("z max", max_slabH)
             self.lum.set("x", 0)
@@ -3957,6 +3095,8 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set("material", MaterialSlab)
+            self.lum.select("Slab")
+            self.lum.addtogroup("WDM")
 
             # creating the MMI
             # creating the MMI
@@ -4011,6 +3151,9 @@ class Constructor:
             self.lum.set("poles", pole)
             self.lum.set("material", MaterialWG)
             self.lum.set("base width", MMI_Wid)
+            self.lum.select("MMI")
+            self.lum.addtogroup("WDM")
+            
 
             # Names of the WGs
             Waveguides = ['LN_Input', 'LN_Output']
@@ -4052,22 +3195,33 @@ class Constructor:
             self.lum.set("x", MMI_Length / 2 + TaperLength / 2)  # + MMI_Length / 2
             self.lum.set("z", z_Offset)
             self.lum.set("y", -NewY)
+            
+            
+            
+            if Cladding == True:
+                # Create Cladding
+                self.lum.addrect()
+                self.lum.set("name", "cladding")
+                self.lum.set("x", 0)
+                self.lum.set("x span", Device_Length)
+                self.lum.set("y", 0)
+                self.lum.set("y span", Device_Width)
+                self.lum.set('z min', max_slabH)
+                self.lum.set('z max', max_slabH + 4 * WG_Height)
+                self.lum.set("material", MaterialClad)
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+                self.lum.select("cladding")
+                self.lum.addtogroup("WDM")
+                
+                # self.lum.select("cladding")
+                # self.lum.addtogroup("Directional Coupler")
+            else:
+                pass
 
 
-            # Create Cladding
-            self.lum.addrect()
-            self.lum.set("name", "cladding")
-            self.lum.set("x", 0)
-            self.lum.set("x span", Device_Length)
-            self.lum.set("y", 0)
-            self.lum.set("y span", Device_Width)
-            self.lum.set('z min', max_slabH)
-            self.lum.set('z max', max_slabH + 4 * WG_Height)
-            self.lum.set("material", MaterialClad)
-            self.lum.set("override mesh order from material database", True)
-            self.lum.set("mesh order", 4)
-            self.lum.set("alpha", 0.7)
-
+     
 
 
         elif Taper == True:
@@ -4075,7 +3229,7 @@ class Constructor:
 
             # Device specifications
             Device_Length = MMI_Length + 4 * WG_Length
-            Device_Width = MMI_Width + 2*WG_Length + WaveLength * 2  # MMI_Width
+            Device_Width = MMI_Width + 2*WG_Length + 3e-6 # WaveLength * 2  
 
             # creating the substrate
             max_subH = Substrate_Height
@@ -4121,11 +3275,14 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set("material", MaterialSub)
+            self.lum.select("Substrate")
+            self.lum.addtogroup("WDM")
+            
 
 
 
             self.lum.addrect()
-            self.lum.set("name", "LN_slab")
+            self.lum.set("name", "Slab")
             self.lum.set("z min", min_slabH)
             self.lum.set("z max", max_slabH)
             self.lum.set("x", 0)
@@ -4133,6 +3290,9 @@ class Constructor:
             self.lum.set("y", 0)
             self.lum.set("y span", Device_Width)
             self.lum.set("material", MaterialSlab)
+            self.lum.select("Slab")
+            self.lum.addtogroup("WDM")
+           
 
             # creating the MMI
 
@@ -4147,6 +3307,8 @@ class Constructor:
             self.lum.set("poles", pole)
             self.lum.set("material", MaterialWG)
             self.lum.set("base width", MMI_Wid)
+            self.lum.select("MMI")
+            self.lum.addtogroup("WDM")
 
 
 
@@ -4235,20 +3397,30 @@ class Constructor:
             self.lum.set("x", MMI_Length / 2 + TaperLength/2 )  #+ MMI_Length / 2
             self.lum.set("z", z_Offset )
             self.lum.set("y", -NewY)
+            
+            
+            
+            if Cladding == True:
+                # Create Cladding
+                self.lum.addrect()
+                self.lum.set("name", "cladding")
+                self.lum.set("x", 0)
+                self.lum.set("x span", Device_Length)
+                self.lum.set("y", 0)
+                self.lum.set("y span", Device_Width)
+                self.lum.set('z min', max_slabH)
+                self.lum.set('z max', max_slabH + 4 * WG_Height)
+                self.lum.set("material", MaterialClad)
+                self.lum.set("override mesh order from material database", True)
+                self.lum.set("mesh order", 4)
+                self.lum.set("alpha", 0.7)
+                self.lum.select("cladding")
+                self.lum.addtogroup("WDM")
 
-            # Create Cladding
-            self.lum.addrect()
-            self.lum.set("name", "cladding")
-            self.lum.set("x", 0)
-            self.lum.set("x span", Device_Length)
-            self.lum.set("y", 0)
-            self.lum.set("y span", Device_Width)
-            self.lum.set('z min', max_slabH)
-            self.lum.set('z max', max_slabH + 4 * WG_Height)
-            self.lum.set("material", MaterialClad)
-            self.lum.set("override mesh order from material database", True)
-            self.lum.set("mesh order", 4)
-            self.lum.set("alpha", 0.7)
+            else:
+                pass
+
+            
 
 
 
@@ -6069,20 +5241,18 @@ class Constructor:
         Taper = Parameters['Taper']
         TaperWidth = Parameters['Taper Width']
         TaperLength = Parameters['Taper Length']
-        if Parameters["Taper Type"] == None:
-            TaperType = "Normal"
+
+        if "Taper Type" in list(Parameters.keys()):
+                TaperType = "Inverse"
+                TaperWidthF = Parameters['PWB Taper Width Front']
+                TaperWidthB = Parameters['PWB Taper Width Back']
+                TaperHightB = Parameters['PWB Taper Hight Back']
+                TaperHightF = Parameters['PWB Taper Hight Front']
+                TaperLength_PWB = Parameters['PWB Taper Length']
         else:
-            TaperType = "Inverse"
-            TaperWidthF = Parameters['PWB Taper Width Front']
-            TaperWidthB = Parameters['PWB Taper Width Back']
-            TaperHightB = Parameters['PWB Taper Hight Back']
-            TaperHightF = Parameters['PWB Taper Hight Front']
-            TaperLength_PWB = Parameters['PWB Taper Length']
+            TaperType = "Normal"
             
-
-
-
-
+                
         # Device specifications
         Device_Width = 2*WG_Length + WaveLength * 2  # MMI_Width
 
@@ -6331,7 +5501,7 @@ class Constructor:
                     # Add Movie monitor
                     self.lum.addmovie()
                     self.lum.set("y", 0)
-                    self.lum.set("y span", 2*TaperWidthB + WaveLength * 2)
+                    self.lum.set("y span", 2*TaperWidth + WaveLength * 2)
                     self.lum.set("z", MonitorHeight)
                     self.lum.set("x", 0)
                     self.lum.set("x span", TaperLength)
@@ -6340,7 +5510,7 @@ class Constructor:
                     self.lum.addpower()
                     self.lum.set('monitor type', '2D Z-normal')
                     self.lum.set("y",0)
-                    self.lum.set("y span", 2*TaperWidthB + WaveLength * 2)
+                    self.lum.set("y span", 2*TaperWidth + WaveLength * 2)
                     self.lum.set("x", 0)
                     self.lum.set("x span", TaperLength)
                     self.lum.set("z", MonitorHeight)
@@ -8878,8 +8048,7 @@ class Constructor:
         Taper = Parameters['Taper']
         TaperWidth = Parameters['Taper Width']
         TaperLength = Parameters['Taper Length']
-
-
+        
 
 
         # Device specifications
@@ -9026,7 +8195,6 @@ class Constructor:
 
 
         elif Taper == True:
-
             # Device specifications
             Device_Length = TaperLength
             Device_Width = 2 * TaperLength + WaveLength * 2  # MMI_Width
@@ -9035,65 +8203,165 @@ class Constructor:
             MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
             Ports_mid = max_slabH + WG_Height/2
             EME_WGLength = TaperLength * np.cos(angle * np.pi / 180)
+            
+            if Slab_Height == 0:
+                # # Device specifications
+                MonitorHeight = Substrate_Height + WG_Height/2
+                Ports_mid = Substrate_Height + WG_Height/2
+              
+            
+            else:
+                # # Device specifications
+                max_slabH = Slab_Height
+                MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
+                Ports_mid = max_slabH + Substrate_Height  + WG_Height/2
+                
+            if "Taper Type" in list(Parameters.keys()):
+                TaperType = "Inverse"
+                TaperWidthF = Parameters['PWB Taper Width Front']
+                TaperWidthB = Parameters['PWB Taper Width Back']
+                TaperHightB = Parameters['PWB Taper Hight Back']
+                TaperHightF = Parameters['PWB Taper Hight Front']
+                TaperLength_PWB = Parameters['PWB Taper Length']
+            else:
+                TaperType = "Normal"
+                
+                
+
+            
+            
+            if TaperType == "Normal":
+                # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
+                self.lum.addeme()
+                self.lum.set('simulation temperature', 273.15 + 20)
+                self.lum.set("x min", -TaperLength/2 + 0.1e-6)
+                self.lum.set("y", 0)
+                self.lum.set("y span", Device_Width)
+                self.lum.set("z", Substrate_Height)
+                self.lum.set("z span", 4e-6)
+                self.lum.set("wavelength", WaveLength)
+                self.lum.set("z min bc", "PML")
+                self.lum.set("z max bc", "PML")
+                self.lum.set("y min bc", "PML")
+                self.lum.set("y max bc", "PML")
+
+                # set cell properties
+                self.lum.set("number of cell groups", 1)
+                self.lum.set("group spans", np.array([[EME_WGLength - 0.2e-6]]))
+                self.lum.set("cells", np.array([[30]]))
+                self.lum.set("subcell method", np.array([[1]]))
+
+                # Modes to Calculate
+                self.lum.set('number of modes for all cell groups', 20)
+
+                # Mesh Cells
+                self.lum.set("define y mesh by", "maximum mesh step")
+                self.lum.set("dy", y_res)
+                self.lum.set("define z mesh by", "maximum mesh step")
+                self.lum.set("dz", z_res)
+                self.lum.set('fit materials with multi-coefficient model', 1)
+                self.lum.set('wavelength start', 0.4e-6)
+                self.lum.set('wavelength stop', 2e-6)
+
+                # Define Ports
+                Diff_Span = y_Port_Span - WG_Width
+                yPos = [0, 0]
+                yPos_span = [y_Port_Span, TaperWidth + Diff_Span]
+                portLoc = ["left", "right"]
+                theta = [0, 0]
+
+                for i in range(2):
+                    self.lum.select("EME::Ports::port_" + str(i + 1))
+                    self.lum.set("port location", portLoc[i])
+                    self.lum.set("use full simulation span", 0)
+                    self.lum.set("y", yPos[i])
+                    self.lum.set("y span", yPos_span[i])
+                    self.lum.set("z", Ports_mid)
+                    self.lum.set("z span", z_Port_Span)
+                    self.lum.set("mode selection", Mode)
+                    self.lum.set("theta", theta[i])
+
+                # Add monitor
+                self.lum.addemeprofile()
+                self.lum.set("x", 0)
+                self.lum.set("x span", Device_Length)
+                self.lum.set("y", 0)
+                self.lum.set("y span", Device_Width)
+                self.lum.set("z", MonitorHeight)
+           
+                
+           
+            else:
+                # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
+                self.lum.addeme()
+                self.lum.set('simulation temperature', 273.15 + 20)
+                self.lum.set("x min", -TaperLength/2 + 0.1e-6)
+                self.lum.set("y", 0)
+                self.lum.set("y span", Device_Width)
+                # self.lum.set("z", Substrate_Height)
+                # self.lum.set("z span", 4e-6)
+                self.lum.set("z min", -Substrate_Height ) 
+                self.lum.set("z max", TaperHightB*2)
+                self.lum.set("wavelength", WaveLength)
+                self.lum.set("z min bc", "PML")
+                self.lum.set("z max bc", "PML")
+                self.lum.set("y min bc", "PML")
+                self.lum.set("y max bc", "PML")
+
+                # set cell properties
+                self.lum.set("number of cell groups", 1)
+                self.lum.set("group spans", np.array([[EME_WGLength - 0.2e-6]]))
+                self.lum.set("cells", np.array([[30]]))
+                self.lum.set("subcell method", np.array([[1]]))
+
+                # Modes to Calculate
+                self.lum.set('number of modes for all cell groups', 20)
+
+                # Mesh Cells
+                self.lum.set("define y mesh by", "maximum mesh step")
+                self.lum.set("dy", y_res)
+                self.lum.set("define z mesh by", "maximum mesh step")
+                self.lum.set("dz", z_res)
+                self.lum.set('fit materials with multi-coefficient model', 1)
+                self.lum.set('wavelength start', 0.4e-6)
+                self.lum.set('wavelength stop', 2e-6)
+                
+                
+                # Define Ports
+                Diff_Span = y_Port_Span - WG_Width
+                yPos = [0, 0]
+                yPos_span = [y_Port_Span, TaperWidth + Diff_Span]
+                theta = [0, 0]
+                portLoc = ["left", "right"]
+                name = ['Input', 'Output']
+                
+                self.lum.select("EME")
+                Span_z = self.lum.get("z span")
+                yPos_span = [ TaperWidthB + Diff_Span , y_Port_Span ]
+                z_Pos = [ -Span_z/2 + Substrate_Height + max_slabH + TaperHightB/2,  -Span_z/2 + Substrate_Height + max_slabH + TaperHightF/2 ]
+                z_Span = [ TaperHightB + z_Port_Span , TaperHightF/2  + z_Port_Span]
+                for i in range(2):
+                    self.lum.select("EME::Ports::port_" + str(i + 1))
+                    self.lum.set("port location", portLoc[i])
+                    self.lum.set("use full simulation span", 0)
+                    self.lum.set("y", yPos[i])
+                    self.lum.set("y span", yPos_span[i])
+                    self.lum.set("z", z_Pos[i])
+                    self.lum.set("z span", z_Span[i])
+                    self.lum.set("mode selection", Mode)
+                    self.lum.set("theta", theta[i])
+                
 
 
-            # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
-            self.lum.addeme()
-            self.lum.set('simulation temperature', 273.15 + 20)
-            self.lum.set("x min", -TaperLength/2 + 0.1e-6)
-            self.lum.set("y", 0)
-            self.lum.set("y span", Device_Width)
-            self.lum.set("z", Substrate_Height)
-            self.lum.set("z span", 4e-6)
-            self.lum.set("wavelength", WaveLength)
-            self.lum.set("z min bc", "PML")
-            self.lum.set("z max bc", "PML")
-            self.lum.set("y min bc", "PML")
-            self.lum.set("y max bc", "PML")
-
-            # set cell properties
-            self.lum.set("number of cell groups", 1)
-            self.lum.set("group spans", np.array([[EME_WGLength - 0.2e-6]]))
-            self.lum.set("cells", np.array([[30]]))
-            self.lum.set("subcell method", np.array([[1]]))
-
-            # Modes to Calculate
-            self.lum.set('number of modes for all cell groups', 20)
-
-            # Mesh Cells
-            self.lum.set("define y mesh by", "maximum mesh step")
-            self.lum.set("dy", y_res)
-            self.lum.set("define z mesh by", "maximum mesh step")
-            self.lum.set("dz", z_res)
-            self.lum.set('fit materials with multi-coefficient model', 1)
-            self.lum.set('wavelength start', 0.4e-6)
-            self.lum.set('wavelength stop', 2e-6)
-
-            # Define Ports
-            Diff_Span = y_Port_Span - WG_Width
-            yPos = [0, 0]
-            yPos_span = [y_Port_Span, TaperWidth + Diff_Span]
-            portLoc = ["left", "right"]
-            theta = [0, 0]
-
-            for i in range(2):
-                self.lum.select("EME::Ports::port_" + str(i + 1))
-                self.lum.set("port location", portLoc[i])
-                self.lum.set("use full simulation span", 0)
-                self.lum.set("y", yPos[i])
-                self.lum.set("y span", yPos_span[i])
-                self.lum.set("z", Ports_mid)
-                self.lum.set("z span", z_Port_Span)
-                self.lum.set("mode selection", Mode)
-                self.lum.set("theta", theta[i])
-
-            # Add monitor
-            self.lum.addemeprofile()
-            self.lum.set("x", 0)
-            self.lum.set("x span", Device_Length)
-            self.lum.set("y", 0)
-            self.lum.set("y span", Device_Width)
-            self.lum.set("z", MonitorHeight)
+                # Add monitor
+                self.lum.addemeprofile()
+                self.lum.set("x", 0)
+                self.lum.set("x span", Device_Length)
+                self.lum.set("y", 0)
+                self.lum.set("y span", Device_Width)
+                self.lum.set("z", MonitorHeight)
+            
+            
 
 
 
@@ -11234,99 +10502,7 @@ class HelpSubject:
                         
                         
                         
-                9) MMI2x1_Trapez(Parameters)    
-                  
-                  Parameters['Material'] : list of str
-                      List of Materials. The list should be with names (str) of a valid Lumerical materials.
-                      Check the names in Lumerical Materials viewer.
-                      The List of materials must contain at least 2 materials! 
-                      Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
-                      For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
-                  Parameters['Substrate Height'] : int/float
-                      Substrate Height
-                  Parameters['MMI Width'] : int/float
-                      Top width of the MMI.
-                  Parameters['MMI Length'] : int/float
-                      Length of the MMI.
-                  Parameters['Middle MMI Length']: int/float
-                      Length of the MMI in the Middle Part due to inperfection by manufacturing
-                  Parameters['Slab Height'] : int/float
-                      Height of the LiNbO3 Slab
-                  Parameters['angle'] : int/float
-                      Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.
-                      For angle = 90 , a perfect rect is created!
-                  Parameters['WG Height'] : int/float
-                      Height of the Waveguide (Etching depth).
-                  Parameters['WG Width'] : int/float
-                      Top width of the Waveguide.
-                  Parameters['WG Length'] : int/float
-                      Waveguide length
-                  Parameters['Taper'] : boolen
-                      Taper can be set to be True ot False.
-                      if Taper == False - No Taper used
-                      if Taper == True - Taper placed
-                  Parameters['Position Offset'] : int/float
-                      Offset between the waveguides. If Taper == True then this become the offset
-                      betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-                      the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-                      becouse of manufactering restrictions in the University.
-                  Parameters['Offset Input'] : int/float
-                      Offset of the input waveguide.
-                  Parameters['Wavelength'] : int/float
-                      Wavelength
-                  Parameters['Taper Length'] : int/float
-                      If Taper == True, then this will set the Tapers length. If Taper == False
-                      this will be ignored and some random value can be given.
-                  Parameters['Taper Width'] : int/float
-                      If Taper == True, then this will set the Tapers width. If Taper == False
-                      this will be ignored and some random value can be given.
-                      
-                      
-                      
-                10) MMI2x2_Trapez(Parameters)   
-  
-                  Parameters['Material'] : list of str
-                      List of Materials. The list should be with names (str) of a valid Lumerical materials.
-                      Check the names in Lumerical Materials viewer.
-                      The List of materials must contain at least 2 materials! 
-                      Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
-                      For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
-                  Parameters['Substrate Height'] : int/float
-                      Substrate Height
-                  Parameters['MMI Width'] : int/float
-                      Top width of the MMI.
-                  Parameters['MMI Length'] : int/float
-                      Length of the MMI.
-                  Parameters['Middle MMI Length']: int/float
-                      Length of the MMI in the Middle Part due to inperfection by manufacturing
-                  Parameters['Slab Height'] : int/float
-                      Height of the LiNbO3 Slab
-                  Parameters['angle'] : int/float
-                      Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.
-                      For angle = 90 , a perfect rect is created!
-                  Parameters['WG Height'] : int/float
-                      Height of the Waveguide (Etching depth). This is also the
-                  Parameters['WG Width'] : int/float
-                      Top width of the Waveguide.
-                  Parameters['WG Length'] : int/float
-                      Waveguide length
-                  Parameters['Position Offset'] : int/float
-                      Offset between the waveguides. If Taper == True then this become the offset
-                      betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-                      the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-                      becouse of manufactering restrictions in the University.
-                  Parameters['Wavelength'] : int/float
-                      Wavelength
-                  Parameters['Taper'] : boolen
-                      Taper can be set to be True ot False.
-                      if Taper == False - No Taper used
-                      if Taper == True - Taper placed
-                  Parameters['Taper Length'] : int/float
-                      If Taper == True, then this will set the Tapers length. If Taper == False
-                      this will be ignored and some random value can be given.
-                  Parameters['Taper Width'] : int/float
-                      If Taper == True, then this will set the Tapers width. If Taper == False
-                      this will be ignored and some random value can be given.
+
                         
                   
                   """)
