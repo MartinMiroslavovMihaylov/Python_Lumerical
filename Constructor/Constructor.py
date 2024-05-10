@@ -121,15 +121,50 @@ class Constructor:
         self.lum.deleteall()
 
 
-    def Help(self, Subject):
-
+    def Help(self, Subject = None):
         if Subject is None:
-            raise ValueError(
-                "Help can be called with Help(str(subject)). Subject can be choosen from 'Objects', 'Solvers', 'Start Simulation', 'Results', 'Loading Bar' and 'Log File' !! ")
-        else:
+            print("i am in None section")
+            raise ValueError("Help can be called with Help(str(subject)). Subject can be choosen from 'Objects', 'Solvers', 'Start Simulation', 'Results', 'Loading Bar' and 'Log File' !! ")
+            
+        # Check Type
+        elif type(Subject) == dict:
+            print("i am in Dict section")
+            StartNumber = [1,2,3]
+            ResultNumber = [1,2,3,4]
+            StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11]
+            StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+            
+            listSub = ['Objects', 'Solvers', 'Start Simulation', 'Results', 'Loading Bar', 'Log File']
+            key = list(Subject.keys())
+            val = list(Subject.values())
+            _help = HelpSubject()
+            if key[0] == "Objects" and val[0] in StrucNumbers:
+                _help.Help_Objects()
+                _help.Structures(int(val[0]))
+            elif key[0] == "Solvers" and val[0] in SolverNumber:
+                _help.Help_Solvers()
+                _help.Solvers(int(val[0]))
+            elif key[0] == "Start Simulation" and val[0] in StartNumber:
+                _help.Help_StartSimulation()
+                _help.StartSolver(int(val[0]))
+            elif key[0] == "Results" and val[0] in ResultNumber:
+                _help.Help_Results()
+                _help.Result_extraction(int(val[0]))
+            elif key[0] == "Loading Bar":
+                _help.Help_LoadingBar()
+            elif key[0] == "Remove Object":
+                _help.Help_RemoveObject()
+            elif key[0] == "Log File":
+                _help.Help_LogFile()  
+            elif key[0] not in listSub:
+                raise ValueError("Help can be called with Help(str(subject)). Subject can be choosen from 'Objects', 'Solvers', 'Start Simulation', 'Results', 'Loading Bar' and 'Log File' !! ")
+            #elif val[0] not in StartNumber or ResultNumber or StrucNumbers or StrucNumbers:
+            
+        elif type(Subject) == str :
+            print("i am in STR section")
             _help = HelpSubject()
             if Subject == "Objects":
-                _help.Help_Objects()
+                _help.Help_Objects() 
             elif Subject == "Solvers":
                 _help.Help_Solvers()
             elif Subject == "Start Simulation":
@@ -145,6 +180,15 @@ class Constructor:
             else:
                 raise ValueError("Help can be called with Help(str(subject)). Subject can be choosen from 'Objects', 'Solvers', 'Start Simulation', 'Results', 'Loading Bar' and 'Log File' !! ")
 
+
+
+                
+            
+         
+        
+     
+      
+            
 
 
 
@@ -217,11 +261,9 @@ class Constructor:
             self.EME_Solver(Structure, Parameters)
         elif Type == "FDE":
             self.FDE_Solver(Structure, Parameters)
-        elif Type == "varFDTD":
-            self.varFDTD_Solver(Structure, Parameters)
         else:
             raise ValueError(
-                "Invalid Solver Type! Possible Options are FDE - For Waveguides, EME - for MMI , directional Couplers, varFDTD - for MMI Structures and FDTD - for MMI.")
+                "Invalid Solver Type! Possible Options are FDE - For Waveguides, EME - for MMI , directional Couplers and FDTD - for MMI.")
 
 
 
@@ -475,34 +517,6 @@ class Constructor:
 
 
 
-    def varFDTD_Solver(self, Structure, Parameters):
-        '''
-        
-
-        Parameters
-        ----------
-        Structure : str
-            Structure to be simulated.
-        Parameters : dict
-            Dictionary with solver parameters.
-
-        Raises
-        ------
-        ValueError
-            Error when wrong structure was selected.
-
-        Returns
-        -------
-        None
-
-        '''
-        if Structure == "MMI2x1":
-            self.setMMI1x2VarFDTDSolver(Parameters)
-        elif Structure == "MMI2x2":
-            self.setMMI2x2VarFDTDSolver(Parameters)
-        else:
-            raise ValueError("Invalid Strucute for varFDTD Solver is selected. Possible Strucures are MMI2x1 or MMI2x2")
-
 
     def ReturnLogInfo(self):
         '''
@@ -598,9 +612,12 @@ class Constructor:
             For anfle = 90 we get a perfect rect!
         Parameters['Slab Height'] : int/float
             Slab height.
-        Parameters['Material'] : list
-            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+        Parameters['Material'] : list of str
+            List of Materials. The list should be with names (str) of a valid Lumerical materials.
             Check the names in Lumerical Materials viewer.
+            The List of materials must contain at least 2 materials! 
+            Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
+            For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
 
         Raises
         ------
@@ -782,43 +799,46 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-            Parameters['Substrate Height'] : int float
-                Substrate Height
-            Parameters['WG Height'] : int/float
-                Height of the Waveguide
-            Parameters['WG Width'] : int/float
-                Width of the Waveguide
-            Parameters['WG Length'] : int/float
-                Length of the Waveguide
-            Parameters['Taper'] : boolen
-                If Taper == False, only Waveguiedes will be constructed.
-                If Taper == True, only an single Taper will be constructed
-            Parameters['Taper Length'] : int/float
-                Taper Length
-            Parameters['Taper Width'] : int/float
-                Taper backside width, the frontside width is the waveguide width
-            Parameters['angle'] : int
-                Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                For anfle = 90 we get a perfect rect!
-            Parameters['Slab Height'] : int/float
-                Slab height.
-            Parameters['Material'] : list
-                List of Materials. the list should be with names (str) of a valid Lumerical materials.
-                Check the names in Lumerical Materials viewer.
-            Parameters["Wavelength"] : int/float
-                Wavelength
-            Parameters["Waveguide Angle"] : int/float
-                Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
-                If Waveguide Angle is different then 0, then the straight waveguide will be tilted
-                at the choosen degrees.
-            Parameters["Cladding"] : anything, optional
-                This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
-                and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
-                will be set.
-            Parameters["Taper Type"] : anything, optional
-                This function will check if you have set Parameters["Taper Type"] to anaything, for example "Parameters["Taper Type"]=1" 
-                and if so it will design an Inverse Taper Structure with no Cladding. Here the option "Cladding" is not active and will be ignored.
-                If the user didnt give the "Taper Type" as dictionary key, then an normal taper structure will be simulated.
+        Parameters['Substrate Height'] : int float
+            Substrate Height
+        Parameters['WG Height'] : int/float
+            Height of the Waveguide
+        Parameters['WG Width'] : int/float
+            Width of the Waveguide
+        Parameters['WG Length'] : int/float
+            Length of the Waveguide
+        Parameters['Taper'] : boolen
+            If Taper == False, only Waveguiedes will be constructed.
+            If Taper == True, only an single Taper will be constructed
+        Parameters['Taper Length'] : int/float
+            Taper Length
+        Parameters['Taper Width'] : int/float
+            Taper backside width, the frontside width is the waveguide width
+        Parameters['angle'] : int
+            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+            For anfle = 90 we get a perfect rect!
+        Parameters['Slab Height'] : int/float
+            Slab height.
+        Parameters['Material'] : list
+            List of Materials. The list should be with names (str) of a valid Lumerical materials.
+            Check the names in Lumerical Materials viewer.
+            The List of materials must contain at least 2 materials! 
+            Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
+            For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
+        Parameters["Wavelength"] : int/float
+            Wavelength
+        Parameters["Waveguide Angle"] : int/float
+            Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
+            If Waveguide Angle is different then 0, then the straight waveguide will be tilted
+            at the choosen degrees.
+        Parameters["Cladding"] : anything, optional
+            This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+            and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+            will be set.
+        Parameters["Taper Type"] : anything, optional
+            This function will check if you have set Parameters["Taper Type"] to anaything, for example "Parameters["Taper Type"]=1" 
+            and if so it will design an Inverse Taper Structure with no Cladding. Here the option "Cladding" is not active and will be ignored.
+            If the user didnt give the "Taper Type" as dictionary key, then an normal taper structure will be simulated.
                
              
         Raises
@@ -1314,33 +1334,35 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-            Parameters['Substrate Height'] : int/float
-                Substrate Height
-            Parameters['WG Height'] : int/float
-                Waveguide Height
-            Parameters['WG Width'] : int/float
-                Waveguide width
-            Parameters['angle'] : int/float
-                Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                For anfle = 90 we get a perfect rect!
-            Parameters['Slab Height'] : int/float
-                Slab height
-            Parameters['Material'] : list
-                Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
-                If Waveguide Angle is different then 0, then the straight waveguide will be tilted
-                at the choosen degrees.
-            Parameters["x span"] : int/float
-                Length of the S Curve. Span of the object.
-            Parameters["y span"] : int/float
-                Height of the curve. Difference between the input and output of the S-curve.
-            Parameters["poles"] : boolen
-                If Parameters["poles"] = True an Bezier Curbe will be made.
-                if Parameters["poles"] = False an Cosinus Curve = y_span*(cos((pi/(2*x_span))*t)^2) will be made. Where
-                t is in the range of 0 - y_span
-            Parameters["Cladding"] : anything, optional
-                This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
-                and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
-                will be set.
+        Parameters['Substrate Height'] : int/float
+            Substrate Height
+        Parameters['WG Height'] : int/float
+            Waveguide Height
+        Parameters['WG Width'] : int/float
+            Waveguide width
+        Parameters['angle'] : int/float
+            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+            For anfle = 90 we get a perfect rect!
+        Parameters['Slab Height'] : int/float
+            Slab height
+        Parameters['Material'] : list
+            List of Materials. The list should be with names (str) of a valid Lumerical materials.
+            Check the names in Lumerical Materials viewer.
+            The List of materials must contain at least 2 materials! 
+            Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
+            For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
+        Parameters["x span"] : int/float
+            Length of the S Curve. Span of the object.
+        Parameters["y span"] : int/float
+            Height of the curve. Difference between the input and output of the S-curve.
+        Parameters["poles"] : boolen
+            If Parameters["poles"] = True an Bezier Curbe will be made.
+            if Parameters["poles"] = False an Cosinus Curve = y_span*(cos((pi/(2*x_span))*t)^2) will be made. Where
+            t is in the range of 0 - y_span
+        Parameters["Cladding"] : anything, optional
+            This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+            and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+            will be set.
 
         Raises
         ------
@@ -1512,9 +1534,11 @@ class Constructor:
             Parameters['Slab Height'] : int/float
                 Slab height
             Parameters['Material'] : list
-                Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
-                If Waveguide Angle is different then 0, then the straight waveguide will be tilted
-                at the choosen degrees.
+                List of Materials. The list should be with names (str) of a valid Lumerical materials.
+                Check the names in Lumerical Materials viewer.
+                The List of materials must contain at least 2 materials! 
+                Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
+                For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
             Parameters["Wavelength"] : int/float
                 Wavelength
             Parameters["S_Band Radius"] : int/float
@@ -1832,8 +1856,11 @@ class Constructor:
         Parameters
         ----------
         Parameters['Material'] : list of str
-            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            List of Materials. The list should be with names (str) of a valid Lumerical materials.
             Check the names in Lumerical Materials viewer.
+            The List of materials must contain at least 2 materials! 
+            Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
+            For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
          Parameters['Substrate Height'] : int/float
             Substrate height.
         Parameters['MMI Width'] : int/float
@@ -2317,8 +2344,11 @@ class Constructor:
         Parameters
         ----------
         Parameters['Material'] : list of str
-            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            List of Materials. The list should be with names (str) of a valid Lumerical materials.
             Check the names in Lumerical Materials viewer.
+            The List of materials must contain at least 2 materials! 
+            Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
+            For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
         Parameters['Substrate Height'] : int/float
             Substrate height.
         Parameters['MMI Width'] : int/float
@@ -2791,8 +2821,11 @@ class Constructor:
         Parameters
         ----------
         Parameters['Material'] : list of str
-            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            List of Materials. The list should be with names (str) of a valid Lumerical materials.
             Check the names in Lumerical Materials viewer.
+            The List of materials must contain at least 2 materials! 
+            Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
+            For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
         Parameters['Substrate Height'] : int/float
             Substrate height.
         Parameters['Substrate Width'] : int/float
@@ -2981,8 +3014,11 @@ class Constructor:
         Parameters
         ----------
         Parameters['Material'] : list of str
-            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            List of Materials. The list should be with names (str) of a valid Lumerical materials.
             Check the names in Lumerical Materials viewer.
+            The List of materials must contain at least 2 materials! 
+            Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
+            For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
         Parameters['Substrate Height'] : int/float
             Substrate height.
         Parameters['MMI Width'] : int/float
@@ -2994,8 +3030,10 @@ class Constructor:
             For anfle = 90 we get a perfect rect!
         Parameters['WG Height'] : int/float
             Waveguide hight. Also the height of the MMI section
-         Parameters['WG Width'] : int/float
+        Parameters['WG Width'] : int/float
             Waveguide width.
+        Parameters['Wavelength'] : int/float
+            Wavelength.
         Parameters['WG Length'] : int/float
             Waveguide length.
         Parameters['Slab Height'] : int/float
@@ -3035,7 +3073,6 @@ class Constructor:
         WG_Width = Parameters['WG Width']
         WG_Length = Parameters['WG Length']
         Slab_Height = Parameters['Slab Height']
-       
         angleTheta = Parameters['Angle Thetha']
         TaperLength = Parameters['Taper Length']
         TaperWidth = Parameters['Taper Width']
@@ -3229,7 +3266,7 @@ class Constructor:
 
             # Device specifications
             Device_Length = MMI_Length + 4 * WG_Length
-            Device_Width = MMI_Width + 2*WG_Length + 3e-6 # WaveLength * 2  
+            Device_Width = MMI_Width + 2*WG_Length + WaveLength * 2  
 
             # creating the substrate
             max_subH = Substrate_Height
@@ -3434,8 +3471,12 @@ class Constructor:
         Parameters
         ----------
         Parameters['Material'] : list of str
-            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            List of Materials. The list should be with names (str) of a valid Lumerical materials.
             Check the names in Lumerical Materials viewer.
+            The List of materials must contain at least 2 materials! 
+            For this structure 3 Material will be needed
+            Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
+            For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
         Parameters['Substrate Height'] : int/float
             Substrate height.
         Parameters['angle'] : int/float
@@ -3463,8 +3504,16 @@ class Constructor:
             Photonic Wire Bonding Height front side (to the photonic waveguide)
         Parameters['PWB Taper Length'] : int/float
             Length of the Photonic Wire Bonding Taper
-
-
+        Parameters["SMF Core Diameter"] : int/float
+            Single Mode Fiber core Diameter
+        Parameters["SMF Cladding Diameter"] : int/float
+            Single Mode Fiber Cladding Diameter
+        Parameters["SMF Core Index"]
+            Single Mode Fiber Core Index
+        Parameters["SMF Cladding Index"]
+            Single Mode Fiber Cladding Index
+            
+            
 
         Raises
         ------
@@ -3496,6 +3545,7 @@ class Constructor:
         CladdingDiameter = Parameters["SMF Cladding Diameter"]
         CoreIndex = Parameters["SMF Core Index"]
         CladdingIndex = Parameters["SMF Cladding Index"]
+
      
 
 
@@ -4321,6 +4371,64 @@ class Constructor:
 
 
     def GratingCoupler(self, Parameters):
+        '''
+       
+        Parameters
+        ----------
+        Parameters['Material GC'] : list of str
+            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            Check the names in Lumerical Materials viewer. For Example "Parameters['Material GC'] = ["SiO2 (Glass) - Palik", "Si (Silicon) - Palik"]"
+        Parameters['Substrate Height'] : int/float
+            Substrate height.
+        Parameters["Length GC"]: int/float
+            Lenght of the Grating Coupler Area
+        Parameters["Width GC"]: int/float
+            Widht of the Grating Coupler Area
+        Parameters["Hight GC"]: int/float
+            Hight of the Grating Coupler Material
+        Parameters["Etch Depth GC"]: int/float
+            How deep, taken from the Parameters["Hight GC"] will be the etchin depth of the gratings
+        Parameters["Duty Cycle"]: int/float
+            Duty cycle of the gratings. For example Parameters["Duty Cycle"] = 0.39 will result in 39% Duty Cycle 
+        Parameters["Pitch GC"]: int/float
+            Pitch of the Grating Coupler. For Example Parameters["Pitch GC"] = 0.6e-6 will result in 6um Etch Space + Rib Space = 0.6um.
+        Parameters["Input LengthGC"]: int/float
+            An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start. 
+        Parameters["Output Length GC"]: int/float
+            An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.
+        Parameters['angle'] : int/float
+            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+            For anfle = 90 we get a perfect rect! In this case is used only when Parameters["Taper"] = True
+        Parameters["Taper"] : boolen
+            You can create an input Taper to your Grating Coupler structure
+        Parameters['WG Height'] : int/float
+            Waveguide hight. Also the height of the MMI section
+        Parameters['WG Width'] : int/float
+            Waveguide width. Also in this function and ONLY in this function this will be the
+            ibverse Taper width!!!
+        Parameters['Slab Height'] : int/float
+            Slab height
+        Parameters['Taper Length'] : int/float
+            Taper Length
+        Parameters["SMF Core Diameter"] : int/float
+            Single Mode Fiber core Diameter
+        Parameters["SMF Cladding Diameter"] : int/float
+            Single Mode Fiber Cladding Diameter
+        Parameters["SMF Core Index"]
+            Single Mode Fiber Core Index
+        Parameters["SMF Cladding Index"]
+            Single Mode Fiber Cladding Index
+        Parameters["SMF Theta"]: int/float
+            Tilting Angle of the Single Mode Fiber to the Grating Coupler. Normaly we choose Parameters["SMF Theta"] = 15
+        Parameters["SMF Z Span"]: int/float
+            Lenght/Span of the Single Mode Fiber
+            
+
+        Returns
+        -------
+        None.
+
+        '''
 
         # simplify variable names by removing spaces
         TargetLength = Parameters["Length GC"]
@@ -4330,12 +4438,12 @@ class Constructor:
         EtchDepth = Parameters["Etch Depth GC"]
         DutyCycle = Parameters["Duty Cycle"]
         Pitch = Parameters["Pitch GC"]
-        InputLlength = Parameters["Input Length GC"]
+        InputLlength = Parameters["Input LengthGC"]
         OutputLength = Parameters["Output Length GC"]
-        Material = Parameters["Material  GC"]
+        Material = Parameters["Material GC"]
         CoreDiameter = Parameters["SMF Core Diameter"]
         CladdingDiameter = Parameters["SMF Cladding Diameter"]
-        ZSpan = Parameters["SMF Z Spam"]
+        ZSpan = Parameters["SMF Z Span"]
         Theta = Parameters["SMF Theta"]
         CoreIndex = Parameters["SMF Core Index"]
         CladdingIndex = Parameters["SMF Cladding Index"]
@@ -4570,6 +4678,62 @@ class Constructor:
 
 
     def RingGratingCoupler(self, Parameters):
+    
+        '''
+       
+        Parameters
+        ----------
+        Parameters['Material GC'] : list of str
+            List of Materials. the list should be with names (str) of a valid Lumerical materials.
+            Check the names in Lumerical Materials viewer. For Example "Parameters['Material GC'] = ["SiO2 (Glass) - Palik", "Si (Silicon) - Palik"]"
+        Parameters['Substrate Height'] : int/float
+            Substrate height.
+        Parameters["Length GC"]: int/float
+            Lenght of the Grating Coupler Area
+        Parameters["Width GC"]: int/float
+            Widht of the Grating Coupler Area
+        Parameters["Hight GC"]: int/float
+            Hight of the Grating Coupler Material
+        Parameters["GC Radius"]: int/float
+            Radius of the Ring Grating Coupler in um. For Example "Parameters["GC Radius"] = 25e-6"
+        Parameters["Etch Depth GC"]: int/float
+            How deep, taken from the Parameters["Hight GC"] will be the etchin depth of the gratings
+        Parameters["Duty Cycle"]: int/float
+            Duty cycle of the gratings. For example Parameters["Duty Cycle"] = 0.39 will result in 39% Duty Cycle 
+        Parameters["Pitch GC"]: int/float
+            Pitch of the Grating Coupler. For Example Parameters["Pitch GC"] = 0.6e-6 will result in 6um Etch Space + Rib Space = 0.6um.
+        Parameters["Input LengthGC"]: int/float
+            An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start. 
+        Parameters["Output Length GC"]: int/float
+            An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.
+        Parameters['angle'] : int/float
+            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+            For anfle = 90 we get a perfect rect! 
+        Parameters['WG Height'] : int/float
+            Waveguide hight. Also the height of the MMI section
+        Parameters['WG Width'] : int/float
+            Waveguide width. 
+        Parameters['Slab Height'] : int/float
+            Slab height
+        Parameters["SMF Core Diameter"] : int/float
+            Single Mode Fiber core Diameter
+        Parameters["SMF Cladding Diameter"] : int/float
+            Single Mode Fiber Cladding Diameter
+        Parameters["SMF Core Index"]
+            Single Mode Fiber Core Index
+        Parameters["SMF Cladding Index"]
+            Single Mode Fiber Cladding Index
+        Parameters["SMF Theta"]: int/float
+            Tilting Angle of the Single Mode Fiber to the Grating Coupler. Normaly we choose Parameters["SMF Theta"] = 15
+        Parameters["SMF Z Span"]: int/float
+            Lenght/Span of the Single Mode Fiber
+            
+
+        Returns
+        -------
+        None.
+
+        '''
 
         # simplify variable names by removing spaces
         TargetLength = Parameters["Length GC"]
@@ -4581,16 +4745,15 @@ class Constructor:
         Pitch = Parameters["Pitch GC"]
         InputLlength = Parameters["Input Length GC"]
         OutputLength = Parameters["Output Length GC"]
-        Material = Parameters["Material  GC"]
+        Material = Parameters["Material GC"]
         CoreDiameter = Parameters["SMF Core Diameter"]
         CladdingDiameter = Parameters["SMF Cladding Diameter"]
-        ZSpan = Parameters["SMF Z Spam"]
+        ZSpan = Parameters["SMF Z Span"]
         Theta = Parameters["SMF Theta"]
         CoreIndex = Parameters["SMF Core Index"]
         CladdingIndex = Parameters["SMF Cladding Index"]
         Taper = Parameters["Taper"]
         SubstrateThickness = Parameters['Substrate Height']
-        
         GCRadius = Parameters["GC Radius"]
 
         
@@ -5192,33 +5355,50 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-               Parameters['Substrate Height'] : int/float
-                   Substrate height.
-               Parameters['WG Lrngth'] : int/float
-                   Waveguide Length
-               Parameters['WG Height'] : int/float
-                   Waveguide hight. Also the height of the MMI section
-               Parameters['WG Width'] : int/float
-                   Waveguide width.
-               Parameters["Taper"] : boolen
-                   If Taper == False, only straight Waveguide will be simulated,
-                   If Taper == True an Taper will be simulated
-               Parameters['Taper Width'] : int/float
-                   Taper backside Width. Taper Fronside width is the width of the Waveguide
-               Parameters['Taper Length'] : int/float
-                   Taper Length
-               Parameters['x res'] : int/float
-                     EME Mesh resolutio,
-               Parameters['Slab Height'] : int/float
-                   Height of the slab.
-               Parameters['Wavelength'] : int/float
-                   Wavelength
-               Parameters["Waveguide Angle"] : int/float
-                   This Parameter will set the theta ratation angle of the port. It can be 90 or 180.
-               Parameters["Port Span"] : list of floats/ints
-                   List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
-               Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters['Substrate Height'] : int/float
+           Substrate height.
+        Parameters['WG Length'] : int/float
+           Waveguide Length
+        Parameters['WG Height'] : int/float
+           Waveguide hight. Also the height of the MMI section
+        Parameters['WG Width'] : int/float
+           Waveguide width.
+        Parameters["Taper"] : boolen
+           If Taper == False, only straight Waveguide will be simulated,
+           If Taper == True an Taper will be simulated
+        Parameters['Taper Width'] : int/float
+           Taper backside Width. Taper Fronside width is the width of the Waveguide
+        Parameters['Taper Length'] : int/float
+           Taper Length
+        Parameters['x res'] : int/float
+             EME Mesh resolutio,
+        Parameters['Slab Height'] : int/float
+           Height of the slab.
+        Parameters['Wavelength'] : int/float
+           Wavelength
+        Parameters["Waveguide Angle"] : int/float
+           This Parameter will set the theta ratation angle of the port. It can be 90 or 180.
+        Parameters["Port Span"] : list of floats/ints
+           List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters["Taper Type"] : anything, optional
+                This function will check if you have set Parameters["Taper Type"] to anaything, for example "Parameters["Taper Type"]=1" 
+                and if so it will design an Inverse Taper Structure with no Cladding. Here the option "Cladding" is not active and will be ignored.
+                If the user didnt give the "Taper Type" as dictionary key, then an normal taper structure will be simulated.
+                
+                If Parameters["Taper Type"] is given, themn the user need to set couple more parameters:
+                    Parameters['PWB Taper Width Back'] : int/float
+                        Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
+                    Parameters['PWB Taper Hight Back'] : int/float
+                        Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
+                    Parameters['PWB Taper Width Front'] : int/float
+                        Photonic Wirebonding (PWB) Width front side (to the photonic waveguide)
+                    Parameters['PWB Taper Hight Front'] : int/float
+                        Photonic Wire Bonding Height front side (to the photonic waveguide)
+                    Parameters['PWB Taper Length'] : int/float
+                        Length of the Photonic Wire Bonding Taper
+                    
 
         Returns
         -------
@@ -5617,26 +5797,27 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-               Parameters['Substrate Height'] : int/float
-                   Substrate height.
-               Parameters['WG Height'] : int/float
-                   Waveguide hight. Also the height of the MMI section
-                Parameters['WG Width'] : int/float
-                   Waveguide width.
-                Parameters['x res'] : int/float
-                     EME Mesh resolutio,
-               Parameters['Slab Height'] : int/float
-                   Height of the slab.
-               Parameters['Wavelength'] : int/float
-                   Wavelength
-                Parameters["S_Band Radius"] : int/float
-                   S-Bend Radius in um.
-               Parameters['Arc deg'] : int/float
-                   Arc define the Arc of the curve. It can be 90 or 180 degrees only.
-                   This two will define an 1/4 of a circle or 1/2 of a circle.
-              Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-
+        Parameters['Substrate Height'] : int/float
+            Substrate height.
+        Parameters['WG Height'] : int/float
+            Waveguide hight. Also the height of the MMI section
+        Parameters['WG Width'] : int/float
+            Waveguide width.
+        Parameters['x res'] : int/float
+            EME Mesh resolutio,
+        Parameters['Slab Height'] : int/float
+            Height of the slab.
+        Parameters['Wavelength'] : int/float
+            Wavelength
+        Parameters["S_Band Radius"] : int/float
+            S-Bend Radius in um.
+        Parameters['Arc deg'] : int/float
+            Arc define the Arc of the curve. It can be 90 or 180 degrees only.
+            This two will define an 1/4 of a circle or 1/2 of a circle.
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters["Port Span"]: list of int/floats
+            Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
 
 
 
@@ -5904,30 +6085,24 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-               Parameters['Substrate Height'] : int/float
-                   Substrate height.
-               Parameters['WG Height'] : int/float
-                   Waveguide hight. Also the height of the MMI section
-                Parameters['WG Width'] : int/float
-                   Waveguide width.
-                Parameters['x res'] : int/float
-                     EME Mesh resolutio,
-               Parameters['Slab Height'] : int/float
-                   Height of the slab.
-               Parameters['Wavelength'] : int/float
-                   Wavelength
-               Parameters["x span"] : int/float
-                   Length of the S-Bend Waveguide
-               Parameters["y span"] : int/float
-                   Width of the S-Bend Waveguide
-               Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-               Parameters["Port Span"][0] : int/float
-                   Span of Port in x direction
-               Parameters["Port Span"][1] : int/float
-                   Span of Port in y direction
-               Parameters["Port Span"][2] ; int/float
-                   Span of Port in z direction
+        Parameters['Substrate Height'] : int/float
+           Substrate height.
+        Parameters['WG Height'] : int/float
+           Waveguide hight. Also the height of the MMI section
+        Parameters['x res'] : int/float
+             EME Mesh resolutio,
+        Parameters['Slab Height'] : int/float
+           Height of the slab.
+        Parameters['Wavelength'] : int/float
+           Wavelength
+        Parameters["x span"] : int/float
+           Length of the S-Bend Waveguide
+        Parameters["y span"] : int/float
+           Width of the S-Bend Waveguide
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters["Port Span"]: list of int/floats
+            Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
 
 
         Returns
@@ -6065,34 +6240,37 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters['Substrate Height'] : int/float
-                    Height of the slab.
-                Parameters['MMI Width'] : int/float
-                    Width of MMI
-                Parameters['MMI Length'] : int/float
-                    Length of MMI
-                Parameters['angle'] : int/float
-                    Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                    For anfle = 90 we get a perfect rect!
-                Parameters['WG Height'] : int/float
-                    Heigth of waveguide
-                Parameters['WG Width'] : int/float
-                    Width og waveguide
-                Parameters['WG Length'] : int/float
-                    Length of waveguide
-                Parameters['Position Offset'] : int/float
-                    Offset between the waveguides. If Taper == True then this become the offset
-                    betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-                    the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-                    becouse of manufactering restrictions in the University.
-                Parameters['x res'] : int/float
-                    Mesh cell sizes.
-                Parameters['Slab Height'] : int/float
-                    Height of the slab.
-                Parameters['Wavelength'] : int/float
-                    Wavelength.
-                Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters['Substrate Height'] : int/float
+            Height of the slab.
+        Parameters['MMI Width'] : int/float
+            Width of MMI
+        Parameters['MMI Length'] : int/float
+            Length of MMI
+        Parameters['WG Height'] : int/float
+            Heigth of waveguide
+        Parameters['WG Width'] : int/float
+            Width og waveguide
+        Parameters['WG Length'] : int/float
+            Length of waveguide
+        Parameters['Position Offset'] : int/float
+            Offset between the waveguides. If Taper == True then this become the offset
+            betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+            the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+            becouse of manufactering restrictions in the University.
+        Parameters["Taper"]: boolen 
+            Add Taper to the structure on the input and output waveguids
+        Parameters['Taper Length']: int/float
+            Lenght of the Taper in Parameters["Taper"] = True
+        Parameters['x res'] : int/float
+            Mesh cell sizes.
+        Parameters['Slab Height'] : int/float
+            Height of the slab.
+        Parameters['Wavelength'] : int/float
+            Wavelength.
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters["Port Span"]: list of int/floats
+            Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
 
 
 
@@ -6310,34 +6488,45 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters['Substrate Height'] : int/float
-                    Height of the slab.
-                Parameters['MMI Width'] : int/float
-                    Width of MMI
-                Parameters['MMI Length'] : int/float
-                    Length of MMI
-                Parameters['WG Height'] : int/float
-                    Heigth of waveguide
-                Parameters['WG Width'] : int/float
-                    Width og waveguide
-                Parameters['WG Length'] : int/float
-                    Length of waveguide
-                Parameters['Position Offset'] : int/float
-                    Offset between the waveguides. If Taper == True then this become the offset
-                    betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-                    the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-                    becouse of manufactering restrictions in the University.
-                Parameters['Offset Input'] : int/float
-                    Input waveguide/taper offset.
-                Parameters['x res'] : int/float
-                    Mesh cell sizes.
-                Parameters['Slab Height'] : int/float
-                    Height of the slab.
-                Parameters['Wavelength'] : int/float
-                    Wavelength.
-                Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-
+        Parameters['Substrate Height'] : int/float
+            Height of the slab.
+        Parameters['MMI Width'] : int/float
+            Width of MMI
+        Parameters['MMI Length'] : int/float
+            Length of MMI
+        Parameters['WG Height'] : int/float
+            Heigth of waveguide
+        Parameters['WG Width'] : int/float
+            Width og waveguide
+        Parameters['WG Length'] : int/float
+            Length of waveguide
+        Parameters['Position Offset'] : int/float
+            Offset between the waveguides. If Taper == True then this become the offset
+            betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+            the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+            becouse of manufactering restrictions in the University.
+        Parameters['Offset Input'] : int/float
+            Input waveguide/taper offset.
+        Parameters["Taper"]: boolen 
+            Add Taper to the structure on the input and output waveguids
+        Parameters['Taper Length']: int/float
+            Lenght of the Taper in Parameters["Taper"] = True
+        Parameters['x res'] : int/float
+            Mesh cell sizes.
+        Parameters['Slab Height'] : int/float
+            Height of the slab.
+        Parameters['Wavelength'] : int/float
+            Wavelength.
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters["Port Span"]: list of int/floats
+            Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+        Parameters["Offset Output"] : anything, optional
+            This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only 
+            becouse the maschine of our physic departmant had some proiblems with the LNOI objects design. 
+        
+        
+        
         Returns
         -------
         None.
@@ -6673,33 +6862,34 @@ class Constructor:
     def setDCFDTDSolver(self, Parameters):
         '''
 
-
         Parameters
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters['Substrate Height'] : float/int
-                    Height of the Substrate
-                Parameters['Substrate Width'] : float/int
-                    Width of the MMI
-                Parameters['DC Length'] : float/int
-                    Length of the Directional coupler
-                Parameters['WG Height'] : float/int
-                    Height of the Waveguide
-                Parameters['WG Width'] : float/int
-                    Waveguide Width
-                Parameters['Position Offset'] : float/int
-                    Positional offser of the waveguides. If posOffset the two Waveguides
-                    will be offset of the middle position (y = 0) by the half of there
-                    Width. In this case they will not overlap if the Offset is 0.
-                Parameters['x res'] : float/int
-                    Mesh resolution for the x-Axis
-                Parameters['Slab Height'] : float/int
-                    Slab height.
-                Parameters['Wavelength'] : float/int
-                    Wavelength
-                Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters['Substrate Height'] : float/int
+            Height of the Substrate
+        Parameters['Substrate Width'] : float/int
+            Width of the MMI
+        Parameters['DC Length'] : float/int
+            Length of the Directional coupler
+        Parameters['WG Height'] : float/int
+            Height of the Waveguide
+        Parameters['WG Width'] : float/int
+            Waveguide Width
+        Parameters['Position Offset'] : float/int
+            Positional offser of the waveguides. If posOffset the two Waveguides
+            will be offset of the middle position (y = 0) by the half of there
+            Width. In this case they will not overlap if the Offset is 0.
+        Parameters['x res'] : float/int
+            Mesh resolution for the x-Axis
+        Parameters['Slab Height'] : float/int
+            Slab height.
+        Parameters['Wavelength'] : float/int
+            Wavelength
+        Parameters["Port Span"]: list of int/floats
+            Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
 
         Returns
         -------
@@ -6950,6 +7140,7 @@ class Constructor:
     #     self.lum.set("z", MonitorHeight)
     
     
+    
     def setInverseTaperFDTDSolver(self, Parameters):
         '''
           Parameters
@@ -6968,16 +7159,19 @@ class Constructor:
               Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
           Parameters['PWB Taper Length'] : int/float
               Length of the Photonic Wire Bonding Taper
-          Parameters['y res'] : int/float
-              Mesh y-Axis
-          Parameters['z res'] : int/float
-              Mesh z-Axis
+          Parameters["SMF Core Diameter"] : int/float
+            Single Mode Fiber core Diameter
+          Parameters["SMF Cladding Diameter"] : int/float
+            Single Mode Fiber Cladding Diameter
+          Parameters['x res'] : int/float
+              Mesh x-Axis
           Parameters['Wavelength'] : int/float
               Wavelength
           Parameters["Mode"] : str
               Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
           Parameters["Port Span"] : list of floats/ints
               List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+          
 
         Returns
         -------
@@ -7426,30 +7620,69 @@ class Constructor:
 
 
     def setGratingCouplerFDTDSolver(self, Parameters):
+        '''
+       
+        Parameters
+        ----------
+        Parameters['Substrate Height'] : int/float
+            Substrate height.
+        Parameters["Length GC"]: int/float
+            Lenght of the Grating Coupler Area
+        Parameters["Input Length GC"]: int/float
+            An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start. 
+        Parameters["Output Length GC"]: int/float
+            An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.
+        Parameters["Width GC"]: int/float
+            Widht of the Grating Coupler Area
+        Parameters["Hight GC"]: int/float
+            Hight of the Grating Coupler Material
+        Parameters['Taper'] : boolen
+            Add Taper to structure
+        Parameters['Taper Length'] : int/float
+              Length of the Taper
+        Parameters['Wavelength'] : int/float
+              Wavelength
+        Parameters['x res'] : int/float
+              Mesh x-Axis
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters["Port Span"] : list of floats/ints
+              List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+        Parameters["GC Radius"]: int/float
+            Radius of the Ring Grating Coupler in um. For Example "Parameters["GC Radius"] = 25e-6"
+       
+            
 
-        ZSpan = Parameters["SMF Z Spam"]
+        Returns
+        -------
+        None.
+
+        '''
+        
+       
+
+        SubstrateThickness = Parameters['Substrate Height']
         GC_SectionLenght = Parameters["Length GC"]
         InputLenght = Parameters["Input Length GC"]
         OutputLenght = Parameters["Output Length GC"]
-        TaperLength = Parameters['Taper Length']
         WidthGC = Parameters["Width GC"]
+        Hight = Parameters["Hight GC"]
+        Taper = Parameters["Taper"]
+        TaperLength = Parameters['Taper Length']
+        ZSpan = Parameters["SMF Z Span"]
         Theta = Parameters["SMF Theta"]
         CoreDiameter = Parameters["SMF Core Diameter"]
-        Hight = Parameters["Hight GC"]
         x_res = Parameters['x res']
         WaveLength = Parameters['Wavelength']
         Mode = Parameters["Mode"]
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
-        Taper = Parameters["Taper"]
-        SubstrateThickness = Parameters['Substrate Height']
-        GCThickness = Parameters["Hight GC"]
         CladdingThickness = 0.7e-6
         
 
         # Device specifications
         Device_Length = GC_SectionLenght + InputLenght + OutputLenght + TaperLength
-        FDTD_ZSpan = GCThickness + CladdingThickness + SubstrateThickness
+        FDTD_ZSpan = Hight + CladdingThickness + SubstrateThickness
 
 
         # Define Ports
@@ -7772,26 +8005,63 @@ class Constructor:
 
          
     def setRingGratingCouplerFDTDSolver(self, Parameters):
+        '''
+       
+        Parameters
+        ----------
+        Parameters['Substrate Height'] : int/float
+            Substrate height.
+        Parameters["Length GC"]: int/float
+            Lenght of the Grating Coupler Area
+        Parameters["Input Length GC"]: int/float
+            An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start. 
+        Parameters["Output Length GC"]: int/float
+            An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.
+        Parameters["Width GC"]: int/float
+            Widht of the Grating Coupler Area
+        Parameters["Hight GC"]: int/float
+            Hight of the Grating Coupler Material
+        Parameters["GC Radius"]: int/float
+            Radius of the Ring Grating Coupler in um. For Example "Parameters["GC Radius"] = 25e-6"
+        Parameters['Taper Length'] : int/float
+              Length of the input Taper
+        Parameters['Wavelength'] : int/float
+              Wavelength
+        Parameters['x res'] : int/float
+              Mesh x-Axis
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters["Port Span"] : list of floats/ints
+              List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+        
+       
+            
 
-        ZSpan = Parameters["SMF Z Spam"]
+        Returns
+        -------
+        None.
+
+        '''
+        
+        SubstrateThickness = Parameters['Substrate Height']
         GC_SectionLenght = Parameters["Length GC"]
         InputLenght = Parameters["Input Length GC"]
         OutputLenght = Parameters["Output Length GC"]
-        TaperLength = Parameters['Taper Length']
         WidthGC = Parameters["Width GC"]
+        Hight = Parameters["Hight GC"]
+        GCRadius = Parameters["GC Radius"]
+        TaperLength = Parameters['Taper Length']
+        ZSpan = Parameters["SMF Z Span"]
         Theta = Parameters["SMF Theta"]
         CoreDiameter = Parameters["SMF Core Diameter"]
-        Hight = Parameters["Hight GC"]
         x_res = Parameters['x res']
         WaveLength = Parameters['Wavelength']
         Mode = Parameters["Mode"]
         y_Port_Span = Parameters["Port Span"][1]
         z_Port_Span = Parameters["Port Span"][2]
-        SubstrateThickness = Parameters['Substrate Height']
-        GCThickness = Parameters["Hight GC"]
         CladdingThickness = 0.7e-6
         
-        GCRadius = Parameters["GC Radius"]
+        
         
         
         
@@ -7799,7 +8069,7 @@ class Constructor:
         # Device specifications
         Device_Length =  GC_SectionLenght + OutputLenght + TaperLength 
         Device_Width = WidthGC + ( GCRadius + GC_SectionLenght + OutputLenght  - GCRadius)
-        FDTD_ZSpan = GCThickness + CladdingThickness + SubstrateThickness
+        FDTD_ZSpan = Hight + CladdingThickness + SubstrateThickness
        
         
 
@@ -7992,44 +8262,61 @@ class Constructor:
         Parameters
         ----------
         Parameters : Dictionary
-               Parameters['Substrate Height'] : int/float
-                   Substrate height.
-               Parameters['WG Height'] : int/float
-                   Waveguide hight. Also the height of the MMI section
-               Parameters['WG Length'] : int/float
-                   Waveguide length
-               Parameters['WG Length'] : int/float
-                   Waveguide width
-               Parameters["Taper"] : boolen
-                   If Taper == False, only straight Waveguide will be simulated,
-                   If Taper == True an Taper will be simulated
-               Parameters['Taper Width'] : int/float
-                   Taper backside Width. Taper Fronside width is the width of the Waveguide
-               Parameters['Taper Length'] : int/float
-                   Taper Length
-               Parameters['y res']: int/float
-                     EME Mesh resolutio,
-               Parameters['y res']: int/float
-                     EME Mesh resolutio,
-               Parameters['Slab Height'] : int/float
-                   Height of the slab.
-               Parameters['Wavelength'] : int/float
-                   Wavelength
-               Parameters["Waveguide Angle"] : int/float
-                   This Parameter will set the theta ratation angle of the port.
-               Parameters["Port Span"] : list of floats/ints
-                   List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
-               Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-
-
-
+            Dictionary with all the data needet for the Bend Wavaguide. Data needet:
+        Parameters['Substrate Height'] : int/float
+           Substrate height.
+        Parameters['WG Length'] : int/float
+           Waveguide Length
+        Parameters['WG Height'] : int/float
+           Waveguide hight. Also the height of the MMI section
+        Parameters['WG Width'] : int/float
+           Waveguide width.
+        Parameters["Taper"] : boolen
+           If Taper == False, only straight Waveguide will be simulated,
+           If Taper == True an Taper will be simulated
+        Parameters['Taper Width'] : int/float
+           Taper backside Width. Taper Fronside width is the width of the Waveguide
+        Parameters['Taper Length'] : int/float
+           Taper Length
+        Parameters['y res']: int/float
+             EME Mesh resolutio,
+        Parameters['z res']: int/float
+             EME Mesh resolutio,
+        Parameters['Slab Height'] : int/float
+           Height of the slab.
+        Parameters['Wavelength'] : int/float
+           Wavelength
+        Parameters["Waveguide Angle"] : int/float
+           This Parameter will set the theta ratation angle of the port. It can be 90 or 180.
+        Parameters["Port Span"] : list of floats/ints
+           List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters["Taper Type"] : anything, optional
+                This function will check if you have set Parameters["Taper Type"] to anaything, for example "Parameters["Taper Type"]=1" 
+                and if so it will design an Inverse Taper Structure with no Cladding. Here the option "Cladding" is not active and will be ignored.
+                If the user didnt give the "Taper Type" as dictionary key, then an normal taper structure will be simulated.
+                
+                If Parameters["Taper Type"] is given, themn the user need to set couple more parameters:
+                    Parameters['PWB Taper Width Back'] : int/float
+                        Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
+                    Parameters['PWB Taper Hight Back'] : int/float
+                        Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
+                    Parameters['PWB Taper Width Front'] : int/float
+                        Photonic Wirebonding (PWB) Width front side (to the photonic waveguide)
+                    Parameters['PWB Taper Hight Front'] : int/float
+                        Photonic Wire Bonding Height front side (to the photonic waveguide)
+                    Parameters['PWB Taper Length'] : int/float
+                        Length of the Photonic Wire Bonding Taper
+                    
 
         Returns
         -------
         None.
 
         '''
+    
+
 
 
 
@@ -8364,58 +8651,47 @@ class Constructor:
             
 
 
-
-
-
-
-
-
     def setDCEMESolver(self, Parameters):
-
         '''
 
         Parameters
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters['Substrate Height'] : float/int
-                    Height of the Substrate
-                Parameters['Substrate Width'] : float/int
-                    Width of the MMI
-                Parameters['DC Length'] : float/int
-                    Length of the Directional coupler
-                Parameters['WG Height'] : float/int
-                    Height of the Waveguide
-                Parameters['WG Width'] : float/int
-                    Waveguide Width
-                Parameters['Position Offset'] : float/int
-                    Positional offser of the waveguides. If posOffset the two Waveguides
-                    will be offset of the middle position (y = 0) by the half of there
-                    Width. In this case they will not overlap if the Offset is 0.
-                Parameters['y res'] : float/int
-                    Mesh resolution for the y-Axis
-                Parameters['z res'] : float/int
-                    Mesh resolution for the z Axis
-                Parameters['Slab Height'] : float/int
-                    Slab height.
-                Parameters['Wavelength'] : float/int
-                    Wavelength
-                Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                Parameters["Port Span"] : list of floats/ints
-                    List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
-
-
-        Raises
-        ------
-        ValueError
-            DESCRIPTION.
+        Parameters['Substrate Height'] : float/int
+            Height of the Substrate
+        Parameters['Substrate Width'] : float/int
+            Width of the MMI
+        Parameters['DC Length'] : float/int
+            Length of the Directional coupler
+        Parameters['WG Height'] : float/int
+            Height of the Waveguide
+        Parameters['WG Width'] : float/int
+            Waveguide Width
+        Parameters['Position Offset'] : float/int
+            Positional offser of the waveguides. If posOffset the two Waveguides
+            will be offset of the middle position (y = 0) by the half of there
+            Width. In this case they will not overlap if the Offset is 0.
+        Parameters['y res'] : float/int
+            Mesh resolution for the y-Axis
+        Parameters['z res'] : float/int
+            Mesh resolution for the z Axis
+        Parameters['Slab Height'] : float/int
+            Slab height.
+        Parameters['Wavelength'] : float/int
+            Wavelength
+        Parameters["Port Span"]: list of int/floats
+            Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
 
         Returns
         -------
         None.
 
         '''
+        
+
 
         Substrate_Height = Parameters['Substrate Height']
         DC_Lenght = Parameters['DC Length']
@@ -8506,58 +8782,64 @@ class Constructor:
 
 
     def setMMI2x1EMESolver(self, Parameters):
-
+    
         '''
+
+
         Parameters
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters['Substrate Height'] : int/float
-                    Height of the slab.
-                Parameters['MMI Width'] : int/float
-                    Width of MMI
-                Parameters['MMI Length'] : int/float
-                    Length of MMI
-                Parameters['angle'] : int/float
-                    Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                    For anfle = 90 we get a perfect rect!
-                Parameters['WG Height'] : int/float
-                    Heigth of waveguide
-                Parameters['WG Width'] : int/float
-                    Width og waveguide
-                Parameters['WG Length'] : int/float
-                    Length of waveguide
-                Parameters['Position Offset'] : int/float
-                    Offset between the waveguides. If Taper == True then this become the offset
-                    betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-                    the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-                    becouse of manufactering restrictions in the University.
-                Parameters['Offset Input'] : int/float
-                    Input waveguide/taper offset.
-                Parameters['y res'] : int/float
-                    Mesh cell sizes.
-                Parameters['z res'] : int/float
-                    Mesh cell sizes.
-                Parameters['Slab Height'] : int/float
-                    Height of the slab.
-                Parameters['Wavelength'] : int/float
-                    Wavelength.
-                Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                Parameters["Port Span"] : list of floats/ints
-                    List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
-
-
-        Raises
-        ------
-        ValueError
-            DESCRIPTION.
-
+        Parameters['Substrate Height'] : int/float
+            Height of the slab.
+        Parameters['MMI Width'] : int/float
+            Width of MMI
+        Parameters['MMI Length'] : int/float
+            Length of MMI
+        Parameters['angle'] : int/float
+            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+            For anfle = 90 we get a perfect rect!
+        Parameters['WG Height'] : int/float
+            Heigth of waveguide
+        Parameters['WG Width'] : int/float
+            Width og waveguide
+        Parameters['WG Length'] : int/float
+            Length of waveguide
+        Parameters['Position Offset'] : int/float
+            Offset between the waveguides. If Taper == True then this become the offset
+            betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+            the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+            becouse of manufactering restrictions in the University.
+        Parameters['Offset Input'] : int/float
+            Input waveguide/taper offset.
+        Parameters["Taper"]: boolen 
+            Add Taper to the structure on the input and output waveguids
+        Parameters['Taper Length']: int/float
+            Lenght of the Taper in Parameters["Taper"] = True
+        Parameters['y res'] : int/float
+            Mesh cell sizes.
+        Parameters['z res'] : int/float
+            Mesh cell sizes.
+        Parameters['Slab Height'] : int/float
+            Height of the slab.
+        Parameters['Wavelength'] : int/float
+            Wavelength.
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters["Port Span"]: list of int/floats
+            Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+        Parameters["Offset Output"] : anything, optional
+            This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only 
+            becouse the maschine of our physic departmant had some proiblems with the LNOI objects design. 
+        
+        
+        
         Returns
         -------
         None.
 
         '''
+
 
         Substrate_Height = Parameters['Substrate Height']
         MMI_Width = Parameters['MMI Width']
@@ -8677,7 +8959,8 @@ class Constructor:
         WG_W = WG_Width + 2 * extention
         OffMin = -MMI_Wid / 2
         OffMax = MMI_Wid / 2
-
+        
+        
         offset_Set_R = posOffset / 2 + WG_W / 2 + WG_Width / 2
         if OffsetInput - WG_W <= OffMin or OffsetInput + WG_W >= OffMax or offset_Set_R > OffMax:
             self.lum.deleteall()
@@ -8741,55 +9024,55 @@ class Constructor:
 
     def setMMI2x2EMESolver(self, Parameters):
         '''
+
+
         Parameters
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters['Substrate Height'] : int/float
-                    Height of the slab.
-                Parameters['MMI Width'] : int/float
-                    Width of MMI
-                Parameters['MMI Length'] : int/float
-                    Length of MMI
-                Parameters['angle'] : int/float
-                    Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                    For anfle = 90 we get a perfect rect!
-                Parameters['WG Height'] : int/float
-                    Heigth of waveguide
-                Parameters['WG Width'] : int/float
-                    Width og waveguide
-                Parameters['WG Length'] : int/float
-                    Length of waveguide
-                Parameters['Position Offset'] : int/float
-                    Offset between the waveguides. If Taper == True then this become the offset
-                    betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-                    the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-                    becouse of manufactering restrictions in the University.
-                Parameters['y res'] : int/float
-                    Mesh cell sizes.
-                Parameters['z res'] : int/float
-                    Mesh cell size.
-                Parameters['Slab Height'] : int/float
-                    Height of the slab.
-                Parameters['Wavelength'] : int/float
-                    Wavelength.
-                Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                Parameters["Port Span"] : list of floats/ints
-                    List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+        Parameters['Substrate Height'] : int/float
+            Height of the slab.
+        Parameters['MMI Width'] : int/float
+            Width of MMI
+        Parameters['MMI Length'] : int/float
+            Length of MMI
+        Parameters['WG Height'] : int/float
+            Heigth of waveguide
+        Parameters['WG Width'] : int/float
+            Width og waveguide
+        Parameters['WG Length'] : int/float
+            Length of waveguide
+        Parameters['Position Offset'] : int/float
+            Offset between the waveguides. If Taper == True then this become the offset
+            betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+            the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+            becouse of manufactering restrictions in the University.
+        Parameters["Taper"]: boolen 
+            Add Taper to the structure on the input and output waveguids
+        Parameters['Taper Length']: int/float
+            Lenght of the Taper in Parameters["Taper"] = True
+        Parameters['Slab Height'] : int/float
+            Height of the slab.
+        Parameters['y res'] : int/float
+            Mesh cell sizes.
+        Parameters['z res'] : int/float
+            Mesh cell size.
+        Parameters['Wavelength'] : int/float
+            Wavelength.
+        Parameters["Mode"] : str
+            Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+        Parameters["Port Span"]: list of int/floats
+            Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
 
 
-
-        Raises
-        ------
-        ValueError
-            DESCRIPTION.
 
         Returns
         -------
         None.
 
         '''
+    
+ 
 
         Substrate_Height = Parameters['Substrate Height']
         MMI_Width = Parameters['MMI Width']
@@ -8798,7 +9081,6 @@ class Constructor:
         WG_Width = Parameters['WG Width']
         WG_Length = Parameters['WG Length']
         posOffset = Parameters['Position Offset']
-        # x_res            = Parameters['x res']
         y_res = Parameters['y res']
         z_res = Parameters['z res']
         Slab_Height = Parameters['Slab Height']
@@ -8969,8 +9251,8 @@ class Constructor:
             Angle for the input and output waveguides
         Parameters["Mode"] : str
             Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-         Parameters["Port Span"] : list of floats/ints
-            List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+        Parameters["Port Span"]: list of int/floats
+            Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
 
 
 
@@ -9173,6 +9455,10 @@ class Constructor:
               Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
           Parameters['PWB Taper Length'] : int/float
               Length of the Photonic Wire Bonding Taper
+          Parameters["SMF Core Diameter"] : int/float
+            Single Mode Fiber core Diameter
+          Parameters["SMF Cladding Diameter"] : int/float
+            Single Mode Fiber Cladding Diameter
           Parameters['y res'] : int/float
               Mesh y-Axis
           Parameters['z res'] : int/float
@@ -9183,13 +9469,15 @@ class Constructor:
               Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
           Parameters["Port Span"] : list of floats/ints
               List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+          
 
         Returns
         -------
         None.
 
         '''
-
+    
+    
         Substrate_Height = Parameters['Substrate Height']
         WG_Height = Parameters['WG Height']
         WG_Width = Parameters['WG Width']
@@ -9234,7 +9522,6 @@ class Constructor:
         # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
         self.lum.addeme()
         self.lum.set("x min", X_min)
-        self.lum.set("x max", TaperLength_PWB)
         self.lum.set("y", 0)
         self.lum.set("y span", TaperWidthB + TaperWidthB/2)
         self.lum.set('simulation temperature', 273.15 + 20)
@@ -9246,9 +9533,12 @@ class Constructor:
         self.lum.set("y min bc", "PML")
         self.lum.set("y max bc", "PML")
         # set cell properties
+        self.lum.select("InverseTaper::WG_Extention_Inverse_Taper")
+        ExtWG_Lenght = self.lum.get("poles")[1][0]
+        self.lum.select("EME")
         self.lum.set("number of cell groups", 3)
-        self.lum.set("group spans", np.array([[0.1e-6], [TaperLength_PWB], [9.9e-6]]))
-        self.lum.set("cells", np.array([[3], [80], [3]]))
+        self.lum.set("group spans", np.array([[0.1e-6], [TaperLength_PWB], [ExtWG_Lenght]]))
+        self.lum.set("cells", np.array([[3], [80], [1]]))
         self.lum.set("subcell method", np.array([[1], [1], [1]]))
 
         # Modes to Calculate
@@ -9294,8 +9584,10 @@ class Constructor:
         self.lum.addemeprofile()
         # self.lum.set("x", 0)
         # self.lum.set("x span", TaperLength_PWB+11e-6)
-        self.lum.set("x min", X_min - 5e-6)
-        self.lum.set("x max", TaperLength_PWB/2 + 15e-6)
+        # self.lum.set("x min", X_min - 5e-6)
+        # self.lum.set("x max", TaperLength_PWB/2 + 15e-6)
+        self.lum.set("x min", -TaperLength_PWB/2)
+        self.lum.set("x max", TaperLength_PWB )
         self.lum.set("y", 0)
         self.lum.set("y span", TaperWidthB*2)
         self.lum.set("z", MonitorHeight)
@@ -9306,313 +9598,15 @@ class Constructor:
         self.lum.set('monitor type', "2D Y-normal")
         # self.lum.set("x", 0)
         # self.lum.set("x span", TaperLength_PWB+11e-6)
-        self.lum.set("x min", X_min - 5e-6)
-        self.lum.set("x max", TaperLength_PWB/2 + 15e-6)
+        self.lum.set("x min", -TaperLength_PWB/2)
+        self.lum.set("x max", TaperLength_PWB )
+        # self.lum.set("x min", X_min - 5e-6)
+        # self.lum.set("x max", TaperLength_PWB/2 + 15e-6)
         self.lum.set("y", 0)
         # self.lum.set("y span", TaperWidthB*2)
         self.lum.set("z", MonitorHeight)
         self.lum.set("z span", TaperHightB*2)
 
-
-
-
-
-
-
-    def setMMI1x2VarFDTDSolver(self, Parameters):
-
-        '''
-
-
-        Slab_Height : int/float
-            Height of the slab.
-        MMI_Width : int/float
-            Width of MMI
-        MMI_Length : int/float
-            Length of MMI
-        angle : int/float
-            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-            For anfle = 90 we get a perfect rect!
-        WG_Height : int/float
-            Heigth of waveguide
-        WG_Width : int/float
-            Width og waveguide
-        WG_Length : int/float
-            Length of waveguide
-        posOffset : int/float
-            Offset between the waveguides. If Taper == True then this become the offset
-            betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-            the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-            becouse of manufactering restrictions in the University.
-        OffsetInpit : int/float
-            Input waveguide/taper offset.
-        y_res : int/float
-            Mesh cell sizes.
-        z_res : int/float
-            Mesh cell size.
-        Slab_Height : int/float
-            Height of the slab.
-        WaveLength : int/float
-            Wavelength.
-        Taper : boolen, optional
-            Defoult Taper == False
-                if Taper == True Simulation region will ajust for simulation with tapers
-        TaperLength : int/float
-            Length of taper.
-        Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-
-        Raises
-        ------
-        ValueError
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        '''
-
-        Substrate_Height = Parameters['Substrate Height']
-        MMI_Width = Parameters['MMI Width']
-        MMI_Length = Parameters['MMI Length']
-        angle = Parameters['angle']
-        WG_Height = Parameters['WG Height']
-        WG_Width = Parameters['WG Width']
-        WG_Length = Parameters['WG Length']
-        OffsetInput = Parameters['Offset Input']
-        posOffset = Parameters['Position Offset']
-        x_res = Parameters['x res']
-        y_res = Parameters['y res']
-        z_res = Parameters['z res']
-        Slab_Height = Parameters['Slab Height']
-        WaveLength = Parameters['Wavelength']
-        Mode = Parameters["Mode"]
-
-        # Device specifications
-        Device_Length = MMI_Length + 2 * WG_Length
-        Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
-        max_subH = Substrate_Height / 2
-        max_slabH = Slab_Height
-        MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-        Lnoi_H = Slab_Height + WG_Height
-        Ports_mid = Substrate_Height + (max_slabH + WG_Height) / 2
-        WG_H = WG_Height
-
-        # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
-        self.lum.addvarfdtd()
-        self.lum.set("x min", -(Device_Length / 2))
-        self.lum.set("x max", (Device_Length / 2))
-        self.lum.set("y", 0)
-        self.lum.set('simulation temperature', 273.15 + 20)
-        self.lum.set("y span", Device_Width)
-        self.lum.set("z", Substrate_Height)
-        self.lum.set("z span", 4e-6)
-        self.lum.set('number of test points', 1)
-        self.lum.set('z min bc', 'PML')
-        self.lum.set('z max bc', 'PML')
-        self.lum.set('mesh type', 'auto non-uniform')
-        self.lum.set('dx', x_res)
-        self.lum.set('dy', y_res)
-        self.lum.set('dz', z_res)
-        self.lum.set('set simulation bandwidth', 0)
-        self.lum.set('global source center wavelength', WaveLength)
-        self.lum.set('global source wavelength span', 0)
-
-        # define two values for upper and lower limit of the WG offsets
-        OffMin = -MMI_Width / 2
-        OffMax = MMI_Width / 2
-
-        x = abs(WG_H / (np.cos((angle) * np.pi / 180)))  # in Radians
-        extention = np.sqrt(x ** 2 - WG_H ** 2)
-        WG_W = WG_Width + 2 * extention
-
-        offset_Set_R = posOffset / 2 + WG_W / 2 + WG_Width / 2
-        xPos = [(Device_Length / 2) - 2e-6, -(Device_Length / 2) + 2e-6, -(Device_Length / 2) + 2e-6]
-        yPos_min = [0, -(WG_Width / 2 + posOffset / 2), WG_Width / 2 + posOffset / 2]
-        name = ['Input', 'Output_L', 'Output_R']
-
-        self.lum.addmodesource()
-        self.lum.set('direction', 'Backward')
-        self.lum.set("x", (Device_Length / 2) - 1e-7)
-        self.lum.set("y min", -(WG_W / 2 + OffsetInput))
-        self.lum.set("y max", (WG_W / 2 + OffsetInput))
-        self.lum.set('override global source settings', 0)
-
-        self.lum.addmovie()
-        self.lum.set("x min", -(0.5e-6 + Device_Length / 2))
-        self.lum.set("x max", (0.5e-6 + Device_Length / 2))
-        self.lum.set("y min", -(Device_Width + 1e-6))
-        self.lum.set("y max", (Device_Width + 1e-6))
-
-        for i in range(3):
-            self.lum.addtime()
-            self.lum.set('name', name[i])
-            self.lum.set("x", xPos[i])
-            self.lum.set("y", yPos_min[i])
-            self.lum.set('output Px', 1)
-            self.lum.set('output Py', 1)
-            self.lum.set('output Pz', 1)
-
-        # # Add monitor
-        # self.lum.addpower()
-        # self.lum.set('monitor type', '2D X-normal')
-        # self.lum.set("x min", -(Device_Length / 2))
-        # self.lum.set("x max", (Device_Length / 2))
-        # self.lum.set("y min", -Device_Width / 2)
-        # self.lum.set("y max", Device_Width / 2)
-        # self.lum.set("z", MonitorHeight)
-
-
-
-
-
-
-    def setMMI2x2VarFDTDSolver(self, Parameters):
-
-        '''
-
-
-        Slab_Height : int/float
-            Height of the slab.
-        MMI_Width : int/float
-            Width of MMI
-        MMI_Length : int/float
-            Length of MMI
-        angle : int/float
-            Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-            For anfle = 90 we get a perfect rect!
-        WG_Height : int/float
-            Heigth of waveguide
-        WG_Width : int/float
-            Width og waveguide
-        WG_Length : int/float
-            Length of waveguide
-        posOffset : int/float
-            Offset between the waveguides. If Taper == True then this become the offset
-            betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
-            the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-            becouse of manufactering restrictions in the University.
-        OffsetInpit : int/float
-            Input waveguide/taper offset.
-        y_res : int/float
-            Mesh cell sizes.
-        z_res : int/float
-            Mesh cell size.
-        Slab_Height : int/float
-            Height of the slab.
-        WaveLength : int/float
-            Wavelength.
-        Taper : boolen, optional
-            Defoult Taper == False
-                if Taper == True Simulation region will ajust for simulation with tapers
-        TaperLength : int/float
-            Length of taper.
-        Parameters["Mode"] : str
-                    Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-
-        Raises
-        ------
-        ValueError
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        '''
-
-        Substrate_Height = Parameters['Substrate Height']
-        MMI_Width = Parameters['MMI Width']
-        MMI_Length = Parameters['MMI Length']
-        angle = Parameters['angle']
-        WG_Height = Parameters['WG Height']
-        WG_Width = Parameters['WG Width']
-        WG_Length = Parameters['WG Length']
-        posOffset = Parameters['Position Offset']
-        x_res = Parameters['x res']
-        y_res = Parameters['y res']
-        z_res = Parameters['z res']
-        Slab_Height = Parameters['Slab Height']
-        WaveLength = Parameters['Wavelength']
-        Mode = Parameters["Mode"]
-
-
-        # Device specifications
-        Device_Length = MMI_Length + 2 * WG_Length
-        Device_Width = MMI_Width + WaveLength * 2  # MMI_Width
-        max_subH = Substrate_Height / 2
-        max_slabH = Slab_Height
-        MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
-        Lnoi_H = Slab_Height + WG_Height
-        Ports_mid = Substrate_Height + (max_slabH + WG_Height) / 2
-        WG_H = WG_Height
-
-        # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
-        self.lum.addvarfdtd()
-        self.lum.set("x min", -(Device_Length / 2))
-        self.lum.set("x max", (Device_Length / 2))
-        self.lum.set("y", 0)
-        self.lum.set('simulation temperature', 273.15 + 20)
-        self.lum.set("y span", Device_Width)
-        self.lum.set("z", Substrate_Height)
-        self.lum.set("z span", 4e-6)
-        self.lum.set('number of test points', 1)
-        self.lum.set('z min bc', 'PML')
-        self.lum.set('z max bc', 'PML')
-        self.lum.set('mesh type', 'auto non-uniform')
-        self.lum.set('dx', x_res)
-        self.lum.set('dy', y_res)
-        self.lum.set('dz', z_res)
-        self.lum.set('set simulation bandwidth', 0)
-        self.lum.set('global source center wavelength', WaveLength)
-        self.lum.set('global source wavelength span', 0)
-
-        # define two values for upper and lower limit of the WG offsets
-        OffMin = -MMI_Width / 2
-        OffMax = MMI_Width / 2
-
-        x = abs(WG_H / (np.cos((angle) * np.pi / 180)))  # in Radians
-        extention = np.sqrt(x ** 2 - WG_H ** 2)
-        WG_W = WG_Width + 2 * extention
-
-        offset_Set_R = posOffset / 2 + WG_W / 2 + WG_Width / 2
-        xPos = [(Device_Length / 2) - 2e-6, (Device_Length / 2) - 2e-6, -(Device_Length / 2) + 2e-6,
-                -(Device_Length / 2) + 2e-6]
-        yPos_min = [-(WG_Width / 2 + posOffset / 2), WG_Width / 2 + posOffset / 2, -(WG_Width / 2 + posOffset / 2),
-                    WG_Width / 2 + posOffset / 2]
-        name = ['Input_L', 'Input_R', 'Output_L', 'Output_R']
-
-        self.lum.addmodesource()
-        self.lum.set('direction', 'Backward')
-        self.lum.set("x", (Device_Length / 2) - 1e-7)
-        self.lum.set("y", WG_Width / 2 + posOffset / 2)
-        self.lum.set("y span", WG_Width * 2)
-        self.lum.set('override global source settings', 0)
-
-        self.lum.addmovie()
-        self.lum.set("x min", -(0.5e-6 + Device_Length / 2))
-        self.lum.set("x max", (0.5e-6 + Device_Length / 2))
-        self.lum.set("y min", -(Device_Width + 1e-6))
-        self.lum.set("y max", (Device_Width + 1e-6))
-
-        for i in range(4):
-            self.lum.addtime()
-            self.lum.set('name', name[i])
-            self.lum.set("x", xPos[i])
-            self.lum.set("y", yPos_min[i])
-            self.lum.set('output Px', 1)
-            self.lum.set('output Py', 1)
-            self.lum.set('output Pz', 1)
-
-        # # Add monitor
-        # self.lum.addpower()
-        # self.lum.set('monitor type', '2D X-normal')
-        # self.lum.set("x min", -(Device_Length / 2))
-        # self.lum.set("x max", (Device_Length / 2))
-        # self.lum.set("y min", -Device_Width / 2)
-        # self.lum.set("y max", Device_Width / 2)
-        # self.lum.set("z", MonitorHeight)
 
 
 
@@ -9625,19 +9619,18 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. Data needet:
-                Parameters['angle'] : int/float
-                    Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-                    For anfle = 90 we get a perfect rect!
-                Parameters['WG Height'] : int/float
-                    Heigth of waveguide
-                Parameters['y res'] : int/float
-                    Mesh cell sizes.
-                Parameters['z res'] : int/float
-                    Mesh cell sizes.
-                Parameters['Slab Height'] : int/float
-                    Height of the slab.
-                Parameters['Wavelength'] : int/float
-                    Wavelength.
+        Parameters['Substrate Height']: int/float   
+            Substrate height
+        Parameters['WG Height'] : int/float
+            Heigth of waveguide
+        Parameters['y res'] : int/float
+            Mesh cell sizes.
+        Parameters['z res'] : int/float
+            Mesh cell sizes.
+        Parameters['Slab Height'] : int/float
+            Height of the slab.
+        Parameters['Wavelength'] : int/float
+            Wavelength.
 
         Returns
         -------
@@ -10199,24 +10192,52 @@ class HelpSubject:
     
     @classmethod
     def Help_Objects(self):
-            
+        print("""
+        # ============================================================================= #
+        #                Welcome to the Help Menu for Lumerical Structure               #     
+        #                you can choose ask for Help fo one of the follwing options     #   
+        #                                                                               #
+        #                1) Waveguide - used for FDE simulation only!                   #  
+        #                2) MMI2x1 - can be used in EME and FDTD solvers                #  
+        #                3) MMI2x2 - can be used in EME and FDTD solvers                #
+        #                4) InverseTaper - can be used in EME and FDTD solvers          #  
+        #                5) Directional Coupler - can be used in EME and FDTD solvers   #  
+        #                6) StraightWaveguide - can be used in EME and FDTD solvers     #     
+        #                7) WDM (Wavelength Division Multiplexing, angeled MMI) -onyl   #
+        #                   available for EME Solver                                    #  
+        #                8) BendWaveguide - onyl available for FDTD Solver              # 
+        #                9) ArcWaveguide - onyl available for FDTD Solver               #        
+        #                10) GratingCoupler - onyl available for FDTD Solver            #         
+        #                11) RingGratingCoupler - onyl available for FDTD Solver        #  
+        #                                                                               #  
+        #                To print information about the structure you desire please     #  
+        #                use obj.Help({"Objects": Number}). For Example                 #  
+        #                obj.Structures({"Objects": 1}) will give you information about #  
+        #                Structure Waveguide                                            #
+
+        # ============================================================================= #
+        """)
+        
+    def Structures(self, Number):
+        if Number == 1:
             print("""
-                  
-                  Parameters for each object are given as dictionary!
-                  
-                  1) Waveguide(Parameters)
-            
+                    Call Waveguide with -> obj.Waveguide(Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------
+                    Parameters['Substrate Height'] : int7float
+                        Height of the substrate.
                     Parameters['WG Length']: int/float
-                        Length of the Waveguide
+                        Length of the Waveguide.
                     Parameters['WG Height'] : int/float
-                        Height of the Waveguide (Etching depth)
+                        Height of the Waveguide
                     Parameters['WG Width'] : int/float
-                        Top width of the Waveguide.
+                        Width of the Waveguide
                     Parameters['angle'] : int
-                        Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.
-                        For angle = 90 , a perfect rect is created!
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+                        For anfle = 90 we get a perfect rect!
                     Parameters['Slab Height'] : int/float
-                        Slab height
+                        Slab height.
                     Parameters['Material'] : list of str
                         List of Materials. The list should be with names (str) of a valid Lumerical materials.
                         Check the names in Lumerical Materials viewer.
@@ -10224,13 +10245,14 @@ class HelpSubject:
                         Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
                         For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
                         
+-----------------------------------------------------------------------------------------------------------
+                """)
+        elif Number == 6:
+            print("""
+                    Call StraightWaveguide with -> obj.StraightWaveguide(Parameters)
                         
-                        
-                        
-                        
-                        
-                  2) StraightWaveguide(Parameters)
-                                                     
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------
                     Parameters['Substrate Height'] : int/float
                         Substrate Height
                     Parameters['WG Height'] : int/float
@@ -10264,11 +10286,14 @@ class HelpSubject:
                         Tilting angle of the Waveguide. Set it to 0 to simulate the straight waveguide. 
                         If Waveguide Angle is different then 0, then the straight waveguide will be tilted 
                         at the choosen angle. 
+-----------------------------------------------------------------------------------------------------------
+                """)
+        elif Number == 8:
+            print("""
+                    Call BendWaveguide with -> obj.BendWaveguide(Parameters) 
                         
-                        
-                        
-                  3) BendWaveguide(Parameters)  
-        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------
                     Parameters['Substrate Height'] : int/float
                         Substrate Height
                     Parameters['WG Height'] : int/float
@@ -10296,23 +10321,26 @@ class HelpSubject:
                         If Parameters["poles"] = True an Bezier Curbe will be made.
                         if Parameters["poles"] = False an Cosinus Curve = y_span*(cos((pi/(2*x_span))*t)^2) will be made. Where
                         t is in the range of 0 - y_span
+ -----------------------------------------------------------------------------------------------------------
+                """)                       
+        elif Number == 9:
+            print("""
+                    Call ArcWaveguide with -> obj.ArcWaveguide(Parameters) 
                         
-                        
-                        
-                  4) ArcWaveguide(Parameters) 
-        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------
                     Parameters['Substrate Height'] : int/float
-                        Substrate Height
+                        Substrate height
                     Parameters['WG Height'] : int/float
-                        Height of the Waveguide (Etching depth)
+                        Waveguide height
                     Parameters['WG Width'] : int/float
-                        Top width of the Waveguide.
+                        Waveguide width
                     Parameters['angle'] : int/float
-                        Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.
-                        For angle = 90 , a perfect rect is created!
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+                        For anfle = 90 we get a perfect rect!
                     Parameters['Slab Height'] : int/float
                         Slab height
-                    Parameters['Material'] : list of str
+                    Parameters['Material'] : list
                         List of Materials. The list should be with names (str) of a valid Lumerical materials.
                         Check the names in Lumerical Materials viewer.
                         The List of materials must contain at least 2 materials! 
@@ -10321,41 +10349,42 @@ class HelpSubject:
                     Parameters["Wavelength"] : int/float
                         Wavelength
                     Parameters["S_Band Radius"] : int/float
-                        Radius of the Circle. The Radius is given in um. 
+                        Radius of the Circle in um
                     Parameters['Arc deg'] : int
                         Can be 90 or 180 for 1/4 of a cirle or 1/2 of a circle.
+                    Parameters["Cladding"] : anything, optional
+                        This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+                        and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+                        will be set.
+ -----------------------------------------------------------------------------------------------------------
+                """)                         
+        elif Number == 2:
+            print("""
+                    Call MMI2x1 with -> obj.MMI2x1(Parameters)    
                         
-                        
-                        
-                  5) MMI2x1(Parameters)    
-                    
-                    Parameters['Material'] : list of str
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------
+                     Parameters['Material'] : list of str
                         List of Materials. The list should be with names (str) of a valid Lumerical materials.
                         Check the names in Lumerical Materials viewer.
                         The List of materials must contain at least 2 materials! 
                         Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
                         For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
                     Parameters['Substrate Height'] : int/float
-                        Substrate Height
+                        Substrate height.
                     Parameters['MMI Width'] : int/float
-                        Top width of the MMI.
+                        Width of the MMI.
                     Parameters['MMI Length'] : int/float
                         Length of the MMI.
-                    Parameters['Slab Height'] : int/float
-                        Height of the LiNbO3 Slab
                     Parameters['angle'] : int/float
-                        Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.
-                        For angle = 90 , a perfect rect is created!
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+                        For anfle = 90 we get a perfect rect!
                     Parameters['WG Height'] : int/float
-                        Height of the Waveguide (Etching depth).
-                    Parameters['WG Width'] : int/float
-                        Top width of the Waveguide.
+                        Waveguide hight. Also the height of the MMI section
+                     Parameters['WG Width'] : int/float
+                        Waveguide width.
                     Parameters['WG Length'] : int/float
-                        Waveguide length
-                    Parameters['Taper'] : boolen
-                        Taper can be set to be True ot False.
-                        if Taper == False - No Taper used
-                        if Taper == True - Taper placed
+                        Waveguide length.
                     Parameters['Position Offset'] : int/float
                         Offset between the waveguides. If Taper == True then this become the offset
                         betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
@@ -10363,49 +10392,61 @@ class HelpSubject:
                         becouse of manufactering restrictions in the University.
                     Parameters['Offset Input'] : int/float
                         Offset of the input waveguide.
-                    Parameters['Wavelength'] : int/float
-                        Wavelength
+                    Parameters['Slab Height'] : int/float
+                        Height of the slab.
+                    Parameters['Taper'] : boolen
+                        Taper can be set to be True ot False.
+                        if Taper == False - No Taper used
+                        if Taper == True - Taper placed
                     Parameters['Taper Length'] : int/float
                         If Taper == True, then this will set the Tapers length. If Taper == False
                         this will be ignored and some random value can be given.
                     Parameters['Taper Width'] : int/float
                         If Taper == True, then this will set the Tapers width. If Taper == False
                         this will be ignored and some random value can be given.
+                    Parameters["Cladding"] : anything, optional
+                        This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+                        and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+                        will be set.
+                    Parameters["Offset Output"] : anything, optional
+                        This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only 
+                        becouse the maschine of our physic departmant had some proiblems with the LNOI objects design. 
+ -----------------------------------------------------------------------------------------------------------
+                """)                          
+        elif Number == 3:
+            print("""
+                    Call MMI2x2 with -> obj.MMI2x2(Parameters)   
                         
-                        
-                        
-                  6) MMI2x2(Parameters)   
-    
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------
                     Parameters['Material'] : list of str
                         List of Materials. The list should be with names (str) of a valid Lumerical materials.
                         Check the names in Lumerical Materials viewer.
                         The List of materials must contain at least 2 materials! 
                         Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
                         For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
-                    Parameters['Substrate Height'] : int/float
-                        Substrate Height
+                     Parameters['Substrate Height'] : int/float
+                        Substrate height.
                     Parameters['MMI Width'] : int/float
-                        Top width of the MMI.
+                        Width of the MMI.
                     Parameters['MMI Length'] : int/float
                         Length of the MMI.
-                    Parameters['Slab Height'] : int/float
-                        Height of the LiNbO3 Slab
                     Parameters['angle'] : int/float
-                        Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.
-                        For angle = 90 , a perfect rect is created!
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+                        For anfle = 90 we get a perfect rect!
                     Parameters['WG Height'] : int/float
-                        Height of the Waveguide (Etching depth). This is also the
+                        Waveguide hight. Also the height of the MMI section
                     Parameters['WG Width'] : int/float
-                        Top width of the Waveguide.
+                        Waveguide width.
                     Parameters['WG Length'] : int/float
-                        Waveguide length
+                        Waveguide length.
                     Parameters['Position Offset'] : int/float
                         Offset between the waveguides. If Taper == True then this become the offset
                         betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
                         the MMI structure. The minimum distance between Taper and Waveguide is 1 um
                         becouse of manufactering restrictions in the University.
-                    Parameters['Wavelength'] : int/float
-                        Wavelength
+                     Parameters['Slab Height'] : int/float
+                        Height of the slab.
                     Parameters['Taper'] : boolen
                         Taper can be set to be True ot False.
                         if Taper == False - No Taper used
@@ -10415,56 +10456,115 @@ class HelpSubject:
                         this will be ignored and some random value can be given.
                     Parameters['Taper Width'] : int/float
                         If Taper == True, then this will set the Tapers width. If Taper == False
-                        this will be ignored and some random value can be given. 
+                        this will be ignored and some random value can be given.
+                    Parameters["Cladding"] : anything, optional
+                            This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+                            and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+                            will be set.
+ -----------------------------------------------------------------------------------------------------------
+                """)                         
+        elif Number == 7:
+            print("""
+                    Call WDM with -> obj.WDM(Parameters) 
                         
-                        
-                        
-                        
-                  7) WDM(Parameters)
-                                              
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------                      
                     Parameters['Material'] : list of str
                         List of Materials. The list should be with names (str) of a valid Lumerical materials.
                         Check the names in Lumerical Materials viewer.
                         The List of materials must contain at least 2 materials! 
                         Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
                         For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
-                        
                     Parameters['Substrate Height'] : int/float
-                       Substrate Height
+                        Substrate height.
                     Parameters['MMI Width'] : int/float
-                        Top width of the MMI.
+                        Width of the MMI.
                     Parameters['MMI Length'] : int/float
                         Length of the MMI.
                     Parameters['angle'] : int/float
-                        Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.
-                        For angle = 90 , a perfect rect is created!
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+                        For anfle = 90 we get a perfect rect!
                     Parameters['WG Height'] : int/float
-                         Height of the Waveguide (Etching depth). This is also the
+                        Waveguide hight. Also the height of the MMI section
                     Parameters['WG Width'] : int/float
-                         Top width of the Waveguide
-                    Parameters['WG Length'] : int/float
-                         Waveguide length. For the moment please choose the Parameters['WG Length'] to be 1e-6 bigger then Parameters['Taper Length']!!
-                    Parameters['Slab Height'] : int/float
-                        Height of the LiNbO3 Slab
+                        Waveguide width.
                     Parameters['Wavelength'] : int/float
-                        Wavelength
-                    Parameters['Angle Thetha'] : 
-                        Input and output angle of the waveguide. This is the rotation angle of the waveguide and taper. 
-                    Parameters['Taper'] : boolen
-                        Taper can be set to be True ot False.
-                        if Taper == False - No Taper used
-                        if Taper == True - Taper placed
-                    Parameters['Taper Length'] : int/float
-                        If Taper == True, then this will set the Tapers length. If Taper == False
-                        this will be ignored and some random value can be given.
+                        Wavelength.
+                    Parameters['WG Length'] : int/float
+                        Waveguide length.
+                    Parameters['Slab Height'] : int/float
+                        Height of the slab.
+                    Parameters['Angle Thetha'] :
+                        Input and output angle of the waveguide. This is only temporally
                     Parameters['Taper Width'] : int/float
-                        If Taper == True, then this will set the Tapers width. If Taper == False
-                        this will be ignored and some random value can be given. 
+                        Backside width of the Taper, frontside width is the waveguide width
+                    Parameters['Taper Length'] : int/float
+                        Length of the Taper.
+                    Parameters['Taper'] : boolen
+                        If Taper == False, no Taper will be placed with the Waveguides.
+                        If Taper == True, tapers will be placed with the waveguides
+                    Parameters["Cladding"] : anything, optional
+                        This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+                        and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+                        will be set.
+ -----------------------------------------------------------------------------------------------------------
+                """)   
+        elif Number == 4:
+            print("""
+                    Call InverseTaper with -> obj.InverseTaper(Parameters) 
                         
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------  
+                    Parameters['Material'] : list of str
+                        List of Materials. The list should be with names (str) of a valid Lumerical materials.
+                        Check the names in Lumerical Materials viewer.
+                        The List of materials must contain at least 2 materials! 
+                        For this structure 3 materials will be needed!
+                        Parameters['Material'] = ['Cladding/Substrat', 'Object Material'].
+                        For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut'].
+                    Parameters['Substrate Height'] : int/float
+                        Substrate height.
+                    Parameters['angle'] : int/float
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+                        For anfle = 90 we get a perfect rect!
+                    Parameters['WG Height'] : int/float
+                        Waveguide hight. Also the height of the MMI section
+                    Parameters['WG Width'] : int/float
+                        Waveguide width. Also in this function and ONLY in this function this will be the
+                        ibverse Taper width!!!
+                    Parameters['Slab Height'] : int/float
+                        Slab height
+                    Parameters['Taper Length'] : int/float
+                        Inverse Taper Length
+                    Parameters['Taper Width'] : int/float
+                        Front Width of the inverse Taper!! In this Function and ONLY in this function, the
+                        Parameters['Taper Width'] is the frond width of the inverse Taper!
+                    Parameters['PWB Taper Width Back'] : int/float
+                        Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
+                    Parameters['PWB Taper Hight Back'] : int/float
+                        Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
+                    Parameters['PWB Taper Width Front'] : int/float
+                        Photonic Wirebonding (PWB) Width front side (to the photonic waveguide)
+                    Parameters['PWB Taper Hight Front'] : int/float
+                        Photonic Wire Bonding Height front side (to the photonic waveguide)
+                    Parameters['PWB Taper Length'] : int/float
+                        Length of the Photonic Wire Bonding Taper
+                    Parameters["SMF Core Diameter"] : int/float
+                        Single Mode Fiber core Diameter
+                    Parameters["SMF Cladding Diameter"] : int/float
+                        Single Mode Fiber Cladding Diameter
+                    Parameters["SMF Core Index"]
+                        Single Mode Fiber Core Index
+                    Parameters["SMF Cladding Index"]
+                        Single Mode Fiber Cladding Index                  
+ -----------------------------------------------------------------------------------------------------------
+                """)  
+        elif Number == 5:
+            print("""
+                    Call DirectionalCoupler with -> obj.DirectionalCoupler(Parameters) 
                         
-                        
-                  8) InverseTaper(Paraemters)                                                                      
-
+                    Dictionary Parameters:
+----------------------------------------------------------------------------------------------------------- 
                     Parameters['Material'] : list of str
                         List of Materials. The list should be with names (str) of a valid Lumerical materials.
                         Check the names in Lumerical Materials viewer.
@@ -10472,413 +10572,895 @@ class HelpSubject:
                         Parameters['Material'] = ['Cladding/Substrat', 'Object Material', 'Photonic Wire Bonding'].
                         For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut', 'Si (Silicon) - Palik'].
                     Parameters['Substrate Height'] : int/float
-                       Substrate Height
+                        Substrate height.
+                    Parameters['Substrate Width'] : int/float
+                        Substrate Width.
+                    Parameters['DC Length'] : int/float
+                        Length of the directional coupler
                     Parameters['angle'] : int/float
-                        Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.
-                        For angle = 90 , a perfect rect is created!
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
                         For anfle = 90 we get a perfect rect!
                     Parameters['WG Height'] : int/float
-                        Height of the Waveguide (Etching depth). This is also the
+                        Waveguide hight. Also the height of the MMI section
                     Parameters['WG Width'] : int/float
-                        Top width of the waveguide. Also in this function and ONLY in this function this will be the 
-                        ibverse Taper backside width!!!
+                        Waveguide width.
+                    Parameters['Position Offset'] : int/float
+                        Offset between the waveguides. The minimum distance between Waveguides is 1 um
+                        becouse of manufactering restrictions in the University.
                     Parameters['Slab Height'] : int/float
-                        Height of the LiNbO3 Slab
+                        Height of the slab.
+                    Parameters['Wavelength'] : int/float
+                        Wavelength
+                    Parameters["Cladding"] : anything, optional
+                        This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+                        and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+                        will be set.
+ -----------------------------------------------------------------------------------------------------------
+                """) 
+        elif Number == 10:
+            print("""
+                    Call GratingCoupler with -> obj.GratingCoupler(Parameters) 
+                        
+                    Dictionary Parameters:
+----------------------------------------------------------------------------------------------------------- 
+                    Parameters['Material GC'] : list of str
+                        List of Materials. The list should be with names (str) of a valid Lumerical materials.
+                        Check the names in Lumerical Materials viewer.
+                        The List of materials must contain at least 3 materials! 
+                        Parameters['Material'] = ['Cladding/Substrat', 'Object Material', 'Photonic Wire Bonding'].
+                        For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut', 'Si (Silicon) - Palik'].
+                    Parameters['Substrate Height'] : int/float
+                        Substrate height.
+                    Parameters["Length GC"]: int/float
+                        Lenght of the Grating Coupler Area
+                    Parameters["Width GC"]: int/float
+                        Widht of the Grating Coupler Area
+                    Parameters["Hight GC"]: int/float
+                        Hight of the Grating Coupler Material
+                    Parameters["Etch Depth GC"]: int/float
+                        How deep, taken from the Parameters["Hight GC"] will be the etchin depth of the gratings
+                    Parameters["Duty Cycle"]: int/float
+                        Duty cycle of the gratings. For example Parameters["Duty Cycle"] = 0.39 will result in 39% Duty Cycle 
+                    Parameters["Pitch GC"]: int/float
+                        Pitch of the Grating Coupler. For Example Parameters["Pitch GC"] = 0.6e-6 will result in 6um Etch Space + Rib Space = 0.6um.
+                    Parameters["Input LengthGC"]: int/float
+                        An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start. 
+                    Parameters["Output Length GC"]: int/float
+                        An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.
+                    Parameters['angle'] : int/float
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+                        For anfle = 90 we get a perfect rect! In this case is used only when Parameters["Taper"] = True
+                    Parameters["Taper"] : boolen
+                        You can create an input Taper to your Grating Coupler structure
+                    Parameters['WG Height'] : int/float
+                        Waveguide hight. Also the height of the MMI section
+                    Parameters['WG Width'] : int/float
+                        Waveguide width. Also in this function and ONLY in this function this will be the
+                        ibverse Taper width!!!
+                    Parameters['Slab Height'] : int/float
+                        Slab height
                     Parameters['Taper Length'] : int/float
-                        Inverse Taper Length
-                    Parameters['Taper Width'] : int/float
-                        Front Width of the inverse Taper!! In this Function and ONLY in this function, the 
-                        Parameters['Taper Width'] is the frond width of the inverse Taper! 
-                    Parameters['PWB Taper Width Back'] : int/float
-                        Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding) 
-                    Parameters['PWB Taper Hight Back'] : int/float
-                        Photonic Wire Bonding Height back side (to the Photonic Wire Bonding) 
-                    Parameters['PWB Taper Width Front'] : int/float
-                        Photonic Wirebonding (PWB) Width front side (to the waveguide) 
-                    Parameters['PWB Taper Hight Front'] : int/float
-                        Photonic Wire Bonding Height front side (to the waveguide) 
-                    Parameters['PWB Taper Length'] : int/float
-                        Length of the Photonic Wire Bonding Taper       
+                        Taper Length
+                    Parameters["SMF Core Diameter"] : int/float
+                        Single Mode Fiber core Diameter
+                    Parameters["SMF Cladding Diameter"] : int/float
+                        Single Mode Fiber Cladding Diameter
+                    Parameters["SMF Core Index"]
+                        Single Mode Fiber Core Index
+                    Parameters["SMF Cladding Index"]
+                        Single Mode Fiber Cladding Index
+                    Parameters["SMF Theta"]: int/float
+                        Tilting Angle of the Single Mode Fiber to the Grating Coupler. Normaly we choose Parameters["SMF Theta"] = 15
+                    Parameters["SMF Z Span"]: int/float
+                        Lenght/Span of the Single Mode Fiber
+ -----------------------------------------------------------------------------------------------------------
+                """)  
+        elif Number == 11:
+            print("""
+                    Call RingGratingCoupler with -> obj.RingGratingCoupler(Parameters) 
                         
-                        
-                        
-
-                        
+                    Dictionary Parameters:
+----------------------------------------------------------------------------------------------------------- 
+                    Parameters['Material GC'] : list of str
+                        List of Materials. The list should be with names (str) of a valid Lumerical materials.
+                        Check the names in Lumerical Materials viewer.
+                        The List of materials must contain at least 3 materials! 
+                        Parameters['Material'] = ['Cladding/Substrat', 'Object Material', 'Photonic Wire Bonding'].
+                        For Example: Parameters['Material'] = ["SiO2 (Glass) - Palik", 'LiNbO3_20deg_X cut', 'Si (Silicon) - Palik'].
+                    Parameters['Substrate Height'] : int/float
+                        Substrate height.
+                    Parameters["Length GC"]: int/float
+                        Lenght of the Grating Coupler Area
+                    Parameters["Width GC"]: int/float
+                        Widht of the Grating Coupler Area
+                    Parameters["Hight GC"]: int/float
+                        Hight of the Grating Coupler Material
+                    Parameters["GC Radius"]: int/float
+                        Radius of the Ring Grating Coupler in um. For Example "Parameters["GC Radius"] = 25e-6"
+                    Parameters["Etch Depth GC"]: int/float
+                        How deep, taken from the Parameters["Hight GC"] will be the etchin depth of the gratings
+                    Parameters["Duty Cycle"]: int/float
+                        Duty cycle of the gratings. For example Parameters["Duty Cycle"] = 0.39 will result in 39% Duty Cycle 
+                    Parameters["Pitch GC"]: int/float
+                        Pitch of the Grating Coupler. For Example Parameters["Pitch GC"] = 0.6e-6 will result in 6um Etch Space + Rib Space = 0.6um.
+                    Parameters["Input LengthGC"]: int/float
+                        An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start. 
+                    Parameters["Output Length GC"]: int/float
+                        An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.
+                    Parameters['angle'] : int/float
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+                        For anfle = 90 we get a perfect rect! 
+                    Parameters['WG Height'] : int/float
+                        Waveguide hight. Also the height of the MMI section
+                    Parameters['WG Width'] : int/float
+                        Waveguide width. 
+                    Parameters['Slab Height'] : int/float
+                        Slab height
+                    Parameters["SMF Core Diameter"] : int/float
+                        Single Mode Fiber core Diameter
+                    Parameters["SMF Cladding Diameter"] : int/float
+                        Single Mode Fiber Cladding Diameter
+                    Parameters["SMF Core Index"]
+                        Single Mode Fiber Core Index
+                    Parameters["SMF Cladding Index"]
+                        Single Mode Fiber Cladding Index
+                    Parameters["SMF Theta"]: int/float
+                        Tilting Angle of the Single Mode Fiber to the Grating Coupler. Normaly we choose Parameters["SMF Theta"] = 15
+                    Parameters["SMF Z Span"]: int/float
+                        Lenght/Span of the Single Mode Fiber
+ -----------------------------------------------------------------------------------------------------------
+                """)                 
                   
-                  """)
+                  
                   
                   
     def Help_Solvers(self):
         print("""
-         
-                  1) Solver("Waveguide", "FDE",  Parameters)                                                        
-                                                                                                                    
-                    Parameters['angle'] : int/float                                                                 
-                        Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.                       
-                        For angle = 90 , a perfect rect is created!                                                 
-                    Parameters['WG Height'] : int/float                                                             
-                        Height of the Waveguide (Etching depth).                                                    
-                    Parameters['y res'] : int/float                                                                 
-                        Maximum mesh step setting in y direction. (Size of the Mesh Box in y direction in um)       
-                    Parameters['z res'] : int/float                                                                 
-                        Maximum mesh step setting in z direction. (Size of the Mesh Box in y direction in um)       
-                    Parameters['Slab Height'] : int/float                                                           
-                        Height of the LiNbO3 Slab                                                                    
-                    Parameters['Wavelength'] : int/float                                                            
-                        Wavelength.                                                                                  
-        
-                    
-        
-                  2) Solver("MMI2x1", "EME", Parameters) and Solver("MMI2x2", "EME", Parameters)
-                    
+        # ============================================================================= #
+        #                Welcome to the Help Menu for Lumerical Structure Solver        #     
+        #                you can choose ask for Help fo one of the follwing options     #   
+        #                                                                               #
+        #                1) Waveguide FDE Solver                                        #
+        #                2) MMI2x1 EME Solver                                           # 
+        #                3) MMI2x2 EME Solver                                           #
+        #                4) InverseTaper EME Solver                                     #      
+        #                5) Directional Coupler EME Solver                              # 
+        #                6) StraightWaveguide EME Solver                                #       
+        #                7) WDM (Wavelength Division Multiplexing, angeled MMI) -EME    #
+        #                   Solver                                                      #          
+        #                8) MMI2x1 FDTD Solver                                          # 
+        #                9) MMI2x2 FDTD Solver                                          #
+        #                10) InverseTaper FDTD Solver                                   #      
+        #                11) Directional Coupler FDTD Solver                            # 
+        #                12) StraightWaveguide FDTD Solver                              #     
+        #                13) BendWaveguide FDTD Solver                                  # 
+        #                14) ArcWaveguide FDTD Solver                                   #        
+        #                15) GratingCoupler FDTD Solver                                 #         
+        #                16) RingGratingCoupler FDTD Solver                             #  
+        #                                                                               #  
+        #                To print information about the solver you desire please        #  
+        #                use obj.Help({"Solvers"}: Number). For Example                 #  
+        #                obj.Structures({"Solvers"}: 1) will give you information about #  
+        #                FDE Solver Parameters for Waveguide Structure                  #
+        # ============================================================================= #
+        """)
+    def Solvers(self, NumberSolver):
+        if NumberSolver == 1:
+            print("""
+                    Call Waveguide FDE Solver with -> obj.Solver("Waveguide", "FDE",  Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------
+                    Parameters['Substrate Height']: int/float   
+                        Substrate height
+                    Parameters['WG Height'] : int/float
+                        Heigth of waveguide
+                    Parameters['y res'] : int/float
+                        Mesh cell sizes.
+                    Parameters['z res'] : int/float
+                        Mesh cell sizes.
+                    Parameters['Slab Height'] : int/float
+                        Height of the slab.
+                    Parameters['Wavelength'] : int/float
+                        Wavelength.
+-----------------------------------------------------------------------------------------------------------
+                """)                 
+        elif NumberSolver == 2:
+            print("""
+                    Call MMI2x1 EME Solver with -> obj.Solver("MMI2x1", "EME", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------       
                     Parameters['Substrate Height'] : int/float
-                        Substrate Height
+                        Height of the slab.
                     Parameters['MMI Width'] : int/float
-                        Top width of the MMI
+                        Width of MMI
                     Parameters['MMI Length'] : int/float
                         Length of MMI
                     Parameters['angle'] : int/float
-                        Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.
-                        For angle = 90 , a perfect rect is created!
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+                        For anfle = 90 we get a perfect rect!
                     Parameters['WG Height'] : int/float
-                        Height of the Waveguide (Etching depth)
+                        Heigth of waveguide
                     Parameters['WG Width'] : int/float
-                        Top width of the waveguide
+                        Width og waveguide
                     Parameters['WG Length'] : int/float
-                        Length of the Waveguide
+                        Length of waveguide
                     Parameters['Position Offset'] : int/float
                         Offset between the waveguides. If Taper == True then this become the offset
                         betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
                         the MMI structure. The minimum distance between Taper and Waveguide is 1 um
                         becouse of manufactering restrictions in the University.
-                        
-                    Only for 2x1MMI !!!!!
-                        Parameters['Offset Input'] : int/float
-                            Input waveguide/taper offset.
-                    
+                    Parameters['Offset Input'] : int/float
+                        Input waveguide/taper offset.
+                    Parameters["Taper"]: boolen 
+                        Add Taper to the structure on the input and output waveguids
+                    Parameters['Taper Length']: int/float
+                        Lenght of the Taper in Parameters["Taper"] = True
                     Parameters['y res'] : int/float
-                        Maximum mesh step setting in y direction. (Size of the Mesh Box in y direction in um)
+                        Mesh cell sizes.
                     Parameters['z res'] : int/float
-                        Maximum mesh step setting in z direction. (Size of the Mesh Box in z direction in um)
+                        Mesh cell sizes.
                     Parameters['Slab Height'] : int/float
-                        Height of the LiNbO3 Slab
+                        Height of the slab.
                     Parameters['Wavelength'] : int/float
                         Wavelength.
                     Parameters["Mode"] : str
-                        Mode to analyse. ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                    
-                    
-        
-                  3) Solver('DirectionalCoupler', 'EME', Parameters)
-        
-                    Parameters['Substrate Height'] : float/int
-                        Height of the Substrate
-                    Parameters['Substrate Width'] : float/int
-                        Width of the Substrate
-                    Parameters['DC Length'] : float/int
-                        Length of the Directional Coupler
-                    Parameters['WG Height'] : float/int
-                        Height of the Waveguide (Etching depth)
-                    Parameters['WG Width'] : float/int
-                        Top width of the Waveguide 
-                    Parameters['Position Offset'] : float/int
-                        Positional offser of the waveguides. If posOffset the two Waveguides
-                        will be offset of the middle position (y = 0) by the half of there
-                        Width. In this case they will not overlap if the Offset is 0.
-                    Parameters['y res'] : float/int
-                        Maximum mesh step setting in y direction. (Size of the Mesh Box in y direction in um)
-                    Parameters['z res'] : float/int
-                        Maximum mesh step setting in z direction. (Size of the Mesh Box in y direction in um)
-                    Parameters['Slab Height'] : float/int
-                        Height of the LiNbO3 Slab
-                    Parameters['Wavelength'] : float/int
-                        Wavelength
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"]: list of int/floats
+                        Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+                    Parameters["Offset Output"] : anything, optional
+                        This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only 
+                        becouse the maschine of our physic departmant had some proiblems with the LNOI objects design. 
+-----------------------------------------------------------------------------------------------------------
+                """)       
+        elif NumberSolver == 3:
+            print("""
+                    Call MMI2x2 EME Solver with -> obj.Solver("MMI2x2", "EME", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------      
+                    Parameters['Substrate Height'] : int/float
+                        Height of the slab.
+                    Parameters['MMI Width'] : int/float
+                        Width of MMI
+                    Parameters['MMI Length'] : int/float
+                        Length of MMI
+                    Parameters['WG Height'] : int/float
+                        Heigth of waveguide
+                    Parameters['WG Width'] : int/float
+                        Width og waveguide
+                    Parameters['WG Length'] : int/float
+                        Length of waveguide
+                    Parameters['Position Offset'] : int/float
+                        Offset between the waveguides. If Taper == True then this become the offset
+                        betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+                        the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+                        becouse of manufactering restrictions in the University.
+                    Parameters["Taper"]: boolen 
+                        Add Taper to the structure on the input and output waveguids
+                    Parameters['Taper Length']: int/float
+                        Lenght of the Taper in Parameters["Taper"] = True
+                    Parameters['Slab Height'] : int/float
+                        Height of the slab.
+                    Parameters['y res'] : int/float
+                        Mesh cell sizes.
+                    Parameters['z res'] : int/float
+                        Mesh cell size.
+                    Parameters['Wavelength'] : int/float
+                        Wavelength.
                     Parameters["Mode"] : str
-                        Mode to analyse. ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                    
-                    
-        
-                  4) Solver("StraightWaveguide", "EME",  Parameters)  
-                     
-                                                       
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"]: list of int/floats
+                        Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+-----------------------------------------------------------------------------------------------------------
+                """)    
+        elif NumberSolver == 4:
+            print("""
+                    Call Waveguide FDE Solver with -> obj.Solver("MMI2x2", "EME", Parameters)
+                        
+                    Dictionary Parameters:
+----------------------------------------------------------------------------------------------------------- 
                     Parameters['Substrate Height'] : int/float
                         Substrate height.
-                    Parameters['WG Height'] : int/float
-                        Height of the Waveguide (Etching depth)
-                    Parameters['WG Width'] : int/float
-                        Top width of the Waveguide
+                      Parameters['WG Height' : int/float
+                          Waveguide hight. Also the height of the MMI section
+                      Parameters['WG Width'] : int/float
+                          Waveguide width.
+                      Parameters['Slab Height'] : int/float
+                          Slab height
+                      Parameters['PWB Taper Width Back'] : int/float
+                          Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
+                      Parameters['PWB Taper Hight Back'] : int/float
+                          Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
+                      Parameters['PWB Taper Length'] : int/float
+                          Length of the Photonic Wire Bonding Taper
+                      Parameters["SMF Core Diameter"] : int/float
+                        Single Mode Fiber core Diameter
+                      Parameters["SMF Cladding Diameter"] : int/float
+                        Single Mode Fiber Cladding Diameter
+                      Parameters['y res'] : int/float
+                          Mesh y-Axis
+                      Parameters['z res'] : int/float
+                          Mesh z-Axis
+                      Parameters['Wavelength'] : int/float
+                          Wavelength
+                      Parameters["Mode"] : str
+                          Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                      Parameters["Port Span"] : list of floats/ints
+                          List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+-----------------------------------------------------------------------------------------------------------
+                """)    
+        elif NumberSolver == 5:
+            print("""
+                    Call InverseTaper EME Solver with -> obj.Solver("InverseTaper", "EME", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------     
+                    Parameters['Substrate Height'] : int/float
+                      Substrate height.
+                      Parameters['WG Height' : int/float
+                          Waveguide hight. Also the height of the MMI section
+                      Parameters['WG Width'] : int/float
+                          Waveguide width.
+                      Parameters['Slab Height'] : int/float
+                          Slab height
+                      Parameters['PWB Taper Width Back'] : int/float
+                          Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
+                      Parameters['PWB Taper Hight Back'] : int/float
+                          Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
+                      Parameters['PWB Taper Length'] : int/float
+                          Length of the Photonic Wire Bonding Taper
+                      Parameters["SMF Core Diameter"] : int/float
+                        Single Mode Fiber core Diameter
+                      Parameters["SMF Cladding Diameter"] : int/float
+                        Single Mode Fiber Cladding Diameter
+                      Parameters['y res'] : int/float
+                          Mesh y-Axis
+                      Parameters['z res'] : int/float
+                          Mesh z-Axis
+                      Parameters['Wavelength'] : int/float
+                          Wavelength
+                      Parameters["Mode"] : str
+                          Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                      Parameters["Port Span"] : list of floats/ints
+                          List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken. 
+-----------------------------------------------------------------------------------------------------------
+                """) 
+        elif NumberSolver == 6:
+            print("""
+                    Call StraightWaveguide EME Solver with -> obj.Solver("StraightWaveguide", "EME", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------          
+                    Parameters['Substrate Height'] : int/float
+                        Substrate height.
                     Parameters['WG Length'] : int/float
-                        Length of the Waveguide
-                    Parameters['Taper'] : boolen
-                        Taper can be set to be True ot False.
-                        if Taper == False - No Taper used, only waveguide will be used
-                        if Taper == True - Taper placed, no waveguides only taper will be used
-                    Parameters['Taper Length'] : int/float
-                        Taper Length
+                       Waveguide Length
+                    Parameters['WG Height'] : int/float
+                       Waveguide hight. Also the height of the MMI section
+                    Parameters['WG Width'] : int/float
+                       Waveguide width.
+                    Parameters["Taper"] : boolen
+                       If Taper == False, only straight Waveguide will be simulated,
+                       If Taper == True an Taper will be simulated
                     Parameters['Taper Width'] : int/float
-                        Taper backside top waveguide width, the frontside top width of the waveguide is the waveguide top width
+                       Taper backside Width. Taper Fronside width is the width of the Waveguide
+                    Parameters['Taper Length'] : int/float
+                       Taper Length
                     Parameters['y res']: int/float
-                          Maximum mesh step setting in y direction. (Size of the Mesh Box in y direction in um)
+                         EME Mesh resolutio,
                     Parameters['z res']: int/float
-                          Maximum mesh step setting in z direction. (Size of the Mesh Box in z direction in um)
+                         EME Mesh resolutio,
                     Parameters['Slab Height'] : int/float
-                        Height of the LiNbO3 Slab
+                       Height of the slab.
                     Parameters['Wavelength'] : int/float
-                        Wavelength
+                       Wavelength
                     Parameters["Waveguide Angle"] : int/float
-                        This Parameter will set the theta ratation angle of the port. Please choose the same angle as you gave for the Object StraightWaveguide!
+                       This Parameter will set the theta ratation angle of the port. It can be 90 or 180.
                     Parameters["Port Span"] : list of floats/ints
-                        List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken, since we use x cut material.
+                       List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
                     Parameters["Mode"] : str
-                         Mode to analyse. ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                         
-                    
-                    
-                  5) Solver("WDM", "EME",  Parameters)
-                                                
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Taper Type"] : anything, optional
+                            This function will check if you have set Parameters["Taper Type"] to anaything, for example "Parameters["Taper Type"]=1" 
+                            and if so it will design an Inverse Taper Structure with no Cladding. Here the option "Cladding" is not active and will be ignored.
+                            If the user didnt give the "Taper Type" as dictionary key, then an normal taper structure will be simulated.
+                            
+                            If Parameters["Taper Type"] is given, themn the user need to set couple more parameters:
+                                Parameters['PWB Taper Width Back'] : int/float
+                                    Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
+                                Parameters['PWB Taper Hight Back'] : int/float
+                                    Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
+                                Parameters['PWB Taper Width Front'] : int/float
+                                    Photonic Wirebonding (PWB) Width front side (to the photonic waveguide)
+                                Parameters['PWB Taper Hight Front'] : int/float
+                                    Photonic Wire Bonding Height front side (to the photonic waveguide)
+                                Parameters['PWB Taper Length'] : int/float
+                                    Length of the Photonic Wire Bonding Taper
+-----------------------------------------------------------------------------------------------------------
+                """) 
+        elif NumberSolver == 7:
+            print("""
+                    Call Wavelength Division Multiplexing EME Solver with -> obj.Solver("WDM", "EME", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------       
                     Parameters['Substrate Height'] : int/float
                         Substrate height.
                     Parameters['MMI Width'] : int/float
-                        Top width of the MMI.
+                        Width of the MMI.
                     Parameters['MMI Length'] : int/float
                         Length of the MMI.
-                    Parameters['WG Height'] : int/float
-                        Height of the Waveguide (Etching depth)
+                    Parameters['WG Height' : int/float
+                        Waveguide hight. Also the height of the MMI section
                     Parameters['WG Length'] : int/float
-                        Length of the Waveguide
+                        Waveguide length.
                     Parameters['WG Width'] : int/float
-                        Top width of the Waveguide
+                        Waveguide width.
                     Parameters['Taper Width'] : int/float
-                        Taper backside top width of the waveguide, the frontside width is the top width of the waveguide
+                        Taper backside width, frontside width is the waveguide width.
                     Parameters['Taper Length'] : int/float
                         Taper Length
-                    Parameters['y res']: int/float
-                          Maximum mesh step setting in y direction. (Size of the Mesh Box in y direction in um)
-                    Parameters['z res']: int/float
-                          Maximum mesh step setting in z direction. (Size of the Mesh Box in z direction in um)
+                    Parameters['y res'] : int/float
+                        Mesh y-Axis
+                    Parameters['z res'] : int/float
+                        Mesh z-Axis
                     Parameters['Slab Height'] : int/float
                         Slab Height.
                     Parameters['Wavelength'] : int/float
                         Wavelength
                     Parameters['Angle Thetha'] : boolen
-                        Input and output angle of the waveguide. This is the rotation angle of the waveguide and taper. 
-                    Parameters["Port Span"] : list of floats/ints
-                        List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken, since we use x cut material.
+                        Angle for the input and output waveguides
                     Parameters["Mode"] : str
-                         Mode to analyse. ("fundamental TE mode", "fundamental TM mode", "fundamental mode") 
-    
-    
-    
-    
-                  6) Solver("InverseTaper", "EME", Parameters)
-                                                  
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"]: list of int/floats
+                        Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+-----------------------------------------------------------------------------------------------------------
+                """) 
+        elif NumberSolver == 8:
+            print("""
+                    Call MMI2x1 FDTD Solver with -> obj.Solver("MMI2x1", "FDTD", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------    
                     Parameters['Substrate Height'] : int/float
-                        Substrate height.
-                    Parameters['WG Height'] : int/float
-                        Height of the Waveguide (Etching depth)
-                    Parameters['WG Width'] : int/float
-                        Top width of the Waveguide.
-                    Parameters['Slab Height'] : int/float
-                        Slab Height.
-                    Parameters['PWB Taper Width Back'] : int/float
-                        Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding) 
-                    Parameters['PWB Taper Hight Back'] : int/float
-                        Photonic Wire Bonding Height back side (to the Photonic Wire Bonding) 
-                    Parameters['PWB Taper Length'] : int/float
-                        Length of the Photonic Wire Bonding Taper      
-                    Parameters['y res']: int/float
-                          Maximum mesh step setting in y direction. (Size of the Mesh Box in y direction in um)
-                    Parameters['z res']: int/float
-                          Maximum mesh step setting in z direction. (Size of the Mesh Box in z direction in um)
-                    Parameters['Wavelength'] : int/float
-                        Wavelength
-                    Parameters["Port Span"] : list of floats/ints
-                        List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken, since we use x cut material.
-                    Parameters["Mode"] : str
-                         Mode to analyse. ("fundamental TE mode", "fundamental TM mode", "fundamental mode") 
-                         
-      
-                    
-                    
-        
-                  7) Solver("MMI2x1", "FDTD", Parameters) and Solver("MMI2x2", "FDTD", Parameters) 
-        
-                    Parameters['Substrate Height'] : int/float
-                        Substrate height.
+                        Height of the slab.
                     Parameters['MMI Width'] : int/float
-                        Top width of the MMI.
-                    Parameters['MMI Length'] : int/float
-                        Length of the MMI.
-                    Parameters['WG Height' : int/float
-                        Waveguide hight
-                    Parameters['WG Width'] : int/float
-                        Top width of the Waveguide.
-                    Parameters['WG Length'] : int/float
-                        Waveguide length.
-                    Parameters['y res'] : int/float
-                        Maximum mesh step setting in y direction. (Size of the Mesh Box in y direction in um)
-                    Parameters['z res'] : int/float
-                        Maximum mesh step setting in z direction. (Size of the Mesh Box in z direction in um)
-                    Parameters['Slab Height'] : int/float
-                        Height of the LiNbO3 Slab
-                    Parameters['Wavelength'] : int/float
-                        Wavelength
-                    Parameters['Angle Thetha'] : int/float
-                        Angle for the input and output waveguides 
-                    Parameters["Mode"] : str
-                        Mode to analyse. ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                   
-                    
-        
-                  8) Solver("MMI2x1", "FDTD", Parameters) and Solver("MMI2x2", "FDTD", Parameters)
-                    
-                    Parameters['Substrate Height'] : int/float
-                        Substrate height.
-                    Parameters['MMI Width'] : int/float
-                        Top width of the MMI
+                        Width of MMI
                     Parameters['MMI Length'] : int/float
                         Length of MMI
                     Parameters['WG Height'] : int/float
-                        Heigth of the waveguide
+                        Heigth of waveguide
                     Parameters['WG Width'] : int/float
-                        Top width of the waveguide
+                        Width og waveguide
                     Parameters['WG Length'] : int/float
-                        Length of the waveguide
+                        Length of waveguide
                     Parameters['Position Offset'] : int/float
                         Offset between the waveguides. If Taper == True then this become the offset
                         betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
                         the MMI structure. The minimum distance between Taper and Waveguide is 1 um
                         becouse of manufactering restrictions in the University.
-                    
-                    Only for 2x1MMI !!!!!
-                        Parameters['Offset Input'] : int/float
-                            Input waveguide/taper offset.
-         
+                    Parameters['Offset Input'] : int/float
+                        Input waveguide/taper offset.
+                    Parameters["Taper"]: boolen 
+                        Add Taper to the structure on the input and output waveguids
+                    Parameters['Taper Length']: int/float
+                        Lenght of the Taper in Parameters["Taper"] = True
                     Parameters['x res'] : int/float
-                        Minimum mesh step setting in x direction. (Size of the Mesh Box in x direction in um)
+                        Mesh cell sizes.
                     Parameters['Slab Height'] : int/float
-                        Height of the LiNbO3 Slab
+                        Height of the slab.
                     Parameters['Wavelength'] : int/float
                         Wavelength.
                     Parameters["Mode"] : str
-                        Mode to analyse. ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                    
-                    
-        
-                  9) Solver("StraightWaveguide", "FDTD",  Parameters)    
-                             
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"]: list of int/floats
+                        Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+                    Parameters["Offset Output"] : anything, optional
+                        This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only 
+                        becouse the maschine of our physic departmant had some proiblems with the LNOI objects design.    
+-----------------------------------------------------------------------------------------------------------
+                """) 
+        elif NumberSolver == 9:
+            print("""
+                    Call MMI2x2 FDTD Solver with -> obj.Solver("MMI2x2", "FDTD", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------    
+                    Parameters['Substrate Height'] : int/float
+                        Height of the slab.
+                    Parameters['MMI Width'] : int/float
+                        Width of MMI
+                    Parameters['MMI Length'] : int/float
+                        Length of MMI
+                    Parameters['WG Height'] : int/float
+                        Heigth of waveguide
+                    Parameters['WG Width'] : int/float
+                        Width og waveguide
+                    Parameters['WG Length'] : int/float
+                        Length of waveguide
+                    Parameters['Position Offset'] : int/float
+                        Offset between the waveguides. If Taper == True then this become the offset
+                        betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+                        the MMI structure. The minimum distance between Taper and Waveguide is 1 um
+                        becouse of manufactering restrictions in the University.
+                    Parameters["Taper"]: boolen 
+                        Add Taper to the structure on the input and output waveguids
+                    Parameters['Taper Length']: int/float
+                        Lenght of the Taper in Parameters["Taper"] = True
+                    Parameters['x res'] : int/float
+                        Mesh cell sizes.
+                    Parameters['Slab Height'] : int/float
+                        Height of the slab.
+                    Parameters['Wavelength'] : int/float
+                        Wavelength.
+                    Parameters["Mode"] : str
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"]: list of int/floats
+                        Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+-----------------------------------------------------------------------------------------------------------
+                """) 
+        elif NumberSolver == 10:
+            print("""
+                    Call InverseTaper FDTD Solver with -> obj.Solver("InverseTaper", "FDTD", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------  
+                    Parameters['Substrate Height'] : int/float
+                      Substrate height.
+                    Parameters['WG Height' : int/float
+                      Waveguide hight. Also the height of the MMI section
+                    Parameters['WG Width'] : int/float
+                      Waveguide width.
+                    Parameters['Slab Height'] : int/float
+                      Slab height
+                    Parameters['PWB Taper Width Back'] : int/float
+                      Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
+                    Parameters['PWB Taper Hight Back'] : int/float
+                      Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
+                    Parameters['PWB Taper Length'] : int/float
+                      Length of the Photonic Wire Bonding Taper
+                    Parameters["SMF Core Diameter"] : int/float
+                    Single Mode Fiber core Diameter
+                    Parameters["SMF Cladding Diameter"] : int/float
+                    Single Mode Fiber Cladding Diameter
+                    Parameters['x res'] : int/float
+                      Mesh x-Axis
+                    Parameters['Wavelength'] : int/float
+                      Wavelength
+                    Parameters["Mode"] : str
+                      Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"] : list of floats/ints
+                      List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.                 
+-----------------------------------------------------------------------------------------------------------
+                """)                         
+        elif NumberSolver == 11:
+            print("""
+                    Call Directional FDTD Solver with -> obj.Solver("DirectionalCoupler", "FDTD", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------  
+                    Parameters['Substrate Height'] : float/int
+                        Height of the Substrate
+                    Parameters['Substrate Width'] : float/int
+                        Width of the MMI
+                    Parameters['DC Length'] : float/int
+                        Length of the Directional coupler
+                    Parameters['WG Height'] : float/int
+                        Height of the Waveguide
+                    Parameters['WG Width'] : float/int
+                        Waveguide Width
+                    Parameters['Position Offset'] : float/int
+                        Positional offser of the waveguides. If posOffset the two Waveguides
+                        will be offset of the middle position (y = 0) by the half of there
+                        Width. In this case they will not overlap if the Offset is 0.
+                    Parameters['x res'] : float/int
+                        Mesh resolution for the x-Axis
+                    Parameters['Slab Height'] : float/int
+                        Slab height.
+                    Parameters['Wavelength'] : float/int
+                        Wavelength
+                    Parameters["Port Span"]: list of int/floats
+                        Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+                    Parameters["Mode"] : str
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+-----------------------------------------------------------------------------------------------------------
+                """)   
+        elif NumberSolver == 12:
+            print("""
+                    Call StraightWaveguide FDTD Solver with -> obj.Solver("StraightWaveguide", "FDTD", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------         
+                    Parameters['Substrate Height'] : int/float
+                       Substrate height.
+                    Parameters['WG Length'] : int/float
+                       Waveguide Length
+                    Parameters['WG Height'] : int/float
+                       Waveguide hight. Also the height of the MMI section
+                    Parameters['WG Width'] : int/float
+                       Waveguide width.
+                    Parameters["Taper"] : boolen
+                       If Taper == False, only straight Waveguide will be simulated,
+                       If Taper == True an Taper will be simulated
+                    Parameters['Taper Width'] : int/float
+                       Taper backside Width. Taper Fronside width is the width of the Waveguide
+                    Parameters['Taper Length'] : int/float
+                       Taper Length
+                    Parameters['x res'] : int/float
+                         EME Mesh resolutio,
+                    Parameters['Slab Height'] : int/float
+                       Height of the slab.
+                    Parameters['Wavelength'] : int/float
+                       Wavelength
+                    Parameters["Waveguide Angle"] : int/float
+                       This Parameter will set the theta ratation angle of the port. It can be 90 or 180.
+                    Parameters["Port Span"] : list of floats/ints
+                       List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+                    Parameters["Mode"] : str
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Taper Type"] : anything, optional
+                            This function will check if you have set Parameters["Taper Type"] to anaything, for example "Parameters["Taper Type"]=1" 
+                            and if so it will design an Inverse Taper Structure with no Cladding. Here the option "Cladding" is not active and will be ignored.
+                            If the user didnt give the "Taper Type" as dictionary key, then an normal taper structure will be simulated.
+                            
+                            If Parameters["Taper Type"] is given, themn the user need to set couple more parameters:
+                                Parameters['PWB Taper Width Back'] : int/float
+                                    Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
+                                Parameters['PWB Taper Hight Back'] : int/float
+                                    Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
+                                Parameters['PWB Taper Width Front'] : int/float
+                                    Photonic Wirebonding (PWB) Width front side (to the photonic waveguide)
+                                Parameters['PWB Taper Hight Front'] : int/float
+                                    Photonic Wire Bonding Height front side (to the photonic waveguide)
+                                Parameters['PWB Taper Length'] : int/float
+                                    Length of the Photonic Wire Bonding Taper
+-----------------------------------------------------------------------------------------------------------
+                """) 
+        elif NumberSolver == 13:
+            print("""
+                    Call BendWaveguide FDTD Solver with -> obj.Solver("BendWaveguide", "FDTD", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------   
+                    Parameters['Substrate Height'] : int/float
+                       Substrate height.
+                    Parameters['WG Height'] : int/float
+                       Waveguide hight. Also the height of the MMI section
+                    Parameters['x res'] : int/float
+                         EME Mesh resolutio,
+                    Parameters['Slab Height'] : int/float
+                       Height of the slab.
+                    Parameters['Wavelength'] : int/float
+                       Wavelength
+                    Parameters["x span"] : int/float
+                       Length of the S-Bend Waveguide
+                    Parameters["y span"] : int/float
+                       Width of the S-Bend Waveguide
+                    Parameters["Mode"] : str
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"]: list of int/floats
+                        Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+-----------------------------------------------------------------------------------------------------------
+                """) 
+        elif NumberSolver == 14:
+            print("""
+                    Call ArcWaveguide FDTD Solver with -> obj.Solver("ArcWaveguide", "FDTD", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------     
                     Parameters['Substrate Height'] : int/float
                         Substrate height.
-                    Parameters['WG Length'] : int/float
-                        Waveguide Length
                     Parameters['WG Height'] : int/float
-                        Waveguide hight
+                        Waveguide hight. Also the height of the MMI section
                     Parameters['WG Width'] : int/float
-                        Top width of the Waveguide
-                    Parameters['WG Length'] : int/float
-                        Length of the Waveguide
-                    Parameters['Taper'] : boolen
-                        Taper can be set to be True ot False.
-                        if Taper == False - No Taper used, only waveguide will be used
-                        if Taper == True - Taper placed, no waveguides only taper will be used
-                    Parameters['Taper Length'] : int/float
-                        Taper Length
-                    Parameters['Taper Width'] : int/float
-                        Taper backside top width of the waveguide, the frontside width is the top width of the waveguide
+                        Waveguide width.
                     Parameters['x res'] : int/float
-                          Minimum mesh step setting in x direction. (Size of the Mesh Box in x direction in um)
+                        EME Mesh resolutio,
                     Parameters['Slab Height'] : int/float
-                        Height of the LiNbO3 Slab
+                        Height of the slab.
                     Parameters['Wavelength'] : int/float
                         Wavelength
-                    Parameters["Waveguide Angle"] : int/float
-                        This Parameter will set the theta ratation angle of the port
-                    Parameters["Port Span"] : list of floats/ints
-                        List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+                    Parameters["S_Band Radius"] : int/float
+                        S-Bend Radius in um.
+                    Parameters['Arc deg'] : int/float
+                        Arc define the Arc of the curve. It can be 90 or 180 degrees only.
+                        This two will define an 1/4 of a circle or 1/2 of a circle.
                     Parameters["Mode"] : str
-                         Mode to analyse. ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                                         
-                    
-        
-                  10) Solver("ArcWaveguide", "FDTD", Parameters)
-                               
-                     Parameters['Substrate Height'] : int/float
-                         Substrate height.
-                     Parameters['WG Height'] : int/float
-                         Waveguide hight
-                     Parameters['WG Width'] : int/float
-                         Top width of the Waveguide.
-                     Parameters['x res'] : int/float
-                         Minimum mesh step setting in x direction. (Size of the Mesh Box in x direction in um)
-                     Parameters['Slab Height'] : int/float
-                         Height of the LiNbO3 Slab
-                     Parameters['Wavelength'] : int/float
-                         Wavelength
-                     Parameters["S_Band Radius"] : int/float
-                         S-Bend Radius in um.
-                     Parameters['Arc deg'] : int/float
-                         Arc define the Arc of the curve. It can be 90 or 180 degrees only.
-                         This two will define an 1/4 of a circle or 1/2 of a circle.
-                     Parameters["Mode"] : str
-                          Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                                                    
-                    
-        
-                  11) Solver("BendWaveguide", "FDTD", Parameters)    
-                               
-                    Parameters['Substrate Height'] : int/float
-                        Substrate height
-                    Parameters['WG Height'] : int/float
-                        Waveguide hight
-                    Parameters['WG Width'] : int/float
-                        Top width of the Waveguide
-                    Parameters['x res'] : int/float
-                        Minimum mesh step setting in x direction. (Size of the Mesh Box in x direction in um)
-                    Parameters['Slab Height'] : int/float
-                        Height of the LiNbO3 Slab
-                    Parameters['Wavelength'] : int/float
-                        Wavelength
-                    Parameters["x span"] : int/float
-                        Length of the S-Bend Waveguide
-                    Parameters["y span"] : int/float
-                        Width of the S-Bend Waveguide
-                    Parameters["Mode"] : str
-                         Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                    Parameters["Port Span"] : list of floats/ints
-                        List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken, since we use x cut material.
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"]: list of int/floats
+                        Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+-----------------------------------------------------------------------------------------------------------
+                """)
+        elif NumberSolver == 15:
+            print("""
+                    Call GratingCoupler FDTD Solver with -> obj.Solver("GratingCoupler", "FDTD", Parameters)
                         
-                   
-                               
-        
-              """)
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------    
+                    Parameters['Substrate Height'] : int/float
+                        Substrate height.
+                    Parameters["Length GC"]: int/float
+                        Lenght of the Grating Coupler Area
+                    Parameters["Input Length GC"]: int/float
+                        An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start. 
+                    Parameters["Output Length GC"]: int/float
+                        An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.
+                    Parameters["Width GC"]: int/float
+                        Widht of the Grating Coupler Area
+                    Parameters["Hight GC"]: int/float
+                        Hight of the Grating Coupler Material
+                    Parameters['Taper'] : boolen
+                        Add Taper to structure
+                    Parameters['Taper Length'] : int/float
+                          Length of the Taper
+                    Parameters['Wavelength'] : int/float
+                          Wavelength
+                    Parameters['x res'] : int/float
+                          Mesh x-Axis
+                    Parameters["Mode"] : str
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"] : list of floats/ints
+                          List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
+                    Parameters["GC Radius"]: int/float
+                        Radius of the Ring Grating Coupler in um. For Example "Parameters["GC Radius"] = 25e-6"
+ -----------------------------------------------------------------------------------------------------------
+                """)               
+        elif NumberSolver == 16:
+            print("""
+                    Call RingGratingCoupler FDTD Solver with -> obj.Solver("RingGratingCoupler", "FDTD", Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------            
+                    Parameters['Substrate Height'] : int/float
+                        Substrate height.
+                    Parameters["Length GC"]: int/float
+                        Lenght of the Grating Coupler Area
+                    Parameters["Input Length GC"]: int/float
+                        An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start. 
+                    Parameters["Output Length GC"]: int/float
+                        An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.
+                    Parameters["Width GC"]: int/float
+                        Widht of the Grating Coupler Area
+                    Parameters["Hight GC"]: int/float
+                        Hight of the Grating Coupler Material
+                    Parameters["GC Radius"]: int/float
+                        Radius of the Ring Grating Coupler in um. For Example "Parameters["GC Radius"] = 25e-6"
+                    Parameters['Taper Length'] : int/float
+                          Length of the input Taper
+                    Parameters['Wavelength'] : int/float
+                          Wavelength
+                    Parameters['x res'] : int/float
+                          Mesh x-Axis
+                    Parameters["Mode"] : str
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"] : list of floats/ints
+                          List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken. 
+ -----------------------------------------------------------------------------------------------------------
+                """)                           
+     
               
     def Help_StartSimulation(self):
-        
         print("""
-              
-              Depending on the Solver Type ("EME" or "FDTD") simulation can be started with:
-                  
-                  - For "EME" Solver 
-                  1) StartFDESimulation() 
-                  2) StartEMESimulation()
-                           
-                  - For "FDTD" Solver
-                  3) StartFDTDSimulation()
-             
-        
-              """)
-              
-              
-              
+            # ============================================================================= #
+            #                Welcome to the Help Menu for Lumerical Simulation Run          #     
+            #                you can choose ask for Help fo one of the follwing options     #   
+            #                                                                               #
+            #                1) Save and start FDE Simulation                               #
+            #                2) Save and start EME Simulation                               # 
+            #                3) Save and start FDTD Simulation                              #
+            #                                                                               #
+            #                To print information about how to start an simulation in the   #  
+            #                choosen Solver. With obj.Help({"Start Simulation"}, Number) an #
+            #                save of your simulation will be made in your current working   #
+            #                directory. Afterwards the Simulation will be started.For       #
+            #                Example obj.Structures("Solvers", 1) will start the FDE        #
+            #                simulation.                                                    #
+            # ============================================================================= #
+            """)
+    def StartSolver(self, NumberStart):
+        if NumberStart == 1:
+            print("""
+                    Start FDE Simulation -> obj.StartFDESimulation() 
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------      
+                    None  
+ -----------------------------------------------------------------------------------------------------------
+                """) 
+        elif NumberStart == 2:
+            print("""
+                    Start EME Simulation -> obj.StartEMESimulation() 
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------      
+                    None  
+ -----------------------------------------------------------------------------------------------------------
+                """) 
+        elif NumberStart == 3:
+            print("""
+                    Start FDTD Simulation -> obj.StartFDTDSimulation() 
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------      
+                    None  
+ -----------------------------------------------------------------------------------------------------------
+                """) 
+
               
     def Help_Results(self):
-        
         print("""
-             Data can be Extracted from an FDE, EME or FDTD simulation. The Data will be writen in dictionaries!
-             
-             
-    ############################################   FDE   ############################################
-             After an FDE Simulation the user can:
+            # ============================================================================= #
+            #                Welcome to the Help Menu for Lumerical Result Extraction       #     
+            #                you can choose ask for Help fo one of the follwing structure   #   
+            #                                                                               #
+            #                1) Extract FDE Simulation Results                              #
+            #                2) How to set Overlap Anaylsis with FDE Solver                 # 
+            #                3) Extract EME Simulation Results                              #
+            #                3) Extract FDTD Simulation Results                             #
+            #                                                                               #
+            #                To print information about how to extract results from the     #  
+            #                simulation after Solver is done. With obj.Help({"Results"},    #
+            #                Number) the simulated results will be extracted from the       #
+            #                simulation workspace and transfered to python IDE.             #
+            #                For Example obj.Structures("Results", 1) will extract the FDE  #
+            #                data into 4 dictionaries.                                      #
+            # ============================================================================= #
+            """)
+    def Result_extraction(self, NumberResults):
+        if NumberResults == 1:
+            print("""
+                    Extract FDE results -> obj.ExtrtactData('FDE', Parameters)
+                        
+                    Dictionary Parameters:
+    -----------------------------------------------------------------------------------------------------------     
+                    Parameters["Effective Index"] : float/int
+                     Effective index value. All modes with effective index smaller then
+                     the  Effective will be deleted. Effective is usualy the smalles effective
+                     index from the hole construction (usualy the cladding). Since Lumerical will produce 
+                     modes with very small Effektive index, it make no sance to extract them !
+    -----------------------------------------------------------------------------------------------------------     
+
+
+                    Returns
+    -----------------------------------------------------------------------------------------------------------     
+         dictModesTE : dict
+                 Dictionary with:
+                         'TE polarization fraction num'
+                         'effective area'
+                         'effective index num'
+                         'group index num'
+                         'Ex'
+                         'Ey'
+                         'Ez'
+                         
+         dictDataTE : dict
+                 Dictionary with:
+                             'E'
+                             
+                             
+        dictModesTM : dict
+                Dictionary with:
+                        'TE polarization fraction num'
+                        'effective area'
+                        'effective index num'
+                        'group index num'
+                        'Ex'
+                        'Ey'
+                        'Ez'
+                        
+        dictDataTM : dict
+                Dictionary with:
+                            'E'  
+    -----------------------------------------------------------------------------------------------------------
+                """)
+        elif NumberResults == 2:
+            print("""
+                    Performe an Mode Overlap analisys FDE 
+                                    How to:
+    -----------------------------------------------------------------------------------------------------------    
+                After an FDE Simulation the user can:
                  
                  - Performe an Mode Overlap analisys. 
                  Here an Waveguide with an choosen Parameters[] will be placed in the FDE solver. 
@@ -10892,227 +11474,184 @@ class HelpSubject:
                  Parameters["Effective Index"] = Reflective Effektive index for the Material, Effective index value. 
                  All modes with effective index smaller then the  Effective will be deleted. Effective is usualy the 
                  smalles effective index from the hole construction (usualy the cladding). Since Lumerical will produce 
-                 modes with very small Effektive index, it make no sance to extract them !
-                 
-                
-                
-                
-                 
-                 - Extract Results from Simulation.
-                 
-                 With - ExtrtactData('FDE', Parameters)
-                 
-                 
-                 Parameters["Effective Index"] : float/int
-                     Effective index value. All modes with effective index smaller then
-                     the  Effective will be deleted. Effective is usualy the smalles effective
-                     index from the hole construction (usualy the cladding). Since Lumerical will produce 
-                     modes with very small Effektive index, it make no sance to extract them !
+                 modes with very small Effektive index, it make no sance to extract them ! 
+    -----------------------------------------------------------------------------------------------------------
+                """)
+        elif NumberResults == 3:
+            print("""
+                    Extract EME results -> obj.ExtrtactData('EME', Parameters)  
+                        
+                    Dictionary Parameters:
+    -----------------------------------------------------------------------------------------------------------   
+                    None
+    -----------------------------------------------------------------------------------------------------------     
+
+
+                    Returns
+    -----------------------------------------------------------------------------------------------------------   
+                   MonitorData : dict
+                       Dictionary with:
+                               'lambda'
+                               'f'
+                               'x'
+                               'y'
+                               'z'
+                               'E'
+                               'H'
+                               'Lumerical_dataset'
+                   EME_Sim_Data : dict
+                       Dictionary with:
+                               'user s matrix'
+                               'internal s matrix'
+                               'local diagnostics'
+                               'coefficients'
+                               'global diagnostics'
+    -----------------------------------------------------------------------------------------------------------
+                """)
+        elif NumberResults == 4:
+            print("""
+                    Extract FDTD results -> obj.ExtrtactData('FDTD', Parameters)
+                        
+                    Dictionary Parameters:
+    -----------------------------------------------------------------------------------------------------------
+                    Parameters: boolen
+                        If Parameters = True, an extra S-Parameter sweep over the ports will be performed. This 
+                        will add simulation time since the structute need to be sweeped one more time.
+                        If Parameters = False, only FDTD simulation will be done and result will be extracted 
+                        the "SParam_Dict" dictionary will return 0.
+    -----------------------------------------------------------------------------------------------------------     
+
+
+                    Returns
+    -----------------------------------------------------------------------------------------------------------  
+                    SParam_Dict: dict
+                        Dictionary with:
+                                "S Parameter"
+                            
+                    PowerData_Dict : dict
+                        Dictionary with:
+                                'Power Input Port/s'
+                                'Power Output Port/s'
+                                'Transmission'
                      
-                 Returns
-                 -------
-                 dictModesTE : dict
-                         Dictionary with:
-                                 'TE polarization fraction num'
-                                 'effective area'
-                                 'effective index num'
-                                 'group index num'
-                                 'Ex'
-                                 'Ey'
-                                 'Ez'
-                                 
-                 dictDataTE : dict
-                         Dictionary with:
-                                     'E'
-                                     
-                                     
-                dictModesTM : dict
-                        Dictionary with:
-                                'TE polarization fraction num'
-                                'effective area'
-                                'effective index num'
-                                'group index num'
-                                'Ex'
-                                'Ey'
-                                'Ez'
-                                
-                dictDataTM : dict
-                        Dictionary with:
-                                    'E'
-                    
-    ############################################   FDE   ############################################
-    
-    
-    
-    
-    
-    ############################################   EME   ############################################
-    
-             After an EME Simulation the user can:
-                 
-                 
-             - Extract all the data providet from the simulation.
-             
-             
-               With - ExtrtactData('EME', Parameters)  
-               
-               Parameters here is an dummy variable, since you already give all the needed Parameter by the 
-               object and solver. They will be automatically taken for the result extraction.
-    
-               Returns
-               -------
-               MonitorData : dict
-                   Dictionary with:
-                           'lambda'
-                           'f'
-                           'x'
-                           'y'
-                           'z'
-                           'E'
-                           'H'
-                           'Lumerical_dataset'
-               EME_Sim_Data : dict
-                   Dictionary with:
-                           'user s matrix'
-                           'internal s matrix'
-                           'local diagnostics'
-                           'coefficients'
-                           'global diagnostics'
-                           
-                           
-    ############################################   EME   ############################################
-    
-    
-    ############################################   FDTD   ############################################            
-    
-              After an FDTD Simulation the user can: 
-            
-            
-                With this fuction will add an S-Parameter Sweep to the FDTD simulation.
-                This will allowed to sweep the S-parameter Matrix like it is done in
-                EMe solver. Additionally will extract the Power on each port according to the time
-                monitors that ware set in the solver functions.
                 
-            With - ExtrtactData('FDTD', Parameters)
-            
-            Here Paraameters is an boolen operator!!
-            Parameter = True - An S-Parameter extraction sweep will be added to the simulation. This will increase the simulation time, 
-            since the S-Parameters need to be propagated thrue the strucutre. 
-            Parameter = False - No S-Parameter extraction sweep. The dictionary will return 0. 
-            
-            Returns
-            -------
-             SParam_Dict: dict
-                Dictionary with:
-                        "S Parameter"
-                    
-             PowerData_Dict : dict
-                Dictionary with:
-                        'Power Input Port/s'
-                        'Power Output Port/s'
-                        'Transmission'
-                        
-                        
-    ############################################   FDTD   ############################################ 
+    -----------------------------------------------------------------------------------------------------------
+                """)
+
     
-    
-              """)
-              
-              
-            
-              
-              
-              
+     
               
     def Help_LoadingBar(self):
-        
         print("""
-              
-              If the user want to keep track of the simulation state an laoding bar is imported in this library.
-              The loading bar is not part of the class, so you dont need to call it like an class. 
-              
-              loadingBar(count, total)
-              count - is your loop variable
-              total - is the lenght of the variables that will be sweeped
-              
-              
-              Example python code of loading bar:
-                  
-                  from Constructor import loadingBar
-
-                  for i in range(10):
-                     loadingBar(i, 10)
-                  
-
-              """)
+            # ============================================================================= #
+            #                Welcome to the Help Menu for the loading bar function          #     
+            #                Here you can find a short discription on how to use it.        #   
+            #                                                                               #
+            #                If the user want to keep track of the simulation state an      #
+            #                laoding bar is imported in this library. The loading bar is    #
+            #                not part of the class, so you dont need to call it like an     #
+            #                class.                                                         #
+            #                                                                               #  
+            #                loadingBar(count, total)                                       #
+            #                count - is your loop variable                                  # 
+            #                total - is the lenght of the variables that will be sweeped    #
+            #                                                                               #
+            #                Example python code of loading bar:                            # 
+            #                                                                               #
+            #      >from Constructor import loadingBar                                      #
+            #      >                                                                        #
+            #      >for i in range(10):                                                     #
+            #      >    loadingBar(i, 10)                                                   #
+            #                                                                               #
+            # ============================================================================= #
+            """)
+        
+        
 
     def Help_RemoveObject(self):
-
         print("""
-        
-                To Remove an Object simply use:
-                
-                removeObject()
-        
-        """)
-        
-        
+            # ============================================================================= #
+            #                Welcome to the Help Menu for how to remove simulation          #     
+            #                from Lumrical                                                  #   
+            #                                                                               #
+            #                To Remove an Object simply use:                                #
+            #                                                                               #
+            #                >obj.removeObject()                                            #
+            #                                                                               #  
+            #                This will switch Lumerical from Simulation to                  #
+            #                design and delete all the Structures, Monitors and Solver      #
+            #                created by the user.                                           #
+            #                                                                               #
+            # ============================================================================= #
+            """)
+ 
         
     def Help_LogFile(self):
-        print(
-            """
-            When you load the Logfile function from the Constructor Library the user can keep track 
-            with the simulation and parameters used. To use the log File you need to give an list with 
-            two dictionarays. The first can be the dictionary with Parameters given for the simulation 
-            like "Tapper Width", "WG Width"... The secound dictionary can be called direct after performing 
-            an analysis with obj.ReturnLogInfo(). This will extract the object that you simulate and the 
-            solver that you used. An text file will be created in the given Path. The name of the File 
-            will be "Lumerical_Simulation_Log_15_10_52"
-            
-            An example can be seen here:
-                
-                from Constructor import Logfile
-                Path = "C:/Downloads/"
-                solverInfo = obj.ReturnLogInfo()
-                data = [solverInfo, Parameters]
-                Logfile(data, Path)
-                
-            
-            """
-            )
+        print("""
+            # ============================================================================= #
+            #                Welcome to the Help Menu for creating simulation log File      #
+            #                from Lumrical                                                  #
+            #                                                                               #
+            #                When you load the Logfile function from the Constructor Library#
+            #                the user can keep track with the simulation and parameters     #
+            #                used. To use the log File you need to give an list with        #
+            #                two dictionarays. The first can be the dictionary with         #
+            #                Parameters given for the simulation like "Tapper Width",       #
+            #                "WG Width"... The secound dictionary can be called direct      #
+            #                after performing an analysis with obj.ReturnLogInfo(). This    #
+            #                will extract the object that you simulate and the solver that  #
+            #                you used. An text file will be created in the given Path. The  #
+            #                name of the File will be "Lumerical_Simulation_Log_15_10_52"   #
+            #                                                                               #
+            #                An example can be seen here:                                   #
+            #                                                                               #
+            #                >from Constructor import Logfile                               #
+            #                >Path = "C:/Downloads/"                                        #
+            #                >solverInfo = obj.ReturnLogInfo()                              #
+            #                >data = [solverInfo, Parameters]                               #
+            #                >Logfile(data, Path)                                           #
+            #                                                                               #
+            # ============================================================================= #
+            """)
+    
+
 
 
 def Help():
     print("""
     
-    To start the Python Lumerical Constructor Library you need first to:
+        To start the Python Lumerical Constructor Library you need first to:
         from Constructor import Constructor
         from Constructor import loadingBar
         
         # Call the Constructor Object 
+        obj = Constructor(file, Lumerical Solver Type)
+        # or 
         obj = Constructor(file, MaterialPath, Lumerical Solver Type)
             # file = Path to lumapi.py for example -> "lumerical/2022-r2.4/api/python/lumapi.py"
-            # MaterialPath = Path to Material Library for example -> "/Desktop/LNOI_Env/LiNbO3.mdf"
+            # MaterialPath = Path to Material Library for example -> "/Desktop/LNOI_Env/LiNbO3.mdf"-> THIS IS OPTIONAL
             # Lumerical Solver Type = Solver Type can be EME or FDTD for example -> "EME"
             
         # To Close Lumerical simply use
         obj.Close()
         
         # For Further Help after colling the Constructor Object please use:
-            # obj.Help('Objects') -> Shows how to build an photonic element
-            # obj.Help('Solvers') -> Shows hot to build an FDE, EME or FDTD Solver
-            # obj.Help('Start Simulation') -> Commands to start simulation
-            # obj.Help('Results') -> Shows how to extract resuslts form FDE, EME and FDTD Simulations
-            # obj.Help('Loading Bar') -> Shows how to use the Loading Bar Function 
-            # obj.Help('Remove Object') -> Romove object function
-            # obj.Help('Log File') -> Generate an log file from the simulation 
+        obj.Help()
+            
     """)
     
-
+# obj.Help('Objects') -> Shows how to build an photonic element
+# obj.Help('Solvers') -> Shows hot to build an FDE, EME or FDTD Solver
+# obj.Help('Start Simulation') -> Commands to start simulation
+# obj.Help('Results') -> Shows how to extract resuslts form FDE, EME and FDTD Simulations
+# obj.Help('Loading Bar') -> Shows how to use the Loading Bar Function 
+# obj.Help('Remove Object') -> Romove object function
+# obj.Help('Log File') -> Generate an log file from the simulation 
 
 
 
 def Logfile(data, path):
+
     """
     
 
