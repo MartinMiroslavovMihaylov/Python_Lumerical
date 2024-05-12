@@ -4392,7 +4392,7 @@ class Constructor:
             Duty cycle of the gratings. For example Parameters["Duty Cycle"] = 0.39 will result in 39% Duty Cycle 
         Parameters["Pitch GC"]: int/float
             Pitch of the Grating Coupler. For Example Parameters["Pitch GC"] = 0.6e-6 will result in 6um Etch Space + Rib Space = 0.6um.
-        Parameters["Input LengthGC"]: int/float
+        Parameters["Input Length GC"]: int/float
             An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start. 
         Parameters["Output Length GC"]: int/float
             An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.
@@ -4438,7 +4438,7 @@ class Constructor:
         EtchDepth = Parameters["Etch Depth GC"]
         DutyCycle = Parameters["Duty Cycle"]
         Pitch = Parameters["Pitch GC"]
-        InputLlength = Parameters["Input LengthGC"]
+        InputLlength = Parameters["Input Length GC"]
         OutputLength = Parameters["Output Length GC"]
         Material = Parameters["Material GC"]
         CoreDiameter = Parameters["SMF Core Diameter"]
