@@ -9,5 +9,5 @@ Find the path to your lumapi.py Lumerical file.
 
 # FDE Solver Components
 Waveguide
-- ![alt text](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/docs/Doc_Images/FDE_WG.jpg?raw=true)
+- ![alt text](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/tree/main/docs/Doc_Images/FDE_WG.jpg?raw=true)
 
