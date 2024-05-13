@@ -132,7 +132,7 @@ class Constructor:
             StartNumber = [1,2,3]
             ResultNumber = [1,2,3,4]
             StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11]
-            StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+            SolverNumber = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
             
             listSub = ['Objects', 'Solvers', 'Start Simulation', 'Results', 'Loading Bar', 'Log File']
             key = list(Subject.keys())
@@ -2413,7 +2413,6 @@ class Constructor:
         OffsetInput = Parameters['Offset Input']
         posOffset = Parameters['Position Offset']
         Slab_Height = Parameters['Slab Height']
-        WaveLength = Parameters['Wavelength']
         TaperLength = Parameters['Taper Length']
         TaperWidth = Parameters['Taper Width']
         Taper = Parameters['Taper']
@@ -10195,7 +10194,7 @@ class HelpSubject:
         print("""
         # ============================================================================= #
         #                Welcome to the Help Menu for Lumerical Structure               #     
-        #                you can choose ask for Help fo one of the follwing options     #   
+        #                You can ask for help for one of the following structures       #   
         #                                                                               #
         #                1) Waveguide - used for FDE simulation only!                   #  
         #                2) MMI2x1 - can be used in EME and FDTD solvers                #  
@@ -10212,7 +10211,7 @@ class HelpSubject:
         #                                                                               #  
         #                To print information about the structure you desire please     #  
         #                use obj.Help({"Objects": Number}). For Example                 #  
-        #                obj.Structures({"Objects": 1}) will give you information about #  
+        #                obj.Help({"Objects": 1}) will give you information about       #  
         #                Structure Waveguide                                            #
 
         # ============================================================================= #
@@ -10717,8 +10716,8 @@ class HelpSubject:
     def Help_Solvers(self):
         print("""
         # ============================================================================= #
-        #                Welcome to the Help Menu for Lumerical Structure Solver        #     
-        #                you can choose ask for Help fo one of the follwing options     #   
+        #                Welcome to the Help Menu for Lumerical Structure Solver. You   #     
+        #                can ask for help for one of the following structural solvers   #   
         #                                                                               #
         #                1) Waveguide FDE Solver                                        #
         #                2) MMI2x1 EME Solver                                           # 
@@ -10740,7 +10739,7 @@ class HelpSubject:
         #                                                                               #  
         #                To print information about the solver you desire please        #  
         #                use obj.Help({"Solvers"}: Number). For Example                 #  
-        #                obj.Structures({"Solvers"}: 1) will give you information about #  
+        #                obj.Help({"Solvers": 1}) will give you information about       #  
         #                FDE Solver Parameters for Waveguide Structure                  #
         # ============================================================================= #
         """)
@@ -11344,8 +11343,8 @@ class HelpSubject:
     def Help_StartSimulation(self):
         print("""
             # ============================================================================= #
-            #                Welcome to the Help Menu for Lumerical Simulation Run          #     
-            #                you can choose ask for Help fo one of the follwing options     #   
+            #                Welcome to the Help Menu for Lumerical Simulation Run. You     #     
+            #                can ask for help for one of the following simulations          #   
             #                                                                               #
             #                1) Save and start FDE Simulation                               #
             #                2) Save and start EME Simulation                               # 
@@ -11355,7 +11354,7 @@ class HelpSubject:
             #                choosen Solver. With obj.Help({"Start Simulation"}, Number) an #
             #                save of your simulation will be made in your current working   #
             #                directory. Afterwards the Simulation will be started.For       #
-            #                Example obj.Structures("Solvers", 1) will start the FDE        #
+            #                Example obj.Help({"Solvers": 1}) will start the FDE            #
             #                simulation.                                                    #
             # ============================================================================= #
             """)
@@ -11392,8 +11391,9 @@ class HelpSubject:
     def Help_Results(self):
         print("""
             # ============================================================================= #
-            #                Welcome to the Help Menu for Lumerical Result Extraction       #     
-            #                you can choose ask for Help fo one of the follwing structure   #   
+            #                Welcome to the Help Menu for Lumerical Result Extraction.      #     
+            #                Youcan ask for help for one of the following Result Extraction #   
+            #                 options.                                                      #
             #                                                                               #
             #                1) Extract FDE Simulation Results                              #
             #                2) How to set Overlap Anaylsis with FDE Solver                 # 
@@ -11404,7 +11404,7 @@ class HelpSubject:
             #                simulation after Solver is done. With obj.Help({"Results"},    #
             #                Number) the simulated results will be extracted from the       #
             #                simulation workspace and transfered to python IDE.             #
-            #                For Example obj.Structures("Results", 1) will extract the FDE  #
+            #                For Example obj.Help({"Results": 1}) will extract the FDE      #
             #                data into 4 dictionaries.                                      #
             # ============================================================================= #
             """)
