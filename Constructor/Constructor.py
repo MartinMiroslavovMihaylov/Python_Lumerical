@@ -11354,7 +11354,7 @@ class HelpSubject:
             #                choosen Solver. With obj.Help({"Start Simulation"}, Number) an #
             #                save of your simulation will be made in your current working   #
             #                directory. Afterwards the Simulation will be started.For       #
-            #                Example obj.Help({"Solvers": 1}) will start the FDE            #
+            #                Example obj.Help({"Start Simulation": 1}) will start the FDE   #
             #                simulation.                                                    #
             # ============================================================================= #
             """)
