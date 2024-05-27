@@ -12,7 +12,7 @@ Waveguide
 - ![alt text](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/FDE_WG.png?raw=true)
 - 
 # EME Solver Components
-Waveguide
+Wavelength Division Multiplexing (WDM) 
 - ![alt text](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/EME_WDM.png?raw=true)
 
 # FDTD Solver Components

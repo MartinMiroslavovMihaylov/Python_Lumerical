@@ -599,6 +599,7 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Wavaguide.
+            
             Parameters['Substrate Height'] : int7float
                 Height of the substrate.
             Parameters['WG Length']: int/float
@@ -799,6 +800,7 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Straight Wavaguide.
+            
             Parameters['Substrate Height'] : int float
                 Substrate Height
             Parameters['WG Height'] : int/float
@@ -1334,6 +1336,7 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Bend Wavaguide. 
+            
             Parameters['Substrate Height'] : int/float
                 Substrate Height
             Parameters['WG Height'] : int/float
@@ -1522,6 +1525,7 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the Arc Wavaguide.
+            
             Parameters['Substrate Height'] : int/float
                 Substrate height
             Parameters['WG Height'] : int/float
@@ -2339,6 +2343,7 @@ class Constructor:
         ----------
         Parameters : Dictionary
             Dictionary with all the data needet for the 2x1 MMI. 
+            
                 Parameters['Material'] : list of str
                     List of Materials. The list should be with names (str) of a valid Lumerical materials.
                     Check the names in Lumerical Materials viewer.
