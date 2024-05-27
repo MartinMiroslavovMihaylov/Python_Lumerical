@@ -30,7 +30,7 @@ Finaly go to your Python IDLE and import the Constructor lib that you just insta
 	import os.path
 	import sys
 	# Import Constructor 
-	import Constructor as CN
+	import Constructor as Constructor
 	# Import Help Menu
 	from Constructor import Help
 	#Import Loading Bar
@@ -38,13 +38,17 @@ Finaly go to your Python IDLE and import the Constructor lib that you just insta
 	# Import Logfile function extractor 
 	from Constructor import Logfile
 	
-	# Give the Material and lumpi.py files paths
+	# Give the lumpi.py files paths
 	Path = "C:/Program Files/Lumerical/v221/api/python/lumapi.py"
-	MaterialPath = "C:/.../Materials.mdf"
-	
 	
 	# Start the Lumerical FDTD API
-	obj = CN.Constructor(file, MaterialPath,  "FDTD")
+	obj = Constructor.Constructor(file, "FDTD")
+	
+	
+	
+	# If you have an Material Library you wanna import you can use 
+	MaterialPath = "C:/.../Materials.mdf"
+	obj = Constructor.Constructor(file, "FDTD", MaterialPath )
 	
 	
 How to use the Help Menu
@@ -56,6 +60,9 @@ Just type:
 .. code-block:: python
 
 	Help()
+	
+	# After the object Constructor is called you can use the obj.Help() Menu
+	obj.Help()
 	
 	
 How to define Materials and Parameters

@@ -16,7 +16,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=f2a433a1"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -181,7 +181,7 @@ For example under Windows you can find the file under “C:Program FilesLumerica
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="c1"># Import Constructor</span>
-<span class="kn">import</span> <span class="nn">Constructor</span> <span class="k">as</span> <span class="nn">CN</span>
+<span class="kn">import</span> <span class="nn">Constructor</span> <span class="k">as</span> <span class="nn">Constructor</span>
 <span class="c1"># Import Help Menu</span>
 <span class="kn">from</span> <span class="nn">Constructor</span> <span class="kn">import</span> <span class="n">Help</span>
 <span class="c1">#Import Loading Bar</span>
@@ -189,13 +189,17 @@ For example under Windows you can find the file under “C:Program FilesLumerica
 <span class="c1"># Import Logfile function extractor</span>
 <span class="kn">from</span> <span class="nn">Constructor</span> <span class="kn">import</span> <span class="n">Logfile</span>
 
-<span class="c1"># Give the Material and lumpi.py files paths</span>
+<span class="c1"># Give the lumpi.py files paths</span>
 <span class="n">Path</span> <span class="o">=</span> <span class="s2">&quot;C:/Program Files/Lumerical/v221/api/python/lumapi.py&quot;</span>
-<span class="n">MaterialPath</span> <span class="o">=</span> <span class="s2">&quot;C:/.../Materials.mdf&quot;</span>
-
 
 <span class="c1"># Start the Lumerical FDTD API</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">CN</span><span class="o">.</span><span class="n">Constructor</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">MaterialPath</span><span class="p">,</span>  <span class="s2">&quot;FDTD&quot;</span><span class="p">)</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Constructor</span><span class="o">.</span><span class="n">Constructor</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;FDTD&quot;</span><span class="p">)</span>
+
+
+
+<span class="c1"># If you have an Material Library you wanna import you can use</span>
+<span class="n">MaterialPath</span> <span class="o">=</span> <span class="s2">&quot;C:/.../Materials.mdf&quot;</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Constructor</span><span class="o">.</span><span class="n">Constructor</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;FDTD&quot;</span><span class="p">,</span> <span class="n">MaterialPath</span> <span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -204,6 +208,9 @@ For example under Windows you can find the file under “C:Program FilesLumerica
 <p>If you need Help with the functions you can use the build in Help guide.
 Just type:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Help</span><span class="p">()</span>
+
+<span class="c1"># After the object Constructor is called you can use the obj.Help() Menu</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">Help</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
@@ -289,7 +296,7 @@ used :</p>
 <span class="sig-name descname"><span class="pre">ArcWaveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.ArcWaveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.ArcWaveguide" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Bend Wavaguide. Data needet:
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Arc Wavaguide.
 Parameters[‘Substrate Height’] : int/float</p>
 <blockquote>
 <div><p>Substrate height</p>
@@ -337,28 +344,41 @@ will be set.</p>
 <span class="sig-name descname"><span class="pre">BendWaveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.BendWaveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.BendWaveguide" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate Height</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Waveguide Height</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Waveguide width</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int/float</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Slab height</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Material'</strong><strong>]</strong> (<em>list</em>) – List of Materials. The list should be with names (str) of a valid Lumerical materials.
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Bend Wavaguide.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate Height</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Height</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab height</p>
+</dd>
+<dt>Parameters[‘Material’]<span class="classifier">list</span></dt><dd><p>List of Materials. The list should be with names (str) of a valid Lumerical materials.
 Check the names in Lumerical Materials viewer.
 The List of materials must contain at least 2 materials!
 Parameters[‘Material’] = [‘Cladding/Substrat’, ‘Object Material’].
-For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p></li>
-<li><p><strong>span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;y</em>) – Length of the S Curve. Span of the object.</p></li>
-<li><p><strong>span&quot;</strong><strong>]</strong> – Height of the curve. Difference between the input and output of the S-curve.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;poles&quot;</strong><strong>]</strong> (<em>boolen</em>) – If Parameters[“poles”] = True an Bezier Curbe will be made.
+For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p>
+</dd>
+<dt>Parameters[“x span”]<span class="classifier">int/float</span></dt><dd><p>Length of the S Curve. Span of the object.</p>
+</dd>
+<dt>Parameters[“y span”]<span class="classifier">int/float</span></dt><dd><p>Height of the curve. Difference between the input and output of the S-curve.</p>
+</dd>
+<dt>Parameters[“poles”]<span class="classifier">boolen</span></dt><dd><p>If Parameters[“poles”] = True an Bezier Curbe will be made.
 if Parameters[“poles”] = False an Cosinus Curve = y_span*(cos((pi/(2*x_span))*t)^2) will be made. Where
-t is in the range of 0 - y_span</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Cladding&quot;</strong><strong>]</strong> (<em>anything</em><em>, </em><em>optional</em>) – This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
+t is in the range of 0 - y_span</p>
+</dd>
+<dt>Parameters[“Cladding”]<span class="classifier">anything, optional</span></dt><dd><p>This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
 and if so it will put cladding over your structure. If the user didnt give the “Cladding” as dictionary key no cladding
-will be set.</p></li>
-</ul>
+will be set.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – Value Error Massage.</p>
@@ -413,28 +433,42 @@ will be set.</p></li>
 <span class="sig-name descname"><span class="pre">DirectionalCoupler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.DirectionalCoupler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.DirectionalCoupler" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Material'</strong><strong>]</strong> (<em>list</em><em> of </em><em>str</em>) – List of Materials. The list should be with names (str) of a valid Lumerical materials.
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Directional Coupler.
+Parameters[‘Material’] : list of str</p>
+<blockquote>
+<div><p>List of Materials. The list should be with names (str) of a valid Lumerical materials.
 Check the names in Lumerical Materials viewer.
 The List of materials must contain at least 2 materials!
 Parameters[‘Material’] = [‘Cladding/Substrat’, ‘Object Material’].
-For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Substrate Width.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'DC</em>) – Length of the directional coupler</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int/float</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Waveguide width.</p></li>
-<li><p><strong>Offset'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Position</em>) – Offset between the waveguides. The minimum distance between Waveguides is 1 um
-becouse of manufactering restrictions in the University.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Cladding&quot;</strong><strong>]</strong> (<em>anything</em><em>, </em><em>optional</em>) – This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
+For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘Substrate Width’]<span class="classifier">int/float</span></dt><dd><p>Substrate Width.</p>
+</dd>
+<dt>Parameters[‘DC Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the directional coupler</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. The minimum distance between Waveguides is 1 um
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Cladding”]<span class="classifier">anything, optional</span></dt><dd><p>This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
 and if so it will put cladding over your structure. If the user didnt give the “Cladding” as dictionary key no cladding
-will be set.</p></li>
-</ul>
+will be set.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
@@ -657,33 +691,59 @@ monitors that ware set in the solver functions.</p>
 <span class="sig-name descname"><span class="pre">GratingCoupler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.GratingCoupler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.GratingCoupler" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>GC'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Material</em>) – List of Materials. the list should be with names (str) of a valid Lumerical materials.
-Check the names in Lumerical Materials viewer. For Example “Parameters[‘Material GC’] = [“SiO2 (Glass) - Palik”, “Si (Silicon) - Palik”]”</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Output Length</em>) – Lenght of the Grating Coupler Area</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – Widht of the Grating Coupler Area</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – Hight of the Grating Coupler Material</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – How deep, taken from the Parameters[“Hight GC”] will be the etchin depth of the gratings</p></li>
-<li><p><strong>Cycle&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Duty</em>) – Duty cycle of the gratings. For example Parameters[“Duty Cycle”] = 0.39 will result in 39% Duty Cycle</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – Pitch of the Grating Coupler. For Example Parameters[“Pitch GC”] = 0.6e-6 will result in 6um Etch Space + Rib Space = 0.6um.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int/float</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect! In this case is used only when Parameters[“Taper”] = True</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Taper&quot;</strong><strong>]</strong> (<em>boolen</em>) – You can create an input Taper to your Grating Coupler structure</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Waveguide width. Also in this function and ONLY in this function this will be the
-ibverse Taper width!!!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Slab height</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Taper Length</p></li>
-<li><p><strong>Diameter&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;SMF Cladding</em>) – Single Mode Fiber core Diameter</p></li>
-<li><p><strong>Diameter&quot;</strong><strong>]</strong> – Single Mode Fiber Cladding Diameter</p></li>
-<li><p><strong>Index&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;SMF Cladding</em>) – Single Mode Fiber Core Index</p></li>
-<li><p><strong>Index&quot;</strong><strong>]</strong> – Single Mode Fiber Cladding Index</p></li>
-<li><p><strong>Theta&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;SMF</em>) – Tilting Angle of the Single Mode Fiber to the Grating Coupler. Normaly we choose Parameters[“SMF Theta”] = 15</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;SMF Z</em>) – Lenght/Span of the Single Mode Fiber</p></li>
-</ul>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the GratingCoupler.
+Parameters[‘Material GC’] : list of str</p>
+<blockquote>
+<div><p>List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer. For Example “Parameters[‘Material GC’] = [“SiO2 (Glass) - Palik”, “Si (Silicon) - Palik”]”</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[“Length GC”]: int/float</dt><dd><p>Lenght of the Grating Coupler Area</p>
+</dd>
+<dt>Parameters[“Width GC”]: int/float</dt><dd><p>Widht of the Grating Coupler Area</p>
+</dd>
+<dt>Parameters[“Hight GC”]: int/float</dt><dd><p>Hight of the Grating Coupler Material</p>
+</dd>
+<dt>Parameters[“Etch Depth GC”]: int/float</dt><dd><p>How deep, taken from the Parameters[“Hight GC”] will be the etchin depth of the gratings</p>
+</dd>
+<dt>Parameters[“Duty Cycle”]: int/float</dt><dd><p>Duty cycle of the gratings. For example Parameters[“Duty Cycle”] = 0.39 will result in 39% Duty Cycle</p>
+</dd>
+<dt>Parameters[“Pitch GC”]: int/float</dt><dd><p>Pitch of the Grating Coupler. For Example Parameters[“Pitch GC”] = 0.6e-6 will result in 6um Etch Space + Rib Space = 0.6um.</p>
+</dd>
+<dt>Parameters[“Input Length GC”]: int/float</dt><dd><p>An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start.</p>
+</dd>
+<dt>Parameters[“Output Length GC”]: int/float</dt><dd><p>An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect! In this case is used only when Parameters[“Taper”] = True</p>
+</dd>
+<dt>Parameters[“Taper”]<span class="classifier">boolen</span></dt><dd><p>You can create an input Taper to your Grating Coupler structure</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width. Also in this function and ONLY in this function this will be the
+ibverse Taper width!!!</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab height</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Taper Length</p>
+</dd>
+<dt>Parameters[“SMF Core Diameter”]<span class="classifier">int/float</span></dt><dd><p>Single Mode Fiber core Diameter</p>
+</dd>
+<dt>Parameters[“SMF Cladding Diameter”]<span class="classifier">int/float</span></dt><dd><p>Single Mode Fiber Cladding Diameter</p>
+</dd>
+<dt>Parameters[“SMF Core Index”]</dt><dd><p>Single Mode Fiber Core Index</p>
+</dd>
+<dt>Parameters[“SMF Cladding Index”]</dt><dd><p>Single Mode Fiber Cladding Index</p>
+</dd>
+<dt>Parameters[“SMF Theta”]: int/float</dt><dd><p>Tilting Angle of the Single Mode Fiber to the Grating Coupler. Normaly we choose Parameters[“SMF Theta”] = 15</p>
+</dd>
+<dt>Parameters[“SMF Z Span”]: int/float</dt><dd><p>Lenght/Span of the Single Mode Fiber</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -706,33 +766,54 @@ ibverse Taper width!!!</p></li>
 <span class="sig-name descname"><span class="pre">InverseTaper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.InverseTaper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.InverseTaper" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Material'</strong><strong>]</strong> (<em>list</em><em> of </em><em>str</em>) – List of Materials. The list should be with names (str) of a valid Lumerical materials.
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the InverseTaper.
+Parameters[‘Material’] : list of str</p>
+<blockquote>
+<div><p>List of Materials. The list should be with names (str) of a valid Lumerical materials.
 Check the names in Lumerical Materials viewer.
 The List of materials must contain at least 2 materials!
 For this structure 3 Material will be needed
 Parameters[‘Material’] = [‘Cladding/Substrat’, ‘Object Material’].
-For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int/float</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Waveguide width. Also in this function and ONLY in this function this will be the
-ibverse Taper width!!!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Slab height</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'PWB Taper</em>) – Inverse Taper Length</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Front Width of the inverse Taper!! In this Function and ONLY in this function, the
-Parameters[‘Taper Width’] is the frond width of the inverse Taper!</p></li>
-<li><p><strong>Back'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'PWB Taper Hight</em>) – Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)</p></li>
-<li><p><strong>Back'</strong><strong>]</strong> – Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)</p></li>
-<li><p><strong>Front'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'PWB Taper Hight</em>) – Photonic Wirebonding (PWB) Width front side (to the photonic waveguide)</p></li>
-<li><p><strong>Front'</strong><strong>]</strong> – Photonic Wire Bonding Height front side (to the photonic waveguide)</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Length of the Photonic Wire Bonding Taper</p></li>
-<li><p><strong>Diameter&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;SMF Cladding</em>) – Single Mode Fiber core Diameter</p></li>
-<li><p><strong>Diameter&quot;</strong><strong>]</strong> – Single Mode Fiber Cladding Diameter</p></li>
-<li><p><strong>Index&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;SMF Cladding</em>) – Single Mode Fiber Core Index</p></li>
-<li><p><strong>Index&quot;</strong><strong>]</strong> – Single Mode Fiber Cladding Index</p></li>
-</ul>
+For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width. Also in this function and ONLY in this function this will be the
+ibverse Taper width!!!</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab height</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Inverse Taper Length</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>Front Width of the inverse Taper!! In this Function and ONLY in this function, the
+Parameters[‘Taper Width’] is the frond width of the inverse Taper!</p>
+</dd>
+<dt>Parameters[‘PWB Taper Width Back’]<span class="classifier">int/float</span></dt><dd><p>Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)</p>
+</dd>
+<dt>Parameters[‘PWB Taper Hight Back’]<span class="classifier">int/float</span></dt><dd><p>Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)</p>
+</dd>
+<dt>Parameters[‘PWB Taper Width Front’]<span class="classifier">int/float</span></dt><dd><p>Photonic Wirebonding (PWB) Width front side (to the photonic waveguide)</p>
+</dd>
+<dt>Parameters[‘PWB Taper Hight Front’]<span class="classifier">int/float</span></dt><dd><p>Photonic Wire Bonding Height front side (to the photonic waveguide)</p>
+</dd>
+<dt>Parameters[‘PWB Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the Photonic Wire Bonding Taper</p>
+</dd>
+<dt>Parameters[“SMF Core Diameter”]<span class="classifier">int/float</span></dt><dd><p>Single Mode Fiber core Diameter</p>
+</dd>
+<dt>Parameters[“SMF Cladding Diameter”]<span class="classifier">int/float</span></dt><dd><p>Single Mode Fiber Cladding Diameter</p>
+</dd>
+<dt>Parameters[“SMF Core Index”]</dt><dd><p>Single Mode Fiber Core Index</p>
+</dd>
+<dt>Parameters[“SMF Cladding Index”]</dt><dd><p>Single Mode Fiber Cladding Index</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
@@ -753,44 +834,59 @@ Parameters[‘Taper Width’] is the frond width of the inverse Taper!</p></li>
 <span class="sig-name descname"><span class="pre">MMI2x1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.MMI2x1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.MMI2x1" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Material'</strong><strong>]</strong> (<em>list</em><em> of </em><em>str</em>) – List of Materials. The list should be with names (str) of a valid Lumerical materials.
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
+<dt>Dictionary with all the data needet for the 2x1 MMI.</dt><dd><dl class="simple">
+<dt>Parameters[‘Material’]<span class="classifier">list of str</span></dt><dd><p>List of Materials. The list should be with names (str) of a valid Lumerical materials.
 Check the names in Lumerical Materials viewer.
 The List of materials must contain at least 2 materials!
 Parameters[‘Material’] = [‘Cladding/Substrat’, ‘Object Material’].
-For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Width of the MMI.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of the MMI.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int/float</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – <p>Waveguide hight. Also the height of the MMI section
-Parameters[‘WG Width’] : int/float</p>
-<blockquote>
-<div><p>Waveguide width.</p>
-</div></blockquote>
-</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Waveguide length.</p></li>
-<li><p><strong>Offset'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Position</em>) – Offset between the waveguides. If Taper == True then this become the offset
+For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p>
+</dd>
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the MMI.</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the MMI.</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide length.</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
 betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
 the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-becouse of manufactering restrictions in the University.</p></li>
-<li><p><strong>Input'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Offset</em>) – Offset of the input waveguide.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Taper'</strong><strong>]</strong> (<em>boolen</em>) – Taper can be set to be True ot False.
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘Offset Input’]<span class="classifier">int/float</span></dt><dd><p>Offset of the input waveguide.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>Taper can be set to be True ot False.
 if Taper == False - No Taper used
-if Taper == True - Taper placed</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – If Taper == True, then this will set the Tapers length. If Taper == False
-this will be ignored and some random value can be given.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – If Taper == True, then this will set the Tapers width. If Taper == False
-this will be ignored and some random value can be given.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Cladding&quot;</strong><strong>]</strong> (<em>anything</em><em>, </em><em>optional</em>) – This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
+if Taper == True - Taper placed</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers length. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers width. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+<dt>Parameters[“Cladding”]<span class="classifier">anything, optional</span></dt><dd><p>This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
 and if so it will put cladding over your structure. If the user didnt give the “Cladding” as dictionary key no cladding
-will be set.</p></li>
-<li><p><strong>Output&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Offset</em>) – This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only
-becouse the maschine of our physic departmant had some proiblems with the LNOI objects design.</p></li>
-</ul>
+will be set.</p>
+</dd>
+<dt>Parameters[“Offset Output”]<span class="classifier">anything, optional</span></dt><dd><p>This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only
+becouse the maschine of our physic departmant had some proiblems with the LNOI objects design.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
@@ -806,45 +902,52 @@ becouse the maschine of our physic departmant had some proiblems with the LNOI o
 <span class="sig-name descname"><span class="pre">MMI2x2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.MMI2x2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.MMI2x2" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Material'</strong><strong>]</strong> (<em>list</em><em> of </em><em>str</em>) – <dl class="simple">
-<dt>List of Materials. The list should be with names (str) of a valid Lumerical materials.</dt><dd><p>Check the names in Lumerical Materials viewer.
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the 2x2 MMI.</p>
+<dl class="simple">
+<dt>Parameters[‘Material’]<span class="classifier">list of str</span></dt><dd><p>List of Materials. The list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer.
 The List of materials must contain at least 2 materials!
 Parameters[‘Material’] = [‘Cladding/Substrat’, ‘Object Material’].
 For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p>
 </dd>
 <dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
 </dd>
-</dl>
-</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Width of the MMI.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of the MMI.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int/float</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Waveguide width.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Waveguide length.</p></li>
-<li><p><strong>Offset'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Position</em>) – <dl class="simple">
-<dt>Offset between the waveguides. If Taper == True then this become the offset</dt><dd><p>betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the MMI.</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the MMI.</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide length.</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
+betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
 the MMI structure. The minimum distance between Taper and Waveguide is 1 um
 becouse of manufactering restrictions in the University.</p>
 </dd>
 <dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
 </dd>
-</dl>
-</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Taper'</strong><strong>]</strong> (<em>boolen</em>) – Taper can be set to be True ot False.
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>Taper can be set to be True ot False.
 if Taper == False - No Taper used
-if Taper == True - Taper placed</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – If Taper == True, then this will set the Tapers length. If Taper == False
-this will be ignored and some random value can be given.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – If Taper == True, then this will set the Tapers width. If Taper == False
-this will be ignored and some random value can be given.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Cladding&quot;</strong><strong>]</strong> (<em>anything</em><em>, </em><em>optional</em>) – This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
+if Taper == True - Taper placed</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers length. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>If Taper == True, then this will set the Tapers width. If Taper == False
+this will be ignored and some random value can be given.</p>
+</dd>
+<dt>Parameters[“Cladding”]<span class="classifier">anything, optional</span></dt><dd><p>This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
 and if so it will put cladding over your structure. If the user didnt give the “Cladding” as dictionary key no cladding
-will be set.</p></li>
-</ul>
+will be set.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – Value Error.</p>
@@ -930,31 +1033,56 @@ will be set.</p></li>
 <span class="sig-name descname"><span class="pre">RingGratingCoupler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.RingGratingCoupler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.RingGratingCoupler" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>GC'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Material</em>) – List of Materials. the list should be with names (str) of a valid Lumerical materials.
-Check the names in Lumerical Materials viewer. For Example “Parameters[‘Material GC’] = [“SiO2 (Glass) - Palik”, “Si (Silicon) - Palik”]”</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Output Length</em>) – Lenght of the Grating Coupler Area</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – Widht of the Grating Coupler Area</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – Hight of the Grating Coupler Material</p></li>
-<li><p><strong>Radius&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;GC</em>) – Radius of the Ring Grating Coupler in um. For Example “Parameters[“GC Radius”] = 25e-6”</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – How deep, taken from the Parameters[“Hight GC”] will be the etchin depth of the gratings</p></li>
-<li><p><strong>Cycle&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Duty</em>) – Duty cycle of the gratings. For example Parameters[“Duty Cycle”] = 0.39 will result in 39% Duty Cycle</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – Pitch of the Grating Coupler. For Example Parameters[“Pitch GC”] = 0.6e-6 will result in 6um Etch Space + Rib Space = 0.6um.</p></li>
-<li><p><strong>LengthGC&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Input</em>) – An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int/float</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Waveguide width.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Slab height</p></li>
-<li><p><strong>Diameter&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;SMF Cladding</em>) – Single Mode Fiber core Diameter</p></li>
-<li><p><strong>Diameter&quot;</strong><strong>]</strong> – Single Mode Fiber Cladding Diameter</p></li>
-<li><p><strong>Index&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;SMF Cladding</em>) – Single Mode Fiber Core Index</p></li>
-<li><p><strong>Index&quot;</strong><strong>]</strong> – Single Mode Fiber Cladding Index</p></li>
-<li><p><strong>Theta&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;SMF</em>) – Tilting Angle of the Single Mode Fiber to the Grating Coupler. Normaly we choose Parameters[“SMF Theta”] = 15</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;SMF Z</em>) – Lenght/Span of the Single Mode Fiber</p></li>
-</ul>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the GratingCoupler.
+Parameters[‘Material GC’] : list of str</p>
+<blockquote>
+<div><p>List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer. For Example “Parameters[‘Material GC’] = [“SiO2 (Glass) - Palik”, “Si (Silicon) - Palik”]”</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[“Length GC”]: int/float</dt><dd><p>Lenght of the Grating Coupler Area</p>
+</dd>
+<dt>Parameters[“Width GC”]: int/float</dt><dd><p>Widht of the Grating Coupler Area</p>
+</dd>
+<dt>Parameters[“Hight GC”]: int/float</dt><dd><p>Hight of the Grating Coupler Material</p>
+</dd>
+<dt>Parameters[“GC Radius”]: int/float</dt><dd><p>Radius of the Ring Grating Coupler in um. For Example “Parameters[“GC Radius”] = 25e-6”</p>
+</dd>
+<dt>Parameters[“Etch Depth GC”]: int/float</dt><dd><p>How deep, taken from the Parameters[“Hight GC”] will be the etchin depth of the gratings</p>
+</dd>
+<dt>Parameters[“Duty Cycle”]: int/float</dt><dd><p>Duty cycle of the gratings. For example Parameters[“Duty Cycle”] = 0.39 will result in 39% Duty Cycle</p>
+</dd>
+<dt>Parameters[“Pitch GC”]: int/float</dt><dd><p>Pitch of the Grating Coupler. For Example Parameters[“Pitch GC”] = 0.6e-6 will result in 6um Etch Space + Rib Space = 0.6um.</p>
+</dd>
+<dt>Parameters[“Input LengthGC”]: int/float</dt><dd><p>An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start.</p>
+</dd>
+<dt>Parameters[“Output Length GC”]: int/float</dt><dd><p>An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab height</p>
+</dd>
+<dt>Parameters[“SMF Core Diameter”]<span class="classifier">int/float</span></dt><dd><p>Single Mode Fiber core Diameter</p>
+</dd>
+<dt>Parameters[“SMF Cladding Diameter”]<span class="classifier">int/float</span></dt><dd><p>Single Mode Fiber Cladding Diameter</p>
+</dd>
+<dt>Parameters[“SMF Core Index”]</dt><dd><p>Single Mode Fiber Core Index</p>
+</dd>
+<dt>Parameters[“SMF Cladding Index”]</dt><dd><p>Single Mode Fiber Cladding Index</p>
+</dd>
+<dt>Parameters[“SMF Theta”]: int/float</dt><dd><p>Tilting Angle of the Single Mode Fiber to the Grating Coupler. Normaly we choose Parameters[“SMF Theta”] = 15</p>
+</dd>
+<dt>Parameters[“SMF Z Span”]: int/float</dt><dd><p>Lenght/Span of the Single Mode Fiber</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1063,35 +1191,52 @@ will be done.</p>
 <span class="sig-name descname"><span class="pre">StraightWaveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.StraightWaveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.StraightWaveguide" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate Height</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the Waveguide</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Width of the Waveguide</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of the Waveguide</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Taper'</strong><strong>]</strong> (<em>boolen</em>) – If Taper == False, only Waveguiedes will be constructed.
-If Taper == True, only an single Taper will be constructed</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Taper Length</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Taper backside width, the frontside width is the waveguide width</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Slab height.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Material'</strong><strong>]</strong> (<em>list</em>) – List of Materials. The list should be with names (str) of a valid Lumerical materials.
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Straight Wavaguide.
+Parameters[‘Substrate Height’] : int float</p>
+<blockquote>
+<div><p>Substrate Height</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the Waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the Waveguide</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the Waveguide</p>
+</dd>
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>If Taper == False, only Waveguiedes will be constructed.
+If Taper == True, only an single Taper will be constructed</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Taper Length</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>Taper backside width, the frontside width is the waveguide width</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab height.</p>
+</dd>
+<dt>Parameters[‘Material’]<span class="classifier">list</span></dt><dd><p>List of Materials. The list should be with names (str) of a valid Lumerical materials.
 Check the names in Lumerical Materials viewer.
 The List of materials must contain at least 2 materials!
 Parameters[‘Material’] = [‘Cladding/Substrat’, ‘Object Material’].
-For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Wavelength&quot;</strong><strong>]</strong> (<em>int/float</em>) – Wavelength</p></li>
-<li><p><strong>Angle&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Waveguide</em>) – Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
+For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p>
+</dd>
+<dt>Parameters[“Wavelength”]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Waveguide Angle”]<span class="classifier">int/float</span></dt><dd><p>Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
 If Waveguide Angle is different then 0, then the straight waveguide will be tilted
-at the choosen degrees.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Cladding&quot;</strong><strong>]</strong> (<em>anything</em><em>, </em><em>optional</em>) – This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
+at the choosen degrees.</p>
+</dd>
+<dt>Parameters[“Cladding”]<span class="classifier">anything, optional</span></dt><dd><p>This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
 and if so it will put cladding over your structure. If the user didnt give the “Cladding” as dictionary key no cladding
-will be set.</p></li>
-<li><p><strong>Type&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Taper</em>) – This function will check if you have set Parameters[“Taper Type”] to anaything, for example “Parameters[“Taper Type”]=1”
+will be set.</p>
+</dd>
+<dt>Parameters[“Taper Type”]<span class="classifier">anything, optional</span></dt><dd><p>This function will check if you have set Parameters[“Taper Type”] to anaything, for example “Parameters[“Taper Type”]=1”
 and if so it will design an Inverse Taper Structure with no Cladding. Here the option “Cladding” is not active and will be ignored.
-If the user didnt give the “Taper Type” as dictionary key, then an normal taper structure will be simulated.</p></li>
-</ul>
+If the user didnt give the “Taper Type” as dictionary key, then an normal taper structure will be simulated.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – Value Error</p>
@@ -1107,32 +1252,50 @@ If the user didnt give the “Taper Type” as dictionary key, then an normal ta
 <span class="sig-name descname"><span class="pre">WDM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.WDM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.WDM" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Material'</strong><strong>]</strong> (<em>list</em><em> of </em><em>str</em>) – List of Materials. The list should be with names (str) of a valid Lumerical materials.
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the WDM.
+Parameters[‘Material’] : list of str</p>
+<blockquote>
+<div><p>List of Materials. The list should be with names (str) of a valid Lumerical materials.
 Check the names in Lumerical Materials viewer.
 The List of materials must contain at least 2 materials!
 Parameters[‘Material’] = [‘Cladding/Substrat’, ‘Object Material’].
-For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Width of the MMI.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of the MMI.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int/float</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Waveguide width.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Waveguide length.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Thetha'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Angle</em>) – Input and output angle of the waveguide. This is only temporally</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Backside width of the Taper, frontside width is the waveguide width</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Length of the Taper.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Taper'</strong><strong>]</strong> (<em>boolen</em>) – If Taper == False, no Taper will be placed with the Waveguides.
-If Taper == True, tapers will be placed with the waveguides</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Cladding&quot;</strong><strong>]</strong> (<em>anything</em><em>, </em><em>optional</em>) – This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
+For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the MMI.</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the MMI.</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide length.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Angle Thetha’] :</dt><dd><p>Input and output angle of the waveguide. This is only temporally</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>Backside width of the Taper, frontside width is the waveguide width</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the Taper.</p>
+</dd>
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>If Taper == False, no Taper will be placed with the Waveguides.
+If Taper == True, tapers will be placed with the waveguides</p>
+</dd>
+<dt>Parameters[“Cladding”]<span class="classifier">anything, optional</span></dt><dd><p>This function will check if you have set Parameters[“Cladding”] to anaything, for example “Parameters[“Cladding”]=1”
 and if so it will put cladding over your structure. If the user didnt give the “Cladding” as dictionary key no cladding
-will be set.</p></li>
-</ul>
+will be set.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – DESCRIPTION.</p>
@@ -1148,21 +1311,31 @@ will be set.</p></li>
 <span class="sig-name descname"><span class="pre">Waveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.Waveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.Waveguide" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Height of the substrate.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Length of the Waveguide.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the Waveguide</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Width of the Waveguide</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Slab height.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Material'</strong><strong>]</strong> (<em>list</em><em> of </em><em>str</em>) – List of Materials. The list should be with names (str) of a valid Lumerical materials.
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Wavaguide.
+Parameters[‘Substrate Height’] : int7float</p>
+<blockquote>
+<div><p>Height of the substrate.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Length’]: int/float</dt><dd><p>Length of the Waveguide.</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the Waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the Waveguide</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab height.</p>
+</dd>
+<dt>Parameters[‘Material’]<span class="classifier">list of str</span></dt><dd><p>List of Materials. The list should be with names (str) of a valid Lumerical materials.
 Check the names in Lumerical Materials viewer.
 The List of materials must contain at least 2 materials!
 Parameters[‘Material’] = [‘Cladding/Substrat’, ‘Object Material’].
-For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p></li>
-</ul>
+For Example: Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, ‘LiNbO3_20deg_X cut’].</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – Value Error</p>
@@ -1190,20 +1363,33 @@ Remove all objects.</p>
 <span class="sig-name descname"><span class="pre">setArcWaveguideFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setArcWaveguideFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setArcWaveguideFDTDSolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Waveguide width.</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'x</em>) – EME Mesh resolutio,</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength</p></li>
-<li><p><strong>Radius&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;S_Band</em>) – S-Bend Radius in um.</p></li>
-<li><p><strong>deg'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Arc</em>) – Arc define the Arc of the curve. It can be 90 or 180 degrees only.
-This two will define an 1/4 of a circle or 1/2 of a circle.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p></li>
-</ul>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the ArcWaveguideFDTDSolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate height.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>EME Mesh resolutio,</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“S_Band Radius”]<span class="classifier">int/float</span></dt><dd><p>S-Bend Radius in um.</p>
+</dd>
+<dt>Parameters[‘Arc deg’]<span class="classifier">int/float</span></dt><dd><p>Arc define the Arc of the curve. It can be 90 or 180 degrees only.
+This two will define an 1/4 of a circle or 1/2 of a circle.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]: list of int/floats</dt><dd><p>Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1216,18 +1402,30 @@ This two will define an 1/4 of a circle or 1/2 of a circle.</p></li>
 <span class="sig-name descname"><span class="pre">setBendWaveguideFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setBendWaveguideFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setBendWaveguideFDTDSolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'x</em>) – EME Mesh resolutio,</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength</p></li>
-<li><p><strong>span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;y</em>) – Length of the S-Bend Waveguide</p></li>
-<li><p><strong>span&quot;</strong><strong>]</strong> – Width of the S-Bend Waveguide</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p></li>
-</ul>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the BendWaveguideFDTDSolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate height.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>EME Mesh resolutio,</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“x span”]<span class="classifier">int/float</span></dt><dd><p>Length of the S-Bend Waveguide</p>
+</dd>
+<dt>Parameters[“y span”]<span class="classifier">int/float</span></dt><dd><p>Width of the S-Bend Waveguide</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]: list of int/floats</dt><dd><p>Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1245,23 +1443,38 @@ This two will define an 1/4 of a circle or 1/2 of a circle.</p></li>
 <span class="sig-name descname"><span class="pre">setDCEMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setDCEMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setDCEMESolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Height of the Substrate</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Width of the MMI</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'DC</em>) – Length of the Directional coupler</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the Waveguide</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Waveguide Width</p></li>
-<li><p><strong>Offset'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Position</em>) – Positional offser of the waveguides. If posOffset the two Waveguides
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the DCEMESolver.
+Parameters[‘Substrate Height’] : float/int</p>
+<blockquote>
+<div><p>Height of the Substrate</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Substrate Width’]<span class="classifier">float/int</span></dt><dd><p>Width of the MMI</p>
+</dd>
+<dt>Parameters[‘DC Length’]<span class="classifier">float/int</span></dt><dd><p>Length of the Directional coupler</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">float/int</span></dt><dd><p>Height of the Waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">float/int</span></dt><dd><p>Waveguide Width</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">float/int</span></dt><dd><p>Positional offser of the waveguides. If posOffset the two Waveguides
 will be offset of the middle position (y = 0) by the half of there
-Width. In this case they will not overlap if the Offset is 0.</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'z</em>) – Mesh resolution for the y-Axis</p></li>
-<li><p><strong>res'</strong><strong>]</strong> – Mesh resolution for the z Axis</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Slab height.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>float/int</em>) – Wavelength</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-</ul>
+Width. In this case they will not overlap if the Offset is 0.</p>
+</dd>
+<dt>Parameters[‘y res’]<span class="classifier">float/int</span></dt><dd><p>Mesh resolution for the y-Axis</p>
+</dd>
+<dt>Parameters[‘z res’]<span class="classifier">float/int</span></dt><dd><p>Mesh resolution for the z Axis</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">float/int</span></dt><dd><p>Slab height.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">float/int</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Port Span”]: list of int/floats</dt><dd><p>Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1274,22 +1487,36 @@ Width. In this case they will not overlap if the Offset is 0.</p></li>
 <span class="sig-name descname"><span class="pre">setDCFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setDCFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setDCFDTDSolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Height of the Substrate</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Width of the MMI</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'DC</em>) – Length of the Directional coupler</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the Waveguide</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Waveguide Width</p></li>
-<li><p><strong>Offset'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Position</em>) – Positional offser of the waveguides. If posOffset the two Waveguides
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the DCFDTDSolver.
+Parameters[‘Substrate Height’] : float/int</p>
+<blockquote>
+<div><p>Height of the Substrate</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Substrate Width’]<span class="classifier">float/int</span></dt><dd><p>Width of the MMI</p>
+</dd>
+<dt>Parameters[‘DC Length’]<span class="classifier">float/int</span></dt><dd><p>Length of the Directional coupler</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">float/int</span></dt><dd><p>Height of the Waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">float/int</span></dt><dd><p>Waveguide Width</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">float/int</span></dt><dd><p>Positional offser of the waveguides. If posOffset the two Waveguides
 will be offset of the middle position (y = 0) by the half of there
-Width. In this case they will not overlap if the Offset is 0.</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'x</em>) – Mesh resolution for the x-Axis</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Slab height.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>float/int</em>) – Wavelength</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-</ul>
+Width. In this case they will not overlap if the Offset is 0.</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">float/int</span></dt><dd><p>Mesh resolution for the x-Axis</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">float/int</span></dt><dd><p>Slab height.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">float/int</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Port Span”]: list of int/floats</dt><dd><p>Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1302,21 +1529,38 @@ Width. In this case they will not overlap if the Offset is 0.</p></li>
 <span class="sig-name descname"><span class="pre">setGratingCouplerFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setGratingCouplerFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setGratingCouplerFDTDSolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Substrate</em>) – Substrate height.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Hight</em>) – Lenght of the Grating Coupler Area</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – Widht of the Grating Coupler Area</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – Hight of the Grating Coupler Material</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Taper'</strong><strong>]</strong> (<em>boolen</em>) – Add Taper to structure</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of the Taper</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'x</em>) – Mesh x-Axis</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p></li>
-<li><p><strong>Radius&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;GC</em>) – Radius of the Ring Grating Coupler in um. For Example “Parameters[“GC Radius”] = 25e-6”</p></li>
-</ul>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the GratingCouplerFDTDSolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate height.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[“Length GC”]: int/float</dt><dd><p>Lenght of the Grating Coupler Area</p>
+</dd>
+<dt>Parameters[“Input Length GC”]: int/float</dt><dd><p>An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start.</p>
+</dd>
+<dt>Parameters[“Output Length GC”]: int/float</dt><dd><p>An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.</p>
+</dd>
+<dt>Parameters[“Width GC”]: int/float</dt><dd><p>Widht of the Grating Coupler Area</p>
+</dd>
+<dt>Parameters[“Hight GC”]: int/float</dt><dd><p>Hight of the Grating Coupler Material</p>
+</dd>
+<dt>Parameters[‘Taper’]<span class="classifier">boolen</span></dt><dd><p>Add Taper to structure</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the Taper</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>Mesh x-Axis</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</dd>
+<dt>Parameters[“GC Radius”]: int/float</dt><dd><p>Radius of the Ring Grating Coupler in um. For Example “Parameters[“GC Radius”] = 25e-6”</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1333,9 +1577,13 @@ Width. In this case they will not overlap if the Offset is 0.</p></li>
 <dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setInverseTaperEMESolver">
 <span class="sig-name descname"><span class="pre">setInverseTaperEMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setInverseTaperEMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setInverseTaperEMESolver" title="Link to this definition"></a></dt>
 <dd><blockquote>
-<div><dl class="simple">
-<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
-</dd>
+<div><dl>
+<dt>Parameters<span class="classifier">Dictionary</span></dt><dd><p>Dictionary with all the data needet for the InverseTaperEMESolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate height.</p>
+</div></blockquote>
+<dl class="simple">
 <dt>Parameters[‘WG Height’<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
 </dd>
 <dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
@@ -1363,6 +1611,8 @@ Width. In this case they will not overlap if the Offset is 0.</p></li>
 <dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
 </dd>
 </dl>
+</dd>
+</dl>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1375,9 +1625,13 @@ Width. In this case they will not overlap if the Offset is 0.</p></li>
 <dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setInverseTaperFDTDSolver">
 <span class="sig-name descname"><span class="pre">setInverseTaperFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setInverseTaperFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setInverseTaperFDTDSolver" title="Link to this definition"></a></dt>
 <dd><blockquote>
-<div><dl class="simple">
-<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
-</dd>
+<div><dl>
+<dt>Parameters<span class="classifier">Dictionary</span></dt><dd><p>Dictionary with all the data needet for the InverseTaperFDTDSolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate height.</p>
+</div></blockquote>
+<dl class="simple">
 <dt>Parameters[‘WG Height’<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
 </dd>
 <dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
@@ -1403,6 +1657,8 @@ Width. In this case they will not overlap if the Offset is 0.</p></li>
 <dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
 </dd>
 </dl>
+</dd>
+</dl>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1416,32 +1672,53 @@ Width. In this case they will not overlap if the Offset is 0.</p></li>
 <span class="sig-name descname"><span class="pre">setMMI2x1EMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setMMI2x1EMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setMMI2x1EMESolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Height of the slab.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Width of MMI</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of MMI</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'angle'</strong><strong>]</strong> (<em>int/float</em>) – Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
-For anfle = 90 we get a perfect rect!</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Heigth of waveguide</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Width og waveguide</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Length of waveguide</p></li>
-<li><p><strong>Offset'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Position</em>) – Offset between the waveguides. If Taper == True then this become the offset
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the MMI2x1EMESolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Height of the slab.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of MMI</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of MMI</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+For anfle = 90 we get a perfect rect!</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width og waveguide</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Length of waveguide</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
 betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
 the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-becouse of manufactering restrictions in the University.</p></li>
-<li><p><strong>Input'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Offset</em>) – Input waveguide/taper offset.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Taper&quot;</strong><strong>]</strong> (<em>boolen</em>) – Add Taper to the structure on the input and output waveguids</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Lenght of the Taper in Parameters[“Taper”] = True</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'z</em>) – Mesh cell sizes.</p></li>
-<li><p><strong>res'</strong><strong>]</strong> – Mesh cell sizes.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p></li>
-<li><p><strong>Output&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Offset</em>) – This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only
-becouse the maschine of our physic departmant had some proiblems with the LNOI objects design.</p></li>
-</ul>
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘Offset Input’]<span class="classifier">int/float</span></dt><dd><p>Input waveguide/taper offset.</p>
+</dd>
+<dt>Parameters[“Taper”]: boolen</dt><dd><p>Add Taper to the structure on the input and output waveguids</p>
+</dd>
+<dt>Parameters[‘Taper Length’]: int/float</dt><dd><p>Lenght of the Taper in Parameters[“Taper”] = True</p>
+</dd>
+<dt>Parameters[‘y res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘z res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]: list of int/floats</dt><dd><p>Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p>
+</dd>
+<dt>Parameters[“Offset Output”]<span class="classifier">anything, optional</span></dt><dd><p>This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only
+becouse the maschine of our physic departmant had some proiblems with the LNOI objects design.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1454,29 +1731,48 @@ becouse the maschine of our physic departmant had some proiblems with the LNOI o
 <span class="sig-name descname"><span class="pre">setMMI2x1FDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setMMI2x1FDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setMMI2x1FDTDSolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Height of the slab.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Width of MMI</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of MMI</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Heigth of waveguide</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Width og waveguide</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Length of waveguide</p></li>
-<li><p><strong>Offset'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Position</em>) – Offset between the waveguides. If Taper == True then this become the offset
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the MMI2x1FDTDSolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Height of the slab.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of MMI</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of MMI</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width og waveguide</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Length of waveguide</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
 betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
 the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-becouse of manufactering restrictions in the University.</p></li>
-<li><p><strong>Input'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Offset</em>) – Input waveguide/taper offset.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Taper&quot;</strong><strong>]</strong> (<em>boolen</em>) – Add Taper to the structure on the input and output waveguids</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Lenght of the Taper in Parameters[“Taper”] = True</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'x</em>) – Mesh cell sizes.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p></li>
-<li><p><strong>Output&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Offset</em>) – This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only
-becouse the maschine of our physic departmant had some proiblems with the LNOI objects design.</p></li>
-</ul>
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[‘Offset Input’]<span class="classifier">int/float</span></dt><dd><p>Input waveguide/taper offset.</p>
+</dd>
+<dt>Parameters[“Taper”]: boolen</dt><dd><p>Add Taper to the structure on the input and output waveguids</p>
+</dd>
+<dt>Parameters[‘Taper Length’]: int/float</dt><dd><p>Lenght of the Taper in Parameters[“Taper”] = True</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]: list of int/floats</dt><dd><p>Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p>
+</dd>
+<dt>Parameters[“Offset Output”]<span class="classifier">anything, optional</span></dt><dd><p>This function will allow the user to move the outputs in oposite direction. Please dont use it since is there only
+becouse the maschine of our physic departmant had some proiblems with the LNOI objects design.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1489,27 +1785,45 @@ becouse the maschine of our physic departmant had some proiblems with the LNOI o
 <span class="sig-name descname"><span class="pre">setMMI2x2EMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setMMI2x2EMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setMMI2x2EMESolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Height of the slab.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Width of MMI</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of MMI</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Heigth of waveguide</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Width og waveguide</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Length of waveguide</p></li>
-<li><p><strong>Offset'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Position</em>) – Offset between the waveguides. If Taper == True then this become the offset
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the MMI2x2EMESolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Height of the slab.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of MMI</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of MMI</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width og waveguide</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Length of waveguide</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
 betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
 the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-becouse of manufactering restrictions in the University.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Taper&quot;</strong><strong>]</strong> (<em>boolen</em>) – Add Taper to the structure on the input and output waveguids</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Lenght of the Taper in Parameters[“Taper”] = True</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'z</em>) – Mesh cell sizes.</p></li>
-<li><p><strong>res'</strong><strong>]</strong> – Mesh cell size.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p></li>
-</ul>
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[“Taper”]: boolen</dt><dd><p>Add Taper to the structure on the input and output waveguids</p>
+</dd>
+<dt>Parameters[‘Taper Length’]: int/float</dt><dd><p>Lenght of the Taper in Parameters[“Taper”] = True</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘y res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘z res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell size.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]: list of int/floats</dt><dd><p>Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1522,26 +1836,43 @@ becouse of manufactering restrictions in the University.</p></li>
 <span class="sig-name descname"><span class="pre">setMMI2x2FDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setMMI2x2FDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setMMI2x2FDTDSolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Height of the slab.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Width of MMI</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of MMI</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Heigth of waveguide</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Width og waveguide</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Length of waveguide</p></li>
-<li><p><strong>Offset'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Position</em>) – Offset between the waveguides. If Taper == True then this become the offset
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the MMI2x2FDTDSolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Height of the slab.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of MMI</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of MMI</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width og waveguide</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Length of waveguide</p>
+</dd>
+<dt>Parameters[‘Position Offset’]<span class="classifier">int/float</span></dt><dd><p>Offset between the waveguides. If Taper == True then this become the offset
 betweent he tapers wider sides. Waveguide and Tapers cannot be placed ourside
 the MMI structure. The minimum distance between Taper and Waveguide is 1 um
-becouse of manufactering restrictions in the University.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Taper&quot;</strong><strong>]</strong> (<em>boolen</em>) – Add Taper to the structure on the input and output waveguids</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Lenght of the Taper in Parameters[“Taper”] = True</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'x</em>) – Mesh cell sizes.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p></li>
-</ul>
+becouse of manufactering restrictions in the University.</p>
+</dd>
+<dt>Parameters[“Taper”]: boolen</dt><dd><p>Add Taper to the structure on the input and output waveguids</p>
+</dd>
+<dt>Parameters[‘Taper Length’]: int/float</dt><dd><p>Lenght of the Taper in Parameters[“Taper”] = True</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]: list of int/floats</dt><dd><p>Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1554,20 +1885,36 @@ becouse of manufactering restrictions in the University.</p></li>
 <span class="sig-name descname"><span class="pre">setRingGratingCouplerFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setRingGratingCouplerFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setRingGratingCouplerFDTDSolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Substrate</em>) – Substrate height.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Hight</em>) – Lenght of the Grating Coupler Area</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – Widht of the Grating Coupler Area</p></li>
-<li><p><strong>GC&quot;</strong><strong>]</strong> – Hight of the Grating Coupler Material</p></li>
-<li><p><strong>Radius&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;GC</em>) – Radius of the Ring Grating Coupler in um. For Example “Parameters[“GC Radius”] = 25e-6”</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of the input Taper</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'x</em>) – Mesh x-Axis</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the RingGratingCouplerFDTDSolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate height.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[“Length GC”]: int/float</dt><dd><p>Lenght of the Grating Coupler Area</p>
+</dd>
+<dt>Parameters[“Input Length GC”]: int/float</dt><dd><p>An squere Waveguide with the same WG Height as the Grating coupler place before the Grating Coupler region will start.</p>
+</dd>
+<dt>Parameters[“Output Length GC”]: int/float</dt><dd><p>An squere Waveguide with the same WG Height as the Grating coupler place after the Grating Coupler region to finish the structure.</p>
+</dd>
+<dt>Parameters[“Width GC”]: int/float</dt><dd><p>Widht of the Grating Coupler Area</p>
+</dd>
+<dt>Parameters[“Hight GC”]: int/float</dt><dd><p>Hight of the Grating Coupler Material</p>
+</dd>
+<dt>Parameters[“GC Radius”]: int/float</dt><dd><p>Radius of the Ring Grating Coupler in um. For Example “Parameters[“GC Radius”] = 25e-6”</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the input Taper</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>Mesh x-Axis</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1580,24 +1927,40 @@ becouse of manufactering restrictions in the University.</p></li>
 <span class="sig-name descname"><span class="pre">setStraightWaveguideEMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setStraightWaveguideEMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setStraightWaveguideEMESolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Waveguide Length</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Waveguide width.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Taper&quot;</strong><strong>]</strong> (<em>boolen</em>) – If Taper == False, only straight Waveguide will be simulated,
-If Taper == True an Taper will be simulated</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Taper backside Width. Taper Fronside width is the width of the Waveguide</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Taper Length</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'z</em>) – EME Mesh resolutio,</p></li>
-<li><p><strong>res'</strong><strong>]</strong> – EME Mesh resolutio,</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength</p></li>
-<li><p><strong>Angle&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Waveguide</em>) – This Parameter will set the theta ratation angle of the port. It can be 90 or 180.</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Type&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Taper</em>) – <p>This function will check if you have set Parameters[“Taper Type”] to anaything, for example “Parameters[“Taper Type”]=1”
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the StraightWaveguideEMESolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate height.</p>
+</div></blockquote>
+<dl>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Length</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[“Taper”]<span class="classifier">boolen</span></dt><dd><p>If Taper == False, only straight Waveguide will be simulated,
+If Taper == True an Taper will be simulated</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>Taper backside Width. Taper Fronside width is the width of the Waveguide</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Taper Length</p>
+</dd>
+<dt>Parameters[‘y res’]: int/float</dt><dd><p>EME Mesh resolutio,</p>
+</dd>
+<dt>Parameters[‘z res’]: int/float</dt><dd><p>EME Mesh resolutio,</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Waveguide Angle”]<span class="classifier">int/float</span></dt><dd><p>This Parameter will set the theta ratation angle of the port. It can be 90 or 180.</p>
+</dd>
+<dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Taper Type”]<span class="classifier">anything, optional</span></dt><dd><p>This function will check if you have set Parameters[“Taper Type”] to anaything, for example “Parameters[“Taper Type”]=1”
 and if so it will design an Inverse Taper Structure with no Cladding. Here the option “Cladding” is not active and will be ignored.
 If the user didnt give the “Taper Type” as dictionary key, then an normal taper structure will be simulated.</p>
 <dl class="simple">
@@ -1615,8 +1978,9 @@ If the user didnt give the “Taper Type” as dictionary key, then an normal ta
 </dl>
 </dd>
 </dl>
-</p></li>
-</ul>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1629,23 +1993,40 @@ If the user didnt give the “Taper Type” as dictionary key, then an normal ta
 <span class="sig-name descname"><span class="pre">setStraightWaveguideFDTDSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setStraightWaveguideFDTDSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setStraightWaveguideFDTDSolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Waveguide Length</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Waveguide width.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Taper&quot;</strong><strong>]</strong> (<em>boolen</em>) – If Taper == False, only straight Waveguide will be simulated,
-If Taper == True an Taper will be simulated</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Taper backside Width. Taper Fronside width is the width of the Waveguide</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Taper Length</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'x</em>) – EME Mesh resolutio,</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength</p></li>
-<li><p><strong>Angle&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Waveguide</em>) – This Parameter will set the theta ratation angle of the port. It can be 90 or 180.</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Type&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Taper</em>) – <p>This function will check if you have set Parameters[“Taper Type”] to anaything, for example “Parameters[“Taper Type”]=1”
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the StraightWaveguideFDTDSolver.
+Parameters : Dictionary</p>
+<blockquote>
+<div><p>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p>
+</div></blockquote>
+<dl>
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height.</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Length</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[“Taper”]<span class="classifier">boolen</span></dt><dd><p>If Taper == False, only straight Waveguide will be simulated,
+If Taper == True an Taper will be simulated</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>Taper backside Width. Taper Fronside width is the width of the Waveguide</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Taper Length</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>EME Mesh resolutio,</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[“Waveguide Angle”]<span class="classifier">int/float</span></dt><dd><p>This Parameter will set the theta ratation angle of the port. It can be 90 or 180.</p>
+</dd>
+<dt>Parameters[“Port Span”]<span class="classifier">list of floats/ints</span></dt><dd><p>List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Taper Type”]<span class="classifier">anything, optional</span></dt><dd><p>This function will check if you have set Parameters[“Taper Type”] to anaything, for example “Parameters[“Taper Type”]=1”
 and if so it will design an Inverse Taper Structure with no Cladding. Here the option “Cladding” is not active and will be ignored.
 If the user didnt give the “Taper Type” as dictionary key, then an normal taper structure will be simulated.</p>
 <dl class="simple">
@@ -1663,8 +2044,9 @@ If the user didnt give the “Taper Type” as dictionary key, then an normal ta
 </dl>
 </dd>
 </dl>
-</p></li>
-</ul>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -1677,23 +2059,50 @@ If the user didnt give the “Taper Type” as dictionary key, then an normal ta
 <span class="sig-name descname"><span class="pre">setWDMEMESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setWDMEMESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setWDMEMESolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Width of the MMI.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Taper</em>) – Length of the MMI.</p></li>
-<li><p><strong>Height'</strong> (<em>Parameters</em><em>[</em><em>'WG</em>) – Waveguide hight. Also the height of the MMI section</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Waveguide length.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Waveguide width.</p></li>
-<li><p><strong>Width'</strong><strong>]</strong> – Taper backside width, frontside width is the waveguide width.</p></li>
-<li><p><strong>Length'</strong><strong>]</strong> – Taper Length</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'z</em>) – Mesh y-Axis</p></li>
-<li><p><strong>res'</strong><strong>]</strong> – Mesh z-Axis</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Slab Height.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength</p></li>
-<li><p><strong>Thetha'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Angle</em>) – Angle for the input and output waveguides</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>&quot;Mode&quot;</strong><strong>]</strong> (<em>str</em>) – Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p></li>
-<li><p><strong>Span&quot;</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>&quot;Port</em>) – Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p></li>
-</ul>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the WDMEMESolver.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate height.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘MMI Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the MMI.</p>
+</dd>
+<dt>Parameters[‘MMI Length’]<span class="classifier">int/float</span></dt><dd><p>Length of the MMI.</p>
+</dd>
+<dt>Parameters[‘WG Height’<span class="classifier">int/float</span></dt><dd><p>Waveguide hight. Also the height of the MMI section</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide length.</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width.</p>
+</dd>
+<dt>Parameters[‘Taper Width’]<span class="classifier">int/float</span></dt><dd><p>Taper backside width, frontside width is the waveguide width.</p>
+</dd>
+<dt>Parameters[‘Taper Length’]<span class="classifier">int/float</span></dt><dd><p>Taper Length</p>
+</dd>
+<dt>Parameters[‘y res’]<span class="classifier">int/float</span></dt><dd><p>Mesh y-Axis</p>
+</dd>
+<dt>Parameters[‘z res’]<span class="classifier">int/float</span></dt><dd><p>Mesh z-Axis</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Slab Height.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt>Parameters[‘Angle Thetha’]<span class="classifier">boolen</span></dt><dd><p>Angle for the input and output waveguides</p>
+</dd>
+<dt>Parameters[“Mode”]<span class="classifier">str</span></dt><dd><p>Mode to choose from (“fundamental TE mode”, “fundamental TM mode”, “fundamental mode”)</p>
+</dd>
+<dt>Parameters[“Port Span”]: list of int/floats</dt><dd><p>Parameters[“Port Span”] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">raises ValueError<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DESCRIPTION.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1703,15 +2112,26 @@ If the user didnt give the “Taper Type” as dictionary key, then an normal ta
 <span class="sig-name descname"><span class="pre">setWaveguideFDESolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Constructor/Constructor.html#Constructor.setWaveguideFDESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setWaveguideFDESolver" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Parameters</strong> (<em>Dictionary</em>) – Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'Slab</em>) – Substrate height</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Heigth of waveguide</p></li>
-<li><p><strong>res'</strong><strong>]</strong> (<em>Parameters</em><em>[</em><em>'z</em>) – Mesh cell sizes.</p></li>
-<li><p><strong>res'</strong><strong>]</strong> – Mesh cell sizes.</p></li>
-<li><p><strong>Height'</strong><strong>]</strong> – Height of the slab.</p></li>
-<li><p><strong>Parameters</strong><strong>[</strong><strong>'Wavelength'</strong><strong>]</strong> (<em>int/float</em>) – Wavelength.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the WaveguideFDESolver.
+Parameters : Dictionary</p>
+<blockquote>
+<div><p>Dictionary with all the data needet for the Bend Wavaguide. Data needet:</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Substrate Height’]: int/float</dt><dd><p>Substrate height</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Heigth of waveguide</p>
+</dd>
+<dt>Parameters[‘y res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘z res’]<span class="classifier">int/float</span></dt><dd><p>Mesh cell sizes.</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the slab.</p>
+</dd>
+<dt>Parameters[‘Wavelength’]<span class="classifier">int/float</span></dt><dd><p>Wavelength.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
