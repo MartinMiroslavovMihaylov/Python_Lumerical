@@ -5335,6 +5335,229 @@ class Constructor:
         self.lum.set("z min", Solver_Z)
         self.lum.set("z max", z_Pos + 0.5e-6)
   
+  
+  
+  
+    def LenseFiber(self, Parameters):
+        
+        
+        '''
+       
+        Parameters
+        ----------
+        Parameters : Dictionary
+            Dictionary with all the data needet for the GratingCoupler.
+            Take care since this object will create his own FDTD simulation object. No extra Solvers needed!
+            Parameters['Material'] : list of str
+                List of Materials. the list should be with names (str) of a valid Lumerical materials.
+                Check the names in Lumerical Materials viewer. For Example "Parameters['Material'] = ["SiO2 (Glass) - Palik", "Si (Silicon) - Palik"]"
+            Parameters["Lense Diameter"] : int/float
+                Lense diameter.
+            Parameters["Lense Thickness"]: int/float
+                Lens thickness
+            Parameters["SMF Core Diameter"] : int/float
+                Single Mode Fiber core Diameter
+            Parameters["SMF Cladding Diameter"] : int/float
+                Single Mode Fiber Cladding Diameter
+            Parameters["SMF Core Index"]
+                Single Mode Fiber Core Index
+            Parameters["SMF Cladding Index"]
+                Single Mode Fiber Cladding Index
+            Parameters['x res'] : int/float
+                Mesh step size
+            Parameters['Wavelength']: int/float
+                Simulation Wavelenght
+                
+
+        Returns
+        -------
+        None.
+
+        '''
+    
+    
+    
+        Lens_d   = Parameters["Lense Diameter"]
+        Lense_Thickness = Parameters["Lense Thickness"]
+        x_res = Parameters['x res'] 
+        Wavelength = Parameters['Wavelength'] 
+        Materials = Parameters['Material']
+
+
+        # SMF Parameters
+        Core_Diameter = Parameters["SMF Core Diameter"] 
+        Cladding_Diameter = Parameters["SMF Cladding Diameter"] 
+        Core_Index = Parameters["SMF Core Index"]
+        Cladding_Index = Parameters["SMF Cladding Index"] 
+        
+       
+        
+        
+        #Create SMF
+        self.lum.addcircle()
+        self.lum.set("name", "core")
+        self.lum.set("override mesh order from material database", 0)
+        self.lum.set("alpha", 1)
+        self.lum.set("radius", Core_Diameter / 2)
+        self.lum.set("index", Core_Index)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", 0)
+        self.lum.set("z span", 4e-6)
+        
+        
+  
+        self.lum.addcircle()
+        self.lum.set("name", "cladding")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 3)
+        self.lum.set("alpha", 0.35)
+        self.lum.set("radius", Cladding_Diameter / 2)
+        self.lum.set("index", Cladding_Index)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", 0)
+        self.lum.set("z span", 4e-6)
+        
+        self.lum.select("core")
+        self.lum.addtogroup('SMF')
+        self.lum.select("cladding")
+        self.lum.addtogroup('SMF')
+        
+        
+        
+        # Extract SMF Positions
+        self.lum.select("SMF::core")
+        x_Pos = self.lum.get("x")
+        y_Pos = self.lum.get("y")
+        
+        
+        # Set support ring with 0,5 um min thickness becouse of Voxel of Nanoscribe
+        self.lum.addcircle()
+        self.lum.set("name", "Support Ring Lense")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 4)
+        self.lum.set("radius", Core_Diameter / 2)
+        self.lum.set("material", Materials[1])
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", 2e-6 + 0.25e-6)
+        self.lum.set("z span",  0.5e-6)
+        
+        
+        # Add lense to on top of the o,5um Voxel ring
+        self.lum.addsphere()
+        self.lum.set("name", "Lense")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 4)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", 2e-6 + 0.5e-6)
+        self.lum.set("radius", Lens_d)
+        self.lum.set("make ellipsoid", 1)
+        self.lum.set("radius 2", Lens_d)
+        self.lum.set("radius 3", Lense_Thickness)
+        self.lum.set("material", Materials[1])
+        
+        
+        # Set FDTD Solver directly 
+        self.lum.addfdtd()
+        self.lum.set("x", 0)
+        self.lum.set("x span", 15e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 15e-6)
+        self.lum.set('simulation temperature', 273.15 + 20)
+        self.lum.set("z min", -4e-6)
+        self.lum.set("z max", 50e-6)
+        self.lum.set('z min bc', 'PML')
+        self.lum.set('z max bc', 'PML')
+        self.lum.set('mesh type', 'auto non-uniform')
+        self.lum.set('min mesh step', x_res)
+        self.lum.set('set simulation bandwidth', 0)
+        self.lum.set('global source center wavelength', Wavelength)
+        self.lum.set('global source wavelength span', 0)
+
+
+        # Add Gausssian Source
+        self.lum.addgaussian()
+        self.lum.set("injection axis", "z-axis")
+        self.lum.set("direction","Forward")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 9.2e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 9.2e-6)
+        self.lum.set("z", -2e-6)
+        self.lum.set("waist radius w0", 9.2e-6 /2)
+        
+        
+        # Add Index Monitor
+        self.lum.addindex()
+        self.lum.set("name", "index")
+        self.lum.set("monitor type", "2D Y-normal")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 10e-6)
+        self.lum.set("y", 0)
+        self.lum.set("z min", -3e-6)
+        self.lum.set("z max", 50e-6)
+        
+        
+        # Add Movie Monitor
+        self.lum.addmovie()
+        self.lum.set("name", "movie")
+        self.lum.set("monitor type", "2D Y-normal")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 10e-6)
+        self.lum.set("y", 0)
+        self.lum.set("z min", -3e-6)
+        self.lum.set("z max", 50e-6)
+        
+        
+        # Add Power and field 3D monitor
+        self.lum.addpower()
+        self.lum.set("name", "Power 3D monitor")
+        self.lum.set("monitor type", "3D")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 10e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 10e-6)
+        self.lum.set("z min", -3e-6)
+        self.lum.set("z max", 50e-6)
+        self.lum.set("output Px", 1)
+        self.lum.set("output Py", 1)
+        self.lum.set("output Pz", 1)
+        
+        
+        # Reflection 2D Monitor
+        self.lum.addpower()
+        self.lum.set("name", "2D Monitor")
+        self.lum.set("monitor type", "2D X-normal")
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 10e-6)
+        self.lum.set("z", -2e-6)
+        self.lum.set("z max", 50e-6)
+        self.lum.set("output Px", 1)
+        self.lum.set("output Py", 1)
+        self.lum.set("output Pz", 1)
+        
+        
+        self.lum.addpower()
+        self.lum.set("name", "R")
+        self.lum.set("monitor type", "2D Z-normal")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 10e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 10e-6)
+        self.lum.set("z", -3e-6)
+        self.lum.set("output Px", 1)
+        self.lum.set("output Py", 1)
+        self.lum.set("output Pz", 1)
+        
+        
+     
+        
+    
+    
         
         
         
