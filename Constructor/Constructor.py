@@ -5363,6 +5363,11 @@ class Constructor:
                 Single Mode Fiber Core Index
             Parameters["SMF Cladding Index"]
                 Single Mode Fiber Cladding Index
+            Parameters['Support Cylunder Hight']: int/float
+                Hight of the Cylinder holding the Lense. This is needed so that the Lense can have flat fine serface to be printed on.
+            Parameters['Hexagon Hight']: optional int/float
+                Hight of the Hexagon holding the Cylinder. If the Parameter is not set the Hexagon will be made with 4 um thickness. Where 2 um 
+                will go into the fiber array and 2 um will be above to print the cylinder on it. This is how is done in NanoPrintX.
             Parameters['x res'] : int/float
                 Mesh step size
             Parameters['Wavelength']: int/float
@@ -5382,6 +5387,13 @@ class Constructor:
         x_res = Parameters['x res'] 
         Wavelength = Parameters['Wavelength'] 
         Materials = Parameters['Material']
+        Cylinder_Hight = Parameters["Support Cylunder Hight"]
+        
+        if Parameters['Hexagon Hight'] == None: 
+            Hexagon_Hight = 4e-6
+        else:
+            Hexagon_Hight = Parameters['Hexagon Hight']
+        
 
 
         # SMF Parameters
@@ -5406,7 +5418,6 @@ class Constructor:
         self.lum.set("z span", 4e-6)
         
         
-  
         self.lum.addcircle()
         self.lum.set("name", "cladding")
         self.lum.set("override mesh order from material database", 1)
@@ -5430,9 +5441,27 @@ class Constructor:
         self.lum.select("SMF::core")
         x_Pos = self.lum.get("x")
         y_Pos = self.lum.get("y")
+        z_Pos = self.lum.get("z")
         
         
+        
+        # Create Hexagon support
+        self.lum.addpoly()
+        self.lum.set("name", "Support Hexagon")
+        self.lum.set("override mesh order from material database", 1)
+        self.lum.set("mesh order", 4)
+        pole = np.array([[0, -Cladding_Diameter / 2], [np.sin(60*np.pi/180)*Cladding_Diameter / 2, -Cladding_Diameter / 4], [np.sin(60*np.pi/180)*Cladding_Diameter / 2, Cladding_Diameter / 4], [0,Cladding_Diameter / 2], [-np.sin(60*np.pi/180)*Cladding_Diameter / 2, Cladding_Diameter / 4], [-np.sin(60*np.pi/180)*Cladding_Diameter / 2, -Cladding_Diameter / 4]])
+        self.lum.set("vertices", pole)
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("z", z_Pos + Hexagon_Hight/2)
+        self.lum.set("z span", Hexagon_Hight)
+        self.lum.set("material", Materials[1])
+        
+        
+       
         # Set support ring with 0,5 um min thickness becouse of Voxel of Nanoscribe
+        z_Pos = self.lum.get("z max")
         self.lum.addcircle()
         self.lum.set("name", "Support Ring Lense")
         self.lum.set("override mesh order from material database", 1)
@@ -5441,18 +5470,19 @@ class Constructor:
         self.lum.set("material", Materials[1])
         self.lum.set("x", 0)
         self.lum.set("y", 0)
-        self.lum.set("z", 2e-6 + 0.25e-6)
-        self.lum.set("z span",  0.5e-6)
+        self.lum.set("z", z_Pos + Cylinder_Hight/2)
+        self.lum.set("z span", Cylinder_Hight)
         
         
         # Add lense to on top of the o,5um Voxel ring
+        z_Pos = self.lum.get("z max")
         self.lum.addsphere()
         self.lum.set("name", "Lense")
         self.lum.set("override mesh order from material database", 1)
         self.lum.set("mesh order", 4)
         self.lum.set("x", 0)
         self.lum.set("y", 0)
-        self.lum.set("z", 2e-6 + 0.5e-6)
+        self.lum.set("z", z_Pos )
         self.lum.set("radius", Lens_d)
         self.lum.set("make ellipsoid", 1)
         self.lum.set("radius 2", Lens_d)
@@ -5557,12 +5587,6 @@ class Constructor:
      
         
     
-    
-        
-        
-        
-            
-
 
 
     # =============================================================================
