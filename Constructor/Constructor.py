@@ -5389,10 +5389,11 @@ class Constructor:
         Materials = Parameters['Material']
         Cylinder_Hight = Parameters["Support Cylunder Hight"]
         
-        if Parameters['Hexagon Hight'] == None: 
-            Hexagon_Hight = 4e-6
-        else:
+        if "Hexagon Hight" in list(Parameters.keys()):
             Hexagon_Hight = Parameters['Hexagon Hight']
+        else:
+            Hexagon_Hight = 4e-6
+            
         
 
 
