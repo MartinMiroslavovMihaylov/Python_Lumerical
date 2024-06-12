@@ -5512,9 +5512,9 @@ class Constructor:
         self.lum.set("x", 0)
         self.lum.set("y", 0)
         self.lum.set("z", z_Pos )
-        self.lum.set("radius", Lens_d)
+        self.lum.set("radius", Lens_d/2)
         self.lum.set("make ellipsoid", 1)
-        self.lum.set("radius 2", Lens_d)
+        self.lum.set("radius 2", Lens_d/2)
         self.lum.set("radius 3", Lense_Thickness)
         self.lum.set("material", Materials[1])
         
