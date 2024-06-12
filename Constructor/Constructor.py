@@ -5,11 +5,9 @@ Created on Fri Feb 10 08:31:42 2023
 @author: Martin.Mihaylov
 """
 
-import imp
+
 import numpy as np
 import sys
-
-
 
 def loadingBar(count, total, size=1):
     """
@@ -78,7 +76,37 @@ class Constructor:
             pass
         else:
             self.MaterialLib = MaterialLib
-        self.lumpai = imp.load_source('lumapi', self.file)
+            
+         
+        # Check Python Version !!! No import imp module after python 3.11
+        PyVersion = sys.version
+      
+        try:
+            if PyVersion.split(" ")[0] > "3.11.0":
+                import importlib.util
+                import importlib.machinery
+
+                def load_source(modname, filename):
+                    loader = importlib.machinery.SourceFileLoader(modname, filename)
+                    spec = importlib.util.spec_from_file_location(modname, filename, loader=loader)
+                    module = importlib.util.module_from_spec(spec)
+                    # The module is always executed and not cached in sys.modules.
+                    # Uncomment the following line to cache the module.
+                    # sys.modules[module.__name__] = module
+                    loader.exec_module(module)
+                    return module
+                
+                self.lumpai = load_source('lumapi', self.file)
+            else:
+                import imp
+                self.lumpai = imp.load_source('lumapi', self.file)
+        except ValueError as e:
+            print(f"ValueError encountered: {e}")
+        except ImportError as e:
+            print(f"ImportError encountered: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            
         self.Mode = Mode
         self.Struct = None
         self.SolverInfo = {}
