@@ -8,6 +8,9 @@ Created on Fri Feb 10 08:31:42 2023
 
 import numpy as np
 import sys
+import matplotlib.pyplot as plt
+
+
 
 def loadingBar(count, total, size=1):
     """
@@ -460,6 +463,10 @@ class Constructor:
             self.Strcut = "InverseTaper"
             self.setInverseTaperFDTDSolver(Parameters)
             self.SolverInfo["Simulated Object"] = "Inverse Taper"
+        elif Structure == "LenseFiber":
+            self.Struct = "LenseFiber"
+            self.setLenseFiberFDTD(Parameters)
+            self.SolverInfo["Simulated Object"] = "Lense Fiber"
         elif Structure == "GratingCoupler":
             self.Struct = "GratingCoupler"
             self.setGratingCouplerFDTDSolver(Parameters)
@@ -3555,6 +3562,7 @@ class Constructor:
         angle = Parameters['angle']
         WG_Height = Parameters['WG Height']
         WG_Width = Parameters['WG Width']
+        WG_Length = Parameters['WG Length']
         Slab_Height = Parameters['Slab Height']
         TaperLength = Parameters['Taper Length']
         TaperWidth = Parameters['Taper Width']
@@ -3600,7 +3608,7 @@ class Constructor:
         self.lum.set("z min", min_subH)
         self.lum.set("z max", max_subH)
         self.lum.set("x min", -TaperLength_PWB/2)
-        self.lum.set("x max", TaperLength_PWB )
+        self.lum.set("x max", TaperLength_PWB/2 + WG_Length )
         # self.lum.set("x", 10e-6)
         # self.lum.set("x span", TaperLength_PWB * 2)
         self.lum.set("material", MaterialSub)
@@ -3622,7 +3630,7 @@ class Constructor:
             self.lum.set("z min", min_slabH)
             self.lum.set("z max", max_slabH)
             self.lum.set("x min", -TaperLength_PWB / 2 - 0.1e-6)
-            self.lum.set("x max", TaperLength_PWB)
+            self.lum.set("x max", TaperLength_PWB/2 + WG_Length)
             # self.lum.set("x", 10e-6)
             # self.lum.set("x span", TaperLength_PWB * 2)
             self.lum.set("material", MaterialSlab)
@@ -3794,7 +3802,7 @@ class Constructor:
         self.lum.set("base width", WG_W)
         self.lum.set("base height", WG_Height)
         self.lum.set("base angle", 90 - angle)
-        pole = np.array([[0, 0], [x_max, 0]])
+        pole = np.array([[0, 0], [WG_Length, 0]])
         self.lum.set("poles", pole)
         self.lum.set("material", MaterialSlab)
         
@@ -5412,8 +5420,6 @@ class Constructor:
     
         Lens_d   = Parameters["Lense Diameter"]
         Lense_Thickness = Parameters["Lense Thickness"]
-        x_res = Parameters['x res'] 
-        Wavelength = Parameters['Wavelength'] 
         Materials = Parameters['Material']
         Cylinder_Hight = Parameters["Support Cylunder Hight"]
         
@@ -5518,102 +5524,7 @@ class Constructor:
         self.lum.set("radius 3", Lense_Thickness)
         self.lum.set("material", Materials[1])
         
-        
-        # Set FDTD Solver directly 
-        self.lum.addfdtd()
-        self.lum.set("x", 0)
-        self.lum.set("x span", 15e-6)
-        self.lum.set("y", 0)
-        self.lum.set("y span", 15e-6)
-        self.lum.set('simulation temperature', 273.15 + 20)
-        self.lum.set("z min", -4e-6)
-        self.lum.set("z max", 50e-6)
-        self.lum.set('z min bc', 'PML')
-        self.lum.set('z max bc', 'PML')
-        self.lum.set('mesh type', 'auto non-uniform')
-        self.lum.set('min mesh step', x_res)
-        self.lum.set('set simulation bandwidth', 0)
-        self.lum.set('global source center wavelength', Wavelength)
-        self.lum.set('global source wavelength span', 0)
 
-
-        # Add Gausssian Source
-        self.lum.addgaussian()
-        self.lum.set("injection axis", "z-axis")
-        self.lum.set("direction","Forward")
-        self.lum.set("x", 0)
-        self.lum.set("x span", 9.2e-6)
-        self.lum.set("y", 0)
-        self.lum.set("y span", 9.2e-6)
-        self.lum.set("z", -2e-6)
-        self.lum.set("waist radius w0", 9.2e-6 /2)
-        
-        
-        # Add Index Monitor
-        self.lum.addindex()
-        self.lum.set("name", "index")
-        self.lum.set("monitor type", "2D Y-normal")
-        self.lum.set("x", 0)
-        self.lum.set("x span", 10e-6)
-        self.lum.set("y", 0)
-        self.lum.set("z min", -3e-6)
-        self.lum.set("z max", 50e-6)
-        
-        
-        # Add Movie Monitor
-        self.lum.addmovie()
-        self.lum.set("name", "movie")
-        self.lum.set("monitor type", "2D Y-normal")
-        self.lum.set("x", 0)
-        self.lum.set("x span", 10e-6)
-        self.lum.set("y", 0)
-        self.lum.set("z min", -3e-6)
-        self.lum.set("z max", 50e-6)
-        
-        
-        # Add Power and field 3D monitor
-        self.lum.addpower()
-        self.lum.set("name", "Power 3D monitor")
-        self.lum.set("monitor type", "3D")
-        self.lum.set("x", 0)
-        self.lum.set("x span", 10e-6)
-        self.lum.set("y", 0)
-        self.lum.set("y span", 10e-6)
-        self.lum.set("z min", -3e-6)
-        self.lum.set("z max", 50e-6)
-        self.lum.set("output Px", 1)
-        self.lum.set("output Py", 1)
-        self.lum.set("output Pz", 1)
-        
-        
-        # Reflection 2D Monitor
-        self.lum.addpower()
-        self.lum.set("name", "2D Monitor")
-        self.lum.set("monitor type", "2D X-normal")
-        self.lum.set("x", 0)
-        self.lum.set("y", 0)
-        self.lum.set("y span", 10e-6)
-        self.lum.set("z", -2e-6)
-        self.lum.set("z max", 50e-6)
-        self.lum.set("output Px", 1)
-        self.lum.set("output Py", 1)
-        self.lum.set("output Pz", 1)
-        
-        
-        self.lum.addpower()
-        self.lum.set("name", "R")
-        self.lum.set("monitor type", "2D Z-normal")
-        self.lum.set("x", 0)
-        self.lum.set("x span", 10e-6)
-        self.lum.set("y", 0)
-        self.lum.set("y span", 10e-6)
-        self.lum.set("z", -3e-6)
-        self.lum.set("output Px", 1)
-        self.lum.set("output Py", 1)
-        self.lum.set("output Pz", 1)
-        
-        
-     
         
     
 
@@ -6015,7 +5926,7 @@ class Constructor:
                 
                 yPos_span = [ TaperWidthB + Diff_Span , y_Port_Span ]
                 z_Pos = [Substrate_Height + max_slabH + TaperHightB/2, Substrate_Height + max_slabH + TaperHightF/2 ]
-                z_Span = [ TaperHightB + z_Port_Span , z_Port_Span ]# TaperHightF/2  + z_Port_Span]
+                z_Span = [ TaperHightB + z_Port_Span , z_Port_Span]# TaperHightF/2  + z_Port_Span]
                 for i in range(2):
                     self.lum.addport()
                     self.lum.set('name', name[i])
@@ -7454,6 +7365,7 @@ class Constructor:
         Substrate_Height = Parameters['Substrate Height']
         WG_Height = Parameters['WG Height']
         WG_Width = Parameters['WG Width']
+        WG_Length = Parameters['WG Length']
         Slab_Height = Parameters['Slab Height']
         TaperWidthB = Parameters['PWB Taper Width Back']
         TaperHightB = Parameters['PWB Taper Hight Back']
@@ -7492,7 +7404,7 @@ class Constructor:
         # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
         self.lum.addfdtd()
         self.lum.set("x min", X_min)
-        self.lum.set("x max", TaperLength_PWB)
+        self.lum.set("x max", TaperLength_PWB/2 + WG_Length)
         self.lum.set("y", 0)
         self.lum.set("y span", 2*TaperWidthB )# + TaperWidthB/2
         self.lum.set('simulation temperature', 273.15 + 20)
@@ -7520,7 +7432,7 @@ class Constructor:
         
 
    
-        x =[X_min, TaperLength_PWB]
+        x =[X_min, TaperLength_PWB/2 + WG_Length]
         PortCorrection = [0.1e-6, -0.1e-6]
         zMid_Pos_Ports = [Ports_PWB_mid, Ports_mid]
         direction = ["Forward", "Backward"]
@@ -7570,7 +7482,7 @@ class Constructor:
         self.lum.set('name', "Power 2D Z-Normal")
         self.lum.set('monitor type', '2D Z-normal')
         self.lum.set("x min", X_min)
-        self.lum.set("x max", TaperLength_PWB)
+        self.lum.set("x max", TaperLength_PWB/2 + WG_Length)
         self.lum.set("y", 0)
         self.lum.set("y span", TaperWidthB + TaperWidthB/2)
         self.lum.set("z", Ports_mid) #Substrate_Height
@@ -7582,7 +7494,7 @@ class Constructor:
         # Add Movi Monitor Z-Normal over structure
         self.lum.addmovie()
         self.lum.set("x min", X_min)
-        self.lum.set("x max", TaperLength_PWB)
+        self.lum.set("x max", TaperLength_PWB/2 + WG_Length)
         self.lum.set("y", 0)
         self.lum.set("y span", TaperWidthB + TaperWidthB/2)
         self.lum.set("z", Ports_mid)
@@ -7593,7 +7505,7 @@ class Constructor:
         self.lum.set('name', "Power 2D Y-Normal")
         self.lum.set('monitor type', '2D Y-normal')
         self.lum.set("x min", X_min)
-        self.lum.set("x max", TaperLength_PWB)
+        self.lum.set("x max", TaperLength_PWB/2 + WG_Length)
         self.lum.set("y", 0)
         self.lum.set("z", Substrate_Height/2 + CoreDiameter/2 ) #Substrate_Height
         self.lum.set("z span", TaperHightB*2)
@@ -8526,6 +8438,99 @@ class Constructor:
 
 
 
+
+    def setLenseFiberFDTD(self, Parameters):
+
+        Lens_d = Parameters["Lense Diameter"]
+        x_res = Parameters['x res']
+        Wavelength = Parameters['Wavelength']
+
+        # Set FDTD Solver directly
+        self.lum.addfdtd()
+        self.lum.set("x", 0)
+        self.lum.set("x span", 15e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 15e-6)
+        self.lum.set('simulation temperature', 273.15 + 20)
+        self.lum.set("z min", -4e-6)
+        self.lum.set("z max", 50e-6)
+        self.lum.set('z min bc', 'PML')
+        self.lum.set('z max bc', 'PML')
+        self.lum.set('mesh type', 'auto non-uniform')
+        self.lum.set('min mesh step', x_res)
+        self.lum.set('set simulation bandwidth', 0)
+        self.lum.set('global source center wavelength', Wavelength)
+        self.lum.set('global source wavelength span', 0)
+
+        # Add Gausssian Source
+        self.lum.addgaussian()
+        self.lum.set("injection axis", "z-axis")
+        self.lum.set("direction", "Forward")
+        self.lum.set("x", 0)
+        self.lum.set("x span", Lens_d)
+        self.lum.set("y", 0)
+        self.lum.set("y span", Lens_d)
+        self.lum.set("z", -2e-6)
+        self.lum.set("waist radius w0", Lens_d / 2)
+
+        # Add Index Monitor
+        self.lum.addindex()
+        self.lum.set("name", "index")
+        self.lum.set("monitor type", "2D Y-normal")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 10e-6)
+        self.lum.set("y", 0)
+        self.lum.set("z min", -3e-6)
+        self.lum.set("z max", 50e-6)
+
+        # Add Movie Monitor
+        self.lum.addmovie()
+        self.lum.set("name", "movie")
+        self.lum.set("monitor type", "2D Y-normal")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 10e-6)
+        self.lum.set("y", 0)
+        self.lum.set("z min", -3e-6)
+        self.lum.set("z max", 50e-6)
+
+        # Add Power and field 3D monitor
+        self.lum.addpower()
+        self.lum.set("name", "Power 3D monitor")
+        self.lum.set("monitor type", "3D")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 10e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 10e-6)
+        self.lum.set("z min", -3e-6)
+        self.lum.set("z max", 50e-6)
+        self.lum.set("output Px", 1)
+        self.lum.set("output Py", 1)
+        self.lum.set("output Pz", 1)
+
+        # Reflection 2D Monitor
+        self.lum.addpower()
+        self.lum.set("name", "2D Monitor")
+        self.lum.set("monitor type", "2D X-normal")
+        self.lum.set("x", 0)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 10e-6)
+        self.lum.set("z", -2e-6)
+        self.lum.set("z max", 50e-6)
+        self.lum.set("output Px", 1)
+        self.lum.set("output Py", 1)
+        self.lum.set("output Pz", 1)
+
+        self.lum.addpower()
+        self.lum.set("name", "R")
+        self.lum.set("monitor type", "2D Z-normal")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 10e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", 10e-6)
+        self.lum.set("z", -3e-6)
+        self.lum.set("output Px", 1)
+        self.lum.set("output Py", 1)
+        self.lum.set("output Pz", 1)
 
 
 
@@ -10460,7 +10465,118 @@ class Constructor:
 
 
 
+    def Plot3DFDTD(self, Parameters):
 
+        MonitorName = Parameters["Monitor Name FDTD"]
+        Field = Parameters["Field FDTD"]
+
+        E = self.lum.getresult(MonitorName, Field)[Field]
+
+        Shape = E.shape
+
+        if Shape[0] == 1:
+            Ex = self.lum.getresult(MonitorName, Field)["x"]
+            Ey = []
+            Ez = []
+
+            for i in range(len(self.lum.getresult(MonitorName, Field)["y"])):
+                Ey.append(self.lum.getresult(MonitorName, Field)["y"][i][0] * 1e6)
+            for i in range(len(self.lum.getresult(MonitorName, Field)["z"])):
+                Ez.append(self.lum.getresult(MonitorName, Field)["z"][i][0] * 1e6)
+
+
+
+
+        elif Shape[1] == 1:
+            Ex = []
+            Ey = self.lum.getresult(MonitorName, Field)["y"]
+            Ez = []
+
+            for i in range(len(self.lum.getresult(MonitorName, Field)["x"])):
+                Ex.append(self.lum.getresult(MonitorName, Field)["x"][i][0] * 1e6)
+            for i in range(len(self.lum.getresult(MonitorName, Field)["z"])):
+                Ez.append(self.lum.getresult(MonitorName, Field)["z"][i][0] * 1e6)
+
+
+
+        elif Shape[3] == 1:
+            Ex = []
+            Ey = []
+            Ez = self.lum.getresult(MonitorName, Field)["z"]
+
+            for i in range(len(self.lum.getresult(MonitorName, Field)["y"])):
+                Ey.append(self.lum.getresult(MonitorName, Field)["y"][i][0] * 1e6)
+            for i in range(len(self.lum.getresult(MonitorName, Field)["x"])):
+                Ex.append(self.lum.getresult(MonitorName, Field)["x"][i][0] * 1e6)
+
+        else:
+            raise ValueError("This function can print only 2D fields and no 3D fields")
+
+        # Calc Intensity and murge the 2D monitor data to one vector for printing
+        E_a = abs(E) ** 2
+        slice_2d = np.sqrt(E_a[0, :, :, 0, 0] ** 2 + E_a[0, :, :, 0, 1] ** 2 + E_a[0, :, :, 0, 2] ** 2)
+
+        # # Rotate the image by 90 degrees counterclockwise
+        # slice_2d_rotated = np.rot90(slice_2d, k=3)
+
+
+        # # Define the y and z axis ranges
+        # z_range = np.linspace(-2.68e-6, 50e-6, slice_2d_rotated.shape[0]) * 1e6  # Convert to micrometers
+        # y_range = np.linspace(-5e-6, 5e-6, slice_2d_rotated.shape[1]) * 1e6  # Convert to micrometers
+
+        # Create the colormap plot
+        fig = plt.figure(figsize=(10, 5))
+        plt.pcolormesh( slice_2d, cmap='jet')
+        # plt.pcolormesh(y_range, z_range, slice_2d_rotated, cmap='jet')
+        plt.colorbar(label='$|'+ Field + '|^2$ Intensity')
+        # plt.xlabel('Width / $\mu m$')
+        # plt.ylabel('$|E|^2$')
+        # plt.title('Lense Thickness = 2.5 $\mu m$')
+
+        if "Save Image" in list(Parameters.keys()):
+            # Save the plot as SVG
+            plt.savefig(Parameters["Save Image"] + '.svg', format='svg', bbox_inches='tight')
+            plt.savefig(Parameters["Save Image"] + '.png', format='png', bbox_inches='tight')
+        else:
+            pass
+        plt.show()
+
+        return fig
+
+
+
+    def Plot3DFDE(self, Parameters):
+        MonitorName = Parameters["Mode FDE"]
+        Field = Parameters["Field FDE"]
+
+        Mode = "TM_LNOI_1x0,5um"
+        Ex = abs(self.lum.getdata("FDE::data::" + MonitorName, Field + "x")) ** 2
+        Ey = abs(self.lum.getdata("FDE::data::" + MonitorName, Field + "y")) ** 2
+        Ez = abs(self.lum.getdata("FDE::data::" + MonitorName, Field + "z")) ** 2
+
+        y = self.lum.getdata("FDE::data::" + MonitorName, "y")[:, 0] * 1e6
+        z = self.lum.getdata("FDE::data::" + MonitorName, "z")[:, 0] * 1e6
+
+        slice_2d = np.sqrt(Ex[0, :, :, ] ** 2 + Ey[0, :, :] ** 2 + Ez[0, :, :] ** 2)
+        # Rotate the image by 90 degrees counterclockwise
+        slice_2d_rotated = np.rot90(slice_2d, k=3)
+
+        # Create the colormap plot
+        fig = plt.figure(figsize=(10, 5))
+        # plt.pcolormesh(z_range, y_range, slice_2d, cmap='viridis')
+        plt.pcolormesh(y, z, slice_2d_rotated[:, :, 0], cmap='jet')
+        plt.colorbar(label='$|' + Field + '|^2$')
+
+
+        if "Save Image" in list(Parameters.keys()):
+            # Save the plot as SVG
+            plt.savefig(Parameters["Save Image"] + '.svg', format='svg', bbox_inches='tight')
+            plt.savefig(Parameters["Save Image"] + '.png', format='png', bbox_inches='tight')
+        else:
+            pass
+        plt.show()
+
+        return fig
 
 
 class HelpSubject:
