@@ -6015,7 +6015,7 @@ class Constructor:
                 
                 yPos_span = [ TaperWidthB + Diff_Span , y_Port_Span ]
                 z_Pos = [Substrate_Height + max_slabH + TaperHightB/2, Substrate_Height + max_slabH + TaperHightF/2 ]
-                z_Span = [ TaperHightB + z_Port_Span , TaperHightF/2  + z_Port_Span]
+                z_Span = [ TaperHightB + z_Port_Span , z_Port_Span ]# TaperHightF/2  + z_Port_Span]
                 for i in range(2):
                     self.lum.addport()
                     self.lum.set('name', name[i])
