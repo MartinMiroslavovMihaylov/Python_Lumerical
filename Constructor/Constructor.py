@@ -6314,6 +6314,12 @@ class Constructor:
 
         max_slabH = Slab_Height
         MonitorHeight = Substrate_Height + max_slabH + WG_Height / 2
+        
+        # Check Object Geometry
+        self.lum.select("S Bend::S-Bend")
+        z_Structure = self.lum.get("z")
+        z_Object = self.lum.get("Base Height")
+        Z = z_Structure + z_Object
 
         # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
         self.lum.addfdtd()
@@ -6324,7 +6330,7 @@ class Constructor:
         self.lum.set('simulation temperature', 273.15 + 20)
         self.lum.set("y span", Device_Width)
         self.lum.set("z", Substrate_Height)
-        self.lum.set("z span", 4e-6)
+        self.lum.set("z span", Z + 4e-6)
         self.lum.set('z min bc', 'PML')
         self.lum.set('z max bc', 'PML')
         self.lum.set('mesh type', 'auto non-uniform')
@@ -10483,6 +10489,10 @@ class Constructor:
                 Ey.append(self.lum.getresult(MonitorName, Field)["y"][i][0] * 1e6)
             for i in range(len(self.lum.getresult(MonitorName, Field)["z"])):
                 Ez.append(self.lum.getresult(MonitorName, Field)["z"][i][0] * 1e6)
+                
+                
+            E_a = abs(E) ** 2
+            slice_2d = np.sqrt(E_a[0, :, :, 0, 0] ** 2 + E_a[0, :, :, 0, 1] ** 2 + E_a[0, :, :, 0, 2] ** 2)
 
 
 
@@ -10496,10 +10506,13 @@ class Constructor:
                 Ex.append(self.lum.getresult(MonitorName, Field)["x"][i][0] * 1e6)
             for i in range(len(self.lum.getresult(MonitorName, Field)["z"])):
                 Ez.append(self.lum.getresult(MonitorName, Field)["z"][i][0] * 1e6)
+            
+            E_a = abs(E) ** 2
+            slice_2d = np.sqrt(E_a[:, 0, :, 0, 0] ** 2 + E_a[:, 0, :, 0, 1] ** 2 + E_a[:, 0, :, 0, 2] ** 2)
 
 
 
-        elif Shape[3] == 1:
+        elif Shape[2] == 1:
             Ex = []
             Ey = []
             Ez = self.lum.getresult(MonitorName, Field)["z"]
@@ -10508,13 +10521,16 @@ class Constructor:
                 Ey.append(self.lum.getresult(MonitorName, Field)["y"][i][0] * 1e6)
             for i in range(len(self.lum.getresult(MonitorName, Field)["x"])):
                 Ex.append(self.lum.getresult(MonitorName, Field)["x"][i][0] * 1e6)
+                
+                
+            E_a = abs(E) ** 2
+            slice_2d = np.sqrt(E_a[:, :, 0, 0, 0] ** 2 + E_a[:, :, 0, 0, 1] ** 2 + E_a[:, :, 0, 0, 2] ** 2)
 
         else:
             raise ValueError("This function can print only 2D fields and no 3D fields")
 
         # Calc Intensity and murge the 2D monitor data to one vector for printing
-        E_a = abs(E) ** 2
-        slice_2d = np.sqrt(E_a[0, :, :, 0, 0] ** 2 + E_a[0, :, :, 0, 1] ** 2 + E_a[0, :, :, 0, 2] ** 2)
+        
 
         # # Rotate the image by 90 degrees counterclockwise
         # slice_2d_rotated = np.rot90(slice_2d, k=3)
