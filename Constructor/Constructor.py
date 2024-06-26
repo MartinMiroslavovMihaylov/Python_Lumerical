@@ -3595,12 +3595,12 @@ class Constructor:
 
 
         # creating the substrate
-        max_subH = Substrate_Height
-        min_subH = -Substrate_Height
+        max_subH = Substrate_Height/2
+        min_subH = -Substrate_Height/2
 
         # make substrate
         self.lum.addrect()
-        self.lum.set("name", "Substrate")
+        self.lum.set("name", "Substrate InverseTaper")
         self.lum.set("override mesh order from material database", 1)
         self.lum.set("mesh order", 4)
         self.lum.set("y", 0)
