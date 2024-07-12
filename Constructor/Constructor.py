@@ -876,6 +876,12 @@ class Constructor:
                 This function will check if you have set Parameters["Taper Type"] to anaything, for example "Parameters["Taper Type"]=1" 
                 and if so it will design an Inverse Taper Structure with no Cladding. Here the option "Cladding" is not active and will be ignored.
                 If the user didnt give the "Taper Type" as dictionary key, then an normal taper structure will be simulated.
+                If Taper Type is selected the user need to provide additional information:
+                    TaperWidthF = Parameters['PWB Taper Width Front']
+                    TaperWidthB = Parameters['PWB Taper Width Back']
+                    TaperHightB = Parameters['PWB Taper Hight Back']
+                    TaperHightF = Parameters['PWB Taper Hight Front']
+                    TaperLength_PWB = Parameters['PWB Taper Length']
                    
              
         Raises
@@ -5890,7 +5896,6 @@ class Constructor:
 
                     
             else:
-            
                 # Adds a FDTD Solver
                 self.lum.addfdtd()
                 self.lum.set("x", 0)
@@ -10660,28 +10665,27 @@ class HelpSubject:
                         
                     Dictionary Parameters:
 -----------------------------------------------------------------------------------------------------------
-                    Parameters['Substrate Height'] : int/float
+                    Parameters['Substrate Height'] : int float
                         Substrate Height
                     Parameters['WG Height'] : int/float
-                        Height of the Waveguide (Etching depth)
+                        Height of the Waveguide
                     Parameters['WG Width'] : int/float
-                        Top width of the Waveguide.
+                        Width of the Waveguide
                     Parameters['WG Length'] : int/float
                         Length of the Waveguide
                     Parameters['Taper'] : boolen
-                        Taper can be set to be True ot False.
-                        if Taper == False - No Taper used, only waveguide will be used
-                        if Taper == True - Taper placed, no waveguides only taper will be used
+                        If Taper == False, only Waveguiedes will be constructed.
+                        If Taper == True, only an single Taper will be constructed
                     Parameters['Taper Length'] : int/float
                         Taper Length
                     Parameters['Taper Width'] : int/float
                         Taper backside width, the frontside width is the waveguide width
                     Parameters['angle'] : int
-                        Angle of the Waveguide Walls. It is calculated WG_angle = 90 - angle.
-                        For angle = 90 , a perfect rect is created!
+                        Angle of the Waveguide Walls. it is calculated WG_angle = 90 - angle.
+                        For anfle = 90 we get a perfect rect!
                     Parameters['Slab Height'] : int/float
                         Slab height.
-                    Parameters['Material'] : list of str
+                    Parameters['Material'] : list
                         List of Materials. The list should be with names (str) of a valid Lumerical materials.
                         Check the names in Lumerical Materials viewer.
                         The List of materials must contain at least 2 materials! 
@@ -10690,9 +10694,24 @@ class HelpSubject:
                     Parameters["Wavelength"] : int/float
                         Wavelength
                     Parameters["Waveguide Angle"] : int/float
-                        Tilting angle of the Waveguide. Set it to 0 to simulate the straight waveguide. 
-                        If Waveguide Angle is different then 0, then the straight waveguide will be tilted 
-                        at the choosen angle. 
+                        Bending angle of the Waveguide. Set it to 0 to simulate the straight waveguide.
+                        If Waveguide Angle is different then 0, then the straight waveguide will be tilted
+                        at the choosen degrees.
+                    Parameters["Cladding"] : anything, optional
+                        This function will check if you have set Parameters["Cladding"] to anaything, for example "Parameters["Cladding"]=1" 
+                        and if so it will put cladding over your structure. If the user didnt give the "Cladding" as dictionary key no cladding 
+                        will be set.
+                    Parameters["Taper Type"] : anything, optional
+                        This function will check if you have set Parameters["Taper Type"] to anaything, for example "Parameters["Taper Type"]=1" 
+                        and if so it will design an Inverse Taper Structure with no Cladding. Here the option "Cladding" is not active and will be ignored.
+                        If the user didnt give the "Taper Type" as dictionary key, then an normal taper structure will be simulated.
+                        If Taper Type is selected the user need to provide additional information:
+                            TaperWidthF = Parameters['PWB Taper Width Front']
+                            TaperWidthB = Parameters['PWB Taper Width Back']
+                            TaperHightB = Parameters['PWB Taper Hight Back']
+                            TaperHightF = Parameters['PWB Taper Hight Front']
+                            TaperLength_PWB = Parameters['PWB Taper Length']
+                        
 -----------------------------------------------------------------------------------------------------------
                 """)
         elif Number == 8:
