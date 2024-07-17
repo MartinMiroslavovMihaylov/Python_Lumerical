@@ -5901,7 +5901,7 @@ class Constructor:
                 self.lum.set("x", 0)
                 self.lum.set("x span", TaperLength)
                 self.lum.set("y", 0)
-                self.lum.set("y span", 2*TaperWidthB + WaveLength * 2)
+                self.lum.set("y span", 2*TaperWidthF + 2e-6)
                 self.lum.set('simulation temperature', 273.15 + 20)
                 self.lum.set("z", Substrate_Height + max_slabH + TaperHightF/2)
                 self.lum.set("z span", 2e-6 +  TaperHightF  )
