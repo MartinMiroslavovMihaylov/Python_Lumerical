@@ -5929,7 +5929,7 @@ class Constructor:
                 direction = ['Forward', 'Backward']
                 name = ['Input', 'Output']
                 
-                yPos_span = [ TaperWidthB + Diff_Span , y_Port_Span ]
+                yPos_span = [y_Port_Span, TaperWidthB + Diff_Span ]
                 z_Pos = [Substrate_Height + max_slabH + TaperHightB/2, Substrate_Height + max_slabH + TaperHightF/2 ]
                 z_Span = [z_Port_Span, TaperHightF + z_Port_Span]# TaperHightF/2  + z_Port_Span]
                 for i in range(2):
@@ -5961,7 +5961,7 @@ class Constructor:
                 # Add Movie monitor
                 self.lum.addmovie()
                 self.lum.set("y", 0)
-                self.lum.set("y span", TaperWidthB + Diff_Span)
+                self.lum.set("y span", TaperWidthF + Diff_Span)
                 self.lum.set("z", z_Pos[0])
                 self.lum.set("x", 0)
                 self.lum.set("x span", TaperLength)
@@ -5970,7 +5970,7 @@ class Constructor:
                 self.lum.addpower()
                 self.lum.set('monitor type', '2D Z-normal')
                 self.lum.set("y",0)
-                self.lum.set("y span", TaperWidthB + Diff_Span)
+                self.lum.set("y span", TaperWidthF + Diff_Span)
                 self.lum.set("x", 0)
                 self.lum.set("x span", TaperLength)
                 self.lum.set("z", z_Pos[0])
