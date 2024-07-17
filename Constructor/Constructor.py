@@ -5929,7 +5929,7 @@ class Constructor:
                 direction = ['Forward', 'Backward']
                 name = ['Input', 'Output']
                 
-                yPos_span = [y_Port_Span, TaperWidthB + Diff_Span ]
+                yPos_span = [y_Port_Span, TaperWidthF + Diff_Span ]
                 z_Pos = [Substrate_Height + max_slabH + TaperHightB/2, Substrate_Height + max_slabH + TaperHightF/2 ]
                 z_Span = [z_Port_Span, TaperHightF + z_Port_Span]# TaperHightF/2  + z_Port_Span]
                 for i in range(2):
