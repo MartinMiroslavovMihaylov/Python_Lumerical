@@ -5962,7 +5962,7 @@ class Constructor:
                 self.lum.addmovie()
                 self.lum.set("y", 0)
                 self.lum.set("y span", TaperWidthB + Diff_Span)
-                self.lum.set("z", z_Pos[1])
+                self.lum.set("z", z_Pos[0])
                 self.lum.set("x", 0)
                 self.lum.set("x span", TaperLength)
 
@@ -5973,7 +5973,7 @@ class Constructor:
                 self.lum.set("y span", TaperWidthB + Diff_Span)
                 self.lum.set("x", 0)
                 self.lum.set("x span", TaperLength)
-                self.lum.set("z", z_Pos[1])
+                self.lum.set("z", z_Pos[0])
                 self.lum.set('output Px', 1)
                 self.lum.set('output Py', 1)
                 self.lum.set('output Pz', 1)
