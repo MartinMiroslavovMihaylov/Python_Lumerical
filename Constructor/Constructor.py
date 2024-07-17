@@ -5901,10 +5901,10 @@ class Constructor:
                 self.lum.set("x", 0)
                 self.lum.set("x span", TaperLength)
                 self.lum.set("y", 0)
-                self.lum.set("y span", 2*TaperWidthF + 2e-6)
+                self.lum.set("y span", 2*TaperWidthB + 2e-6)
                 self.lum.set('simulation temperature', 273.15 + 20)
-                self.lum.set("z", Substrate_Height + max_slabH + TaperHightF/2)
-                self.lum.set("z span", 2e-6 +  TaperHightF  )
+                self.lum.set("z", Substrate_Height + max_slabH + TaperHightB/2)
+                self.lum.set("z span", 2e-6 +  TaperHightB  )
                 self.lum.set('x min bc', 'PML')
                 self.lum.set('x max bc', 'PML')
                 self.lum.set('y min bc', 'Anti-Symmetric')
@@ -5924,14 +5924,14 @@ class Constructor:
                 x = [-TaperLength/2+ 0.1e-6 , TaperLength/2 - 0.1e-6]
                 x_Monitor = [-TaperLength/2+ 0.1e-6+0.1e-6,TaperLength/2 - 0.1e-6 - 0.1e-6]
                 yPos = [0, 0]
-                yPos_span = [y_Port_Span, TaperWidth + Diff_Span]
+                yPos_span = [y_Port_Span, TaperWidthB + Diff_Span ]
                 theta = [0, 0]
                 direction = ['Forward', 'Backward']
                 name = ['Input', 'Output']
                 
                 yPos_span = [y_Port_Span, TaperWidthF + Diff_Span ]
                 z_Pos = [Substrate_Height + max_slabH + TaperHightB/2, Substrate_Height + max_slabH + TaperHightF/2 ]
-                z_Span = [z_Port_Span, TaperHightF + z_Port_Span]# TaperHightF/2  + z_Port_Span]
+                z_Span = [ TaperHightB + z_Port_Span , z_Port_Span]# TaperHightF/2  + z_Port_Span]
                 for i in range(2):
                     self.lum.addport()
                     self.lum.set('name', name[i])
@@ -5961,8 +5961,8 @@ class Constructor:
                 # Add Movie monitor
                 self.lum.addmovie()
                 self.lum.set("y", 0)
-                self.lum.set("y span", TaperWidthF + Diff_Span)
-                self.lum.set("z", z_Pos[0])
+                self.lum.set("y span", TaperWidthB + Diff_Span)
+                self.lum.set("z", z_Pos[1])
                 self.lum.set("x", 0)
                 self.lum.set("x span", TaperLength)
 
@@ -5970,10 +5970,10 @@ class Constructor:
                 self.lum.addpower()
                 self.lum.set('monitor type', '2D Z-normal')
                 self.lum.set("y",0)
-                self.lum.set("y span", TaperWidthF + Diff_Span)
+                self.lum.set("y span", TaperWidthB + Diff_Span)
                 self.lum.set("x", 0)
                 self.lum.set("x span", TaperLength)
-                self.lum.set("z", z_Pos[0])
+                self.lum.set("z", z_Pos[1])
                 self.lum.set('output Px', 1)
                 self.lum.set('output Py', 1)
                 self.lum.set('output Pz', 1)
