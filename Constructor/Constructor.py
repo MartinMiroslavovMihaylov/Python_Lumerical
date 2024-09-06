@@ -260,7 +260,7 @@ class Constructor:
         else:
             self.lum.importmaterialdb(self.MaterialLib)
         print('Lumerical EME API is started')
-
+    
 
 
     #   Solvers Function
@@ -10599,6 +10599,177 @@ class Constructor:
 
         return fig
 
+
+
+
+class Charge(Constructor):
+    def __init__(self, file, Mode):
+        self.file = file
+        self.Mode = Mode
+
+        # Check Python Version !!! No import imp module after python 3.11
+        PyVersion = sys.version
+      
+        try:
+            if PyVersion.split(" ")[0] > "3.11.0":
+                import importlib.util
+                import importlib.machinery
+
+                def load_source(modname, filename):
+                    loader = importlib.machinery.SourceFileLoader(modname, filename)
+                    spec = importlib.util.spec_from_file_location(modname, filename, loader=loader)
+                    module = importlib.util.module_from_spec(spec)
+                    # The module is always executed and not cached in sys.modules.
+                    # Uncomment the following line to cache the module.
+                    # sys.modules[module.__name__] = module
+                    loader.exec_module(module)
+                    return module
+                
+                self.lumpai = load_source('lumapi', self.file)
+            else:
+                import imp
+                self.lumpai = imp.load_source('lumapi', self.file)
+        except ValueError as e:
+            print(f"ValueError encountered: {e}")
+        except ImportError as e:
+            print(f"ImportError encountered: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            
+        self.Mode = Mode
+        self.Struct = None
+        self.SolverInfo = {}
+
+        if self.Mode == "CHARGE":
+            self.CHARGE()
+            self.SolverInfo["Solver Used"] = "CHARGE"
+        else:
+            raise ValueError("Non Valid Solver was choosen. Please pass on one of the two supported solvers ['FDTD' or 'EME']")
+    
+    
+    def CHARGE(self):
+        '''
+        
+        Calls the CHARGE Solver.
+
+        Returns
+        -------
+        None.
+
+        '''
+        self.lum = self.lumpai.DEVICE()
+        print('Lumerical CHARGE API is started')
+        
+       
+    # Close Programm
+    def Close(self):
+        '''
+        
+
+        Returns
+        -------
+        Close Lumerical GUI
+
+        '''
+        self.lum.close()
+        print('Lumerical API is closed')
+
+
+    # Remove the object and solver region
+    def removeObject(self):
+        '''
+        Switch from simulation to layout mode.
+        Remove all objects.
+
+        Returns
+        -------
+        None.
+
+        '''
+        self.lum.switchtolayout()
+        self.lum.deleteall()
+
+        file = self.file
+        
+    def Material(self,Material_Data):
+        # Separate Materials into Electrical and Optical in List Material_Data["Electrical"] = ["mat1", "mat2"..]
+        # and optical Material_Data["Optical"] = ["omat1", "omat2", ...]
+        Electrical_Materials = []
+        Optical_Materials = []
+        
+        for i in Material_Data["Electrical"]:
+            Electrical_Materials.append(i)
+        for j in Material_Data["Optical"]:
+            Optical_Materials.append(j)
+        
+        # Check for Items that are common for the optical and electrical Material
+        Common_Materials = [item for item in Electrical_Materials if item in Optical_Materials]
+        Electrical_Materials = [item for item in Electrical_Materials if item not in Common_Materials]
+        Optical_Materials = [item for item in Optical_Materials if item not in Common_Materials]
+        
+        print("Common Materials List" ,Common_Materials)
+        print("Electrical Materials List" ,Electrical_Materials)
+        print("Optical Materials List" ,Optical_Materials)
+        
+        if Common_Materials:
+            # Add all Electrical Materials to materials folder
+            for i in range(len(Common_Materials)):
+                self.lum.addmodelmaterial()
+                self.lum.set("name", Common_Materials[i])
+                self.lum.addmaterialproperties("CT", Common_Materials[i])  # importing from electrical material database
+                self.lum.select("materials::" + Common_Materials[i])
+                self.lum.addmaterialproperties("HT", Common_Materials[i])  # importing from thermal material database
+                self.lum.select("materials::" + Common_Materials[i])
+                self.lum.addmaterialproperties("EM",Common_Materials[i])
+            # Add all Electrical Materials to materials folder
+            for i in range(len(Electrical_Materials)):
+                self.lum.addmodelmaterial()
+                self.lum.set("name", Electrical_Materials[i])
+                self.lum.addmaterialproperties("CT", Electrical_Materials[i])  # importing from electrical material database
+                self.lum.select("materials::" + Electrical_Materials[i])
+                self.lum.addmaterialproperties("HT", Electrical_Materials[i])  # importing from thermal material database
+                self.lum.select("materials::" + Electrical_Materials[i]) 
+                for _ in Optical_Materials:
+                    if Electrical_Materials[i].split(" ")[0] == _.split(" ")[0]:
+                        Optical_Materials.remove(_)
+                        self.lum.select("materials::" + Electrical_Materials[i])
+                        self.lum.addmaterialproperties("EM", _)
+                    else:
+                        pass
+            # Add all Optical Materials to materials folder
+            for i in range(len(Optical_Materials)):
+                self.lum.addmodelmaterial()
+                self.lum.set("name", Optical_Materials[i])
+                self.lum.addmaterialproperties("EM",Optical_Materials[i])
+
+        else:
+            # Add all Electrical Materials to materials folder
+            for i in range(len(Electrical_Materials)):
+                self.lum.addmodelmaterial()
+                self.lum.set("name", Electrical_Materials[i])
+                self.lum.addmaterialproperties("CT", Electrical_Materials[i])  # importing from electrical material database
+                self.lum.select("materials::" + Electrical_Materials[i])
+                self.lum.addmaterialproperties("HT", Electrical_Materials[i])  # importing from thermal material database
+                self.lum.select("materials::" + Electrical_Materials[i])
+                for _ in Optical_Materials:
+                    if Electrical_Materials[i].split(" ")[0] == _.split(" ")[0]:
+                        Optical_Materials.remove(_)
+                        self.lum.select("materials::" + Electrical_Materials[i])
+                        self.lum.addmaterialproperties("EM", _)
+                    else:
+                        pass
+                    
+            # Add all Optical Materials to materials folder
+            for i in range(len(Optical_Materials)):
+                self.lum.addmodelmaterial()
+                self.lum.set("name", Optical_Materials[i])
+                self.lum.addmaterialproperties("EM",Optical_Materials[i])
+             
+        
+        
+        
+        
+        
 
 class HelpSubject:
     
