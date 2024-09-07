@@ -10606,6 +10606,8 @@ class Charge(Constructor):
     def __init__(self, file, Mode):
         self.file = file
         self.Mode = Mode
+        self.Materials_Opt = []
+        self.Materials_Electric = []
 
         # Check Python Version !!! No import imp module after python 3.11
         PyVersion = sys.version
@@ -10696,6 +10698,7 @@ class Charge(Constructor):
         # and optical Material_Data["Optical"] = ["omat1", "omat2", ...]
         Electrical_Materials = []
         Optical_Materials = []
+        Materials_Added = []
         
         for i in Material_Data["Electrical"]:
             Electrical_Materials.append(i)
@@ -10706,11 +10709,7 @@ class Charge(Constructor):
         Common_Materials = [item for item in Electrical_Materials if item in Optical_Materials]
         Electrical_Materials = [item for item in Electrical_Materials if item not in Common_Materials]
         Optical_Materials = [item for item in Optical_Materials if item not in Common_Materials]
-        
-        print("Common Materials List" ,Common_Materials)
-        print("Electrical Materials List" ,Electrical_Materials)
-        print("Optical Materials List" ,Optical_Materials)
-        
+
         if Common_Materials:
             # Add all Electrical Materials to materials folder
             for i in range(len(Common_Materials)):
@@ -10722,6 +10721,7 @@ class Charge(Constructor):
                 self.lum.select("materials::" + Common_Materials[i])
                 self.lum.addmaterialproperties("EM",Common_Materials[i])
             # Add all Electrical Materials to materials folder
+            Materials_Added = Materials_Added + Common_Materials
             for i in range(len(Electrical_Materials)):
                 self.lum.addmodelmaterial()
                 self.lum.set("name", Electrical_Materials[i])
@@ -10736,11 +10736,13 @@ class Charge(Constructor):
                         self.lum.addmaterialproperties("EM", _)
                     else:
                         pass
+            Materials_Added = Materials_Added + Electrical_Materials
             # Add all Optical Materials to materials folder
             for i in range(len(Optical_Materials)):
                 self.lum.addmodelmaterial()
                 self.lum.set("name", Optical_Materials[i])
                 self.lum.addmaterialproperties("EM",Optical_Materials[i])
+            Materials_Added = Materials_Added + Optical_Materials
 
         else:
             # Add all Electrical Materials to materials folder
@@ -10758,14 +10760,169 @@ class Charge(Constructor):
                         self.lum.addmaterialproperties("EM", _)
                     else:
                         pass
-                    
+            Materials_Added = Materials_Added + Electrical_Materials
             # Add all Optical Materials to materials folder
             for i in range(len(Optical_Materials)):
                 self.lum.addmodelmaterial()
                 self.lum.set("name", Optical_Materials[i])
                 self.lum.addmaterialproperties("EM",Optical_Materials[i])
-             
+            Materials_Added = Materials_Added + Optical_Materials
         
+        return Materials_Added
+                
+    def MZM(self, Parameters):  
+        
+        # Define Materials
+        Substrate_Height = Parameters['Substrate Height']
+        Optical_Material = Parameters["Optical"]
+        Electrical_Material = Parameters["Electzrical"]
+        angle = Parameters['angle']
+        Slab_Height = Parameters['Slab Height']
+        WG_Height = Parameters['WG Height']
+        WG_Width = Parameters['WG Width']
+        WG_Length = Parameters['WG Length']
+        Metal_Width = Parameters["Electrodes Width"]
+        Metal_Height = Parameters["Electrodes Height"]
+        Gap = Parameters["Gap"]
+        
+        
+        # Add materials to Simulation enviroment
+        Materials_Dict = {}
+        Materials_Dict["Electrical"] = Electrical_Material
+        Materials_Dict["Optical"] = Optical_Material
+        self.Material(Materials_Dict)
+
+        # Material definition 
+        if "Air" in Electrical_Material:
+            Electrical_Material.remove("Air")
+            MaterialElectrodes = Electrical_Material[0]
+        else:
+            MaterialElectrodes = Electrical_Material[0]
+            
+        if "Si (Silicon)" in Electrical_Material:
+            MaterialSub = Electrical_Material[0]
+            MaterialClad = Electrical_Material[0]
+            MaterialSlab = "Si (Silicon)"
+            MaterialWG = MaterialSlab
+        else:
+            MaterialSub = Optical_Material[0]
+            MaterialClad = Optical_Material[0]
+            MaterialSlab = Optical_Material[1]
+            MaterialWG = MaterialSlab
+        
+       
+        # Device Lenght
+        MZM_Leght = WG_Length
+        MZM_Width = WG_Width*2 + Metal_Width*3 + Gap*4
+
+        # creating the substrate
+        self.lum.addrect()
+        self.lum.set("name", "Substrate")
+        self.lum.set("y", 0)
+        self.lum.set("y span", MZM_Width)
+        self.lum.set("z", 0)
+        self.lum.set("z span", Substrate_Height)
+        self.lum.set("x", 0)
+        self.lum.set("x span", MZM_Leght)
+        self.lum.set("material", MaterialSub)
+        
+
+            
+        # Position Thin Film and Waveguides
+        if Slab_Height == 0:
+            z_Offset = Substrate_Height/2
+            
+        
+        else:      
+            # creating the thin film
+            self.lum.select("Substrate")
+            zmax = self.lum.get("z max")
+            z_Offset = zmax + Slab_Height
+
+            self.lum.addrect()
+            self.lum.set("name", "Slab")
+            self.lum.set("y", 0)
+            self.lum.set("y span", MZM_Width)
+            self.lum.set("x", 0)
+            self.lum.set("x span", MZM_Leght)
+            self.lum.set("z min", Substrate_Height/2)
+            self.lum.set("z max", z_Offset)
+            self.lum.set("material", MaterialSlab)
+        
+        
+
+        # Triangle EQ for MMI Width
+        x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
+        extention = np.sqrt(x ** 2 - WG_Height ** 2)
+        WG_W = WG_Width + 2 * extention
+        WG_Width_top = WG_W
+
+        # Set offsets for the Optcal Waveguides
+        WG_Y_Pos = Metal_Width/2 + Gap + WG_Width/2
+        Metal_Y_Pos = Metal_Width + Gap*2 + WG_Width
+
+        # Add Waveguides
+        self.lum.addwaveguide()
+        self.lum.set("name", "Waveguide_Left")
+        self.lum.set("base height", WG_Height)
+        self.lum.set("base angle", 90 - angle)
+        self.lum.set("base width", WG_Width)
+        self.lum.set("x", 0)
+        self.lum.set("y", -WG_Y_Pos)
+        self.lum.set("z", z_Offset + WG_Height/2)
+        pole = np.array([[WG_Length/2, 0], [- WG_Length/2, 0]])
+        self.lum.set("poles", pole)
+        self.lum.set("material", MaterialWG)
+        
+        self.lum.addwaveguide()
+        self.lum.set("name", "Waveguide_Right")
+        self.lum.set("base height", WG_Height)
+        self.lum.set("base angle", 90 - angle)
+        self.lum.set("base width", WG_Width)
+        self.lum.set("x", 0)
+        self.lum.set("y", WG_Y_Pos)
+        self.lum.set("z", z_Offset +  WG_Height/2)
+        pole = np.array([[WG_Length/2, 0], [- WG_Length/2, 0]])
+        self.lum.set("poles", pole)
+        self.lum.set("material", MaterialWG)
+        
+        # Add Electrodes
+        print("z min ",z_Offset)
+        print("z min ", z_Offset + Metal_Height)
+        
+        self.lum.addrect()
+        self.lum.set("name", "Sig")
+        self.lum.set("y", 0)
+        self.lum.set("y span", Metal_Width)
+        self.lum.set("x", 0)
+        self.lum.set("x span", MZM_Leght)
+        self.lum.set("z min", z_Offset)
+        self.lum.set("z max", z_Offset + Metal_Height)
+        self.lum.set("material", MaterialElectrodes)
+        
+        self.lum.addrect()
+        self.lum.set("name", "GND_Left")
+        self.lum.set("y", -Metal_Y_Pos)
+        self.lum.set("y span", Metal_Width)
+        self.lum.set("x", 0)
+        self.lum.set("x span", MZM_Leght)
+        self.lum.set("z min", z_Offset)
+        self.lum.set("z max", z_Offset + Metal_Height)
+        self.lum.set("material", MaterialElectrodes)
+    
+        self.lum.addrect()
+        self.lum.set("name", "GND_Left")
+        self.lum.set("y", Metal_Y_Pos)
+        self.lum.set("y span", Metal_Width)
+        self.lum.set("x", 0)
+        self.lum.set("x span", MZM_Leght)
+        self.lum.set("z min", z_Offset)
+        self.lum.set("z max", z_Offset + Metal_Height)
+        self.lum.set("material", MaterialElectrodes)
+        
+    
+
+
         
         
         
