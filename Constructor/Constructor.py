@@ -102,7 +102,7 @@ class Constructor:
                 self.lumpai = load_source('lumapi', self.file)
             else:
                 import imp
-                self.lumpai = imp.load_source('lumapi', self.file)
+                self.lumpi = imp.load_source('lumapi', self.file)
         except ValueError as e:
             print(f"ValueError encountered: {e}")
         except ImportError as e:
@@ -367,6 +367,9 @@ class Constructor:
                 S_Param2, Power2 = self.ExtractFDTDResults(2, Parameters)
                 return S_Param2, Power2
             elif self.Struct == "BendWaveguide":
+                S_Param22, Power22 = self.ExtractFDTDResults(2, Parameters)
+                return S_Param22, Power22
+            elif self.Struct == "StraightWaveguide":
                 S_Param22, Power22 = self.ExtractFDTDResults(2, Parameters)
                 return S_Param22, Power22
             else:
@@ -2926,7 +2929,7 @@ class Constructor:
             MaterialClad = Material[0]
             MaterialSlab = Material[1]
             MaterialWG = MaterialSlab
-
+            print(Material)
 
 
 
@@ -5689,14 +5692,18 @@ class Constructor:
 
 
                     # Power Monitor Port 1
-                    self.lum.addtime()
+                    self.lum.addpower()
+                    self.lum.set('monitor type', "2D X-normal")
                     self.lum.set('name', name[i])
                     self.lum.set("x", x_Monitor[i] )
                     self.lum.set("y", yPos[i])
+                    self.lum.set("y span", yPos_span[i])
                     self.lum.set("z", MonitorHeight)
+                    self.lum.set("z span", z_Port_Span)
                     self.lum.set('output Px', 1)
                     self.lum.set('output Py', 1)
                     self.lum.set('output Pz', 1)
+                    self.lum.set('output power', 1)
 
                 # Add Movie monitor
                 self.lum.addmovie()
@@ -10088,7 +10095,6 @@ class Constructor:
         monitors that ware set in the solver functions.
 
         '''
-
         if Sparam == True:
             self.lum.addsweep(3)
             # Check "Excite all ports" option

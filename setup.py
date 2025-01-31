@@ -1,25 +1,16 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Feb 11 16:00:07 2023
-
-@author: Martin.Mihaylov
-"""
-
 from setuptools import setup, find_packages
 
-
-
-with open("requirements.txt") as requirement_file:
-    requirements = requirement_file.read().split()
-
-
-
 setup(
-      name='LNOI-Constructor',                 # This is the name of your PyPI-package.
-      description="A SCT Group Lumerical Constructor package.",
-      author="Martin.Mihaylov",
-      version='1.1',                          # Update the version number for new releases
-      install_requires=requirements,
-      packages=find_packages() 
-      
- )
+    name="Constructor",  # Package name
+    version="1.5",
+    author="Martin Mihaylov",
+    description="A description of the Constructor module",
+    packages=find_packages(),  # This will include the 'Constructor' package
+    install_requires=[],  # Add dependencies if needed
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+    python_requires=">=3.6",
+)
