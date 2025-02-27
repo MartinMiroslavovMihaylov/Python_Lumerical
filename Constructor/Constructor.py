@@ -162,8 +162,8 @@ class Constructor:
             print("i am in Dict section")
             StartNumber = [1,2,3]
             ResultNumber = [1,2,3,4]
-            StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11,12]
-            SolverNumber = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+            StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11]
+            SolverNumber = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
             
             listSub = ['Objects', 'Solvers', 'Start Simulation', 'Results', 'Loading Bar', 'Log File']
             key = list(Subject.keys())
@@ -7401,8 +7401,8 @@ class Constructor:
 
         if Slab_Height == 0:
             # # Device specifications
-            MonitorHeight = Substrate_Height + WG_Height/2
-            Ports_mid = Substrate_Height + WG_Height/2
+
+            Ports_mid = Substrate_Height/2 + WG_Height/2
             Ports_PWB_mid = Substrate_Height + CoreDiameter/2 # TaperHightB/2
             self.lum.select("SMF")
             xPos_SMF = self.lum.get("x")
@@ -7411,8 +7411,8 @@ class Constructor:
         else:
             # # Device specifications
             max_slabH = Slab_Height
-            MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
-            Ports_mid = max_slabH + Substrate_Height  + WG_Height/2
+
+            Ports_mid = max_slabH + Substrate_Height/2  + WG_Height/2
             Ports_PWB_mid = max_slabH + CoreDiameter/2 # TaperHightB/2
             self.lum.select("SMF")
             xPos_SMF = self.lum.get("x")
@@ -9795,8 +9795,8 @@ class Constructor:
 
         if Slab_Height == 0:
             # # Device specifications
-            MonitorHeight = Substrate_Height + WG_Height/2
-            Ports_mid = Substrate_Height/2 - CoreDiameter/2 + WG_Width/2
+            MonitorHeight = Substrate_Height/2 + WG_Height/2
+            Ports_mid = -(Substrate_Height/2 + CoreDiameter/2) + MonitorHeight
             Ports_PWB_mid = CoreDiameter/2 # TaperHightB/2
             self.lum.select("SMF")
             xPos_SMF = self.lum.get("x")
@@ -9805,8 +9805,9 @@ class Constructor:
         else:
             # # Device specifications
             max_slabH = Slab_Height
-            MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
-            Ports_mid = max_slabH + Substrate_Height/2 - CoreDiameter/2 + WG_Width/2
+            MonitorHeight = Substrate_Height/2 + max_slabH + WG_Height/2
+            Ports_mid = -(Substrate_Height/2 + CoreDiameter/2) + MonitorHeight
+            #Ports_mid = max_slabH + Substrate_Height/2 - CoreDiameter/2 + WG_Width/2
             Ports_PWB_mid = max_slabH + CoreDiameter/2 # TaperHightB/2
             self.lum.select("SMF")
             xPos_SMF = self.lum.get("x")
@@ -10606,12 +10607,10 @@ class Constructor:
         return fig
 
 
-
-
 class Charge(Constructor):
-    def __init__(self, file, Mode, MaterialLib = None):
+    def __init__(self, file, Mode, MaterialLib=None):
         '''
-        
+
 
         Parameters
         ----------
@@ -10637,7 +10636,7 @@ class Charge(Constructor):
 
         # Check Python Version !!! No import imp module after python 3.11
         PyVersion = sys.version
-      
+
         try:
             if PyVersion.split(" ")[0] > "3.11.0":
                 import importlib.util
@@ -10652,7 +10651,7 @@ class Charge(Constructor):
                     # sys.modules[module.__name__] = module
                     loader.exec_module(module)
                     return module
-                
+
                 self.lumpai = load_source('lumapi', self.file)
             else:
                 import imp
@@ -10663,11 +10662,10 @@ class Charge(Constructor):
             print(f"ImportError encountered: {e}")
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-            
+
         self.Mode = Mode
         self.Struct = None
         self.SolverInfo = {}
-        
 
         if self.Mode == "CHARGE":
             self.CHARGE()
@@ -10677,12 +10675,12 @@ class Charge(Constructor):
             else:
                 self.lum.importmaterialdb(self.MaterialLib)
         else:
-            raise ValueError("Non Valid Solver was choosen. Please pass on one of the two supported solvers ['FDTD' or 'EME']")
-    
-    
+            raise ValueError(
+                "Non Valid Solver was choosen. Please pass on one of the two supported solvers ['FDTD' or 'EME']")
+
     def CHARGE(self):
         '''
-        
+
         Calls the CHARGE Solver.
 
         Returns
@@ -10692,12 +10690,11 @@ class Charge(Constructor):
         '''
         self.lum = self.lumpai.DEVICE()
         print('Lumerical CHARGE API is started')
-        
-       
+
     # Close Programm
     def Close(self):
         '''
-        
+
 
         Returns
         -------
@@ -10706,7 +10703,6 @@ class Charge(Constructor):
         '''
         self.lum.close()
         print('Lumerical API is closed')
-
 
     # Remove the object and solver region
     def removeObject(self):
@@ -10723,10 +10719,10 @@ class Charge(Constructor):
         self.lum.deleteall()
 
         file = self.file
-        
-    def Material(self,Material_Data):
+
+    def Material(self, Material_Data):
         '''
-        
+
 
         Parameters
         ----------
@@ -10738,21 +10734,21 @@ class Charge(Constructor):
         Returns
         -------
         Materials_Added : list
-            List of added materials to the simulation. 
+            List of added materials to the simulation.
 
         '''
-        
+
         # Separate Materials into Electrical and Optical in List Material_Data["Electrical"] = ["mat1", "mat2"..]
         # and optical Material_Data["Optical"] = ["omat1", "omat2", ...]
         Electrical_Materials = []
         Optical_Materials = []
         Materials_Added = []
-        
+
         for i in Material_Data["Electrical"]:
             Electrical_Materials.append(i)
         for j in Material_Data["Optical"]:
             Optical_Materials.append(j)
-        
+
         # Check for Items that are common for the optical and electrical Material
         Common_Materials = [item for item in Electrical_Materials if item in Optical_Materials]
         Electrical_Materials = [item for item in Electrical_Materials if item not in Common_Materials]
@@ -10767,16 +10763,18 @@ class Charge(Constructor):
                 self.lum.select("materials::" + Common_Materials[i])
                 self.lum.addmaterialproperties("HT", Common_Materials[i])  # importing from thermal material database
                 self.lum.select("materials::" + Common_Materials[i])
-                self.lum.addmaterialproperties("EM",Common_Materials[i])
+                self.lum.addmaterialproperties("EM", Common_Materials[i])
             # Add all Electrical Materials to materials folder
             Materials_Added = Materials_Added + Common_Materials
             for i in range(len(Electrical_Materials)):
                 self.lum.addmodelmaterial()
                 self.lum.set("name", Electrical_Materials[i])
-                self.lum.addmaterialproperties("CT", Electrical_Materials[i])  # importing from electrical material database
+                self.lum.addmaterialproperties("CT",
+                                               Electrical_Materials[i])  # importing from electrical material database
                 self.lum.select("materials::" + Electrical_Materials[i])
-                self.lum.addmaterialproperties("HT", Electrical_Materials[i])  # importing from thermal material database
-                self.lum.select("materials::" + Electrical_Materials[i]) 
+                self.lum.addmaterialproperties("HT",
+                                               Electrical_Materials[i])  # importing from thermal material database
+                self.lum.select("materials::" + Electrical_Materials[i])
                 for _ in Optical_Materials:
                     if Electrical_Materials[i].split(" ")[0] == _.split(" ")[0]:
                         Optical_Materials.remove(_)
@@ -10789,7 +10787,7 @@ class Charge(Constructor):
             for i in range(len(Optical_Materials)):
                 self.lum.addmodelmaterial()
                 self.lum.set("name", Optical_Materials[i])
-                self.lum.addmaterialproperties("EM",Optical_Materials[i])
+                self.lum.addmaterialproperties("EM", Optical_Materials[i])
             Materials_Added = Materials_Added + Optical_Materials
 
         else:
@@ -10797,9 +10795,11 @@ class Charge(Constructor):
             for i in range(len(Electrical_Materials)):
                 self.lum.addmodelmaterial()
                 self.lum.set("name", Electrical_Materials[i])
-                self.lum.addmaterialproperties("CT", Electrical_Materials[i])  # importing from electrical material database
+                self.lum.addmaterialproperties("CT",
+                                               Electrical_Materials[i])  # importing from electrical material database
                 self.lum.select("materials::" + Electrical_Materials[i])
-                self.lum.addmaterialproperties("HT", Electrical_Materials[i])  # importing from thermal material database
+                self.lum.addmaterialproperties("HT",
+                                               Electrical_Materials[i])  # importing from thermal material database
                 self.lum.select("materials::" + Electrical_Materials[i])
                 for _ in Optical_Materials:
                     if Electrical_Materials[i].split(" ")[0] == _.split(" ")[0]:
@@ -10813,16 +10813,14 @@ class Charge(Constructor):
             for i in range(len(Optical_Materials)):
                 self.lum.addmodelmaterial()
                 self.lum.set("name", Optical_Materials[i])
-                self.lum.addmaterialproperties("EM",Optical_Materials[i])
+                self.lum.addmaterialproperties("EM", Optical_Materials[i])
             Materials_Added = Materials_Added + Optical_Materials
-        
+
         return Materials_Added
-                
-                
-                
-    def MZM(self, Parameters):  
+
+    def MZM(self, Parameters):
         '''
-        
+
 
         Parameters
         ----------
@@ -10851,14 +10849,14 @@ class Charge(Constructor):
             Parameters["Electrodes Height"] : int/float
                 Height of the Metal electrodes
             Parameters["Gap"] : int/float
-                Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes. 
+                Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.
 
         Returns
         -------
         None.
 
         '''
-        
+
         # Define Materials
         Substrate_Height = Parameters['Substrate Height']
         Optical_Material = Parameters["Optical"]
@@ -10872,23 +10870,20 @@ class Charge(Constructor):
         Metal_Sig_Width = Parameters["Signal Electrodes Width"]
         Metal_Height = Parameters["Electrodes Height"]
         Gap = Parameters["Gap"]
-        
-        
+
         # Add materials to Simulation enviroment
         Materials_Dict = {}
         Materials_Dict["Electrical"] = Electrical_Material
         Materials_Dict["Optical"] = Optical_Material
         self.Material(Materials_Dict)
 
-        # Material definition 
+        # Material definition
         if "Air" in Electrical_Material:
             Electrical_Material.remove("Air")
             MaterialElectrodes = Electrical_Material[0]
         else:
             MaterialElectrodes = Electrical_Material[0]
-            
-            
-            
+
         if "Si (Silicon)" in Electrical_Material:
             MaterialSub = Electrical_Material[2]
             MaterialClad = Electrical_Material[2]
@@ -10899,19 +10894,17 @@ class Charge(Constructor):
             MaterialClad = Electrical_Material[2]
             MaterialSlab = Electrical_Material[1]
             MaterialWG = MaterialSlab
-        
-       
+
         # Device Lenght
         MZM_Leght = WG_Length
-        MZM_Width = WG_Width*2 + 2*Metal_GND_Width + Metal_Sig_Width + Gap*2
-        
-        
+        MZM_Width = WG_Width * 2 + 2 * Metal_GND_Width + Metal_Sig_Width + Gap * 2
+
         # creating the LN Handle
         self.lum.addrect()
         self.lum.set("name", "LN_Handle")
         self.lum.set("y", 0)
         self.lum.set("y span", MZM_Width + 4e-6)
-        self.lum.set("z", -Substrate_Height/2 - (5/2)*1e-6)
+        self.lum.set("z", -Substrate_Height / 2 - (5 / 2) * 1e-6)
         self.lum.set("z span", 5e-6)
         self.lum.set("x", 0)
         self.lum.set("x span", MZM_Leght)
@@ -10928,15 +10921,13 @@ class Charge(Constructor):
         self.lum.set("x span", MZM_Leght)
         self.lum.set("material", MaterialSub)
         # self.lum.set("color",[1; 1; 0; 0])
-        
 
-            
         # Position Thin Film and Waveguides
         if Slab_Height == 0:
-            z_Offset = Substrate_Height/2
-            
-        
-        else:      
+            z_Offset = Substrate_Height / 2
+
+
+        else:
             # creating the thin film
             self.lum.select("Substrate")
             zmax = self.lum.get("z max")
@@ -10948,13 +10939,11 @@ class Charge(Constructor):
             self.lum.set("y span", MZM_Width + 4e-6)
             self.lum.set("x", 0)
             self.lum.set("x span", MZM_Leght)
-            self.lum.set("z min", Substrate_Height/2)
+            self.lum.set("z min", Substrate_Height / 2)
             self.lum.set("z max", z_Offset)
             self.lum.set("material", MaterialSlab)
             self.lum.select("Slab")
             self.lum.addtogroup("LNOI")
-        
-        
 
         # Triangle EQ for MMI Width
         x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -10963,8 +10952,8 @@ class Charge(Constructor):
         WG_Width_top = WG_W
 
         # Set offsets for the Optcal Waveguides
-        WG_Y_Pos = Metal_Sig_Width/2 + Gap + WG_Width/2
-        Metal_Y_Pos = WG_Y_Pos + Gap + WG_Width/2 + Metal_GND_Width/2    # Metal_GND_Width + Gap*2 + WG_Width
+        WG_Y_Pos = Metal_Sig_Width / 2 + Gap + WG_Width / 2
+        Metal_Y_Pos = WG_Y_Pos + Gap + WG_Width / 2 + Metal_GND_Width / 2  # Metal_GND_Width + Gap*2 + WG_Width
 
         # Add Waveguides
         # self.lum.addwaveguide()
@@ -10978,7 +10967,7 @@ class Charge(Constructor):
         # pole = np.array([[WG_Length/2, 0], [- WG_Length/2, 0]])
         # self.lum.set("poles", pole)
         # self.lum.set("material", MaterialWG)
-        
+
         self.lum.addwaveguide()
         self.lum.set("name", "Waveguide_Right")
         self.lum.set("base height", WG_Height)
@@ -10986,18 +10975,18 @@ class Charge(Constructor):
         self.lum.set("base width", WG_Width)
         self.lum.set("x", 0)
         self.lum.set("y", WG_Y_Pos)
-        self.lum.set("z", z_Offset +  WG_Height/2)
-        pole = np.array([[WG_Length/2, 0], [- WG_Length/2, 0]])
+        self.lum.set("z", z_Offset + WG_Height / 2)
+        pole = np.array([[WG_Length / 2, 0], [- WG_Length / 2, 0]])
         self.lum.set("poles", pole)
         self.lum.set("material", MaterialWG)
-        
+
         self.lum.select("Waveguide_Right")
         self.lum.addtogroup("LNOI")
-        
+
         # Add Electrodes
-        print("z min ",z_Offset)
+        print("z min ", z_Offset)
         print("z min ", z_Offset + Metal_Height)
-        
+
         self.lum.addrect()
         self.lum.set("name", "Sig")
         self.lum.set("y", 0)
@@ -11007,7 +10996,7 @@ class Charge(Constructor):
         self.lum.set("z min", z_Offset)
         self.lum.set("z max", z_Offset + Metal_Height)
         self.lum.set("material", MaterialElectrodes)
-        
+
         # self.lum.addrect()
         # self.lum.set("name", "Ground_L")
         # self.lum.set("y", -Metal_Y_Pos)
@@ -11017,7 +11006,7 @@ class Charge(Constructor):
         # self.lum.set("z min", z_Offset)
         # self.lum.set("z max", z_Offset + Metal_Height)
         # self.lum.set("material", MaterialElectrodes)
-    
+
         self.lum.addrect()
         self.lum.set("name", "Ground_R")
         self.lum.set("y", Metal_Y_Pos)
@@ -11027,16 +11016,15 @@ class Charge(Constructor):
         self.lum.set("z min", z_Offset)
         self.lum.set("z max", z_Offset + Metal_Height)
         self.lum.set("material", MaterialElectrodes)
-        
-        
+
     def Set_SimulationRegion(self, Parameters):
         '''
-        
+
 
         Parameters
         ----------
         Parameters : Dictionary of Parameters
-            Dictionary with all the parameters needt for the MZM simulation region. The Simulation region is define 
+            Dictionary with all the parameters needt for the MZM simulation region. The Simulation region is define
             only on the halft of the structure sice the MZM is symetrical component.
             Parameters['Substrate Height'] : int/float
                 Substrate Heigh
@@ -11053,7 +11041,7 @@ class Charge(Constructor):
             Parameters["Electrodes Height"] : int/float
                 Height of the Metal electrodes
             Parameters["Gap"] : int/float
-                Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes. 
+                Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.
 
 
         Returns
@@ -11061,7 +11049,7 @@ class Charge(Constructor):
         None.
 
         '''
-        
+
         # Define Parameters
         Substrate_Height = Parameters['Substrate Height']
         Slab_Height = Parameters['Slab Height']
@@ -11071,10 +11059,10 @@ class Charge(Constructor):
         Metal_Sig_Width = Parameters["Signal Electrodes Width"]
         Metal_Height = Parameters["Electrodes Height"]
         Gap = Parameters["Gap"]
-        
-        Metal_Y_Pos = Metal_GND_Width + Gap*2 + WG_Width
-        MZM_Width = WG_Width*2 + 2*Metal_GND_Width + Metal_Sig_Width + Gap*4
-        
+
+        Metal_Y_Pos = Metal_GND_Width + Gap * 2 + WG_Width
+        MZM_Width = WG_Width * 2 + 2 * Metal_GND_Width + Metal_Sig_Width + Gap * 4
+
         self.lum.select("simulation region")
         self.lum.set("dimension", "2D X-Normal")
         # self.lum.addmodelmaterial()
@@ -11083,16 +11071,15 @@ class Charge(Constructor):
         # self.lum.addmaterialproperties("HT", "Air")  # importing from thermal material database)
         self.lum.set("background material", "Air")
         self.lum.set("x", 0)
-        self.lum.set("y min", 0 - Metal_Sig_Width/2)
-        self.lum.set("y max", Metal_Y_Pos + Metal_GND_Width/2)
+        self.lum.set("y min", 0 - Metal_Sig_Width / 2)
+        self.lum.set("y max", Metal_Y_Pos + Metal_GND_Width / 2)
         # self.lum.set("y",0)
         # self.lum.set("y span", MZM_Width + 1e-6)
         self.lum.set("z min", 0)
-        self.lum.set("z max",Substrate_Height + Slab_Height +  2*Metal_Height)
-        
-     
+        self.lum.set("z max", Substrate_Height + Slab_Height + 2 * Metal_Height)
+
     def MZM_ChargeSolver(self, Parameters):
-        
+
         # Parameters
         Substrate_Height = Parameters['Substrate Height']
         Slab_Height = Parameters['Slab Height']
@@ -11102,19 +11089,18 @@ class Charge(Constructor):
         Metal_Sig_Width = Parameters["Signal Electrodes Width"]
         Metal_Height = Parameters["Electrodes Height"]
         Gap = Parameters["Gap"]
-        
-       
-        MZM_Width = WG_Width*2 + 2*Metal_GND_Width + Metal_Sig_Width + Gap*4
-        Metal_Y_Pos = Metal_GND_Width + Gap*2 + WG_Width
-        
-        # Set simulation region 
+
+        MZM_Width = WG_Width * 2 + 2 * Metal_GND_Width + Metal_Sig_Width + Gap * 4
+        Metal_Y_Pos = Metal_GND_Width + Gap * 2 + WG_Width
+
+        # Set simulation region
         self.Set_SimulationRegion(Parameters)
-        
+
         # Set charge Solver
         self.lum.addchargesolver()
-        self.lum.set("min edge length", 0.04e-6) # TODO 
+        self.lum.set("min edge length", 0.04e-6)  # TODO
         # TODO Results Tab syntax
-        
+
         # Set boundary
         self.lum.select("CHARGE::boundary conditions")
         # self.lum.addelectricalcontact()
@@ -11127,8 +11113,7 @@ class Charge(Constructor):
         # self.lum.set("surface type", "solid")
         # self.lum.set("solid", "Ground_R")
         # self.lum.set("outer surface only", 0)
-        
-        
+
         self.lum.addelectricalcontact()
         self.lum.set("name", "Signal")
         self.lum.set("sweep type", "range")
@@ -11139,7 +11124,7 @@ class Charge(Constructor):
         self.lum.set("surface type", "solid")
         self.lum.set("solid", "Sig")
         self.lum.set("outer surface only", 1)
-        
+
         self.lum.addelectricalcontact()
         self.lum.set("name", "Ground_R")
         self.lum.set("sweep type", "single")
@@ -11147,38 +11132,36 @@ class Charge(Constructor):
         self.lum.set("surface type", "solid")
         self.lum.set("solid", "Ground_R")
         self.lum.set("outer surface only", 0)
-        
-        # Set moditor 
+
+        # Set moditor
         self.lum.addefieldmonitor()
         self.lum.set("name", "CHARGE_Field_Monitor")
         self.lum.set("monitor type", "2D x-normal")
         self.lum.set("x", 0)
         # self.lum.set("y",0)
         # self.lum.set("y span", MZM_Width + 1e-6)
-        self.lum.set("y min", 0 - Metal_Sig_Width/2)
-        self.lum.set("y max", Metal_Y_Pos + Metal_GND_Width/2)
-        self.lum.set("z min", -Substrate_Height/2)
-        self.lum.set("z max",Substrate_Height + Slab_Height +  Metal_Height/2)
-        
-        
+        self.lum.set("y min", 0 - Metal_Sig_Width / 2)
+        self.lum.set("y max", Metal_Y_Pos + Metal_GND_Width / 2)
+        self.lum.set("z min", -Substrate_Height / 2)
+        self.lum.set("z max", Substrate_Height + Slab_Height + Metal_Height / 2)
+
         # Add fine mesh
         self.lum.addmesh()
         self.lum.set("name", "CHARGE_Volume_Mesh")
         self.lum.set("geometry type", "volume")
         self.lum.set("volume type", "solid")
         self.lum.set("volume solid", "Waveguide_Right")
-        self.lum.set("max edge length", 0.01e-6) # TODO need to be checked and made variable 
-        
-    
+        self.lum.set("max edge length", 0.01e-6)  # TODO need to be checked and made variable
+
     def MZM_FEEMSolver(self, Parameters):
         '''
-        
+
 
         Parameters
         ----------
-        Parameters : dict 
-            Dictionary with all the parameters needt for the MZM FEEM Solver region. The Simulation region is define 
-            only on the halft of the structure since the FEEM region is the simulation region too. 
+        Parameters : dict
+            Dictionary with all the parameters needt for the MZM FEEM Solver region. The Simulation region is define
+            only on the halft of the structure since the FEEM region is the simulation region too.
             Parameters['Substrate Height'] : int/float
                 Substrate Heigh
             Parameters['Slab Height'] : Slab Height
@@ -11194,7 +11177,7 @@ class Charge(Constructor):
             Parameters["Electrodes Height"] : int/float
                 Height of the Metal electrodes
             Parameters["Gap"] : int/float
-                Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes. 
+                Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.
             Parameters["Wavelength"] : int/float
                 Simulation wavelength
 
@@ -11203,7 +11186,7 @@ class Charge(Constructor):
         None.
 
         '''
-        
+
         # Parameters
         Substrate_Height = Parameters['Substrate Height']
         Slab_Height = Parameters['Slab Height']
@@ -11214,18 +11197,17 @@ class Charge(Constructor):
         Metal_Height = Parameters["Electrodes Height"]
         Gap = Parameters["Gap"]
         Wavelength = Parameters["Wavelength"]
-        
 
-        MZM_Width = WG_Width*2 + 2*Metal_GND_Width + Metal_Sig_Width + Gap*4
-        
+        MZM_Width = WG_Width * 2 + 2 * Metal_GND_Width + Metal_Sig_Width + Gap * 4
+
         # Set Solver
         self.lum.addfeemsolver()
-        self.lum.set("edges per wavelength", 2) # TODO Check for Converchange need to be separate parameter
-        self.lum.set("polynomial order", 2) # TODO Check what is this parameter for 
+        self.lum.set("edges per wavelength", 2)  # TODO Check for Converchange need to be separate parameter
+        self.lum.set("polynomial order", 2)  # TODO Check what is this parameter for
         self.lum.set("wavelength", Wavelength)
         self.lum.set("use max index", 0)
-        self.lum.set("n", 2.02) # TODO Check for what exactly supposable under limit of n_eff
-        
+        self.lum.set("n", 2.02)  # TODO Check for what exactly supposable under limit of n_eff
+
         # Set Boundary
         self.lum.addpec()
         self.lum.set("surface type", "simulation region")
@@ -11235,43 +11217,38 @@ class Charge(Constructor):
         self.lum.set("y max", 1)
         self.lum.set("z min", 1)
         self.lum.set("z max", 1)
-        
-        
+
         self.lum.addpml()
-        self.lum.set("sigma", 5) #TODO Check for what exactly
-        
+        self.lum.set("sigma", 5)  # TODO Check for what exactly
+
         # Set monitor
         self.lum.addimportnk()
         self.lum.set("name", "nk import WG")
         self.lum.set("volume type", "solid")
         self.lum.set("volume solid", "Waveguide_Right")
-        
-        
+
         self.lum.addimportnk()
         self.lum.set("name", "nk import Slab")
         self.lum.set("volume type", "solid")
         self.lum.set("volume solid", "Slab")
-        
-        
-        
+
     def StartCHARGESolver(self):
         '''
-        This function will first save the simulation into the folder where the 
-        this script is saved. After saving the script the CHARGE solver will be started. 
+        This function will first save the simulation into the folder where the
+        this script is saved. After saving the script the CHARGE solver will be started.
 
         Returns
         -------
         None.
-        
+
 
         '''
         self.lum.save('SimRun1')
         self.lum.run("CHARGE")
-        
-        
+
     def StartFEEMSolver(self):
         '''
-        This function will first save the simulation into the folder where the 
+        This function will first save the simulation into the folder where the
         this script is saved. After saving the script the FEEM solver will be started.
 
         Returns
@@ -11281,31 +11258,29 @@ class Charge(Constructor):
         '''
         self.lum.save("SimRun1")
         self.lum.run("FEEM")
-    
-    
+
     def ResultsCHARGE(self):
         '''
 
         Returns
         -------
         electro : dict
-         Simulation results from the monitor of CHARGE. This function will create an Lumerical window into Charge solver. 
-         The user can use the window to see tha changes in EO index depending on the voltage apply on the electrodes. 
+         Simulation results from the monitor of CHARGE. This function will create an Lumerical window into Charge solver.
+         The user can use the window to see tha changes in EO index depending on the voltage apply on the electrodes.
          The function will return the monitor Data, so that the user can use it for some post precessing.
 
         '''
-        
+
         # Lithium Niobate telecom permitivity
-        eps_o = 2.21**2
-        eps_e = 2.14**2
+        eps_o = 2.21 ** 2
+        eps_e = 2.14 ** 2
 
         # Lithium Niobate non;linear coefficents
         r_13 = 9.6e-12
         r_33 = 30.9e-12
-        
-        electro = self.lum.getresult("CHARGE::CHARGE_Field_Monitor","electrostatics")
-        
-        
+
+        electro = self.lum.getresult("CHARGE::CHARGE_Field_Monitor", "electrostatics")
+
         # Get electrostatic results
         E = np.squeeze(electro["E"])
         Volt = electro["V_Signal"]
@@ -11315,10 +11290,8 @@ class Charge(Constructor):
         n_EO = np.zeros(dts)
         dn = np.zeros(dts)
 
-
         # Vector components work well with unstructured datasets, need to do this for voltage and wavelength
         for vv in range(len(Volt)):
-
             # Spatial index data (diagonal permittivity)
             eps_unperturbed = np.array([eps_e, eps_o, eps_o])[np.newaxis, :]  # Shape: (1, 3)
 
@@ -11328,19 +11301,23 @@ class Charge(Constructor):
             # Compute modified index using element-wise inversion (instead of np.linalg.inv)
             n_EO[:, vv, :] = np.sqrt(1 / (1 / eps_unperturbed + deps_inv))
 
-
         dn = np.copy(n_EO)
         dn[:, :, 0] = n_EO[:, :, 0] - np.sqrt(eps_e)
         dn[:, :, 1:3] = n_EO[:, :, 1:3] - np.sqrt(eps_o)
 
         # Add dn and n_EO to dataset and visualize
-        electro['n_EO'] = n_EO ## total index
-        electro['dn'] = dn ## total index
+        electro['n_EO'] = n_EO  ## total index
+        electro['dn'] = dn  ## total index
         self.lum.visualize(electro)
-                        
+
         return electro
         
     
+
+
+        
+        
+        
         
 
 class HelpSubject:
@@ -11363,8 +11340,7 @@ class HelpSubject:
         #                8) BendWaveguide - onyl available for FDTD Solver              # 
         #                9) ArcWaveguide - onyl available for FDTD Solver               #        
         #                10) GratingCoupler - onyl available for FDTD Solver            #         
-        #                11) RingGratingCoupler - onyl available for FDTD Solver        #
-        #                12) MZM - only available fro CHARGE Solver                     #
+        #                11) RingGratingCoupler - onyl available for FDTD Solver        #  
         #                                                                               #  
         #                To print information about the structure you desire please     #  
         #                use obj.Help({"Objects": Number}). For Example                 #  
@@ -11879,40 +11855,7 @@ class HelpSubject:
                     Parameters["SMF Z Span"]: int/float
                         Lenght/Span of the Single Mode Fiber
  -----------------------------------------------------------------------------------------------------------
-                """)
-        elif Number == 12:
-            print("""
-                    Call StraightWaveguide with -> obj.MZM(Parameters) 
-                        
-                    Dictionary Parameters:
------------------------------------------------------------------------------------------------------------
-                    Parameters['Substrate Height'] : int/float
-                        Substrate Height
-                    Parameters["Optical"] : dictionary of str
-                        Optical Materials Dataset
-                    Parameters["Electrical"] : dictionary of str
-                        Electrical Materials Dataset
-                    Parameters['angle'] : int/float
-                        Side angle of the Waveguife
-                    Parameters['Slab Height'] : Slab Height
-                        Height of the Material slab. It can be set to 0 if no Slab is presented
-                    Parameters['WG Height'] : int/float
-                        Waveguide Height
-                    Parameters['WG Width'] : int/float
-                        Waveguide Width. Here the Top Waveguide width is considered
-                    Parameters['WG Length'] : int/float
-                        Waveguide lenght. This determin the structure length as well
-                    Parameters["GND Electrodes Width"] : int/float
-                        Ground Electrode width
-                    Parameters["Signal Electrodes Width"] : int/float
-                        Signal electrode Width
-                    Parameters["Electrodes Height"] : int/float
-                        Height of the Metal electrodes
-                    Parameters["Gap"] : int/float
-                        Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.
-                        
------------------------------------------------------------------------------------------------------------
-                """)
+                """)                 
                   
                   
                   
@@ -11940,9 +11883,7 @@ class HelpSubject:
         #                14) ArcWaveguide FDTD Solver                                   #        
         #                15) GratingCoupler FDTD Solver                                 #         
         #                16) RingGratingCoupler FDTD Solver                             #  
-        #                17) MZM CHARGE Solver                                          #
-        #                18) MZM FEEM Solver                                            #
-        #                                                                               #
+        #                                                                               #  
         #                To print information about the solver you desire please        #  
         #                use obj.Help({"Solvers"}: Number). For Example                 #  
         #                obj.Help({"Solvers": 1}) will give you information about       #  
@@ -12059,79 +12000,77 @@ class HelpSubject:
                     Parameters["Port Span"]: list of int/floats
                         Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
 -----------------------------------------------------------------------------------------------------------
-                """)    
+                """)
         elif NumberSolver == 4:
-            print("""
-                    Call Waveguide FDE Solver with -> obj.Solver("MMI2x2", "EME", Parameters)
-                        
-                    Dictionary Parameters:
------------------------------------------------------------------------------------------------------------ 
-                    Parameters['Substrate Height'] : int/float
-                        Substrate height.
-                      Parameters['WG Height' : int/float
-                          Waveguide hight. Also the height of the MMI section
-                      Parameters['WG Width'] : int/float
-                          Waveguide width.
-                      Parameters['Slab Height'] : int/float
-                          Slab height
-                      Parameters['PWB Taper Width Back'] : int/float
-                          Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
-                      Parameters['PWB Taper Hight Back'] : int/float
-                          Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
-                      Parameters['PWB Taper Length'] : int/float
-                          Length of the Photonic Wire Bonding Taper
-                      Parameters["SMF Core Diameter"] : int/float
-                        Single Mode Fiber core Diameter
-                      Parameters["SMF Cladding Diameter"] : int/float
-                        Single Mode Fiber Cladding Diameter
-                      Parameters['y res'] : int/float
-                          Mesh y-Axis
-                      Parameters['z res'] : int/float
-                          Mesh z-Axis
-                      Parameters['Wavelength'] : int/float
-                          Wavelength
-                      Parameters["Mode"] : str
-                          Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                      Parameters["Port Span"] : list of floats/ints
-                          List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken.
------------------------------------------------------------------------------------------------------------
-                """)    
-        elif NumberSolver == 5:
             print("""
                     Call InverseTaper EME Solver with -> obj.Solver("InverseTaper", "EME", Parameters)
                         
                     Dictionary Parameters:
 -----------------------------------------------------------------------------------------------------------     
                     Parameters['Substrate Height'] : int/float
-                      Substrate height.
-                      Parameters['WG Height' : int/float
-                          Waveguide hight. Also the height of the MMI section
-                      Parameters['WG Width'] : int/float
-                          Waveguide width.
-                      Parameters['Slab Height'] : int/float
-                          Slab height
-                      Parameters['PWB Taper Width Back'] : int/float
-                          Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
-                      Parameters['PWB Taper Hight Back'] : int/float
-                          Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
-                      Parameters['PWB Taper Length'] : int/float
-                          Length of the Photonic Wire Bonding Taper
-                      Parameters["SMF Core Diameter"] : int/float
+                        Substrate height.
+                    Parameters['WG Height' : int/float
+                        Waveguide hight. Also the height of the MMI section
+                    Parameters['WG Width'] : int/float
+                        Waveguide width.
+                    Parameters['Slab Height'] : int/float
+                        Slab height
+                    Parameters['PWB Taper Width Back'] : int/float
+                        Photonic Wirebonding (PWB) Width back side (to the Photonic Wire Bonding)
+                    Parameters['PWB Taper Hight Back'] : int/float
+                        Photonic Wire Bonding Height back side (to the Photonic Wire Bonding)
+                    Parameters['PWB Taper Length'] : int/float
+                        Length of the Photonic Wire Bonding Taper
+                    Parameters["SMF Core Diameter"] : int/float
                         Single Mode Fiber core Diameter
-                      Parameters["SMF Cladding Diameter"] : int/float
+                    Parameters["SMF Cladding Diameter"] : int/float
                         Single Mode Fiber Cladding Diameter
-                      Parameters['y res'] : int/float
-                          Mesh y-Axis
-                      Parameters['z res'] : int/float
-                          Mesh z-Axis
-                      Parameters['Wavelength'] : int/float
-                          Wavelength
-                      Parameters["Mode"] : str
-                          Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
-                      Parameters["Port Span"] : list of floats/ints
-                          List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken. 
+                    Parameters['y res'] : int/float
+                        Mesh y-Axis
+                    Parameters['z res'] : int/float
+                        Mesh z-Axis
+                    Parameters['Wavelength'] : int/float
+                        Wavelength
+                    Parameters["Mode"] : str
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode")
+                    Parameters["Port Span"] : list of floats/ints
+                        List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken. 
 -----------------------------------------------------------------------------------------------------------
-                """) 
+                """)
+        elif NumberSolver == 5:
+            print("""
+                    Call InverseTaper EME Solver with -> obj.Solver("DirectionalCoupler", "EME", Parameters)
+
+                    Dictionary Parameters:
+        -----------------------------------------------------------------------------------------------------------     
+                    Parameters['Substrate Height'] : float/int
+                        Height of the Substrate
+                    Parameters['Substrate Width'] : float/int
+                        Width of the MMI
+                    Parameters['DC Length'] : float/int
+                        Length of the Directional coupler
+                    Parameters['WG Height'] : float/int
+                        Height of the Waveguide
+                    Parameters['WG Width'] : float/int
+                        Waveguide Width
+                    Parameters['Position Offset'] : float/int
+                        Positional offser of the waveguides. If posOffset the two Waveguides
+                        will be offset of the middle position (y = 0) by the half of there
+                        Width. In this case they will not overlap if the Offset is 0.
+                    Parameters['y res'] : float/int
+                        Mesh resolution for the y-Axis
+                    Parameters['z res'] : float/int
+                        Mesh resolution for the z Axis
+                    Parameters['Slab Height'] : float/int
+                        Slab height.
+                    Parameters['Wavelength'] : float/int
+                        Wavelength
+                    Parameters["Port Span"]: list of int/floats
+                        Parameters["Port Span"] = [Span of Port in x direction, Span of Port in y direction, Span of Port in z direction]
+                    Parameters["Mode"] : str
+                        Mode to choose from ("fundamental TE mode", "fundamental TM mode", "fundamental mode") 
+        -----------------------------------------------------------------------------------------------------------
+                        """)
         elif NumberSolver == 6:
             print("""
                     Call StraightWaveguide EME Solver with -> obj.Solver("StraightWaveguide", "EME", Parameters)
@@ -12543,59 +12482,7 @@ class HelpSubject:
                     Parameters["Port Span"] : list of floats/ints
                           List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken. 
  -----------------------------------------------------------------------------------------------------------
-                """) 
-        elif NumberSolver == 17:
-            print("""
-                    Call Wavelength Division Multiplexing EME Solver with -> obj.MZM_ChargeSolver(Parameters)
-                        
-                    Dictionary Parameters:
------------------------------------------------------------------------------------------------------------       
-                    Parameters['Substrate Height'] : int/float
-                        Substrate Heigh
-                    Parameters['Slab Height'] : Slab Height
-                        Height of the Material slab. It can be set to 0 if no Slab is presented
-                    Parameters['WG Height'] : int/float
-                        Waveguide Height
-                    Parameters['WG Width'] : int/float
-                        Waveguide Width. Here the Top Waveguide width is considered
-                    Parameters["GND Electrodes Width"] : int/float
-                        Ground Electrode width
-                    Parameters["Signal Electrodes Width"] : int/float
-                        Signal electrode Width
-                    Parameters["Electrodes Height"] : int/float
-                        Height of the Metal electrodes
-                    Parameters["Gap"] : int/float
-                        Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes. 
-                    Parameters["Wavelength"] : int/float
-                        Simulation wavelength 
------------------------------------------------------------------------------------------------------------
-                """) 
-        elif NumberSolver == 18:
-            print("""
-                    Call Wavelength Division Multiplexing EME Solver with -> obj.MZM_FEEMSolver(Parameters)
-                        
-                    Dictionary Parameters:
------------------------------------------------------------------------------------------------------------       
-                    Parameters['Substrate Height'] : int/float
-                        Substrate Heigh
-                    Parameters['Slab Height'] : Slab Height
-                        Height of the Material slab. It can be set to 0 if no Slab is presented
-                    Parameters['WG Height'] : int/float
-                        Waveguide Height
-                    Parameters['WG Width'] : int/float
-                        Waveguide Width. Here the Top Waveguide width is considered
-                    Parameters["GND Electrodes Width"] : int/float
-                        Ground Electrode width
-                    Parameters["Signal Electrodes Width"] : int/float
-                        Signal electrode Width
-                    Parameters["Electrodes Height"] : int/float
-                        Height of the Metal electrodes
-                    Parameters["Gap"] : int/float
-                        Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes. 
-                    Parameters["Wavelength"] : int/float
-                        Simulation wavelength 
------------------------------------------------------------------------------------------------------------
-                """) 
+                """)                           
      
               
     def Help_StartSimulation(self):
