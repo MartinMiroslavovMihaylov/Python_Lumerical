@@ -162,8 +162,8 @@ class Constructor:
             print("i am in Dict section")
             StartNumber = [1,2,3]
             ResultNumber = [1,2,3,4]
-            StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11]
-            SolverNumber = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+            StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11,12]
+            SolverNumber = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
             
             listSub = ['Objects', 'Solvers', 'Start Simulation', 'Results', 'Loading Bar', 'Log File']
             key = list(Subject.keys())
@@ -11340,7 +11340,8 @@ class HelpSubject:
         #                8) BendWaveguide - onyl available for FDTD Solver              # 
         #                9) ArcWaveguide - onyl available for FDTD Solver               #        
         #                10) GratingCoupler - onyl available for FDTD Solver            #         
-        #                11) RingGratingCoupler - onyl available for FDTD Solver        #  
+        #                11) RingGratingCoupler - onyl available for FDTD Solver        # 
+        #                12) MZM - only available fro CHARGE Solver                     #        
         #                                                                               #  
         #                To print information about the structure you desire please     #  
         #                use obj.Help({"Objects": Number}). For Example                 #  
@@ -11855,7 +11856,40 @@ class HelpSubject:
                     Parameters["SMF Z Span"]: int/float
                         Lenght/Span of the Single Mode Fiber
  -----------------------------------------------------------------------------------------------------------
-                """)                 
+                """)
+        elif Number == 12:
+            print("""
+                    Call StraightWaveguide with -> obj.MZM(Parameters) 
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------
+                    Parameters['Substrate Height'] : int/float
+                        Substrate Height
+                    Parameters["Optical"] : dictionary of str
+                        Optical Materials Dataset
+                    Parameters["Electrical"] : dictionary of str
+                        Electrical Materials Dataset
+                    Parameters['angle'] : int/float
+                        Side angle of the Waveguife
+                    Parameters['Slab Height'] : Slab Height
+                        Height of the Material slab. It can be set to 0 if no Slab is presented
+                    Parameters['WG Height'] : int/float
+                        Waveguide Height
+                    Parameters['WG Width'] : int/float
+                        Waveguide Width. Here the Top Waveguide width is considered
+                    Parameters['WG Length'] : int/float
+                        Waveguide lenght. This determin the structure length as well
+                    Parameters["GND Electrodes Width"] : int/float
+                        Ground Electrode width
+                    Parameters["Signal Electrodes Width"] : int/float
+                        Signal electrode Width
+                    Parameters["Electrodes Height"] : int/float
+                        Height of the Metal electrodes
+                    Parameters["Gap"] : int/float
+                        Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.
+                        
+-----------------------------------------------------------------------------------------------------------
+                """)                
                   
                   
                   
@@ -11882,7 +11916,9 @@ class HelpSubject:
         #                13) BendWaveguide FDTD Solver                                  # 
         #                14) ArcWaveguide FDTD Solver                                   #        
         #                15) GratingCoupler FDTD Solver                                 #         
-        #                16) RingGratingCoupler FDTD Solver                             #  
+        #                16) RingGratingCoupler FDTD Solver                             # 
+        #                17) MZM CHARGE Solver                                          #
+        #                18) MZM FEEM Solver                                            #        
         #                                                                               #  
         #                To print information about the solver you desire please        #  
         #                use obj.Help({"Solvers"}: Number). For Example                 #  
@@ -12482,7 +12518,59 @@ class HelpSubject:
                     Parameters["Port Span"] : list of floats/ints
                           List of x,y and z span of the Ports. For this simulation only y and z parametes will be taken. 
  -----------------------------------------------------------------------------------------------------------
-                """)                           
+                """)
+        elif NumberSolver == 17:
+            print("""
+                    Call Wavelength Division Multiplexing EME Solver with -> obj.MZM_ChargeSolver(Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------       
+                    Parameters['Substrate Height'] : int/float
+                        Substrate Heigh
+                    Parameters['Slab Height'] : Slab Height
+                        Height of the Material slab. It can be set to 0 if no Slab is presented
+                    Parameters['WG Height'] : int/float
+                        Waveguide Height
+                    Parameters['WG Width'] : int/float
+                        Waveguide Width. Here the Top Waveguide width is considered
+                    Parameters["GND Electrodes Width"] : int/float
+                        Ground Electrode width
+                    Parameters["Signal Electrodes Width"] : int/float
+                        Signal electrode Width
+                    Parameters["Electrodes Height"] : int/float
+                        Height of the Metal electrodes
+                    Parameters["Gap"] : int/float
+                        Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes. 
+                    Parameters["Wavelength"] : int/float
+                        Simulation wavelength 
+-----------------------------------------------------------------------------------------------------------
+                """) 
+        elif NumberSolver == 18:
+            print("""
+                    Call Wavelength Division Multiplexing EME Solver with -> obj.MZM_FEEMSolver(Parameters)
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------       
+                    Parameters['Substrate Height'] : int/float
+                        Substrate Heigh
+                    Parameters['Slab Height'] : Slab Height
+                        Height of the Material slab. It can be set to 0 if no Slab is presented
+                    Parameters['WG Height'] : int/float
+                        Waveguide Height
+                    Parameters['WG Width'] : int/float
+                        Waveguide Width. Here the Top Waveguide width is considered
+                    Parameters["GND Electrodes Width"] : int/float
+                        Ground Electrode width
+                    Parameters["Signal Electrodes Width"] : int/float
+                        Signal electrode Width
+                    Parameters["Electrodes Height"] : int/float
+                        Height of the Metal electrodes
+                    Parameters["Gap"] : int/float
+                        Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes. 
+                    Parameters["Wavelength"] : int/float
+                        Simulation wavelength 
+-----------------------------------------------------------------------------------------------------------
+                """) 
      
               
     def Help_StartSimulation(self):
