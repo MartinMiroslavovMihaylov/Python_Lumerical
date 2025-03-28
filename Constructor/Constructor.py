@@ -10607,6 +10607,10 @@ class Constructor:
         return fig
 
 
+
+
+
+
 class Charge(Constructor):
     def __init__(self, file, Mode, MaterialLib=None):
         '''
@@ -11238,11 +11242,7 @@ class Charge(Constructor):
         self.lum.set("volume type", "solid")
         self.lum.set("volume solid", "Waveguide_Right")
 
-        self.lum.addimportnk()
-        self.lum.set("name", "nk import Slab")
-        self.lum.set("volume type", "solid")
-        self.lum.set("volume solid", "Slab")
-
+  
     def StartCHARGESolver(self):
         '''
         This function will first save the simulation into the folder where the
@@ -11296,10 +11296,14 @@ class Charge(Constructor):
         E = np.squeeze(electro["E"])
         Volt = electro["V_Signal"]
 
+        
+        
         # Intialize perturbation matrices same size as E
         dts = E.shape
         n_EO = np.zeros(dts)
         dn = np.zeros(dts)
+
+        
 
         # Vector components work well with unstructured datasets, need to do this for voltage and wavelength
         for vv in range(len(Volt)):
@@ -11312,9 +11316,21 @@ class Charge(Constructor):
             # Compute modified index using element-wise inversion (instead of np.linalg.inv)
             n_EO[:, vv, :] = np.sqrt(1 / (1 / eps_unperturbed + deps_inv))
 
+        self.lum.getresult("CHARGE::CHARGE_Field_Monitor", "electrostatics")
+        self.lum.eval('E = pinch(electro.E);')
+        self.lum.eval('Volt = electro.V_Signal;')
+        self.lum.eval('dts = size(E);')
+        self.lum.eval('n_EO = matrix(dts(1),dts(2),dts(3));')
+        self.lum.eval('dn = matrix(dts(1),dts(2),dts(3));')
+
         dn = np.copy(n_EO)
+        self.lum.eval('dn = n_EO;  \n')
         dn[:, :, 0] = n_EO[:, :, 0] - np.sqrt(eps_e)
         dn[:, :, 1:3] = n_EO[:, :, 1:3] - np.sqrt(eps_o)
+
+        self.lum.eval('dn = n_EO;')
+        self.lum.eval('dn(:,:,1) = n_EO(:,:,1)  - sqrt(eps_e);')
+        self.lum.eval('dn(:,:,2:3) = n_EO (:,:,2:3)  - sqrt(eps_o); ')
 
         # Add dn and n_EO to dataset and visualize
         electro['n_EO'] = n_EO  ## total index
@@ -11322,7 +11338,8 @@ class Charge(Constructor):
         self.lum.visualize(electro)
 
         return electro
-        
+
+    
     
 
 
@@ -23679,6 +23696,8 @@ class Charge(Constructor):
 
         file = self.file
 
+
+
     def Material(self, Material_Data):
         '''
 
@@ -23697,6 +23716,7 @@ class Charge(Constructor):
 
         '''
 
+        
         # Separate Materials into Electrical and Optical in List Material_Data["Electrical"] = ["mat1", "mat2"..]
         # and optical Material_Data["Optical"] = ["omat1", "omat2", ...]
         Electrical_Materials = []
@@ -23712,6 +23732,7 @@ class Charge(Constructor):
         Common_Materials = [item for item in Electrical_Materials if item in Optical_Materials]
         Electrical_Materials = [item for item in Electrical_Materials if item not in Common_Materials]
         Optical_Materials = [item for item in Optical_Materials if item not in Common_Materials]
+
 
         if Common_Materials:
             # Add all Electrical Materials to materials folder
@@ -23729,10 +23750,10 @@ class Charge(Constructor):
                 self.lum.addmodelmaterial()
                 self.lum.set("name", Electrical_Materials[i])
                 self.lum.addmaterialproperties("CT",
-                                               Electrical_Materials[i])  # importing from electrical material database
+                                                Electrical_Materials[i])  # importing from electrical material database
                 self.lum.select("materials::" + Electrical_Materials[i])
                 self.lum.addmaterialproperties("HT",
-                                               Electrical_Materials[i])  # importing from thermal material database
+                                                Electrical_Materials[i])  # importing from thermal material database
                 self.lum.select("materials::" + Electrical_Materials[i])
                 for _ in Optical_Materials:
                     if Electrical_Materials[i].split(" ")[0] == _.split(" ")[0]:
@@ -23744,9 +23765,15 @@ class Charge(Constructor):
             Materials_Added = Materials_Added + Electrical_Materials
             # Add all Optical Materials to materials folder
             for i in range(len(Optical_Materials)):
-                self.lum.addmodelmaterial()
-                self.lum.set("name", Optical_Materials[i])
-                self.lum.addmaterialproperties("EM", Optical_Materials[i])
+                if Optical_Materials[i].split(" ")[0]:
+                    self.lum.select("materials::LiNbO3 semiconductor - X/Y cut (Lithium Niobate)")
+                    self.lum.addemmaterialproperty("Dielectric")
+                    self.lum.set("name",Optical_Materials[i])
+                    self.lum.set("refractive index",2.21)
+                else:
+                    self.lum.addmodelmaterial()
+                    self.lum.set("name", Optical_Materials[i])
+                    self.lum.addmaterialproperties("EM", Optical_Materials[i])
             Materials_Added = Materials_Added + Optical_Materials
 
         else:
@@ -23755,27 +23782,34 @@ class Charge(Constructor):
                 self.lum.addmodelmaterial()
                 self.lum.set("name", Electrical_Materials[i])
                 self.lum.addmaterialproperties("CT",
-                                               Electrical_Materials[i])  # importing from electrical material database
+                                                Electrical_Materials[i])  # importing from electrical material database
                 self.lum.select("materials::" + Electrical_Materials[i])
                 self.lum.addmaterialproperties("HT",
-                                               Electrical_Materials[i])  # importing from thermal material database
+                                                Electrical_Materials[i])  # importing from thermal material database
                 self.lum.select("materials::" + Electrical_Materials[i])
-                for _ in Optical_Materials:
-                    if Electrical_Materials[i].split(" ")[0] == _.split(" ")[0]:
-                        Optical_Materials.remove(_)
-                        self.lum.select("materials::" + Electrical_Materials[i])
-                        self.lum.addmaterialproperties("EM", _)
-                    else:
-                        pass
+                # for _ in Optical_Materials:
+                #     if Electrical_Materials[i].split(" ")[0] == _.split(" ")[0]:
+                #         Optical_Materials.remove(_)
+                #         self.lum.select("materials::" + Electrical_Materials[i])
+                #         self.lum.addmaterialproperties("EM", _)
+                #     else:
+                #         pass
             Materials_Added = Materials_Added + Electrical_Materials
             # Add all Optical Materials to materials folder
             for i in range(len(Optical_Materials)):
-                self.lum.addmodelmaterial()
-                self.lum.set("name", Optical_Materials[i])
-                self.lum.addmaterialproperties("EM", Optical_Materials[i])
+                if Optical_Materials[i].split(" ")[0]:
+                    self.lum.select("materials::LiNbO3 semiconductor - X/Y cut (Lithium Niobate)")
+                    self.lum.addemmaterialproperty("Dielectric")
+                    self.lum.set("name",Optical_Materials[i])
+                    self.lum.set("refractive index",2.21)
+                else:
+                    self.lum.addmodelmaterial()
+                    self.lum.set("name", Optical_Materials[i])
+                    self.lum.addmaterialproperties("EM", Optical_Materials[i])
             Materials_Added = Materials_Added + Optical_Materials
-
         return Materials_Added
+
+
 
     def MZM(self, Parameters):
         '''
@@ -23837,6 +23871,17 @@ class Charge(Constructor):
         Materials_Dict["Electrical"] = Electrical_Material
         Materials_Dict["Optical"] = Optical_Material
         self.Material(Materials_Dict)
+        
+        # Add LiNBo3 and Vacuum optical properties to materia
+        self.lum.select("materials::LiNbO3 semiconductor - X/Y cut (Lithium Niobate)")
+        self.lum.addemmaterialproperty("Dielectric")
+        self.lum.set("name","LiNBo3 Optical")
+        self.lum.set("refractive index",2.21)
+
+
+        self.lum.select("materials::Air")
+        self.lum.addmaterialproperties("EM", "Vacuum")
+
 
         # Material definition
         if "Air" in Electrical_Material:
@@ -23848,13 +23893,17 @@ class Charge(Constructor):
         if "Si (Silicon)" in Electrical_Material:
             MaterialSub = Electrical_Material[2]
             MaterialClad = Electrical_Material[2]
-            MaterialSlab = "Si (Silicon)"
+            MaterialSlab = Electrical_Material[1]
             MaterialWG = MaterialSlab
         else:
             MaterialSub = Electrical_Material[2]
             MaterialClad = Electrical_Material[2]
             MaterialSlab = Electrical_Material[1]
             MaterialWG = MaterialSlab
+
+        
+
+
 
         # Device Lenght
         MZM_Leght = WG_Length
@@ -24108,8 +24157,8 @@ class Charge(Constructor):
         self.lum.set("y", 0)
         # self.lum.set("y",0)
         # self.lum.set("y span", MZM_Width + 1e-6)
-        self.lum.set("x min", 0 - Metal_Sig_Width / 2)
-        self.lum.set("x max", Metal_Y_Pos + Metal_GND_Width / 2)
+        self.lum.set("x min", 0 - Metal_Sig_Width / 2 - 1e-6)
+        self.lum.set("x max", Metal_Y_Pos + Metal_GND_Width / 2 + 1e-6)
         self.lum.set("z min", -Substrate_Height / 2)
         self.lum.set("z max", Substrate_Height + Slab_Height + Metal_Height / 2)
 
@@ -24195,10 +24244,10 @@ class Charge(Constructor):
         self.lum.set("volume type", "solid")
         self.lum.set("volume solid", "Waveguide_Right")
 
-        self.lum.addimportnk()
-        self.lum.set("name", "nk import Slab")
-        self.lum.set("volume type", "solid")
-        self.lum.set("volume solid", "Slab")
+        # self.lum.addimportnk()
+        # self.lum.set("name", "nk import Slab")
+        # self.lum.set("volume type", "solid")
+        # self.lum.set("volume solid", "Slab")
 
     def StartCHARGESolver(self):
         '''
@@ -24242,6 +24291,8 @@ class Charge(Constructor):
         # Lithium Niobate telecom permitivity
         eps_o = 2.21 ** 2
         eps_e = 2.14 ** 2
+        self.lum.putv('eps_o',eps_o)
+        self.lum.putv('eps_e',eps_e)
 
         # Lithium Niobate non;linear coefficents
         r_13 = 9.6e-12
@@ -24269,18 +24320,145 @@ class Charge(Constructor):
             # Compute modified index using element-wise inversion (instead of np.linalg.inv)
             n_EO[:, vv, :] = np.sqrt(1 / (1 / eps_unperturbed + deps_inv))
 
+
+        self.lum.eval('electro = getresult("CHARGE::CHARGE_Field_Monitor","electrostatics");')
+        self.lum.eval('E = pinch(electro.E);')
+        self.lum.eval('Volt = electro.V_Signal;')
+        self.lum.eval('dts = size(E);')
+        self.lum.eval('n_EO = matrix(dts(1),dts(2),dts(3));')
+        self.lum.eval('dn = matrix(dts(1),dts(2),dts(3));')
+
         dn = np.copy(n_EO)
+        self.lum.putv('dn',n_EO)
+        self.lum.eval('dn(:,:,1) = n_EO(:,:,1)  - sqrt(eps_e);')
+        self.lum.eval('dn(:,:,2:3) = n_EO (:,:,2:3)  - sqrt(eps_o);')
         dn[:, :, 0] = n_EO[:, :, 0] - np.sqrt(eps_e)
         dn[:, :, 1:3] = n_EO[:, :, 1:3] - np.sqrt(eps_o)
 
         # Add dn and n_EO to dataset and visualize
+        self.lum.eval("electro.addattribute('n_EO',n_EO);")
+        self.lum.eval("electro.addattribute('dn',dn);")
         electro['n_EO'] = n_EO  ## total index
         electro['dn'] = dn  ## total index
         self.lum.visualize(electro)
 
         return electro
-        
     
+
+    def ResultsFEEM(self, CHARGE_Data):
+        
+        # Switch to layout
+        self.lum.switchtolayout()
+
+        # Get wavelength
+        lambda_ = self.lum.getnamed("FEEM", "wavelength")
+        self.lum.eval("tmp = electro.elements;")
+        elements = self.lum.getv("tmp")
+        self.lum.putv("lambda", lambda_)
+        self.lum.putv("Volt", CHARGE_Data["V_Signal"])
+        Volt =  CHARGE_Data["V_Signal"]
+
+        # Create dataset
+        nkmaterial = self.lum.unstructureddataset("nk import WG", 
+                                            CHARGE_Data["x"], 
+                                            CHARGE_Data["y"], 
+                                            CHARGE_Data["z"], 
+                                            elements)
+        self.lum.putv("nkmaterial", nkmaterial)
+        self.lum.eval('nkmaterial.addparameter("lambda", lambda) ;')
+        self.lum.eval('nkmaterial.addparameter("Voltage", Volt) ;')
+        self.lum.eval('nkmaterial.addattribute("nk",n_EO);')
+
+        # Import dataset
+        self.lum.setnamed("FEEM::nk import WG", "enabled", True)
+        self.lum.select("FEEM::nk import WG")
+        self.lum.eval('importdataset(nkmaterial);')
+
+        self.lum.select("FEEM::nk import WG")
+        self.lum.set("volume type","solid")
+        self.lum.set("volume solid","LiNbO3 WG")
+        self.lum.set("selected attribute","nk")
+
+        # Run FEEM
+        self.lum.run("FEEM")
+
+
+
+        ### Find Fundamental TE Mode effective index
+        TE_pol_frac = self.lum.getresult("FEEM", "modeproperties.TE polarization fraction")["TE polarization fraction"]
+
+
+        # Extract effective index
+        neff = self.lum.getresult("FEEM", "modeproperties.neff")["neff"]
+        mde_num = np.where(TE_pol_frac > 0.95)[0]
+        neff_TE[0] = neff[mde_num[0]]
+
+
+
+        for vv in range(1, len(Volt)):  # Python uses 0-based indexing, so start from 1
+            self.lum.switchtolayout()
+            self.lum.setnamed("FEEM::nk import WG", "Voltage_index", vv)
+            self.lum.run("FEEM")
+
+            # Find Fundamental TE Mode
+            TE_pol_frac = self.lum.getresult("FEEM", "modeproperties.TE polarization fraction")["TE polarization fraction"]
+            neff = self.lum.getresult("FEEM", "modeproperties.neff")["neff"]
+
+            # Find mode indices where TE polarization fraction is greater than 0.95
+            mde_num = np.where(TE_pol_frac > 0.95)[0]  # Extract indices where condition is met
+
+            # Assign the first qualifying neff value to neff_TE[vv]
+            if len(mde_num) > 0:  # Ensure at least one mode satisfies the condition
+                neff_TE[vv] = neff[mde_num[0]]
+
+
+
+
+        # Compute dneff, L_pi, and alpha_dB
+        dneff = neff_TE - neff_TE[0]
+        L_pi = lambda_ / (2 * np.real(dneff))
+        alpha_dB = -0.20 * np.log10(np.exp(-2 * np.pi * np.imag(neff_TE) / lambda_))
+
+
+
+        # Plot Effective Index vs Voltage
+        plt.figure()
+        plt.plot(Volt, np.real(neff_TE), linewidth=3)
+        plt.xlabel("Voltage (V)")
+        plt.ylabel("neff (Fundamental TE Mode)")
+        plt.title("Effective Index vs Voltage")
+        plt.legend(["Effective Index"])
+        plt.show()
+
+        # Plot Modulator Performance - L_pi vs Voltage
+        plt.figure()
+        plt.plot(Volt, L_pi * 100, linewidth=3)
+        plt.xlabel("Voltage [V]")
+        plt.ylabel("L_pi [cm]")
+        plt.title("Modulator Performance")
+        plt.show()
+
+        # Plot Modulator Performance - V_piL vs Voltage
+        plt.figure()
+        plt.plot(Volt, Volt * L_pi * 100, linewidth=3)
+        plt.xlabel("Voltage [V]")
+        plt.ylabel("V_piL [V-cm]")
+        plt.title("Modulator Performance")
+        plt.ylim(0, 4)  # Equivalent to setplot("y max",4); setplot("y min",0);
+        plt.show()
+
+        # Plot Modulator Performance - Loss vs Voltage
+        plt.figure()
+        plt.plot(Volt, alpha_dB, linewidth=3)
+        plt.xlabel("Voltage [V]")
+        plt.ylabel("Loss [dB/cm]")
+        plt.title("Modulator Performance")
+        plt.ylim(3, 7)  # Equivalent to setplot("y max",7); setplot("y min",3);
+        plt.show()
+                
+        
+
+
 
 
         
