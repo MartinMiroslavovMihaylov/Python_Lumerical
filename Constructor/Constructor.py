@@ -24227,8 +24227,9 @@ class Charge(Constructor):
 
         # Set Solver
         self.lum.addfeemsolver()
-        self.lum.set("edges per wavelength", 2)  # TODO Check for Converchange need to be separate parameter
+        self.lum.set("edges per wavelength", 4)  # TODO Check for Converchange need to be separate parameter
         self.lum.set("polynomial order", 2)  # TODO Check what is this parameter for
+        self.lum.set("display frequency or wavelength", "wavelength")
         self.lum.set("wavelength", Wavelength)
         self.lum.set("use max index", 0)
         self.lum.set("n", 2.02)  # TODO Check for what exactly supposable under limit of n_eff
