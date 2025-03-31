@@ -23918,15 +23918,16 @@ class Charge(Constructor):
         MZM_Width = WG_Width * 2 + 2 * Metal_GND_Width + Metal_Sig_Width + Gap * 2
 
         # creating the LN Handle
-        self.lum.addrect()
-        self.lum.set("name", "LN_Handle")
-        self.lum.set("x", 0)
-        self.lum.set("x span", MZM_Width + 8e-6)
-        self.lum.set("z", -Substrate_Height / 2 - (5 / 2) * 1e-6)
-        self.lum.set("z span", 5e-6)
-        self.lum.set("y", 0)
-        self.lum.set("y span", MZM_Leght)
-        self.lum.set("material", MaterialSlab)
+        #self.lum.addrect()
+        #self.lum.set("name", "LN_Handle")
+        #self.lum.set("x", 0)
+        #self.lum.set("x span", MZM_Width + 8e-6)
+        #self.lum.set("z", -Substrate_Height / 2 - (9 / 2) * 1e-6)
+        #self.lum.set("z span", 9e-6)
+        #self.lum.set("y", 0)
+        #self.lum.set("y span", MZM_Leght)
+        #self.lum.set("material", MaterialSlab)
+        #self.lum.set("preserve surfaces",1)
 
         # creating the substrate
         self.lum.addrect()
@@ -23938,6 +23939,7 @@ class Charge(Constructor):
         self.lum.set("y", 0)
         self.lum.set("y span", MZM_Leght)
         self.lum.set("material", MaterialSub)
+        self.lum.set("preserve surfaces",1)
         # self.lum.set("color",[1; 1; 0; 0])
 
         # Position Thin Film and Waveguides
@@ -23960,8 +23962,9 @@ class Charge(Constructor):
             self.lum.set("z min", zmax)
             self.lum.set("z max", z_Offset)
             self.lum.set("material", MaterialSlab)
-            self.lum.select("Slab")
-            self.lum.addtogroup("LNOI")
+            self.lum.set("preserve surfaces",1)
+            # self.lum.select("Slab")
+            # self.lum.addtogroup("LNOI")
 
         # Triangle EQ for MMI Width
         x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
@@ -23997,9 +24000,10 @@ class Charge(Constructor):
         pole = np.array([[0, WG_Length / 2], [0, - WG_Length / 2]])
         self.lum.set("poles", pole)
         self.lum.set("material", MaterialWG)
+        self.lum.set("preserve surfaces",1)
 
-        self.lum.select("Waveguide_Right")
-        self.lum.addtogroup("LNOI")
+        # self.lum.select("Waveguide_Right")
+        # self.lum.addtogroup("LNOI")
 
         # Add Electrodes
         print("z min ", z_Offset)
@@ -24014,6 +24018,7 @@ class Charge(Constructor):
         self.lum.set("z min", z_Offset)
         self.lum.set("z max", z_Offset + Metal_Height)
         self.lum.set("material", MaterialElectrodes)
+        self.lum.set("preserve surfaces",1)
 
         # self.lum.addrect()
         # self.lum.set("name", "Ground_L")
@@ -24034,6 +24039,7 @@ class Charge(Constructor):
         self.lum.set("z min", z_Offset)
         self.lum.set("z max", z_Offset + Metal_Height)
         self.lum.set("material", MaterialElectrodes)
+        self.lum.set("preserve surfaces",1)
 
     def Set_SimulationRegion(self, Parameters):
         '''
@@ -24087,6 +24093,8 @@ class Charge(Constructor):
         x_min = self.lum.get("x min") 
         self.lum.select("geometry::Ground_R")
         x_max = self.lum.get("x max") 
+        self.lum.select("geometry::Slab")
+        z_min = self.lum.get("z max")
         
         self.lum.select("simulation region")
         self.lum.set("dimension", "2D Y-Normal")
@@ -24100,6 +24108,7 @@ class Charge(Constructor):
         self.lum.set("x max", x_max + 1e-6)
         # self.lum.set("y",0)
         # self.lum.set("y span", MZM_Width + 1e-6)
+        # self.lum.set("z min", 0)
         self.lum.set("z min", 0)
         self.lum.set("z max", Substrate_Height + Slab_Height + 2 * Metal_Height)
 
@@ -24308,16 +24317,27 @@ class Charge(Constructor):
         r_33 = 30.9e-12
 
         electro = self.lum.getresult("CHARGE::CHARGE_Field_Monitor", "electrostatics")
-
+        self.lum.eval('electro = getresult("CHARGE::CHARGE_Field_Monitor","electrostatics");')
+        
         # Get electrostatic results
         E = np.squeeze(electro["E"])
         Volt = electro["V_Signal"]
+        self.lum.eval('Volt = electro.V_Signal;')
+        self.lum.eval('E = pinch(electro.E);')
 
         # Intialize perturbation matrices same size as E
         dts = E.shape
         n_EO = np.zeros(dts)
         dn = np.zeros(dts)
+        
+        # self.lum.eval('electro = getresult("CHARGE::CHARGE_Field_Monitor","electrostatics");')
+        # self.lum.eval('E = pinch(electro.E);')
+        # self.lum.eval('Volt = electro.V_Signal;')
+        # self.lum.eval('dts = size(E);')
+        # self.lum.eval('n_EO = matrix(dts(1),dts(2),dts(3));')
+        # self.lum.eval('dn = matrix(dts(1),dts(2),dts(3));')
 
+        
         # Vector components work well with unstructured datasets, need to do this for voltage and wavelength
         for vv in range(len(Volt)):
             # Spatial index data (diagonal permittivity)
@@ -24330,15 +24350,11 @@ class Charge(Constructor):
             n_EO[:, vv, :] = np.sqrt(1 / (1 / eps_unperturbed + deps_inv))
 
 
-        self.lum.eval('electro = getresult("CHARGE::CHARGE_Field_Monitor","electrostatics");')
-        self.lum.eval('E = pinch(electro.E);')
-        self.lum.eval('Volt = electro.V_Signal;')
-        self.lum.eval('dts = size(E);')
-        self.lum.eval('n_EO = matrix(dts(1),dts(2),dts(3));')
-        self.lum.eval('dn = matrix(dts(1),dts(2),dts(3));')
+        
 
         dn = np.copy(n_EO)
         self.lum.putv('dn',n_EO)
+        self.lum.putv('n_EO',n_EO)
         self.lum.eval('dn(:,:,1) = n_EO(:,:,1)  - sqrt(eps_e);')
         self.lum.eval('dn(:,:,2:3) = n_EO (:,:,2:3)  - sqrt(eps_o);')
         dn[:, :, 0] = n_EO[:, :, 0] - np.sqrt(eps_e)
@@ -24366,26 +24382,44 @@ class Charge(Constructor):
         self.lum.putv("lambda", lambda_)
         self.lum.putv("Volt", CHARGE_Data["V_Signal"])
         Volt =  CHARGE_Data["V_Signal"]
+        self.lum.eval("neff_TE = matrix(length(Volt));")
+        neff_TE = np.zeros(len(Volt))
 
-        # Create dataset
-        nkmaterial = self.lum.unstructureddataset("nk import WG", 
-                                            CHARGE_Data["x"], 
-                                            CHARGE_Data["y"], 
-                                            CHARGE_Data["z"], 
-                                            elements)
-        self.lum.putv("nkmaterial", nkmaterial)
-        self.lum.eval('nkmaterial.addparameter("lambda", lambda) ;')
-        self.lum.eval('nkmaterial.addparameter("Voltage", Volt) ;')
+        # # Create dataset
+        # nkmaterial = self.lum.unstructureddataset("nk import WG", 
+        #                                     CHARGE_Data["x"], 
+        #                                     CHARGE_Data["y"], 
+        #                                     CHARGE_Data["z"], 
+        #                                     elements)
+        # self.lum.putv("nkmaterial", nkmaterial)
+        # self.lum.eval('nkmaterial.addparameter("lambda", lambda) ;')
+        # self.lum.eval('nkmaterial.addparameter("Voltage", Volt) ;')
+        # self.lum.eval('nkmaterial.addattribute("nk",n_EO);')
+
+        # # Import dataset
+        # self.lum.setnamed("FEEM::nk import WG", "enabled", True)
+        # self.lum.select("FEEM::nk import WG")
+        # self.lum.eval('importdataset(nkmaterial);')
+        
+        
+        
+        ### Create new unstructured dataset based on CHARGE data grid at this wavelength
+        self.lum.eval('nkmaterial = unstructureddataset("nk import",electro.x,electro.y,electro.z,electro.elements);')
+        self.lum.eval('nkmaterial.addparameter("lambda", lambda);')
+        self.lum.eval('nkmaterial.addparameter("Voltage", Volt);')
         self.lum.eval('nkmaterial.addattribute("nk",n_EO);')
-
-        # Import dataset
-        self.lum.setnamed("FEEM::nk import WG", "enabled", True)
-        self.lum.select("FEEM::nk import WG")
+            
+        ### Import, the nk dataset and apply to waveguide solid 
+        self.lum.eval('setnamed("FEEM::nk import WG","enabled",true);')
+        self.lum.eval('select("FEEM::nk import WG");')
         self.lum.eval('importdataset(nkmaterial);')
+                
+                
+        
 
         self.lum.select("FEEM::nk import WG")
         self.lum.set("volume type","solid")
-        self.lum.set("volume solid","LiNbO3 WG")
+        self.lum.set("volume solid","Waveguide_Right")
         self.lum.set("selected attribute","nk")
 
         # Run FEEM
