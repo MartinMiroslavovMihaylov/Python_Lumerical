@@ -23428,25 +23428,17 @@ class Constructor:
 
         if modeList != 0:
             for i in range(1, int(modeList + 1)):
-                if self.lum.getdata('FDE::data::mode' + str(i),
-                                    'TE polarization fraction').real * 100 > 50 and self.lum.getdata(
-                    'FDE::data::mode' + str(i), 'neff').real > EffIndexValue:  # 1.45625:
-                    dictData['mode ' + str(i) + ' TE polarization fraction num'] = self.lum.getdata(
-                        'FDE::data::mode' + str(i), 'TE polarization fraction')
-                    dictData['mode ' + str(i) + ' effective index num'] = self.lum.getdata('FDE::data::mode' + str(i),
-                                                                                           'neff')
+                if self.lum.getdata('FDE::data::mode' + str(i),'TE polarization fraction').real * 100 > 50 and self.lum.getdata('FDE::data::mode' + str(i), 'neff').real > EffIndexValue:  # 1.45625:
+                    dictData['mode ' + str(i) + ' TE polarization fraction num'] = self.lum.getdata('FDE::data::mode' + str(i), 'TE polarization fraction')
+                    dictData['mode ' + str(i) + ' effective index num'] = self.lum.getdata('FDE::data::mode' + str(i),'neff')
                     dictData['mode ' + str(i) + ' group index'] = self.lum.getdata('FDE::data::mode' + str(i), 'ng')
                     dictData['mode ' + str(i) + ' loss'] = self.lum.getdata('FDE::data::mode' + str(i), 'loss') / 100
                     dictData['mode ' + str(i) + ' Ex'] = self.lum.getdata('FDE::data::mode' + str(i), 'Ex')
                     dictData['mode ' + str(i) + ' Ey'] = self.lum.getdata('FDE::data::mode' + str(i), 'Ey')
                     dictData['mode ' + str(i) + ' Ez'] = self.lum.getdata('FDE::data::mode' + str(i), 'Ez')
-                elif self.lum.getdata('FDE::data::mode' + str(i),
-                                      'TE polarization fraction').real * 100 < 50 and self.lum.getdata(
-                    'FDE::data::mode' + str(i), 'neff').real > EffIndexValue:
-                    dictData2['mode ' + str(i) + ' TE polarization fraction num'] = self.lum.getdata(
-                        'FDE::data::mode' + str(i), 'TE polarization fraction')
-                    dictData2['mode ' + str(i) + ' effective index num'] = self.lum.getdata('FDE::data::mode' + str(i),
-                                                                                            'neff')
+                elif self.lum.getdata('FDE::data::mode' + str(i),'TE polarization fraction').real * 100 < 50 and self.lum.getdata('FDE::data::mode' + str(i), 'neff').real > EffIndexValue:
+                    dictData2['mode ' + str(i) + ' TE polarization fraction num'] = self.lum.getdata('FDE::data::mode' + str(i), 'TE polarization fraction')
+                    dictData2['mode ' + str(i) + ' effective index num'] = self.lum.getdata('FDE::data::mode' + str(i),'neff')
                     dictData2['mode ' + str(i) + ' group index'] = self.lum.getdata('FDE::data::mode' + str(i), 'ng')
                     dictData2['mode ' + str(i) + ' loss'] = self.lum.getdata('FDE::data::mode' + str(i), 'loss') / 100
                     dictData2['mode ' + str(i) + ' Ex'] = self.lum.getdata('FDE::data::mode' + str(i), 'Ex')
@@ -23918,16 +23910,16 @@ class Charge(Constructor):
         MZM_Width = WG_Width * 2 + 2 * Metal_GND_Width + Metal_Sig_Width + Gap * 2
 
         # creating the LN Handle
-        #self.lum.addrect()
-        #self.lum.set("name", "LN_Handle")
-        #self.lum.set("x", 0)
-        #self.lum.set("x span", MZM_Width + 8e-6)
-        #self.lum.set("z", -Substrate_Height / 2 - (9 / 2) * 1e-6)
-        #self.lum.set("z span", 9e-6)
-        #self.lum.set("y", 0)
-        #self.lum.set("y span", MZM_Leght)
-        #self.lum.set("material", MaterialSlab)
-        #self.lum.set("preserve surfaces",1)
+        self.lum.addrect()
+        self.lum.set("name", "LN_Handle")
+        self.lum.set("x", 0)
+        self.lum.set("x span", MZM_Width + 8e-6)
+        self.lum.set("z", -Substrate_Height / 2 - (9 / 2) * 1e-6)
+        self.lum.set("z span", 9e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", MZM_Leght)
+        self.lum.set("material", MaterialSlab)
+        self.lum.set("preserve surfaces",1)
 
         # creating the substrate
         self.lum.addrect()
@@ -24040,6 +24032,229 @@ class Charge(Constructor):
         self.lum.set("z max", z_Offset + Metal_Height)
         self.lum.set("material", MaterialElectrodes)
         self.lum.set("preserve surfaces",1)
+        
+        
+    def MZM_new(self, Parameters):
+        '''
+
+
+        Parameters
+        ----------
+        Parameters : dictionary
+            Dictionary with all the parameters needt for the MZM creation
+            Parameters['Substrate Height'] : int/float
+                Substrate Height
+            Parameters["Optical"] : dictionary of str
+                Optical Materials Dataset
+            Parameters["Electrical"] : dictionary of str
+                Electrical Materials Dataset
+            Parameters['angle'] : int/float
+                Side angle of the Waveguife
+            Parameters['Slab Height'] : Slab Height
+                Height of the Material slab. It can be set to 0 if no Slab is presented
+            Parameters['WG Height'] : int/float
+                Waveguide Height
+            Parameters['WG Width'] : int/float
+                Waveguide Width. Here the Top Waveguide width is considered
+            Parameters['WG Length'] : int/float
+                Waveguide lenght. This determin the structure length as well
+            Parameters["GND Electrodes Width"] : int/float
+                Ground Electrode width
+            Parameters["Signal Electrodes Width"] : int/float
+                Signal electrode Width
+            Parameters["Electrodes Height"] : int/float
+                Height of the Metal electrodes
+            Parameters["Gap"] : int/float
+                Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.
+
+        Returns
+        -------
+        None.
+
+        '''
+
+        # Define Materials
+        Substrate_Height = Parameters['Substrate Height']
+        Optical_Material = Parameters["Optical"]
+        Electrical_Material = Parameters["Electrical"]
+        angle = Parameters['angle']
+        Slab_Height = Parameters['Slab Height']
+        WG_Height = Parameters['WG Height']
+        WG_Width = Parameters['WG Width']
+        WG_Length = Parameters['WG Length']
+        Metal_GND_Width = Parameters["GND Electrodes Width"]
+        Metal_Sig_Width = Parameters["Signal Electrodes Width"]
+        Metal_Height = Parameters["Electrodes Height"]
+        Gap = Parameters["Gap"]
+        
+        # Becouse of Material Properties x and y directions will be swaped !!!!
+        
+        # Add materials to Simulation enviroment
+        Materials_Dict = {}
+        Materials_Dict["Electrical"] = Electrical_Material
+        Materials_Dict["Optical"] = Optical_Material
+        self.Material(Materials_Dict)
+        
+        # Add LiNBo3 and Vacuum optical properties to materia
+        self.lum.select("materials::LiNbO3 semiconductor - X/Y cut (Lithium Niobate)")
+        self.lum.addemmaterialproperty("Dielectric")
+        self.lum.set("name","LiNBo3 Optical")
+        self.lum.set("refractive index",2.21)
+        self.lum.select("materials::LiNbO3 semiconductor - X/Y cut (Lithium Niobate)")
+        self.lum.set("color",np.array([[1], [0], [0]]))
+        self.lum.select("materials::Au (Gold) - CRC")
+        self.lum.set("color", np.array([[1], [1], [0]]))
+        self.lum.select("materials::SiO2 (Glass) - Sze")
+        self.lum.set("color", np.array([[0.537], [0.812], [0.941]]))
+
+
+
+
+        self.lum.select("materials::Air")
+        self.lum.addmaterialproperties("EM", "Vacuum")
+
+
+        # Material definition
+        if "Air" in Electrical_Material:
+            Electrical_Material.remove("Air")
+            MaterialElectrodes = Electrical_Material[0]
+        else:
+            MaterialElectrodes = Electrical_Material[0]
+
+        if "Si (Silicon)" in Electrical_Material:
+            MaterialSub = Electrical_Material[2]
+            MaterialClad = Electrical_Material[2]
+            MaterialSlab = Electrical_Material[1]
+            MaterialWG = MaterialSlab
+        else:
+            MaterialSub = Electrical_Material[2]
+            MaterialClad = Electrical_Material[2]
+            MaterialSlab = Electrical_Material[1]
+            MaterialWG = MaterialSlab
+
+        
+
+        
+
+        # Device Lenght
+        MZM_Leght = WG_Length
+        MZM_Width = WG_Width * 2 +  Metal_GND_Width + Metal_Sig_Width + Gap * 2 + 2e-6
+        
+        # Triangle EQ for MMI Width
+        x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
+        extention = np.sqrt(x ** 2 - WG_Height ** 2)
+        WG_W = WG_Width + 2 * extention
+        WG_Width_top = WG_W
+        
+        # Set offsets for the Optcal Waveguides
+        WG_Y_Pos = Metal_Sig_Width / 2 + Gap + WG_Width / 2
+        Metal_Y_Pos = WG_Y_Pos + Gap + WG_Width / 2 + Metal_GND_Width / 2  # Metal_GND_Width + Gap*2 + WG_Width
+        
+
+
+        # creating the LN Handle
+        self.lum.addrect()
+        self.lum.set("name", "LN_Handle")
+        # self.lum.set("x", 0)
+        # self.lum.set("x span", MZM_Width + 8e-6)
+        self.lum.set("x min", -Metal_Sig_Width/2 - 1e-6)
+        self.lum.set("x max", Metal_Y_Pos + Metal_GND_Width/2 + 1e-6)
+        self.lum.set("z", -Substrate_Height / 2 - (9 / 2) * 1e-6)
+        self.lum.set("z span", 9e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", MZM_Leght)
+        self.lum.set("material", MaterialSlab)
+        self.lum.set("preserve surfaces",1)
+
+        # creating the substrate
+        self.lum.addrect()
+        self.lum.set("name", "Substrate")
+        # self.lum.set("x", 0)
+        # self.lum.set("x span", MZM_Width + 8e-6)
+        self.lum.set("x min", -Metal_Sig_Width/2 - 1e-6)
+        self.lum.set("x max", Metal_Y_Pos + Metal_GND_Width/2 + 1e-6)
+        self.lum.set("z", 0)
+        self.lum.set("z span", Substrate_Height)
+        self.lum.set("y", 0)
+        self.lum.set("y span", MZM_Leght)
+        self.lum.set("material", MaterialSub)
+        self.lum.set("preserve surfaces",1)
+        # self.lum.set("color",[1; 1; 0; 0])
+        
+     
+
+        # Position Thin Film and Waveguides
+        if Slab_Height == 0:
+            z_Offset = Substrate_Height / 2
+            PolyPoints = 4
+            Point4 = [Metal_Sig_Width/2 + Gap , z_Offset]
+            Point3 = [Metal_Sig_Width/2 + Gap + extention , z_Offset + WG_Height]
+            Point2 = [Metal_Sig_Width/2 + Gap + extention + WG_Width , z_Offset + WG_Height]
+            Point1 = [Metal_Sig_Width/2 + Gap + 2*extention + WG_Width , z_Offset]
+            vtx = np.array([Point1, Point2, Point3, Point4])
+            self.lum.putv('vertices', vtx)
+
+        else:
+            # creating the thin film
+            self.lum.select("Substrate")
+            zmax = self.lum.get("z max")
+            z_Offset = zmax + Slab_Height
+            PolyPoints = 6
+            Point4 = [Metal_Sig_Width/2 + Gap , z_Offset ]
+            Point3 = [Metal_Sig_Width/2 + Gap + extention , z_Offset + WG_Height]
+            Point2 = [Metal_Sig_Width/2 + Gap + extention + WG_Width , z_Offset + WG_Height]
+            Point1 = [Metal_Sig_Width/2 + Gap + 2*extention + WG_Width , z_Offset]
+            Point5 = [-Metal_Sig_Width/2 - 1e-6 , z_Offset]
+            Point6 = [-Metal_Sig_Width/2 - 1e-6 , zmax]
+            Point7 = [Metal_Y_Pos + Metal_GND_Width/2 + 1e-6 , zmax]
+            Point8 = [Metal_Y_Pos + Metal_GND_Width/2 + 1e-6 , z_Offset]
+            vtx = np.array([ Point1, Point2, Point3, Point4, Point5, Point6, Point7, Point8])
+            self.lum.putv('vertices', vtx)
+
+
+        # Cfreate Polynome
+        self.lum.addpoly()
+        self.lum.set("name", "Waveguide_Right")
+        self.lum.set("z", 0)
+        self.lum.set("z span", WG_Length) # Z is length of the Waveguide
+        self.lum.set("material", MaterialWG) 
+        self.lum.set("preserve surfaces",1)
+        self.lum.set("first axis", "x")
+        self.lum.set("rotation 1", 90)
+        self.lum.set("vertices",vtx)
+        self.lum.set("x", 0) # Waveguide x Position 
+
+
+  
+        # Add Electrodes
+        self.lum.addrect()
+        self.lum.set("name", "Sig")
+        self.lum.set("x", 0)
+        self.lum.set("x span", Metal_Sig_Width)
+        self.lum.set("y", 0)
+        self.lum.set("y span", MZM_Leght)
+        self.lum.set("z min", z_Offset)
+        self.lum.set("z max", z_Offset + Metal_Height)
+        self.lum.set("material", MaterialElectrodes)
+        self.lum.set("preserve surfaces",1)
+
+
+        self.lum.addrect()
+        self.lum.set("name", "Ground_R")
+        self.lum.set("x", Metal_Y_Pos)
+        self.lum.set("x span", Metal_GND_Width)
+        self.lum.set("y", 0)
+        self.lum.set("y span", MZM_Leght)
+        self.lum.set("z min", z_Offset)
+        self.lum.set("z max", z_Offset + Metal_Height)
+        self.lum.set("material", MaterialElectrodes)
+        self.lum.set("preserve surfaces",1)
+        
+        
+        
+        
+        
+        
 
     def Set_SimulationRegion(self, Parameters):
         '''
@@ -24089,12 +24304,24 @@ class Charge(Constructor):
         
         
         
+        # self.lum.select("geometry::Sig")
+        # x_min = self.lum.get("x min") 
+        # self.lum.select("geometry::Ground_R")
+        # x_max = self.lum.get("x max")
+
         self.lum.select("geometry::Sig")
-        x_min = self.lum.get("x min") 
+        x_min = self.lum.get("x max") - 2e-6
         self.lum.select("geometry::Ground_R")
-        x_max = self.lum.get("x max") 
-        self.lum.select("geometry::Slab")
-        z_min = self.lum.get("z max")
+        x_max = self.lum.get("x min") + 2e-6       
+        
+        # self.lum.select("geometry::Waveguide_Right")
+        # x = self.lum.get("x") 
+        # self.lum.select("geometry::Ground_R")
+        # x_span = self.lum.get("x span") 
+        
+        
+        # self.lum.select("geometry::Slab")
+        # z_min = self.lum.get("z max")
         
         self.lum.select("simulation region")
         self.lum.set("dimension", "2D Y-Normal")
@@ -24104,13 +24331,17 @@ class Charge(Constructor):
         # self.lum.addmaterialproperties("HT", "Air")  # importing from thermal material database)
         self.lum.set("background material", "Air")
         self.lum.set("y", 0)
-        self.lum.set("x min", x_min - 1e-6)
-        self.lum.set("x max", x_max + 1e-6)
+        # self.lum.set("x", x)
+        # self.lum.set("x span", x_span/2)
+        self.lum.set("x min", x_min - 0.5e-6)
+        self.lum.set("x max", x_max + 0.5e-6)
         # self.lum.set("y",0)
         # self.lum.set("y span", MZM_Width + 1e-6)
-        # self.lum.set("z min", 0)
         self.lum.set("z min", 0)
         self.lum.set("z max", Substrate_Height + Slab_Height + 2 * Metal_Height)
+        # self.lum.set("z", z_min + WG_Height/2)
+        # self.lum.set("z span", 2 * Metal_Height)
+        
 
     def MZM_ChargeSolver(self, Parameters):
 
@@ -24258,7 +24489,7 @@ class Charge(Constructor):
 
         # Set monitor
         self.lum.addimportnk()
-        self.lum.set("name", "nk import WG")
+        self.lum.set("name", "nk import")
         self.lum.set("volume type", "solid")
         self.lum.set("volume solid", "Waveguide_Right")
 
@@ -24294,7 +24525,7 @@ class Charge(Constructor):
         self.lum.save("SimRun1")
         self.lum.run("FEEM")
 
-    def ResultsCHARGE(self):
+    def ResultsCHARGE(self, Parameters_CHARGE):
         '''
 
         Returns
@@ -24305,6 +24536,9 @@ class Charge(Constructor):
          The function will return the monitor Data, so that the user can use it for some post precessing.
 
         '''
+        
+        # Lead mode neff for FEEM 
+        Min_Polarization_Fraction = Parameters_CHARGE['min Polarization Fraction']
 
         # Lithium Niobate telecom permitivity
         eps_o = 2.21 ** 2
@@ -24365,7 +24599,9 @@ class Charge(Constructor):
         self.lum.eval("electro.addattribute('dn',dn);")
         electro['n_EO'] = n_EO  ## total index
         electro['dn'] = dn  ## total index
+        electro['Min Polarization Fraction'] = Min_Polarization_Fraction
         self.lum.visualize(electro)
+        
 
         return electro
     
@@ -24384,6 +24620,7 @@ class Charge(Constructor):
         Volt =  CHARGE_Data["V_Signal"]
         self.lum.eval("neff_TE = matrix(length(Volt));")
         neff_TE = np.zeros(len(Volt))
+        Min_Polarization_Fraction = CHARGE_Data['Min Polarization Fraction']
 
         # # Create dataset
         # nkmaterial = self.lum.unstructureddataset("nk import WG", 
@@ -24410,14 +24647,14 @@ class Charge(Constructor):
         self.lum.eval('nkmaterial.addattribute("nk",n_EO);')
             
         ### Import, the nk dataset and apply to waveguide solid 
-        self.lum.eval('setnamed("FEEM::nk import WG","enabled",true);')
-        self.lum.eval('select("FEEM::nk import WG");')
+        self.lum.eval('setnamed("FEEM::nk import","enabled",true);')
+        self.lum.eval('select("FEEM::nk import");')
         self.lum.eval('importdataset(nkmaterial);')
                 
                 
         
 
-        self.lum.select("FEEM::nk import WG")
+        self.lum.select("FEEM::nk import")
         self.lum.set("volume type","solid")
         self.lum.set("volume solid","Waveguide_Right")
         self.lum.set("selected attribute","nk")
@@ -24433,14 +24670,14 @@ class Charge(Constructor):
 
         # Extract effective index
         neff = self.lum.getresult("FEEM", "modeproperties.neff")["neff"]
-        mde_num = np.where(TE_pol_frac > 0.95)[0]
-        neff_TE[0] = neff[mde_num[0]]
+        mde_num = np.where(TE_pol_frac > Min_Polarization_Fraction)[0]
+        neff_TE[0] = abs(neff[mde_num[0]][0])
 
 
 
         for vv in range(1, len(Volt)):  # Python uses 0-based indexing, so start from 1
             self.lum.switchtolayout()
-            self.lum.setnamed("FEEM::nk import WG", "Voltage_index", vv)
+            self.lum.setnamed("FEEM::nk import", "Voltage_index", vv)
             self.lum.run("FEEM")
 
             # Find Fundamental TE Mode
@@ -24448,11 +24685,11 @@ class Charge(Constructor):
             neff = self.lum.getresult("FEEM", "modeproperties.neff")["neff"]
 
             # Find mode indices where TE polarization fraction is greater than 0.95
-            mde_num = np.where(TE_pol_frac > 0.95)[0]  # Extract indices where condition is met
+            mde_num = np.where(TE_pol_frac > Min_Polarization_Fraction)[0]  # Extract indices where condition is met
 
             # Assign the first qualifying neff value to neff_TE[vv]
             if len(mde_num) > 0:  # Ensure at least one mode satisfies the condition
-                neff_TE[vv] = neff[mde_num[0]]
+                neff_TE[vv] = abs(neff[mde_num[0]])
 
 
 
@@ -24460,7 +24697,7 @@ class Charge(Constructor):
         # Compute dneff, L_pi, and alpha_dB
         dneff = neff_TE - neff_TE[0]
         L_pi = lambda_ / (2 * np.real(dneff))
-        alpha_dB = -0.20 * np.log10(np.exp(-2 * np.pi * np.imag(neff_TE) / lambda_))
+        # alpha_dB = -0.20 * np.log10(np.exp(-2 * np.pi * np.imag(neff_TE) / lambda_))
 
 
 
@@ -24490,14 +24727,14 @@ class Charge(Constructor):
         plt.ylim(0, 4)  # Equivalent to setplot("y max",4); setplot("y min",0);
         plt.show()
 
-        # Plot Modulator Performance - Loss vs Voltage
-        plt.figure()
-        plt.plot(Volt, alpha_dB, linewidth=3)
-        plt.xlabel("Voltage [V]")
-        plt.ylabel("Loss [dB/cm]")
-        plt.title("Modulator Performance")
-        plt.ylim(3, 7)  # Equivalent to setplot("y max",7); setplot("y min",3);
-        plt.show()
+        # # Plot Modulator Performance - Loss vs Voltage
+        # plt.figure()
+        # plt.plot(Volt, alpha_dB, linewidth=3)
+        # plt.xlabel("Voltage [V]")
+        # plt.ylabel("Loss [dB/cm]")
+        # plt.title("Modulator Performance")
+        # plt.ylim(3, 7)  # Equivalent to setplot("y max",7); setplot("y min",3);
+        # plt.show()
                 
         
 
