@@ -24509,8 +24509,15 @@ class Charge(Constructor):
 
 
         '''
+        
+        # Set mesh lock
+        self.lum.select("CHARGE")
+        self.lum.mesh("CHARGE")
+        self.lum.set("mesh lock", 1)
+        # Run CHARGE
         self.lum.save('SimRun1')
         self.lum.run("CHARGE")
+
 
     def StartFEEMSolver(self):
         '''
@@ -24522,8 +24529,16 @@ class Charge(Constructor):
         None.
 
         '''
+        
+        # Set mesh lock
+        self.lum.select("FEEM")
+        self.lum.mesh("FEEM")
+        self.lum.set("mesh lock", 1)
+        # Run FEEM
         self.lum.save("SimRun1")
         self.lum.run("FEEM")
+
+
 
     def ResultsCHARGE(self, Parameters_CHARGE):
         '''
@@ -24585,7 +24600,8 @@ class Charge(Constructor):
 
 
         
-
+        n_EO[:, ::-1, :] # This one is here becouse the values ware somehow rotated from back to front
+        
         dn = np.copy(n_EO)
         self.lum.putv('dn',n_EO)
         self.lum.putv('n_EO',n_EO)
@@ -24610,6 +24626,8 @@ class Charge(Constructor):
         
         # Switch to layout
         self.lum.switchtolayout()
+        
+        
 
         # Get wavelength
         lambda_ = self.lum.getnamed("FEEM", "wavelength")
@@ -24658,11 +24676,18 @@ class Charge(Constructor):
         self.lum.set("volume type","solid")
         self.lum.set("volume solid","Waveguide_Right")
         self.lum.set("selected attribute","nk")
+        
+        
+        # Set mesh lock
+        self.lum.select("FEEM")
+        self.lum.mesh("FEEM")
+        self.lum.set("mesh lock", 1)
+
 
         # Run FEEM
         self.lum.run("FEEM")
 
-
+        
 
         ### Find Fundamental TE Mode effective index
         TE_pol_frac = self.lum.getresult("FEEM", "modeproperties.TE polarization fraction")["TE polarization fraction"]
@@ -24672,7 +24697,16 @@ class Charge(Constructor):
         neff = self.lum.getresult("FEEM", "modeproperties.neff")["neff"]
         mde_num = np.where(TE_pol_frac > Min_Polarization_Fraction)[0]
         neff_TE[0] = abs(neff[mde_num[0]][0])
+        
+        
+        # Rotate the n_EO vertically to have an index that make sence 
+        n_EO = CHARGE_Data['n_EO']
+        n_EO = n_EO[:, ::-1, :]
+        self.lum.putv('n_EO',n_EO)
+        self.lum.eval("electro.addattribute('n_EO',n_EO);")
 
+        
+       
 
 
         for vv in range(1, len(Volt)):  # Python uses 0-based indexing, so start from 1
@@ -24689,7 +24723,7 @@ class Charge(Constructor):
 
             # Assign the first qualifying neff value to neff_TE[vv]
             if len(mde_num) > 0:  # Ensure at least one mode satisfies the condition
-                neff_TE[vv] = abs(neff[mde_num[0]])
+                neff_TE[vv] = abs(neff[mde_num[0]][0])
 
 
 
@@ -24701,6 +24735,8 @@ class Charge(Constructor):
 
 
 
+        
+
         # Plot Effective Index vs Voltage
         plt.figure()
         plt.plot(Volt, np.real(neff_TE), linewidth=3)
@@ -24708,24 +24744,30 @@ class Charge(Constructor):
         plt.ylabel("neff (Fundamental TE Mode)")
         plt.title("Effective Index vs Voltage")
         plt.legend(["Effective Index"])
+        plt.grid()
         plt.show()
 
         # Plot Modulator Performance - L_pi vs Voltage
         plt.figure()
-        plt.plot(Volt, L_pi * 100, linewidth=3)
+        plt.plot(Volt, abs(L_pi) *  100, linewidth=3)
         plt.xlabel("Voltage [V]")
         plt.ylabel("L_pi [cm]")
         plt.title("Modulator Performance")
+        plt.ylim(0, 15)
+        plt.grid()
         plt.show()
+
 
         # Plot Modulator Performance - V_piL vs Voltage
         plt.figure()
-        plt.plot(Volt, Volt * L_pi * 100, linewidth=3)
+        plt.plot(Volt, (np.array(Volt[:,0], dtype=float) * np.array(abs(L_pi))) * 100, linewidth=3)
         plt.xlabel("Voltage [V]")
         plt.ylabel("V_piL [V-cm]")
         plt.title("Modulator Performance")
-        plt.ylim(0, 4)  # Equivalent to setplot("y max",4); setplot("y min",0);
+        #plt.ylim(0, 4)  # Equivalent to setplot("y max",4); setplot("y min",0);
+        plt.grid()
         plt.show()
+        
 
         # # Plot Modulator Performance - Loss vs Voltage
         # plt.figure()
@@ -24736,6 +24778,19 @@ class Charge(Constructor):
         # plt.ylim(3, 7)  # Equivalent to setplot("y max",7); setplot("y min",3);
         # plt.show()
                 
+                
+                
+        # Collect results in one dictionary 
+        FeemResults = {}
+        FeemResults["lambda"] = lambda_
+        FeemResults["Volt"] = Volt
+        FeemResults["L_pi"] = L_pi
+        FeemResults["neff_TE"] = neff_TE
+        FeemResults["neff"] = neff
+        FeemResults["dneff"] = dneff
+        
+  
+        return FeemResults
         
 
 
