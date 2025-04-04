@@ -23442,8 +23442,6 @@ class Constructor:
                     dictData2['mode ' + str(i) + ' group index'] = self.lum.getdata('FDE::data::mode' + str(i), 'ng')
                     dictData2['mode ' + str(i) + ' loss'] = self.lum.getdata('FDE::data::mode' + str(i), 'loss') / 100
                     dictData2['mode ' + str(i) + ' Ex'] = self.lum.getdata('FDE::data::mode' + str(i), 'Ex')
-                    dictData2['mode ' + str(i) + ' Ey'] = self.lum.getdata('FDE::data::mode' + str(i), 'Ey')
-                    dictData2['mode ' + str(i) + ' Ez'] = self.lum.getdata('FDE::data::mode' + str(i), 'Ez')
             else:
                 pass
         return dictModes, dictData, dictModes2, dictData2
@@ -24036,10 +24034,10 @@ class Charge(Constructor):
         
     def MZM_new(self, Parameters):
         '''
-
-
+ 
         Parameters
         ----------
+
         Parameters : dictionary
             Dictionary with all the parameters needt for the MZM creation
             Parameters['Substrate Height'] : int/float
@@ -24066,13 +24064,18 @@ class Charge(Constructor):
                 Height of the Metal electrodes
             Parameters["Gap"] : int/float
                 Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.
-
+ 
         Returns
         -------
+
         None.
+ 
+
+
+ 
 
         '''
-
+ 
         # Define Materials
         Substrate_Height = Parameters['Substrate Height']
         Optical_Material = Parameters["Optical"]
@@ -24086,15 +24089,18 @@ class Charge(Constructor):
         Metal_Sig_Width = Parameters["Signal Electrodes Width"]
         Metal_Height = Parameters["Electrodes Height"]
         Gap = Parameters["Gap"]
-        
-        # Becouse of Material Properties x and y directions will be swaped !!!!
-        
+ 
+
+       
+        # Becouse of Material Properties x and y directions will be swaped !!!
         # Add materials to Simulation enviroment
         Materials_Dict = {}
         Materials_Dict["Electrical"] = Electrical_Material
         Materials_Dict["Optical"] = Optical_Material
         self.Material(Materials_Dict)
-        
+ 
+
+       
         # Add LiNBo3 and Vacuum optical properties to materia
         self.lum.select("materials::LiNbO3 semiconductor - X/Y cut (Lithium Niobate)")
         self.lum.addemmaterialproperty("Dielectric")
@@ -24106,10 +24112,6 @@ class Charge(Constructor):
         self.lum.set("color", np.array([[1], [1], [0]]))
         self.lum.select("materials::SiO2 (Glass) - Sze")
         self.lum.set("color", np.array([[0.537], [0.812], [0.941]]))
-
-
-
-
         self.lum.select("materials::Air")
         self.lum.addmaterialproperties("EM", "Vacuum")
 
@@ -24121,6 +24123,7 @@ class Charge(Constructor):
         else:
             MaterialElectrodes = Electrical_Material[0]
 
+
         if "Si (Silicon)" in Electrical_Material:
             MaterialSub = Electrical_Material[2]
             MaterialClad = Electrical_Material[2]
@@ -24131,26 +24134,24 @@ class Charge(Constructor):
             MaterialClad = Electrical_Material[2]
             MaterialSlab = Electrical_Material[1]
             MaterialWG = MaterialSlab
+ 
 
-        
-
-        
 
         # Device Lenght
         MZM_Leght = WG_Length
         MZM_Width = WG_Width * 2 +  Metal_GND_Width + Metal_Sig_Width + Gap * 2 + 2e-6
-        
+
+
         # Triangle EQ for MMI Width
         x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
         extention = np.sqrt(x ** 2 - WG_Height ** 2)
         WG_W = WG_Width + 2 * extention
         WG_Width_top = WG_W
-        
+
         # Set offsets for the Optcal Waveguides
         WG_Y_Pos = Metal_Sig_Width / 2 + Gap + WG_Width / 2
         Metal_Y_Pos = WG_Y_Pos + Gap + WG_Width / 2 + Metal_GND_Width / 2  # Metal_GND_Width + Gap*2 + WG_Width
-        
-
+ 
 
         # creating the LN Handle
         self.lum.addrect()
@@ -24180,8 +24181,8 @@ class Charge(Constructor):
         self.lum.set("material", MaterialSub)
         self.lum.set("preserve surfaces",1)
         # self.lum.set("color",[1; 1; 0; 0])
-        
-     
+ 
+
 
         # Position Thin Film and Waveguides
         if Slab_Height == 0:
@@ -24193,6 +24194,7 @@ class Charge(Constructor):
             Point1 = [Metal_Sig_Width/2 + Gap + 2*extention + WG_Width , z_Offset]
             vtx = np.array([Point1, Point2, Point3, Point4])
             self.lum.putv('vertices', vtx)
+
 
         else:
             # creating the thin film
@@ -24211,7 +24213,6 @@ class Charge(Constructor):
             vtx = np.array([ Point1, Point2, Point3, Point4, Point5, Point6, Point7, Point8])
             self.lum.putv('vertices', vtx)
 
-
         # Cfreate Polynome
         self.lum.addpoly()
         self.lum.set("name", "Waveguide_Right")
@@ -24223,9 +24224,8 @@ class Charge(Constructor):
         self.lum.set("rotation 1", 90)
         self.lum.set("vertices",vtx)
         self.lum.set("x", 0) # Waveguide x Position 
+ 
 
-
-  
         # Add Electrodes
         self.lum.addrect()
         self.lum.set("name", "Sig")
@@ -24237,8 +24237,7 @@ class Charge(Constructor):
         self.lum.set("z max", z_Offset + Metal_Height)
         self.lum.set("material", MaterialElectrodes)
         self.lum.set("preserve surfaces",1)
-
-
+ 
         self.lum.addrect()
         self.lum.set("name", "Ground_R")
         self.lum.set("x", Metal_Y_Pos)
@@ -24398,7 +24397,7 @@ class Charge(Constructor):
         self.lum.set("solid", "Ground_R")
         self.lum.set("outer surface only", 0)
 
-        # Set moditor
+        # Set monitor
         self.lum.addefieldmonitor()
         self.lum.set("name", "CHARGE_Field_Monitor")
         self.lum.set("monitor type", "2D y-normal")
