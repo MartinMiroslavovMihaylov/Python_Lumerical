@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -6,18 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Constructor package &mdash; Python Lumercial Costructor Script 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=f2a433a1"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -47,6 +45,21 @@
 <li><a class="reference internal" href="#">Constructor package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-Constructor.Constructor">Constructor.Constructor module</a><ul>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge"><code class="docutils literal notranslate"><span class="pre">Charge</span></code></a><ul>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.CHARGE"><code class="docutils literal notranslate"><span class="pre">Charge.CHARGE()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.Close"><code class="docutils literal notranslate"><span class="pre">Charge.Close()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.MZM"><code class="docutils literal notranslate"><span class="pre">Charge.MZM()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.MZM_ChargeSolver"><code class="docutils literal notranslate"><span class="pre">Charge.MZM_ChargeSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.MZM_FEEMSolver"><code class="docutils literal notranslate"><span class="pre">Charge.MZM_FEEMSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.Material"><code class="docutils literal notranslate"><span class="pre">Charge.Material()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.ResultsCHARGE"><code class="docutils literal notranslate"><span class="pre">Charge.ResultsCHARGE()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.ResultsFEEM"><code class="docutils literal notranslate"><span class="pre">Charge.ResultsFEEM()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.Set_SimulationRegion"><code class="docutils literal notranslate"><span class="pre">Charge.Set_SimulationRegion()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.StartCHARGESolver"><code class="docutils literal notranslate"><span class="pre">Charge.StartCHARGESolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.StartFEEMSolver"><code class="docutils literal notranslate"><span class="pre">Charge.StartFEEMSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Charge.removeObject"><code class="docutils literal notranslate"><span class="pre">Charge.removeObject()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor"><code class="docutils literal notranslate"><span class="pre">Constructor</span></code></a><ul>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.ArcWaveguide"><code class="docutils literal notranslate"><span class="pre">Constructor.ArcWaveguide()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.BendWaveguide"><code class="docutils literal notranslate"><span class="pre">Constructor.BendWaveguide()</span></code></a></li>
@@ -68,11 +81,14 @@
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.GratingCouplerNeff"><code class="docutils literal notranslate"><span class="pre">Constructor.GratingCouplerNeff()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.Help"><code class="docutils literal notranslate"><span class="pre">Constructor.Help()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.InverseTaper"><code class="docutils literal notranslate"><span class="pre">Constructor.InverseTaper()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.LenseFiber"><code class="docutils literal notranslate"><span class="pre">Constructor.LenseFiber()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.LenseModeSystem"><code class="docutils literal notranslate"><span class="pre">Constructor.LenseModeSystem()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.MMI2x1"><code class="docutils literal notranslate"><span class="pre">Constructor.MMI2x1()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.MMI2x2"><code class="docutils literal notranslate"><span class="pre">Constructor.MMI2x2()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.Overlap"><code class="docutils literal notranslate"><span class="pre">Constructor.Overlap()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.OverlapFDEModes"><code class="docutils literal notranslate"><span class="pre">Constructor.OverlapFDEModes()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.Plot3DFDE"><code class="docutils literal notranslate"><span class="pre">Constructor.Plot3DFDE()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.Plot3DFDTD"><code class="docutils literal notranslate"><span class="pre">Constructor.Plot3DFDTD()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.ReturnLogInfo"><code class="docutils literal notranslate"><span class="pre">Constructor.ReturnLogInfo()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.RingGratingCoupler"><code class="docutils literal notranslate"><span class="pre">Constructor.RingGratingCoupler()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.Script"><code class="docutils literal notranslate"><span class="pre">Constructor.Script()</span></code></a></li>
@@ -95,6 +111,7 @@
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.setGratingCouplerNeffFDE"><code class="docutils literal notranslate"><span class="pre">Constructor.setGratingCouplerNeffFDE()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.setInverseTaperEMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setInverseTaperEMESolver()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.setInverseTaperFDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setInverseTaperFDTDSolver()</span></code></a></li>
+<li><a class="reference internal" href="#Constructor.Constructor.Constructor.setLenseFiberFDTD"><code class="docutils literal notranslate"><span class="pre">Constructor.setLenseFiberFDTD()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.setMMI2x1EMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x1EMESolver()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.setMMI2x1FDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x1FDTDSolver()</span></code></a></li>
 <li><a class="reference internal" href="#Constructor.Constructor.Constructor.setMMI2x2EMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x2EMESolver()</span></code></a></li>
@@ -126,7 +143,7 @@
 <li><a class="reference internal" href="#Constructor.Constructor.loadingBar"><code class="docutils literal notranslate"><span class="pre">loadingBar()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-Constructor">Module contents</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -165,6 +182,316 @@
 <p>Created on Fri Feb 10 08:31:42 2023</p>
 <p>&#64;author: Martin.Mihaylov</p>
 <dl class="py class">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Constructor.Constructor.</span></span><span class="sig-name descname"><span class="pre">Charge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MaterialLib</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Constructor.Constructor.Constructor" title="Constructor.Constructor.Constructor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constructor</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.CHARGE">
+<span class="sig-name descname"><span class="pre">CHARGE</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.CHARGE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.CHARGE" title="Link to this definition"></a></dt>
+<dd><p>Calls the CHARGE Solver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.Close">
+<span class="sig-name descname"><span class="pre">Close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.Close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.Close" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Close Lumerical GUI</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.MZM">
+<span class="sig-name descname"><span class="pre">MZM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.MZM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.MZM" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>dictionary</em>) – <p>Dictionary with all the parameters needt for the MZM creation
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate Height</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[“Optical”]<span class="classifier">dictionary of str</span></dt><dd><p>Optical Materials Dataset</p>
+</dd>
+<dt>Parameters[“Electrical”]<span class="classifier">dictionary of str</span></dt><dd><p>Electrical Materials Dataset</p>
+</dd>
+<dt>Parameters[‘angle’]<span class="classifier">int/float</span></dt><dd><p>Side angle of the Waveguife</p>
+</dd>
+<dt>Parameters[‘Slab Height’]<span class="classifier">Slab Height</span></dt><dd><p>Height of the Material slab. It can be set to 0 if no Slab is presented</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Height</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Width. Here the Top Waveguide width is considered</p>
+</dd>
+<dt>Parameters[‘WG Length’]<span class="classifier">int/float</span></dt><dd><p>Waveguide lenght. This determin the structure length as well</p>
+</dd>
+<dt>Parameters[“GND Electrodes Width”]<span class="classifier">int/float</span></dt><dd><p>Ground Electrode width</p>
+</dd>
+<dt>Parameters[“Signal Electrodes Width”]<span class="classifier">int/float</span></dt><dd><p>Signal electrode Width</p>
+</dd>
+<dt>Parameters[“Electrodes Height”]<span class="classifier">int/float</span></dt><dd><p>Height of the Metal electrodes</p>
+</dd>
+<dt>Parameters[“Gap”]<span class="classifier">int/float</span></dt><dd><p>Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.MZM_ChargeSolver">
+<span class="sig-name descname"><span class="pre">MZM_ChargeSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.MZM_ChargeSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.MZM_ChargeSolver" title="Link to this definition"></a></dt>
+<dd><p>This function will create the CHARGE solver putting all the needed parameters and setting the simulation
+region monitor.</p>
+<dl>
+<dt>Args: Parameters: dict</dt><dd><p>Dictionary with all the parameters needt for the MZM FEEM Solver region. The Simulation region is define
+only on the halft of the structure since the FEEM region is the simulation region too.</p>
+<dl class="simple">
+<dt>Parameters[‘Substrate Height’]: int/float</dt><dd><p>Height of the Substrate</p>
+</dd>
+<dt>Parameters[‘Slab Height’]: int/float</dt><dd><p>Slab Height</p>
+</dd>
+<dt>Parameters[‘WG Height’]: int/float</dt><dd><p>Waveguide hight. You need to give this value but for the moment it will not effect anything</p>
+</dd>
+<dt>Parameters[‘WG Width’]: int/float</dt><dd><p>Width of the Waveguide</p>
+</dd>
+<dt>Parameters[“GND Electrodes Width”]: int/float</dt><dd><p>Ground Electrode width</p>
+</dd>
+<dt>Parameters[“Signal Electrodes Width”]: int/float</dt><dd><p>Signal Electrode width</p>
+</dd>
+<dt>Parameters[“Electrodes Height”]: int/float</dt><dd><p>Height of the Ground and Singla electrodes</p>
+</dd>
+<dt>Parameters[“Gap”]: int/float</dt><dd><p>Gap between the electrode and Waveguide.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.MZM_FEEMSolver">
+<span class="sig-name descname"><span class="pre">MZM_FEEMSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.MZM_FEEMSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.MZM_FEEMSolver" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>dict</em>) – <p>Dictionary with all the parameters needt for the MZM FEEM Solver region. The Simulation region is define
+only on the halft of the structure since the FEEM region is the simulation region too.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate Heigh</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Slab Height’]<span class="classifier">Slab Height</span></dt><dd><p>Height of the Material slab. It can be set to 0 if no Slab is presented</p>
+</dd>
+<dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Height</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Width. Here the Top Waveguide width is considered</p>
+</dd>
+<dt>Parameters[“GND Electrodes Width”]<span class="classifier">int/float</span></dt><dd><p>Ground Electrode width</p>
+</dd>
+<dt>Parameters[“Signal Electrodes Width”]<span class="classifier">int/float</span></dt><dd><p>Signal electrode Width</p>
+</dd>
+<dt>Parameters[“Electrodes Height”]<span class="classifier">int/float</span></dt><dd><p>Height of the Metal electrodes</p>
+</dd>
+<dt>Parameters[“Gap”]<span class="classifier">int/float</span></dt><dd><p>Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.</p>
+</dd>
+<dt>Parameters[“Wavelength”]<span class="classifier">int/float</span></dt><dd><p>Simulation wavelength</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.Material">
+<span class="sig-name descname"><span class="pre">Material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Material_Data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.Material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.Material" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Material_Data</strong> (<em>dictionary</em>) – Material Optical or Electrical data.
+Separate Materials into Electrical and Optical in List Material_Data[“Electrical”] = [“mat1”, “mat2”..]
+and optical Material_Data[“Optical”] = [“omat1”, “omat2”, …]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Materials_Added</strong> – List of added materials to the simulation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.ResultsCHARGE">
+<span class="sig-name descname"><span class="pre">ResultsCHARGE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters_CHARGE</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.ResultsCHARGE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.ResultsCHARGE" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>dict</em>) – <p>Dictionary with all the parameters needt for the MZM CHARGE Results analysis. This function will plot
+the changes in the n_EO so that the user can see it.</p>
+<dl class="simple">
+<dt>Parameters_CHARGE[‘min Polarization Fraction’]: int/float</dt><dd><p>This is the minimal Polarisation Fraction of the mode that need to be tracked in the waveguide.
+The user can first performe an FDE Analysis and extract the Polarisation Fraction and then give it in
+this function, so that in case of multimodal waveguide the right mode will be tracked and analysed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>electro</strong> – Simulation results from the monitor of CHARGE. This function will create an Lumerical window into Charge solver.
+The user can use the window to see tha changes in EO index depending on the voltage apply on the electrodes.
+The function will return the monitor Data, so that the user can use it for some post precessing.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.ResultsFEEM">
+<span class="sig-name descname"><span class="pre">ResultsFEEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CHARGE_Data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.ResultsFEEM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.ResultsFEEM" title="Link to this definition"></a></dt>
+<dd><p>This function will performe an FEEM sweep simulation to extract the neff changes
+from the waveguide. The changing neff is due to the changing voltage and electric
+field power over the waveguide.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Parameters</strong> (<em>dict</em>) – <p>Dictionary with all the parameters needt for the MZM FEEM Results analysis. This function will plot
+the L_pi vs Volt, L_pi*Volt vs Volt, and delta_neff vs Volt</p>
+<dl class="simple">
+<dt>CHARGE_Data is an dictionary that can be taken directly from the function ResultsCHARGE()</dt><dd><p>and give to this function. All the needed Parameters for the FEEM solver are there.</p>
+</dd>
+<dt>If the user wanna give the Parameters manuel you can:</dt><dd><dl class="simple">
+<dt>CHARGE_Data[“V_Signal”]: int/float array</dt><dd><p>Array of the sweep voltage from the CHARGE Solver</p>
+</dd>
+<dt>CHARGE_Data[‘min Polarization Fraction’]: int/float</dt><dd><p>This is the minimal Polarisation Fraction of the mode that need to be tracked in the waveguide.
+The user can first performe an FDE Analysis and extract the Polarisation Fraction and then give it in
+this function, so that in case of multimodal waveguide the right mode will be tracked and analysed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>Returns</strong> – <p>FeemResults: dictionary with all the results from the FEEM solver to plot them or use them in other function
+FeemResults[“lambda”]: int/float</p>
+<blockquote>
+<div><p>Operation Wavelength</p>
+</div></blockquote>
+<dl>
+<dt>FeemResults[“Volt”]: int/float</dt><dd><blockquote>
+<div><p>Array of voltages used in CHARGE solver and FEEM for the analysis</p>
+</div></blockquote>
+<dl class="simple">
+<dt>FeemResults[“L_pi”]: int/float</dt><dd><p>Array with L_pi values</p>
+</dd>
+</dl>
+</dd>
+<dt>FeemResults[“neff_TE”]: int/float</dt><dd><p>Array with neff TE Mode values from the FEEM solver</p>
+</dd>
+<dt>FeemResults[“neff”]: int/float</dt><dd><p>Array with neff values from the FEEM solver</p>
+</dd>
+<dt>FeemResults[“dneff”]: int/float</dt><dd><p>Array of delta_neff Values for the L_Pi Calculation: L_pi = lambda/ (2*RE{neff[No Voltage over Electrodes]] - neff[Voltage over Electrodes]})</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.Set_SimulationRegion">
+<span class="sig-name descname"><span class="pre">Set_SimulationRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.Set_SimulationRegion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.Set_SimulationRegion" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em><em> of </em><em>Parameters</em>) – <p>Dictionary with all the parameters needt for the MZM simulation region. The Simulation region is define
+only on the halft of the structure sice the MZM is symetrical component.
+Parameters[‘Substrate Height’] : int/float</p>
+<blockquote>
+<div><p>Substrate Heigh</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[‘Slab Height’]<span class="classifier">Slab Height</span></dt><dd><p>Height of the Material slab. It can be set to 0 if no Slab is presented</p>
+</dd>
+<dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Width. Here the Top Waveguide width is considered</p>
+</dd>
+<dt>Parameters[“GND Electrodes Width”]<span class="classifier">int/float</span></dt><dd><p>Ground Electrode width</p>
+</dd>
+<dt>Parameters[“Signal Electrodes Width”]<span class="classifier">int/float</span></dt><dd><p>Signal electrode Width</p>
+</dd>
+<dt>Parameters[“Electrodes Height”]<span class="classifier">int/float</span></dt><dd><p>Height of the Metal electrodes</p>
+</dd>
+<dt>Parameters[“Gap”]<span class="classifier">int/float</span></dt><dd><p>Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.StartCHARGESolver">
+<span class="sig-name descname"><span class="pre">StartCHARGESolver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.StartCHARGESolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.StartCHARGESolver" title="Link to this definition"></a></dt>
+<dd><p>This function will first save the simulation into the folder where the
+this script is saved. After saving the script an Mesh of the structure will
+be performed and the mesh will be locked for further simulation. After this
+the CHARGE solver will be started.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.StartFEEMSolver">
+<span class="sig-name descname"><span class="pre">StartFEEMSolver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.StartFEEMSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.StartFEEMSolver" title="Link to this definition"></a></dt>
+<dd><p>This function will first save the simulation into the folder where the
+this script is saved. After saving the script an Mesh of the structure will
+be performed and the mesh will be locked for further simulation. After this
+the FEEM solver will be started.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Charge.removeObject">
+<span class="sig-name descname"><span class="pre">removeObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Charge.removeObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Charge.removeObject" title="Link to this definition"></a></dt>
+<dd><p>Switch from simulation to layout mode.
+Remove all objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="Constructor.Constructor.Constructor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Constructor.Constructor.</span></span><span class="sig-name descname"><span class="pre">Constructor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MaterialLib</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -173,12 +500,10 @@
 <span class="sig-name descname"><span class="pre">ArcWaveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor.ArcWaveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.ArcWaveguide" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Arc Wavaguide.
-Parameters[‘Substrate Height’] : int/float</p>
-<blockquote>
-<div><p>Substrate height</p>
-</div></blockquote>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Arc Wavaguide.</p>
 <dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate height</p>
+</dd>
 <dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide height</p>
 </dd>
 <dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width</p>
@@ -221,12 +546,10 @@ will be set.</p>
 <span class="sig-name descname"><span class="pre">BendWaveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor.BendWaveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.BendWaveguide" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Bend Wavaguide.
-Parameters[‘Substrate Height’] : int/float</p>
-<blockquote>
-<div><p>Substrate Height</p>
-</div></blockquote>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Bend Wavaguide.</p>
 <dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int/float</span></dt><dd><p>Substrate Height</p>
+</dd>
 <dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Waveguide Height</p>
 </dd>
 <dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Waveguide width</p>
@@ -702,6 +1025,49 @@ Parameters[‘Taper Width’] is the frond width of the inverse Taper!</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.LenseFiber">
+<span class="sig-name descname"><span class="pre">LenseFiber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor.LenseFiber"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.LenseFiber" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the GratingCoupler.
+Take care since this object will create his own FDTD simulation object. No extra Solvers needed!
+Parameters[‘Material’] : list of str</p>
+<blockquote>
+<div><p>List of Materials. the list should be with names (str) of a valid Lumerical materials.
+Check the names in Lumerical Materials viewer. For Example “Parameters[‘Material’] = [“SiO2 (Glass) - Palik”, “Si (Silicon) - Palik”]”</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters[“Lense Diameter”]<span class="classifier">int/float</span></dt><dd><p>Lense diameter.</p>
+</dd>
+<dt>Parameters[“Lense Thickness”]: int/float</dt><dd><p>Lens thickness</p>
+</dd>
+<dt>Parameters[“SMF Core Diameter”]<span class="classifier">int/float</span></dt><dd><p>Single Mode Fiber core Diameter</p>
+</dd>
+<dt>Parameters[“SMF Cladding Diameter”]<span class="classifier">int/float</span></dt><dd><p>Single Mode Fiber Cladding Diameter</p>
+</dd>
+<dt>Parameters[“SMF Core Index”]</dt><dd><p>Single Mode Fiber Core Index</p>
+</dd>
+<dt>Parameters[“SMF Cladding Index”]</dt><dd><p>Single Mode Fiber Cladding Index</p>
+</dd>
+<dt>Parameters[‘Support Cylunder Hight’]: int/float</dt><dd><p>Hight of the Cylinder holding the Lense. This is needed so that the Lense can have flat fine serface to be printed on.</p>
+</dd>
+<dt>Parameters[‘Hexagon Hight’]: optional int/float</dt><dd><p>Hight of the Hexagon holding the Cylinder. If the Parameter is not set the Hexagon will be made with 4 um thickness. Where 2 um
+will go into the fiber array and 2 um will be above to print the cylinder on it. This is how is done in NanoPrintX.</p>
+</dd>
+<dt>Parameters[‘x res’]<span class="classifier">int/float</span></dt><dd><p>Mesh step size</p>
+</dd>
+<dt>Parameters[‘Wavelength’]: int/float</dt><dd><p>Simulation Wavelenght</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Constructor.Constructor.Constructor.LenseModeSystem">
 <span class="sig-name descname"><span class="pre">LenseModeSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor.LenseModeSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.LenseModeSystem" title="Link to this definition"></a></dt>
 <dd></dd></dl>
@@ -711,8 +1077,9 @@ Parameters[‘Taper Width’] is the frond width of the inverse Taper!</p>
 <span class="sig-name descname"><span class="pre">MMI2x1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor.MMI2x1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.MMI2x1" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <dl class="simple">
-<dt>Dictionary with all the data needet for the 2x1 MMI.</dt><dd><dl class="simple">
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the 2x1 MMI.</p>
+<blockquote>
+<div><dl class="simple">
 <dt>Parameters[‘Material’]<span class="classifier">list of str</span></dt><dd><p>List of Materials. The list should be with names (str) of a valid Lumerical materials.
 Check the names in Lumerical Materials viewer.
 The List of materials must contain at least 2 materials!
@@ -761,8 +1128,7 @@ will be set.</p>
 becouse the maschine of our physic departmant had some proiblems with the LNOI objects design.</p>
 </dd>
 </dl>
-</dd>
-</dl>
+</div></blockquote>
 </p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -891,6 +1257,16 @@ will be set.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.Plot3DFDE">
+<span class="sig-name descname"><span class="pre">Plot3DFDE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor.Plot3DFDE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.Plot3DFDE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.Plot3DFDTD">
+<span class="sig-name descname"><span class="pre">Plot3DFDTD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor.Plot3DFDTD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.Plot3DFDTD" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Constructor.Constructor.Constructor.ReturnLogInfo">
@@ -1068,12 +1444,10 @@ will be done.</p>
 <span class="sig-name descname"><span class="pre">StraightWaveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor.StraightWaveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.StraightWaveguide" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Straight Wavaguide.
-Parameters[‘Substrate Height’] : int float</p>
-<blockquote>
-<div><p>Substrate Height</p>
-</div></blockquote>
-<dl class="simple">
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Straight Wavaguide.</p>
+<dl>
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int float</span></dt><dd><p>Substrate Height</p>
+</dd>
 <dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the Waveguide</p>
 </dd>
 <dt>Parameters[‘WG Width’]<span class="classifier">int/float</span></dt><dd><p>Width of the Waveguide</p>
@@ -1110,7 +1484,15 @@ will be set.</p>
 </dd>
 <dt>Parameters[“Taper Type”]<span class="classifier">anything, optional</span></dt><dd><p>This function will check if you have set Parameters[“Taper Type”] to anaything, for example “Parameters[“Taper Type”]=1”
 and if so it will design an Inverse Taper Structure with no Cladding. Here the option “Cladding” is not active and will be ignored.
-If the user didnt give the “Taper Type” as dictionary key, then an normal taper structure will be simulated.</p>
+If the user didnt give the “Taper Type” as dictionary key, then an normal taper structure will be simulated.
+If Taper Type is selected the user need to provide additional information:</p>
+<blockquote>
+<div><p>TaperWidthF = Parameters[‘PWB Taper Width Front’]
+TaperWidthB = Parameters[‘PWB Taper Width Back’]
+TaperHightB = Parameters[‘PWB Taper Hight Back’]
+TaperHightF = Parameters[‘PWB Taper Hight Front’]
+TaperLength_PWB = Parameters[‘PWB Taper Length’]</p>
+</div></blockquote>
 </dd>
 </dl>
 </p>
@@ -1188,12 +1570,10 @@ will be set.</p>
 <span class="sig-name descname"><span class="pre">Waveguide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor.Waveguide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.Waveguide" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Wavaguide.
-Parameters[‘Substrate Height’] : int7float</p>
-<blockquote>
-<div><p>Height of the substrate.</p>
-</div></blockquote>
+<dd class="field-odd"><p><strong>Parameters</strong> (<em>Dictionary</em>) – <p>Dictionary with all the data needet for the Wavaguide.</p>
 <dl class="simple">
+<dt>Parameters[‘Substrate Height’]<span class="classifier">int7float</span></dt><dd><p>Height of the substrate.</p>
+</dd>
 <dt>Parameters[‘WG Length’]: int/float</dt><dd><p>Length of the Waveguide.</p>
 </dd>
 <dt>Parameters[‘WG Height’]<span class="classifier">int/float</span></dt><dd><p>Height of the Waveguide</p>
@@ -1543,6 +1923,11 @@ Parameters[‘Substrate Height’] : int/float</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setLenseFiberFDTD">
+<span class="sig-name descname"><span class="pre">setLenseFiberFDTD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Constructor/Constructor.html#Constructor.setLenseFiberFDTD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constructor.Constructor.Constructor.setLenseFiberFDTD" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Constructor.Constructor.Constructor.setMMI2x1EMESolver">
@@ -2120,8 +2505,8 @@ Parameters : Dictionary</p>
 </dd></dl>
 
 </section>
-<section id="module-Constructor">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Constructor" title="Link to this heading"></a></h2>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 </section>
 </section>
 

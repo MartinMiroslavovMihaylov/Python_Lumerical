@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -6,18 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Constructor &mdash; Python Lumercial Costructor Script 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=f2a433a1"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -78,6 +76,21 @@
 <li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Constructor.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Constructor.html#module-Constructor.Constructor">Constructor.Constructor module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge"><code class="docutils literal notranslate"><span class="pre">Charge</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.CHARGE"><code class="docutils literal notranslate"><span class="pre">Charge.CHARGE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.Close"><code class="docutils literal notranslate"><span class="pre">Charge.Close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.MZM"><code class="docutils literal notranslate"><span class="pre">Charge.MZM()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.MZM_ChargeSolver"><code class="docutils literal notranslate"><span class="pre">Charge.MZM_ChargeSolver()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.MZM_FEEMSolver"><code class="docutils literal notranslate"><span class="pre">Charge.MZM_FEEMSolver()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.Material"><code class="docutils literal notranslate"><span class="pre">Charge.Material()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.ResultsCHARGE"><code class="docutils literal notranslate"><span class="pre">Charge.ResultsCHARGE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.ResultsFEEM"><code class="docutils literal notranslate"><span class="pre">Charge.ResultsFEEM()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.Set_SimulationRegion"><code class="docutils literal notranslate"><span class="pre">Charge.Set_SimulationRegion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.StartCHARGESolver"><code class="docutils literal notranslate"><span class="pre">Charge.StartCHARGESolver()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.StartFEEMSolver"><code class="docutils literal notranslate"><span class="pre">Charge.StartFEEMSolver()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Charge.removeObject"><code class="docutils literal notranslate"><span class="pre">Charge.removeObject()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor"><code class="docutils literal notranslate"><span class="pre">Constructor</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.ArcWaveguide"><code class="docutils literal notranslate"><span class="pre">Constructor.ArcWaveguide()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.BendWaveguide"><code class="docutils literal notranslate"><span class="pre">Constructor.BendWaveguide()</span></code></a></li>
@@ -99,11 +112,14 @@
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.GratingCouplerNeff"><code class="docutils literal notranslate"><span class="pre">Constructor.GratingCouplerNeff()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.Help"><code class="docutils literal notranslate"><span class="pre">Constructor.Help()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.InverseTaper"><code class="docutils literal notranslate"><span class="pre">Constructor.InverseTaper()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.LenseFiber"><code class="docutils literal notranslate"><span class="pre">Constructor.LenseFiber()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.LenseModeSystem"><code class="docutils literal notranslate"><span class="pre">Constructor.LenseModeSystem()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.MMI2x1"><code class="docutils literal notranslate"><span class="pre">Constructor.MMI2x1()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.MMI2x2"><code class="docutils literal notranslate"><span class="pre">Constructor.MMI2x2()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.Overlap"><code class="docutils literal notranslate"><span class="pre">Constructor.Overlap()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.OverlapFDEModes"><code class="docutils literal notranslate"><span class="pre">Constructor.OverlapFDEModes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.Plot3DFDE"><code class="docutils literal notranslate"><span class="pre">Constructor.Plot3DFDE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.Plot3DFDTD"><code class="docutils literal notranslate"><span class="pre">Constructor.Plot3DFDTD()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.ReturnLogInfo"><code class="docutils literal notranslate"><span class="pre">Constructor.ReturnLogInfo()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.RingGratingCoupler"><code class="docutils literal notranslate"><span class="pre">Constructor.RingGratingCoupler()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.Script"><code class="docutils literal notranslate"><span class="pre">Constructor.Script()</span></code></a></li>
@@ -126,6 +142,7 @@
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.setGratingCouplerNeffFDE"><code class="docutils literal notranslate"><span class="pre">Constructor.setGratingCouplerNeffFDE()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.setInverseTaperEMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setInverseTaperEMESolver()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.setInverseTaperFDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setInverseTaperFDTDSolver()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.setLenseFiberFDTD"><code class="docutils literal notranslate"><span class="pre">Constructor.setLenseFiberFDTD()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.setMMI2x1EMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x1EMESolver()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.setMMI2x1FDTDSolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x1FDTDSolver()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="Constructor.html#Constructor.Constructor.Constructor.setMMI2x2EMESolver"><code class="docutils literal notranslate"><span class="pre">Constructor.setMMI2x2EMESolver()</span></code></a></li>
@@ -157,7 +174,7 @@
 <li class="toctree-l3"><a class="reference internal" href="Constructor.html#Constructor.Constructor.loadingBar"><code class="docutils literal notranslate"><span class="pre">loadingBar()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Constructor.html#module-Constructor">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Constructor.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>

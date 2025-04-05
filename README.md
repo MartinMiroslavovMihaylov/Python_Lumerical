@@ -49,3 +49,9 @@ Staright Waveguide
 Inverse Taper
 - ![alt text](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/EME_Invereaper.png?raw=true)
   
+  
+  
+# CHARGE and FEEM Solver
+MZM
+- ![alt text](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/MZM.png?raw=true)
+  
