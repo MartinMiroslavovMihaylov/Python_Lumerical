@@ -10946,6 +10946,7 @@ class Charge(Constructor):
         # Set offsets for the Optcal Waveguides
         WG_Y_Pos = Metal_Sig_Width / 2 + Gap + WG_Width / 2
         Metal_Y_Pos = WG_Y_Pos + Gap + WG_Width / 2 + Metal_GND_Width / 2  # Metal_GND_Width + Gap*2 + WG_Width
+        Metal_GND_Y_Pos = Metal_Sig_Width / 2 + 2*Gap + WG_Width
  
 
         # creating the LN Handle
@@ -10982,10 +10983,10 @@ class Charge(Constructor):
         # Position Thin Film and Waveguides
         if Slab_Height == 0:
             z_Offset = Substrate_Height / 2
-            Point4 = [Metal_Sig_Width/2 + Gap , z_Offset]
-            Point3 = [Metal_Sig_Width/2 + Gap + extention , z_Offset + WG_Height]
-            Point2 = [Metal_Sig_Width/2 + Gap + extention + WG_Width , z_Offset + WG_Height]
-            Point1 = [Metal_Sig_Width/2 + Gap + 2*extention + WG_Width , z_Offset]
+            Point4 = [Metal_Sig_Width/2 + Gap - extention, z_Offset ]
+            Point3 = [Metal_Sig_Width/2 + Gap , z_Offset + WG_Height]
+            Point2 = [Metal_Sig_Width/2 + Gap  + WG_Width , z_Offset + WG_Height]
+            Point1 = [Metal_Sig_Width/2 + Gap  + WG_Width + extention , z_Offset]
             vtx = np.array([Point1, Point2, Point3, Point4])
             self.lum.putv('vertices', vtx)
 
@@ -10995,10 +10996,10 @@ class Charge(Constructor):
             self.lum.select("Substrate")
             zmax = self.lum.get("z max")
             z_Offset = zmax + Slab_Height
-            Point4 = [Metal_Sig_Width/2 + Gap , z_Offset ]
-            Point3 = [Metal_Sig_Width/2 + Gap + extention , z_Offset + WG_Height]
-            Point2 = [Metal_Sig_Width/2 + Gap + extention + WG_Width , z_Offset + WG_Height]
-            Point1 = [Metal_Sig_Width/2 + Gap + 2*extention + WG_Width , z_Offset]
+            Point4 = [Metal_Sig_Width/2 + Gap - extention, z_Offset ]
+            Point3 = [Metal_Sig_Width/2 + Gap , z_Offset + WG_Height]
+            Point2 = [Metal_Sig_Width/2 + Gap  + WG_Width , z_Offset + WG_Height]
+            Point1 = [Metal_Sig_Width/2 + Gap  + WG_Width + extention , z_Offset]
             Point5 = [-Metal_Sig_Width/2 - 1e-6 , z_Offset]
             Point6 = [-Metal_Sig_Width/2 - 1e-6 , zmax]
             Point7 = [Metal_Y_Pos + Metal_GND_Width/2 + 1e-6 , zmax]
@@ -11033,8 +11034,8 @@ class Charge(Constructor):
  
         self.lum.addrect()
         self.lum.set("name", "Ground_R")
-        self.lum.set("x", Metal_Y_Pos)
-        self.lum.set("x span", Metal_GND_Width)
+        self.lum.set("x min", Metal_GND_Y_Pos)
+        self.lum.set("x max", Metal_GND_Y_Pos + Metal_GND_Width)
         self.lum.set("y", 0)
         self.lum.set("y span", MZM_Leght)
         self.lum.set("z min", z_Offset)
