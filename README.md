@@ -49,6 +49,10 @@ Staright Waveguide
 Inverse Taper
 - ![alt text](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/EME_Invereaper.png?raw=true)
   
+Cascaded MMI structures
+- ![alt text](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/Cascadet_MMI.png?raw=true)
+  
+  
   
   
 # CHARGE and FEEM Solver

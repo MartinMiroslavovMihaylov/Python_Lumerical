@@ -3994,9 +3994,12 @@ class Constructor:
         self.lum.select("Substrate")
         y = self.lum.get("y")
         self.lum.set("y", -y)
-        self.lum.select("S Bend::Slab")
-        y = self.lum.get("y")
-        self.lum.set("y", -y)
+        if Slab_Height == 0:
+            pass
+        else:
+            self.lum.select("S Bend::Slab")
+            y = self.lum.get("y")
+            self.lum.set("y", -y)
         self.lum.select("S Bend::S-Bend")
         poles = self.lum.get("poles")
         poles[2][1] = -Parameters["y span"] 
@@ -4097,6 +4100,18 @@ class Constructor:
             self.lum.set("x min", xmin)
             self.lum.set("x max", xmax)
             self.lum.set("material", MaterialSlab)      
+        
+
+        # Delete all the Substrates and Slabs if they are some in the single structures on the end 
+        Object_Names = ["MMI_Input", "MMI_Top", "MMI_Bot", "S_Bend_Top", "S_Bend_Bot"]
+        Object_Names_Slab = ["MMI Object", "MMI Object", "MMI Object", "S Bend", "S Bend"]
+
+
+        for i in range(len(Object_Names)):
+            self.lum.select(Object_Names[i]+ "::Substrate")
+            self.lum.delete()
+            self.lum.select( Object_Names[i] + "::"+ Object_Names_Slab[i] + "::Slab")
+            self.lum.delete()
 
 
 
@@ -9494,7 +9509,131 @@ class Constructor:
         Args:
             Parameters (_type_): _description_
         """
+                
+        Substrate_Height = Parameters['Substrate Height']
+        MMI_Width = Parameters['MMI Width']
+        MMI_Length = Parameters['MMI Length']
+        WG_Height = Parameters['WG Height']
+        WG_Width = Parameters['WG Width']
+        WG_Length = Parameters['WG Length']
+        OffsetInput = Parameters['Offset Input']
+        posOffset = Parameters['Position Offset']
+        y_res = Parameters['y res']
+        z_res = Parameters['z res']
+        Slab_Height = Parameters['Slab Height']
+        WaveLength = Parameters['Wavelength']
+        Mode = Parameters["Mode"]
+        y_Port_Span = Parameters["Port Span"][1]
+        z_Port_Span = Parameters["Port Span"][2]
+        X_Offset = Parameters["x offset"] 
+        Y_Offset = Parameters["y offset"] 
 
+
+        # Device specifications
+        xmax = MMI_Length / 2 + WG_Length
+        xmin = -(2 * MMI_Length  + X_Offset)
+        ySpan = Y_Offset + 4*MMI_Width
+
+
+        # 1x2 MMI
+        max_slabH = Slab_Height
+        # MonitorHeight = Substrate_Height + (max_slabH + WG_Height) / 2
+        MonitorHeight = Substrate_Height + max_slabH + WG_Height/2
+        # Ports_mid = (max_slabH + WG_Height) / 2
+        Ports_mid = max_slabH + WG_Height/2
+
+        # Extract Length of S-Bends
+        self.lum.select("S_Bend_Top::S Bend::S-Bend")
+        X_SBends = self.lum.get("poles")[3][0]
+        # X_SBends = obj.lum.get("x span")
+
+        # Adds a Eigenmode Expansion (EME) solver region to the MODE simulation environment.
+        self.lum.addeme()
+        self.lum.set("x min",xmin + 0.1e-6)
+        self.lum.set("y", 0)
+        self.lum.set('simulation temperature', 273.15 + 20)
+        self.lum.set("y span", ySpan)
+        self.lum.set("z", Substrate_Height)
+        self.lum.set("z span", 4e-6)
+        self.lum.set("wavelength", WaveLength)
+        self.lum.set("z min bc", "PML")
+        self.lum.set("z max bc", "PML")
+        self.lum.set("y min bc", "PML")
+        self.lum.set("y max bc", "PML")
+
+        # set cell properties no Taper
+        self.lum.set("number of cell groups", 7)
+        self.lum.set("group spans", np.array([[WG_Length-0.1e-6], [MMI_Length], [WG_Length-0.1e-6],[X_SBends],[WG_Length-0.1e-6], [MMI_Length], [WG_Length-0.1e-6]]))
+        self.lum.set("cells", np.array([[2], [2], [2], [20], [2], [2], [2]]))
+        self.lum.set("subcell method", np.array([[0], [0], [0], [1] , [0] , [0] ,[0]]))
+
+
+
+
+        # Modes to Calculate
+        self.lum.set('number of modes for all cell groups', 20)
+
+        # Mesh Cells
+        self.lum.set("define y mesh by", "maximum mesh step")
+        self.lum.set("dy", y_res)
+        self.lum.set("define z mesh by", "maximum mesh step")
+        self.lum.set("dz", z_res)
+        self.lum.set('fit materials with multi-coefficient model', 1)
+        self.lum.set('wavelength start', 0.4e-6)
+        self.lum.set('wavelength stop', 2e-6)
+
+
+
+
+        # Positions of the Input and Output WGs
+        self.lum.select("MMI_Top")
+        yPos = self.lum.get("y")
+        posOffset_Top1 = yPos + posOffset/2 + WG_Width/2
+        posOffset_Top2 = yPos - posOffset/2 - WG_Width/2
+
+        self.lum.select("MMI_Bot")
+        yPos = self.lum.get("y")
+        posOffset_Bot1 = yPos + posOffset/2 + WG_Width/2
+        posOffset_Bot2 = yPos - posOffset/2 - WG_Width/2
+
+
+
+        # Define Ports 4 Left 1 right
+        yPort_vec = [OffsetInput , posOffset_Top1, posOffset_Top2, posOffset_Bot1, posOffset_Bot2]
+        portLoc = ["right", "left", "left", "left", "left"]
+
+
+
+
+        # Add the missing ports
+        self.lum.select("EME")
+        for i in range(3):
+            self.lum.addemeport()
+
+
+        # Move the ports to positions
+        for i in range(5):
+            self.lum.select("EME::Ports::port_" + str(i + 1))
+            self.lum.set("port location", portLoc[i])
+            self.lum.set("use full simulation span", 0)
+            self.lum.set('y', yPort_vec[i])
+            self.lum.set('y span', y_Port_Span)
+            # self.lum.set("y min", min_yPos[i])
+            # self.lum.set("y max", max_yPos[i])
+            self.lum.set("z", Ports_mid)
+            self.lum.set("z span", z_Port_Span)
+            self.lum.set("mode selection", Mode)
+
+
+
+
+        # Define the Motinot
+        self.lum.addemeprofile()
+        self.lum.set("x min", xmin)
+        self.lum.set("x max", xmax)
+        self.lum.set("y", 0)
+        self.lum.set("y span", ySpan)
+        self.lum.set("z", MonitorHeight)
 
 
 
