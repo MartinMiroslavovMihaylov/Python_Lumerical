@@ -11346,7 +11346,7 @@ class Charge(Constructor):
         # Compute dneff, L_pi, and alpha_dB
         dneff = neff_TE - neff_TE[0]
         L_pi = lambda_ / (2 * np.real(dneff))
-        # alpha_dB = -0.20 * np.log10(np.exp(-2 * np.pi * np.imag(neff_TE) / lambda_))
+        alpha_dB = -0.20 * np.log10(np.exp(-2 * np.pi * np.imag(neff_TE) / lambda_))
 
 
 
@@ -11384,14 +11384,14 @@ class Charge(Constructor):
         plt.show()
         
 
-        # # Plot Modulator Performance - Loss vs Voltage
-        # plt.figure()
-        # plt.plot(Volt, alpha_dB, linewidth=3)
-        # plt.xlabel("Voltage [V]")
-        # plt.ylabel("Loss [dB/cm]")
-        # plt.title("Modulator Performance")
-        # plt.ylim(3, 7)  # Equivalent to setplot("y max",7); setplot("y min",3);
-        # plt.show()
+        # Plot Modulator Performance - Loss vs Voltage
+        plt.figure()
+        plt.plot(Volt, alpha_dB, linewidth=3)
+        plt.xlabel("Voltage [V]")
+        plt.ylabel("Loss [dB/cm]")
+        plt.title("Modulator Performance")
+        plt.ylim(3, 7)  # Equivalent to setplot("y max",7); setplot("y min",3);
+        plt.show()
                 
                 
                 
@@ -11403,7 +11403,7 @@ class Charge(Constructor):
         FeemResults["neff_TE"] = neff_TE
         FeemResults["neff"] = neff
         FeemResults["dneff"] = dneff
-        
+        FeemResults["alpha_dB"] = alpha_dB
   
         return FeemResults
         
