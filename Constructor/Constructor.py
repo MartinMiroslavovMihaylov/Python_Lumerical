@@ -10663,7 +10663,8 @@ class Charge(Constructor):
 
         # Device Lenght
         MZM_Leght = WG_Length
-        MZM_Width = WG_Width * 2 +  Metal_GND_Width + Metal_Sig_Width + Gap * 2 + 2e-6
+        MZM_Width = WG_Width * 2 +  2 * Metal_GND_Width + Metal_Sig_Width + Gap * 4 + 2e-6
+        
 
 
         # Triangle EQ for MMI Width
@@ -10681,10 +10682,10 @@ class Charge(Constructor):
         # creating the LN Handle
         self.lum.addrect()
         self.lum.set("name", "LN_Handle")
-        # self.lum.set("x", 0)
-        # self.lum.set("x span", MZM_Width + 8e-6)
-        self.lum.set("x min", -Metal_Sig_Width/2 - 1e-6)
-        self.lum.set("x max", Metal_Y_Pos + Metal_GND_Width/2 + 1e-6)
+        self.lum.set("x", 0)
+        self.lum.set("x span", MZM_Width + 8e-6)
+        # self.lum.set("x min", -Metal_Sig_Width/2 - 1e-6)
+        # self.lum.set("x max", Metal_Y_Pos + Metal_GND_Width/2 + 1e-6)
         self.lum.set("z", -Substrate_Height / 2 - (9 / 2) * 1e-6)
         self.lum.set("z span", 9e-6)
         self.lum.set("y", 0)
@@ -10695,10 +10696,10 @@ class Charge(Constructor):
         # creating the substrate
         self.lum.addrect()
         self.lum.set("name", "Substrate")
-        # self.lum.set("x", 0)
-        # self.lum.set("x span", MZM_Width + 8e-6)
-        self.lum.set("x min", -Metal_Sig_Width/2 - 1e-6)
-        self.lum.set("x max", Metal_Y_Pos + Metal_GND_Width/2 + 1e-6)
+        self.lum.set("x", 0)
+        self.lum.set("x span", MZM_Width + 8e-6)
+        # self.lum.set("x min", -Metal_Sig_Width/2 - 1e-6)
+        # self.lum.set("x max", Metal_Y_Pos + Metal_GND_Width/2 + 1e-6)
         self.lum.set("z", 0)
         self.lum.set("z span", Substrate_Height)
         self.lum.set("y", 0)
@@ -10716,7 +10717,16 @@ class Charge(Constructor):
             Point3 = [Metal_Sig_Width/2 + Gap , z_Offset + WG_Height]
             Point2 = [Metal_Sig_Width/2 + Gap  + WG_Width , z_Offset + WG_Height]
             Point1 = [Metal_Sig_Width/2 + Gap  + WG_Width + extention , z_Offset]
-            vtx = np.array([Point1, Point2, Point3, Point4])
+            
+            
+            
+            
+            Point5 = [-Metal_Sig_Width/2 - Gap + extention, z_Offset ]
+            Point6 = [-Metal_Sig_Width/2 - Gap , z_Offset + WG_Height]
+            Point7 = [-Metal_Sig_Width/2 - Gap  - WG_Width , z_Offset + WG_Height]
+            Point8 = [-Metal_Sig_Width/2 - Gap  - WG_Width - extention , z_Offset]
+            
+            vtx = np.array([Point1, Point2, Point3, Point4, Point5, Point6, Point7, Point8])
             self.lum.putv('vertices', vtx)
 
 
@@ -10729,11 +10739,18 @@ class Charge(Constructor):
             Point3 = [Metal_Sig_Width/2 + Gap , z_Offset + WG_Height]
             Point2 = [Metal_Sig_Width/2 + Gap  + WG_Width , z_Offset + WG_Height]
             Point1 = [Metal_Sig_Width/2 + Gap  + WG_Width + extention , z_Offset]
-            Point5 = [-Metal_Sig_Width/2 - 1e-6 , z_Offset]
-            Point6 = [-Metal_Sig_Width/2 - 1e-6 , zmax]
-            Point7 = [Metal_Y_Pos + Metal_GND_Width/2 + 1e-6 , zmax]
-            Point8 = [Metal_Y_Pos + Metal_GND_Width/2 + 1e-6 , z_Offset]
-            vtx = np.array([ Point1, Point2, Point3, Point4, Point5, Point6, Point7, Point8])
+            # Point5 = [-Metal_Sig_Width/2 - 1e-6 , z_Offset]
+            # Point6 = [-Metal_Sig_Width/2 - 1e-6 , zmax]
+            Point5 = [-Metal_Sig_Width/2 - Gap + extention, z_Offset ]
+            Point6 = [-Metal_Sig_Width/2 - Gap , z_Offset + WG_Height]
+            Point7 = [-Metal_Sig_Width/2 - Gap  - WG_Width , z_Offset + WG_Height]
+            Point8 = [-Metal_Sig_Width/2 - Gap  - WG_Width - extention , z_Offset]
+            
+            Point9 = [-MZM_Width/2 - 4e-6 , z_Offset]
+            Point10 = [-MZM_Width/2 - 4e-6 , zmax]
+            Point11 = [Metal_Y_Pos + Metal_GND_Width/2 + 5e-6 , zmax]
+            Point12 = [Metal_Y_Pos + Metal_GND_Width/2 + 5e-6 , z_Offset]
+            vtx = np.array([ Point1, Point2, Point3, Point4, Point5, Point6, Point7, Point8, Point9, Point10, Point11, Point12])
             self.lum.putv('vertices', vtx)
 
         # Cfreate Polynome
@@ -10765,6 +10782,18 @@ class Charge(Constructor):
         self.lum.set("name", "Ground_R")
         self.lum.set("x min", Metal_GND_Y_Pos)
         self.lum.set("x max", Metal_GND_Y_Pos + Metal_GND_Width)
+        self.lum.set("y", 0)
+        self.lum.set("y span", MZM_Leght)
+        self.lum.set("z min", z_Offset)
+        self.lum.set("z max", z_Offset + Metal_Height)
+        self.lum.set("material", MaterialElectrodes)
+        self.lum.set("preserve surfaces",1)
+        
+
+        self.lum.addrect()
+        self.lum.set("name", "Ground_L")
+        self.lum.set("x max", -Metal_GND_Y_Pos)
+        self.lum.set("x min", -Metal_GND_Y_Pos - Metal_GND_Width)
         self.lum.set("y", 0)
         self.lum.set("y span", MZM_Leght)
         self.lum.set("z min", z_Offset)
@@ -10815,7 +10844,8 @@ class Charge(Constructor):
         Gap = Parameters["Gap"]
 
         Metal_Y_Pos = Metal_GND_Width + Gap * 2 + WG_Width
-        MZM_Width = WG_Width * 2 + 2 * Metal_GND_Width + Metal_Sig_Width + Gap * 4
+        # MZM_Width = WG_Width * 2 + 2 * Metal_GND_Width + Metal_Sig_Width + Gap * 4
+        MZM_Width = WG_Width * 2 +  2 * Metal_GND_Width + Metal_Sig_Width + Gap * 4 + 2e-6
         
         
         
@@ -10825,9 +10855,9 @@ class Charge(Constructor):
         # x_max = self.lum.get("x max")
 
         self.lum.select("geometry::Sig")
-        x_min = self.lum.get("x max") - 2e-6
+        x_min = self.lum.get("x max") # - 2e-6
         self.lum.select("geometry::Ground_R")
-        x_max = self.lum.get("x min") + 2e-6       
+        x_max = self.lum.get("x min") # + 1e-6       
         
         # self.lum.select("geometry::Waveguide_Right")
         # x = self.lum.get("x") 
@@ -10848,8 +10878,8 @@ class Charge(Constructor):
         self.lum.set("y", 0)
         # self.lum.set("x", x)
         # self.lum.set("x span", x_span/2)
-        self.lum.set("x min", x_min - 0.5e-6)
-        self.lum.set("x max", x_max + 0.5e-6)
+        self.lum.set("x min", x_min - Metal_Sig_Width/4)# - 0.5e-6)
+        self.lum.set("x max", x_max + Metal_GND_Width/4)# + 0.5e-6)
         # self.lum.set("y",0)
         # self.lum.set("y span", MZM_Width + 1e-6)
         self.lum.set("z min", 0)
@@ -10945,6 +10975,14 @@ class Charge(Constructor):
         self.lum.set("surface type", "solid")
         self.lum.set("solid", "Ground_R")
         self.lum.set("outer surface only", 0)
+        
+        self.lum.addelectricalcontact()
+        self.lum.set("name", "Ground_L")
+        self.lum.set("sweep type", "single")
+        self.lum.set("voltage", 0)
+        self.lum.set("surface type", "solid")
+        self.lum.set("solid", "Ground_L")
+        self.lum.set("outer surface only", 0)
 
         # Set monitor
         self.lum.addefieldmonitor()
@@ -10953,7 +10991,7 @@ class Charge(Constructor):
         self.lum.set("y", 0)
         # self.lum.set("y",0)
         # self.lum.set("y span", MZM_Width + 1e-6)
-        self.lum.set("x min", 0 - Metal_Sig_Width / 2 - 1e-6)
+        self.lum.set("x min", 0 - Metal_Sig_Width / 2 - Gap)
         self.lum.set("x max", Metal_Y_Pos + Metal_GND_Width / 2 + 1e-6)
         self.lum.set("z min", -Substrate_Height / 2)
         self.lum.set("z max", Substrate_Height + Slab_Height + Metal_Height / 2)
@@ -11252,7 +11290,8 @@ class Charge(Constructor):
         self.lum.putv("Volt", CHARGE_Data["V_Signal"])
         Volt =  CHARGE_Data["V_Signal"]
         self.lum.eval("neff_TE = matrix(length(Volt));")
-        neff_TE = np.zeros(len(Volt))
+        # neff_TE = np.zeros(len(Volt))
+        neff_TE = np.zeros(len(Volt),dtype = "complex_")
         Min_Polarization_Fraction = CHARGE_Data['Min Polarization Fraction']
 
         # # Create dataset
@@ -11311,7 +11350,8 @@ class Charge(Constructor):
         # Extract effective index
         neff = self.lum.getresult("FEEM", "modeproperties.neff")["neff"]
         mde_num = np.where(TE_pol_frac > Min_Polarization_Fraction)[0]
-        neff_TE[0] = abs(neff[mde_num[0]][0])
+        # neff_TE[0] = abs(neff[mde_num[0]][0])
+        neff_TE[0] = neff[mde_num[0]][0]
         
         
         # Rotate the n_EO vertically to have an index that make sence 
@@ -11338,13 +11378,15 @@ class Charge(Constructor):
 
             # Assign the first qualifying neff value to neff_TE[vv]
             if len(mde_num) > 0:  # Ensure at least one mode satisfies the condition
-                neff_TE[vv] = abs(neff[mde_num[0]][0])
+                neff_TE[vv] = neff[mde_num[0]][0]
+                #neff_TE[vv] = abs(neff[mde_num[0]][0])
 
 
 
 
         # Compute dneff, L_pi, and alpha_dB
         dneff = neff_TE - neff_TE[0]
+        # dneff = np.where(np.isinf(dneff), max(dneff), dneff)
         L_pi = lambda_ / (2 * np.real(dneff))
         alpha_dB = -0.20 * np.log10(np.exp(-2 * np.pi * np.imag(neff_TE) / lambda_))
 
@@ -11384,14 +11426,14 @@ class Charge(Constructor):
         plt.show()
         
 
-        # Plot Modulator Performance - Loss vs Voltage
-        plt.figure()
-        plt.plot(Volt, alpha_dB, linewidth=3)
-        plt.xlabel("Voltage [V]")
-        plt.ylabel("Loss [dB/cm]")
-        plt.title("Modulator Performance")
-        plt.ylim(3, 7)  # Equivalent to setplot("y max",7); setplot("y min",3);
-        plt.show()
+        # # Plot Modulator Performance - Loss vs Voltage
+        # plt.figure()
+        # plt.plot(Volt, alpha_dB, linewidth=3)
+        # plt.xlabel("Voltage [V]")
+        # plt.ylabel("Loss [dB/cm]")
+        # plt.title("Modulator Performance")
+        # plt.ylim(3, 7)  # Equivalent to setplot("y max",7); setplot("y min",3);
+        # plt.show()
                 
                 
                 
@@ -11963,8 +12005,10 @@ class HelpSubject:
                         Substrate Height
                     Parameters["Optical"] : dictionary of str
                         Optical Materials Dataset
+                        For Example Parameters_CHARGE["Optical"] = ["Au (Gold) - CRC", "SiO2 (Glass) - Palik"]
                     Parameters["Electrical"] : dictionary of str
                         Electrical Materials Dataset
+                        For Example Parameters_CHARGE["Electrical"] = ["Air", "Au (Gold) - CRC", "LiNbO3 semiconductor - X/Y cut (Lithium Niobate)", "SiO2 (Glass) - Sze"]
                     Parameters['angle'] : int/float
                         Side angle of the Waveguife
                     Parameters['Slab Height'] : Slab Height
