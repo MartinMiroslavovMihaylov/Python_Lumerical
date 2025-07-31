@@ -10,7 +10,7 @@ Find the path to your lumapi.py Lumerical file.
 
 | Component | Picture |
 | :--------: | :-----: |
-| **Waveguide** | ![MS2760A](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/FDE_WG.png?raw=true) |
+| **Waveguide** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/FDE_WG.png?raw=true) |
 
 
 # Only EME Solver Components
