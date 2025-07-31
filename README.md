@@ -44,7 +44,7 @@ Find the path to your lumapi.py Lumerical file.
 | **Directional Coupler** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/EME_DC.png?raw=true) |
 | **Staright Waveguide** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/FDE_WG.png?raw=true) |
 | **Inverse Taper** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/EME_Invereaper.png?raw=true) |
-| **Cascaded MMI structures** | ![MG3694C](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/Cascadet_MMI.png?raw=true)(https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/Cascadet_MMI.png?raw=true) |
+| **Cascaded MMI structures** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/Cascadet_MMI.png?raw=true) |
 
 
 
@@ -54,5 +54,5 @@ Find the path to your lumapi.py Lumerical file.
 
 | Component | Picture |
 | :--------: | :-----: |
-| **MZM** | ![MG3694C](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/MZM.png?raw=true) |
+| **MZM** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/main/docs/Doc_Images/MZM.png?raw=true) |
 
