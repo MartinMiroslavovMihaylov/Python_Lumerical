@@ -20,6 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # This action checks-out your repository under $GITHUB_WORKSPACE
       - name: Checkout main (code)
         uses: actions/checkout@v5
         with:
@@ -30,13 +31,13 @@ jobs:
         with:
           ref: docu
           path: docs-src
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
-          cache-dependency-path: "docs-src/requirements-docs.txt
+          cache-dependency-path: "docs-src/requirements-docs.txt"
 
       - name: Install doc dependencies (+PYTHONPATH fallback)
         run: |
