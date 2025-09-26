@@ -1,4 +1,4 @@
-name: Build & Deploy Sphinx
+name: Build & Deploy Sphinx (docs branch + main code)
 
 on:
   push:
@@ -20,27 +20,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout main (code)
+        uses: actions/checkout@v5
+        with:
+          path: repo
 
+      - name: Checkout docs branch (Sphinx sources)
+        uses: actions/checkout@v5
+        with:
+          ref: docu
+          path: docs-src
+      
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
-          cache-dependency-path: "docs/requirements-docs.txt"
+          cache-dependency-path: "docs-src/requirements-docs.txt
 
-      - name: Install doc dependencies
+      - name: Install doc dependencies (+PYTHONPATH fallback)
         run: |
           python -m pip install --upgrade pip
-          pip install -r docs/requirements-docs.txt
-          echo "PYTHONPATH=$GITHUB_WORKSPACE:$PYTHONPATH" >> $GITHUB_ENV
+          pip install -r docs-srs/requirements-docs.txt
+          echo "PYTHONPATH=$GITHUB_WORKSPACE/repo:$PYTHONPATH" >> $GITHUB_ENV
 
       - name: Sanity import check
         run: |
           python - <<'PY'
           import os, sys
-          p = r"${{ github.workspace }}/Constructor"
+          p = r"${{ github.workspace }}/repo"
           print("CODE_DIR exists:", os.path.isdir(p), p)
           sys.path.insert(0, p)
           import Constructor
@@ -48,9 +56,12 @@ jobs:
           PY
 
       - name: Build Sphinx HTML
+        env:
+          # Make your package importable for autodoc
+          CODE_DIR: ${{ github.workspace }}/repo
         run: |
-          sphinx-build -b html docs _site
-          # Add -W if you want warnings to fail the build
+          sphinx-build -b html docs-src _site
+          # Drop -W if you don't want warnings to fail the build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
