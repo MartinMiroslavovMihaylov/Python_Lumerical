@@ -7,7 +7,7 @@ import os, sys, shutil, subprocess
 
 CODE_DIR = os.environ.get("CODE_DIR")
 if not (CODE_DIR and os.path.isdir(CODE_DIR)):
-    CODE_DIR = os.path.abspath("../Python_Instruments_Automation_Scripts")
+    CODE_DIR = os.path.abspath("../Python_Lumerical")
 sys.path.insert(0, CODE_DIR)
 
 # --- Expose code examples under 'examples-src' (avoid clashing with docs/Examples) ---
@@ -64,9 +64,9 @@ _mount_examples()
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "Instruments-Libraries"
-copyright = "2025, Martin Mihaylov and Maxim Weizel"
-author = "Martin Mihaylov and Maxim Weizel"
+project = "Python-Lumerical "
+copyright = "2025, Martin Mihaylov"
+author = "Martin Mihaylov"
 release = "01.01.2024"
 
 # -- General configuration ---------------------------------------------------
@@ -90,12 +90,11 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 autodoc_typehints = "description"
 # Mock heavy deps so autodoc can import your package without installing them
 autodoc_mock_imports = [
-    "pyvisa",
-    "serial",
-    "vxi11",
+    "numpy",
+    "os",
+    "sys",
     "matlab",
-    "RsInstrument",
-    "ftd2xx",
+    "imt",
 ]
 
 # -- Options for HTML output -------------------------------------------------
@@ -112,4 +111,4 @@ html_theme_options = {
 html_static_path = []
 
 # Generate .rst files
-# sphinx-apidoc -o _rst --separate --force --no-toc -t _templates\apidoc ..\Python_Instruments_Automation_Scripts\Instruments_Libraries
+# sphinx-apidoc -o _rst --separate --force --no-toc -t _templates\apidoc ..\Python_Lumerical\Constructor
