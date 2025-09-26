@@ -24,7 +24,7 @@ Find the path to your lumapi.py Lumerical file.
 
 | Component | Picture |
 | :--------: | :-----: |
-| **90 Grad arced Waveguide** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/tree/docu/docs/Doc_Images/FDTD_Arc_90.png?raw=true) |
+| **90 Grad arced Waveguide** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/blob/docu/docs/Doc_Images/FDTD_Arc_90.png?raw=true) |
 | **180 Grad arced Waveguide** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/tree/docu/docs/Doc_Images/FDTD_Arc_180.png?raw=true) |
 | **S-Bends Waveguide (Bezier and Cosinus Functions)** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/tree/docu/docs/Doc_Images/FDTD_S_Bends.png?raw=true) |
 | **Straight Grating Coupler** | ![](https://github.com/MartinMiroslavovMihaylov/Python_Lumerical/tree/docu/docs/Doc_Images/FDTD_Str_GC.png?raw=true) |
