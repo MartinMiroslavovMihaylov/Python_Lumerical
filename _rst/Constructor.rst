@@ -4,13 +4,10 @@ Constructor package
 Submodules
 ----------
 
-Constructor.Constructor module
-------------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: Constructor.Constructor
-   :members:
-   :show-inheritance:
-   :undoc-members:
+   Constructor.Constructor
 
 Module contents
 ---------------
