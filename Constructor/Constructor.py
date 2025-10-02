@@ -10458,9 +10458,7 @@ class Charge(Constructor):
 
         file = self.file
 
-
-
-    def Material(self, Material_Data):
+    def Material_Add(self, Material_Data):
         '''
 
 
@@ -10470,7 +10468,56 @@ class Charge(Constructor):
             Material Optical or Electrical data.
             Separate Materials into Electrical and Optical in List Material_Data["Electrical"] = ["mat1", "mat2"..]
             and optical Material_Data["Optical"] = ["omat1", "omat2", ...]
+            Only for materials that can be found in the CHARGE Materials Properties
+        Returns
+        -------
+        Materials_Added : list
+            List of added materials to the simulation.
 
+        '''
+        
+        
+        # Separate Materials into Electrical and Optical in List Material_Data["Electrical"] = ["mat1", "mat2"..]
+        # and optical Material_Data["Optical"] = ["omat1", "omat2", ...]
+        Electrical_Materials = []
+        Optical_Materials = []
+        Materials_Added = []
+
+        for i in Material_Data["Electrical"]:
+            Electrical_Materials.append(i)
+        for j in Material_Data["Optical"]:
+            Optical_Materials.append(j)
+
+        # Check for Items that are common for the optical and electrical Material
+        Common_Materials = [item for item in Electrical_Materials if item in Optical_Materials]
+        Electrical_Materials = [item for item in Electrical_Materials if item not in Common_Materials]
+        Optical_Materials = [item for item in Optical_Materials if item not in Common_Materials]
+        
+        for i in range(len(Electrical_Materials)):
+            self.lum.addmodelmaterial()
+            self.lum.set("name", Electrical_Materials[i])
+            self.lum.addmaterialproperties("CT",
+                                            Electrical_Materials[i])  # importing from electrical material database
+            self.lum.select("materials::" + Electrical_Materials[i])
+            self.lum.addmaterialproperties("HT",
+                                            Electrical_Materials[i])  # importing from thermal material database
+            self.lum.select("materials::" + Electrical_Materials[i])
+            self.lum.addmaterialproperties("EM",
+                                            Optical_Materials[i])  # importing from optical material database
+            self.lum.select("materials::" + Optical_Materials[i])
+            
+        
+    def Material_Add_MZM(self, Material_Data):
+        '''
+
+
+        Parameters
+        ----------
+        Material_Data : dictionary
+            Material Optical or Electrical data.
+            Separate Materials into Electrical and Optical in List Material_Data["Electrical"] = ["mat1", "mat2"..]
+            and optical Material_Data["Optical"] = ["omat1", "omat2", ...]
+            Only for the MZM structure
         Returns
         -------
         Materials_Added : list
@@ -10571,6 +10618,8 @@ class Charge(Constructor):
             Materials_Added = Materials_Added + Optical_Materials
         return Materials_Added
 
+
+
         
     def MZM(self, Parameters):
         '''
@@ -10637,7 +10686,7 @@ class Charge(Constructor):
         Materials_Dict = {}
         Materials_Dict["Electrical"] = Electrical_Material
         Materials_Dict["Optical"] = Optical_Material
-        self.Material(Materials_Dict)
+        self.Material_Add_MZM(Materials_Dict)
  
 
        
@@ -10818,7 +10867,144 @@ class Charge(Constructor):
         self.lum.set("preserve surfaces",1)
         
 
+    def Waveguide_Charge(self, Parameters):
+        '''
+ 
+        Parameters
+        ----------
 
+        Parameters : dictionary
+            Dictionary with all the parameters needt for the MZM creation
+            Parameters['Substrate Height'] : int/float
+                Substrate Height
+            Parameters["Optical"] : dictionary of str
+                Optical Materials Dataset
+            Parameters["Electrical"] : dictionary of str
+                Electrical Materials Dataset
+            Parameters['angle'] : int/float
+                Side angle of the Waveguife
+            Parameters['Slab Height'] : Slab Height
+                Height of the Material slab. It can be set to 0 if no Slab is presented
+            Parameters['WG Height'] : int/float
+                Waveguide Height
+            Parameters['WG Width'] : int/float
+                Waveguide Width. Here the Top Waveguide width is considered
+            Parameters['WG Length'] : int/float
+                Waveguide lenght. This determin the structure length as well
+        Returns
+        -------
+
+        None.
+ 
+        '''
+        
+        # Define Materials
+        Substrate_Height = Parameters['Substrate Height']
+        Optical_Material = Parameters["Optical"]
+        Electrical_Material = Parameters["Electrical"]
+        angle = Parameters['angle']
+        Slab_Height = Parameters['Slab Height']
+        WG_Height = Parameters['WG Height']
+        WG_Width = Parameters['WG Width']
+        WG_Length = Parameters['WG Length']
+
+     
+
+        # Becouse of Material Properties x and y directions will be swaped !!!
+        # Add materials to Simulation enviroment
+        Materials_Dict = {}
+        Materials_Dict["Electrical"] = Electrical_Material
+        Materials_Dict["Optical"] = Optical_Material
+        self.Material_Add(Materials_Dict)
+        
+        # MaterialNames 
+        MaterialSub = str(Electrical_Material[0])
+        MaterialWG = str(Electrical_Material[1])
+        
+ 
+ 
+        # Triangle EQ for MMI Width
+        x = abs(WG_Height / (np.cos((angle) * np.pi / 180)))  # in Radians
+        extention = np.sqrt(x ** 2 - WG_Height ** 2)
+        WG_W = WG_Width + 2 * extention
+        WG_Width_top = WG_W
+
+
+        # creating the LN Handle
+        self.lum.addrect()
+        self.lum.set("name", "LN_Handle")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 2 * WG_Length )
+        self.lum.set("z", -Substrate_Height / 2 - (9 / 2) * 1e-6)
+        self.lum.set("z span", 9e-6)
+        self.lum.set("y", 0)
+        self.lum.set("y span", WG_W + 4e-6)
+        self.lum.set("material", MaterialWG)
+        self.lum.set("preserve surfaces",1)
+
+
+        # creating the substrate
+        self.lum.select("LN_Handle")
+        min_subH = self.lum.get("z max")
+        self.lum.addrect()
+        self.lum.set("name", "Substrate")
+        self.lum.set("x", 0)
+        self.lum.set("x span", 2 * WG_Length )
+        self.lum.set("z min", min_subH)
+        self.lum.set("z max", min_subH + Substrate_Height)
+        self.lum.set("y", 0)
+        self.lum.set("y span", WG_W + 4e-6)
+        self.lum.set("material", MaterialSub)
+        self.lum.set("preserve surfaces",1)
+        # self.lum.set("color",[1; 1; 0; 0]
+        
+        
+        
+        # Position Thin Film and Waveguides
+        min_WGH = min_subH + Substrate_Height
+        if Slab_Height == 0:
+            # Waveguide
+            self.lum.addwaveguide()
+            self.lum.set("name", 'Waveguide')
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", min_WGH + WG_Height/2)
+            self.lum.set("base width", WG_W)
+            self.lum.set("base height", WG_Height)
+            self.lum.set("base angle", 90 - angle)
+            pole = np.array([[WG_Length, 0], [-WG_Length, 0]])
+            self.lum.set("poles", pole)
+            self.lum.set("material", MaterialWG)
+        else:
+        # Slab
+            self.lum.addrect()
+            self.lum.set("name", "LN_slab")
+            self.lum.set("y", 0)
+            self.lum.set("y span", WG_W + 4e-6)
+            self.lum.set("z min", min_WGH)
+            self.lum.set("z max", min_WGH + Slab_Height)
+            self.lum.set("x min", -WG_Length)
+            self.lum.set("x max", WG_Length)
+            self.lum.set("material", MaterialWG)
+
+            # Waveguide
+            self.lum.addwaveguide()
+            self.lum.set("name", 'Waveguide')
+            self.lum.set("x", 0)
+            self.lum.set("y", 0)
+            self.lum.set("z", min_WGH + Slab_Height + WG_Height / 2 )
+            self.lum.set("base width", WG_W)
+            self.lum.set("base height", WG_Height)
+            self.lum.set("base angle", 90 - angle)
+            pole = np.array([[WG_Length, 0], [-WG_Length, 0]])
+            self.lum.set("poles", pole)
+            self.lum.set("material", MaterialWG)
+
+
+        
+    
+    
+    
     def Set_SimulationRegion(self, Parameters):
         '''
 
@@ -11495,7 +11681,8 @@ class HelpSubject:
         #                9) ArcWaveguide - onyl available for FDTD Solver               #        
         #                10) GratingCoupler - onyl available for FDTD Solver            #         
         #                11) RingGratingCoupler - onyl available for FDTD Solver        # 
-        #                12) MZM - only available fro CHARGE Solver                     #        
+        #                12) MZM - only available fro CHARGE Solver                     # 
+        #                13) Waveguide CHARGE - only available fro CHARGE Solver                     #        
         #                                                                               #  
         #                To print information about the structure you desire please     #  
         #                use obj.Help({"Objects": Number}). For Example                 #  
@@ -12045,7 +12232,33 @@ class HelpSubject:
                         Gap between the waveguide and the electrodes. The Gab is set from bottom Wg corner to electrodes.
                         
 -----------------------------------------------------------------------------------------------------------
-                """)                
+                """)      
+        elif Number == 13:
+            print("""
+                    Call Waveguide_Charge with -> obj.Waveguide_Charge(Parameters) 
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------
+                    Parameters : dictionary
+                        Dictionary with all the parameters needt for the MZM creation
+                    Parameters['Substrate Height'] : int/float
+                        Substrate Height
+                    Parameters["Optical"] : dictionary of str
+                        Optical Materials Dataset
+                    Parameters["Electrical"] : dictionary of str
+                        Electrical Materials Dataset
+                    Parameters['angle'] : int/float
+                        Side angle of the Waveguife
+                    Parameters['Slab Height'] : Slab Height
+                        Height of the Material slab. It can be set to 0 if no Slab is presented
+                    Parameters['WG Height'] : int/float
+                        Waveguide Height
+                    Parameters['WG Width'] : int/float
+                        Waveguide Width. Here the Top Waveguide width is considered
+                    Parameters['WG Length'] : int/float
+                        Waveguide lenght. This determin the structure length as well
+-----------------------------------------------------------------------------------------------------------
+                """)      
                   
                   
                   
