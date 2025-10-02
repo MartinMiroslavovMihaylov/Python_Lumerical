@@ -162,7 +162,7 @@ class Constructor:
             print("i am in Dict section")
             StartNumber = [1,2,3]
             ResultNumber = [1,2,3,4]
-            StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11,12]
+            StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11,12,13]
             SolverNumber = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
             
             listSub = ['Objects', 'Solvers', 'Start Simulation', 'Results', 'Loading Bar', 'Log File']
