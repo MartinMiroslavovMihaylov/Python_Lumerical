@@ -160,7 +160,7 @@ class Constructor:
         # Check Type
         elif type(Subject) == dict:
             print("i am in Dict section")
-            StartNumber = [1,2,3]
+            StartNumber = [1,2,3,4,5]
             ResultNumber = [1,2,3,4]
             StrucNumbers = [1,2,3,4,5,6,7,8,9,10,11,12,13]
             SolverNumber = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
@@ -12955,6 +12955,8 @@ class HelpSubject:
             #                1) Save and start FDE Simulation                               #
             #                2) Save and start EME Simulation                               # 
             #                3) Save and start FDTD Simulation                              #
+            #                4) Save and start CHARGE Simulation                              #
+            #                5) Save and start FEEM Simulation                              #
             #                                                                               #
             #                To print information about how to start an simulation in the   #  
             #                choosen Solver. With obj.Help({"Start Simulation"}, Number) an #
@@ -12992,6 +12994,25 @@ class HelpSubject:
                     None  
  -----------------------------------------------------------------------------------------------------------
                 """) 
+        elif NumberStart == 4:
+            print("""
+                    Start FDTD Simulation -> obj.StartCHARGESolver()
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------      
+                    None  
+ -----------------------------------------------------------------------------------------------------------
+                """)
+        elif NumberStart == 5:
+            print("""
+                    Start FDTD Simulation -> obj.StartFEEMSolver()
+                        
+                    Dictionary Parameters:
+-----------------------------------------------------------------------------------------------------------      
+                    None  
+ -----------------------------------------------------------------------------------------------------------
+                """) 
+
 
               
     def Help_Results(self):
