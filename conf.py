@@ -1,115 +1,93 @@
 # Configuration file for the Sphinx documentation builder.
-#
-# For the full list of built-in configuration values, see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import os, sys, shutil, subprocess
+import os
+import sys
+import shutil
+import subprocess
+
+# --- Add main repo to sys.path ---
 
 CODE_DIR = os.environ.get("CODE_DIR")
-if not CODE_DIR:
-    CODE_DIR = os.path.abspath("../repo")  # local fallback
+if not CODE_DIR or not os.path.isdir(CODE_DIR):
+CODE_DIR = os.path.abspath("../repo")  # fallback
 sys.path.insert(0, CODE_DIR)
 
-# --- Expose code examples under 'examples-src' (avoid clashing with docs/Examples) ---
+# --- Expose code examples under 'examples-src' ---
+
 def _mount_examples():
-    src = os.path.join(CODE_DIR, "Examples")
-    dst = os.path.abspath(os.path.join(os.path.dirname(__file__), "examples-src"))
-    if not os.path.isdir(src):
-        print(f"[conf.py] No code examples at {src}; skipping.", file=sys.stderr)
-        return
+src = os.path.join(CODE_DIR, "Examples")
+dst = os.path.abspath(os.path.join(os.path.dirname(**file**), "examples-src"))
+if not os.path.isdir(src):
+print(f"[conf.py] No code examples at {src}; skipping.", file=sys.stderr)
+return
 
-    # If already linked to the same place, done
-    try:
-        if os.path.exists(dst) and os.path.samefile(dst, src):
-            return
-    except Exception:
-        pass
-
-    # Remove old link/dir if it's a link or user forced replacement
+```
+try:
     if os.path.exists(dst):
         if os.path.islink(dst):
             os.unlink(dst)
-        elif os.environ.get("DOCS_FORCE_EXAMPLES_LINK") == "1":
-            shutil.rmtree(dst)
         else:
-            print(f"[conf.py] '{dst}' exists and is not a link. Set DOCS_FORCE_EXAMPLES_LINK=1 to replace it.", file=sys.stderr)
-            return
-
-    # Try symlink first
+            shutil.rmtree(dst)
+    os.symlink(src, dst, target_is_directory=True)
+    print(f"[conf.py] Linked examples-src -> {src}")
+except Exception:
+    # Windows fallback to copy if symlink fails
     try:
-        os.symlink(src, dst, target_is_directory=True)
-        print(f"[conf.py] Linked examples-src -> {src}")
-        return
+        subprocess.run(["cmd", "/c", "mklink", "/J", dst, src], check=True, shell=True)
+        print(f"[conf.py] Junction examples-src -> {src}")
     except Exception:
-        pass
-
-    # Windows junction fallback
-    if os.name == "nt":
-        try:
-            subprocess.run(["cmd", "/c", "mklink", "/J", dst, src], check=True, shell=True)
-            print(f"[conf.py] Junction examples-src -> {src}")
-            return
-        except Exception:
-            pass
-
-    # Last resort: copy
-    try:
         shutil.copytree(src, dst)
         print(f"[conf.py] Copied examples to '{dst}' (symlink/junction unavailable)")
-    except Exception as e:
-        print(f"[conf.py] Failed to expose examples: {e}", file=sys.stderr)
+```
 
 _mount_examples()
 
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+# --- Project information ---
 
-project = "Python-Lumerical "
+project = "Python-Lumerical Constructor Script"
 copyright = "2025, Martin Mihaylov"
 author = "Martin Mihaylov"
 release = "01.01.2024"
 
-# -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+# --- General configuration ---
 
 extensions = [
-    "sphinx.ext.autodoc",
-    'sphinx.ext.autosummary',
-    "sphinx.ext.doctest",
-    "sphinx.ext.intersphinx",
-    "sphinx.ext.todo",
-    "sphinx.ext.mathjax",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.viewcode",
-    'sphinx_rtd_theme',
+"sphinx.ext.autodoc",
+"sphinx.ext.autosummary",
+"sphinx.ext.doctest",
+"sphinx.ext.intersphinx",
+"sphinx.ext.todo",
+"sphinx.ext.mathjax",
+"sphinx.ext.napoleon",
+"sphinx.ext.viewcode",
+"sphinx_rtd_theme",
 ]
-
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
 autodoc_typehints = "description"
-# Mock heavy deps so autodoc can import your package without installing them
+
+# --- Mock heavy imports ---
+
 autodoc_mock_imports = [
-    "numpy",
-    "matplotlib",
-    "os",
-    "sys",
-    "matlab",
-    "imt",
+"numpy",
+"pandas",
+"matplotlib",
+"os",
+"sys",
+"matlab",
+"imt",
 ]
 
-# -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+# --- HTML output options ---
 
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
-    "collapse_navigation": False,
-    "navigation_depth": 4,
-    "titles_only": False,
-    "includehidden": True,
-    "sticky_navigation": True
+"collapse_navigation": False,
+"navigation_depth": 4,
+"titles_only": False,
+"includehidden": True,
+"sticky_navigation": True
 }
 html_static_path = []
-
-# Generate .rst files
-# sphinx-apidoc -o _rst --separate --force --no-toc -t _templates\apidoc ..\Python_Lumerical\Constructor
