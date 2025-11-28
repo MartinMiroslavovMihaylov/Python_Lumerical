@@ -21,52 +21,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout your main code into: repo/
-      - name: Checkout main (code)
+      # Checkout main code
+      - name: Checkout main branch
         uses: actions/checkout@v5
         with:
           path: repo
 
-      # Checkout your Sphinx documentation branch into: docs-src/
-      - name: Checkout docs branch (Sphinx sources)
+      # Checkout docu branch (Sphinx docs)
+      - name: Checkout docs branch
         uses: actions/checkout@v5
         with:
           ref: docu
           path: docs-src
 
-      # Set up Python
-      - name: Set up Python
+      # Setup Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
           cache-dependency-path: "docs-src/requirements-docs.txt"
 
-      # Install Sphinx and dependencies
-      - name: Install doc dependencies (+ PYTHONPATH fallback)
+      # Install documentation dependencies
+      - name: Install doc dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r docs-src/requirements-docs.txt
-          echo "PYTHONPATH=$GITHUB_WORKSPACE/repo:$PYTHONPATH" >> $GITHUB_ENV
+          # Also install matplotlib if your code uses it
+          pip install matplotlib
 
-      # Optional: sanity check to ensure your package can be imported
-      - name: Sanity import check
-        run: |
-          python - <<'PY'
-          import os, sys
-          p = r"${{ github.workspace }}/repo"
-          print("CODE_DIR exists:", os.path.isdir(p), p)
-          sys.path.insert(0, p)
-          import Constructor
-          print("Imported:", getattr(Constructor, "__file__", None))
-          PY
-
-      # Build Sphinx documentation
+      # Build Sphinx docs
       - name: Build Sphinx HTML
-        env:
-          CODE_DIR: ${{ github.workspace }}/repo
         run: |
           sphinx-build -b html docs-src _site
+        env:
+          # Make your main code importable
+          PYTHONPATH: ${{ github.workspace }}/repo
 
       # Upload artifact for GitHub Pages
       - name: Upload Pages artifact
