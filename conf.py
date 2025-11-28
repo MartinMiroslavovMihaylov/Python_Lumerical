@@ -6,8 +6,8 @@
 import os, sys, shutil, subprocess
 
 CODE_DIR = os.environ.get("CODE_DIR")
-if not (CODE_DIR and os.path.isdir(CODE_DIR)):
-    CODE_DIR = os.path.abspath("../Python_Lumerical")
+if not CODE_DIR:
+    CODE_DIR = os.path.abspath("../repo")  # local fallback
 sys.path.insert(0, CODE_DIR)
 
 # --- Expose code examples under 'examples-src' (avoid clashing with docs/Examples) ---
