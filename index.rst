@@ -39,4 +39,3 @@ How to use this Library
    Examples/index
    Extras/index
    Constructor
-
