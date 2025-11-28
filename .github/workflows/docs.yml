@@ -19,19 +19,22 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      # This action checks-out your repository under $GITHUB_WORKSPACE
+      # Checkout your main code into: repo/
       - name: Checkout main (code)
         uses: actions/checkout@v5
         with:
           path: repo
 
+      # Checkout your Sphinx documentation branch into: docs-src/
       - name: Checkout docs branch (Sphinx sources)
         uses: actions/checkout@v5
         with:
           ref: docu
           path: docs-src
 
+      # Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -39,12 +42,14 @@ jobs:
           cache: "pip"
           cache-dependency-path: "docs-src/requirements-docs.txt"
 
-      - name: Install doc dependencies (+PYTHONPATH fallback)
+      # Install Sphinx and dependencies
+      - name: Install doc dependencies (+ PYTHONPATH fallback)
         run: |
           python -m pip install --upgrade pip
-          pip install -r docs-srs/requirements-docs.txt
+          pip install -r docs-src/requirements-docs.txt
           echo "PYTHONPATH=$GITHUB_WORKSPACE/repo:$PYTHONPATH" >> $GITHUB_ENV
 
+      # Optional: sanity check to ensure your package can be imported
       - name: Sanity import check
         run: |
           python - <<'PY'
@@ -56,14 +61,14 @@ jobs:
           print("Imported:", getattr(Constructor, "__file__", None))
           PY
 
+      # Build Sphinx documentation
       - name: Build Sphinx HTML
         env:
-          # Make your package importable for autodoc
           CODE_DIR: ${{ github.workspace }}/repo
         run: |
           sphinx-build -b html docs-src _site
-          # Drop -W if you don't want warnings to fail the build
 
+      # Upload artifact for GitHub Pages
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -75,6 +80,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
