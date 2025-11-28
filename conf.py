@@ -91,6 +91,7 @@ autodoc_typehints = "description"
 # Mock heavy deps so autodoc can import your package without installing them
 autodoc_mock_imports = [
     "numpy",
+    "matplotlib",
     "os",
     "sys",
     "matlab",
