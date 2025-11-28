@@ -34,10 +34,9 @@ How to use this Library
 .. toctree::
    :maxdepth: 3
    :caption: Documentation
-   :hidden:
-   
+
    Install
    Examples/index
    Extras/index
-
+   Constructor
 
