@@ -20,7 +20,7 @@ jobs:
 build:
 runs-on: ubuntu-latest
 steps:
-# Checkout main branch (main code)
+# Checkout main branch (code)
 - name: Checkout main code
 uses: actions/checkout@v5
 with:
@@ -41,12 +41,12 @@ path: repo
       cache: "pip"
       cache-dependency-path: "docs-src/requirements-docs.txt"
 
-  # Install dependencies
+  # Install dependencies including Constructor requirements
   - name: Install doc dependencies
     run: |
       python -m pip install --upgrade pip
       pip install -r docs-src/requirements-docs.txt
-      pip install matplotlib  # any other dependencies
+      pip install matplotlib pandas  # add other dependencies your code needs
       echo "CODE_DIR=${GITHUB_WORKSPACE}/repo" >> $GITHUB_ENV
 
   # Sanity import check
@@ -54,14 +54,11 @@ path: repo
     run: |
       python - <<'PY'
       import os, sys
-      code_dir = os.environ.get("CODE_DIR")
-      print("CODE_DIR:", code_dir)
+      code_dir = os.environ["CODE_DIR"]
       sys.path.insert(0, code_dir)
       import Constructor.Constructor
       print("Imported Constructor module:", dir(Constructor.Constructor))
       PY
-    env:
-      CODE_DIR: ${{ github.workspace }}/repo
 
   # Build Sphinx HTML
   - name: Build Sphinx HTML
@@ -80,7 +77,6 @@ needs: build
 runs-on: ubuntu-latest
 environment:
 name: github-pages
-url: ${{ steps.deployment.outputs.page_url }}
 steps:
 - name: Deploy to GitHub Pages
 id: deployment
