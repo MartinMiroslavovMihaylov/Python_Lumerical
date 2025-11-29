@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=64.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Python_Lumerical"
+version = "2025.11.29"
+authors = [
+  { name = "Martin Mihaylov", email = "martinmi@hni.uni-paderborn.de" },
+]
+description = "Python Lumerical Libraries used by the Circuit and System Department at Paderborn University (Heinz Nixdorf Institute) for the design of optical custom components"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=2.0.0",
+  "pandas>=2.2.0",
+  "matplotlib>=3.10.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+# automatically find all packages with __init__.py files
+
+[tool.setuptools]
+include-package-data = true
+# include files from MANIFEST.in if you add one later
+
+[tool.black]
+line-length = 100
+target-version = ["py311", "py312"]
+include = '\.pyi?$'
+exclude = '''
+  /(
+      \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.nox
+    | \.tox
+    | \.venv
+    | build
+    | dist
+    | venv
+    | __pycache__
+    | .*\.py[co]
+  )$
+'''

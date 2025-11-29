@@ -1,9 +1,26 @@
 # Python_Lumerical Lib
 Documentation under  https://martinmiroslavovmihaylov.github.io/Python_Lumerical/
 
+# Install
+
+	pip install git+https://github.com/MartinMiroslavovMihaylov/Python_Lumerical.git
+
+### Update as User
+Version numbers of this project might not always be incremented for minor changes. To be sure first uninstall:
+
+	pip uninstall Python_Lumerical
+	pip install --no-cache-dir git+https://github.com/MartinMiroslavovMihaylov/Python_Lumerical.git
+
+### Install as Developer
+	git clone https://github.com/MartinMiroslavovMihaylov/Python_Lumerical.git
+	cd Python_Lumerical
+	pip install -e .
+Option '-e' for editable
+
+
 # Hot to use
 Clone or download the git repo.
-Find the path to your lumapi.py Lumerical file.
+Find the path to your lumapi.py Lumerical file usually in your Lumerical installation folder.
 
 
 # FDE Solver Components
