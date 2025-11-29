@@ -17,7 +17,7 @@ Lumerical Installation and file location
 To use a Python Lumerical script, you will need a licensed and installed copy of Ansys Lumerical.
 It doesn’t matter whether you are on Windows or Linux—you need to locate where Lumerical is installed and search in::
 
-   Windows: C:\Program Files\Lumerical\v...\api\python
+   Windows: C:/Program Files/Lumerical/v.../api/python
 
    Linux: .../Lumerical/v.../api/python
 
