@@ -11,11 +11,25 @@ Welcome to Python Lumercial Costructor Script's documentation!
 ==============================================================
 
 To isntall the library please clone the git repo https://github.com/MartinMiroslavovMihaylov/Python_Lumerical.git 
-to a empty folder. The you can install the Costructor lib with the setup.py file. Type in open Terminal:
+to a empty folder. The you can install the Costructor lib with the setup.py file. 
 
-.. code-block:: python
+For installing the Python_Lumerical use:
+.. code-block:: python 
 
+	pip install git+https://github.com/MartinMiroslavovMihaylov/Python_Lumerical.git
+
+Version numbers of this project might not always be incremented for minor changes. To be sure first uninstall:
+..code-block:: python
+	pip uninstall Python_Lumerical
+	pip install --no-cache-dir git+https://github.com/MartinMiroslavovMihaylov/Python_Lumerical.git
+
+
+To install the library for development use
+..code-block:: python
+	git clone https://github.com/MartinMiroslavovMihaylov/Python_Lumerical.git
+	cd Python_Lumerical
 	pip install -e .
+Option '-e' for editable
 
 
 
