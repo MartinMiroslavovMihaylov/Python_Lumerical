@@ -41,18 +41,17 @@ To install the library for development use:
 Option ``-e`` means **editable installation**.
 
 
-
-How to use this Library
+   How to use this library
 -----------------------
 
-:doc:`Install`
-   How to install.
-   
-:doc:`Examples/index`
-   Code Examples.
-   
-:doc:`Extras/index`
-	Code Help Menu, Loading Bar and Logger.
+:doc:`Install` — How to install.  
+:doc:`Examples/index` — Code examples.  
+:doc:`Extras/index` — Curves functions examples.  
+:doc:`Constructor` — Main Constructor class and methods.  
+:doc:`Help` — HelpSystem and HelpDatabase usage.
+
+
+---
 
 .. toctree::
    :maxdepth: 3
@@ -62,3 +61,6 @@ How to use this Library
    Examples/index
    Extras/index
    Constructor
+   Help
+
+   
