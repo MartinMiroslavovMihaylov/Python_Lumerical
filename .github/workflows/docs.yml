@@ -1,83 +1,83 @@
 name: Build & Deploy Sphinx (docs branch + main code)
 
 on:
-push:
-branches: [ main ]
-pull_request:
-branches: [ main ]
-workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:  # <-- Missing colon added
 
 permissions:
-contents: read
-pages: write
-id-token: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-group: "pages"
-cancel-in-progress: false
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-build:
-runs-on: ubuntu-latest
-steps:
-# Checkout main branch (code)
-- name: Checkout main code
-uses: actions/checkout@v5
-with:
-path: repo
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout main branch (code)
+      - name: Checkout main code
+        uses: actions/checkout@v5
+        with:
+          path: repo
 
-  # Checkout docs branch (Sphinx sources)
-  - name: Checkout docs branch
-    uses: actions/checkout@v5
-    with:
-      ref: docu
-      path: docs-src
+      # Checkout docs branch (Sphinx sources)
+      - name: Checkout docs branch
+        uses: actions/checkout@v5
+        with:
+          ref: docu
+          path: docs-src
 
-  # Set up Python
-  - name: Set up Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: "3.11"
-      cache: "pip"
-      cache-dependency-path: "docs-src/requirements-docs.txt"
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: "docs-src/requirements-docs.txt"
 
-  # Install dependencies including Constructor requirements
-  - name: Install doc dependencies
-    run: |
-      python -m pip install --upgrade pip
-      pip install -r docs-src/requirements-docs.txt
-      pip install matplotlib pandas  # add other dependencies your code needs
-      echo "CODE_DIR=${GITHUB_WORKSPACE}/repo" >> $GITHUB_ENV
+      # Install dependencies including Constructor requirements
+      - name: Install doc dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r docs-src/requirements-docs.txt
+          pip install matplotlib pandas  # add other dependencies your code needs
+          echo "CODE_DIR=${GITHUB_WORKSPACE}/repo" >> $GITHUB_ENV
 
-  # Sanity import check
-  - name: Sanity import check
-    run: |
-      python - <<'PY'
-      import os, sys
-      code_dir = os.environ["CODE_DIR"]
-      sys.path.insert(0, code_dir)
-      import Constructor.Constructor
-      print("Imported Constructor module:", dir(Constructor.Constructor))
-      PY
+      # Sanity import check
+      - name: Sanity import check
+        run: |
+          python - <<'PY'
+          import os, sys
+          code_dir = os.environ["CODE_DIR"]
+          sys.path.insert(0, code_dir)
+          import Constructor.Constructor
+          print("Imported Constructor module:", dir(Constructor.Constructor))
+          PY
 
-  # Build Sphinx HTML
-  - name: Build Sphinx HTML
-    env:
-      CODE_DIR: ${{ github.workspace }}/repo
-    run: sphinx-build -b html docs-src _site
+      # Build Sphinx HTML
+      - name: Build Sphinx HTML
+        env:
+          CODE_DIR: ${{ github.workspace }}/repo
+        run: sphinx-build -b html docs-src _site
 
-  # Upload Pages artifact
-  - name: Upload Pages artifact
-    uses: actions/upload-pages-artifact@v3
-    with:
-      path: _site
+      # Upload Pages artifact
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
 
-deploy:
-needs: build
-runs-on: ubuntu-latest
-environment:
-name: github-pages
-steps:
-- name: Deploy to GitHub Pages
-id: deployment
-uses: actions/deploy-pages@v4
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
