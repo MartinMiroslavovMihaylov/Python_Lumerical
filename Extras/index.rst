@@ -50,15 +50,18 @@ used to track the progress of my Waveguide lenght sweep.
 		
 		
 
-Logger 
-===========
+Logger
+======
 
-The logger will create an .txt file with the Lumerical simulation object, Solver and parameters given. 
-To use it, the user can call ::
+The logger will create a .txt file with the Lumerical simulation object, Solver, and parameters given.
+To use it, the user can call:
 
 .. code-block:: python
-	from Constructor import Logfile                               
-	Path = "C:/Downloads/"                                        
-	solverInfo = obj.ReturnLogInfo()                              
-	data = [solverInfo, Parameters]                               
-	Logfile(data, Path) 
+
+    from Constructor import Logfile
+    Path = "C:/Downloads/"
+    solverInfo = obj.ReturnLogInfo()
+    data = [solverInfo, Parameters]
+    Logfile(data, Path)
+
+If you need help with how to use it, you can check the function here or in the Help Menu.
