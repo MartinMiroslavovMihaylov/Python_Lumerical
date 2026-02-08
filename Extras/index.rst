@@ -4,27 +4,21 @@ Examples
 In this section the Help Menu, Loading Bar and Logger will be demonstrated.
 
 
-
 Help Menu
-===========
+==========
 
-When the obj.Constructur() is called the user can call the obj.Help(). The Help function can be called with the following 
-arguments::
+This library includes a Help system to guide you through available functions, structures, solvers, and simulations. 
+It helps you navigate the library more easily and understand what options are available.
 
-	obj.Help('Objects')
-	obj.Help('Solvers')
-	obj.Help('Start Simulation')
-	obj.Help('Results')
-	obj.Help('Loading Bar')
-	obj.Help('Log File')
+**To use the Help system:**
 
-When for example obj.Help('Objects') is called an Menu with list of objects will be given in the python terminal. 
-If the used for example want to design an 1x2 MMI, the following can be called next obj.Help({"Objects": 2}). 
-This will geve more information how to call the 1x2 MMI Function. What parameters need to be passed to the 1x2 MMI 
-so that Lumerical can create it afterwords. After creating the object the "Solver" Help Menu can be choosen so that 
-the user can get the proper Solver function and also give the needed parameters to the solver. Follow the Help 
-Menu or go to the online documentory of this repo if you want to know more about the functions and parameters needed 
-to call them. 
+.. code-block:: python
+		
+	from Constructor import HelpSystem
+
+	# Show the main help menu
+	HelpSystem.menu_help()
+
 
 
 Loading Bar
