@@ -1,0 +1,3 @@
+{
+  "1": "To start the Python Lumerical Constructor Library you need first to:\n\nfrom Constructor import Constructor\nfrom Constructor import loadingBar\n\n# Call the Constructor Object\nobj = Constructor(file, Lumerical Solver Type)\n\n# OR\nobj = Constructor(file, Lumerical Solver Type, MaterialPath)\n\nfile = Path to lumapi.py\nExample: \"lumerical/2022-r2.4/api/python/lumapi.py\"\n\nMaterialPath = Path to Material Library (OPTIONAL)\nExample: \"/Desktop/LNOI_Env/LiNbO3.mdf\"\n\nLumerical Solver Type = Solver Type like \"EME\" or \"FDTD\"\n\n# To close Lumerical\nobj.Close()\n\n# For further help after creating the object\nobj.Help()"
+}

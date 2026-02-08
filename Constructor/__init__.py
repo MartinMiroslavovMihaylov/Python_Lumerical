@@ -1,28 +1,20 @@
-# Python_Lumerical/__init__.py
-
 from importlib.metadata import PackageNotFoundError, version
 
-# --- Version ---
 try:
     __version__ = version(__name__)
 except PackageNotFoundError:
-    __version__ = "0+unknown"  # fallback for source installs
+    __version__ = "0+unknown"
 
-# --- Import classes/functions from Constructor module ---
-from Constructor.Constructor import (
-    Constructor,
-    loadingBar,
-    Help,
-    Logfile,
-    Charge,
-)
+# Absolute imports
+from Constructor.Constructor import Constructor, loadingBar, Logfile, Charge
+from Constructor.Help import HelpDatabase, HelpSystem
 
-# --- Exported names ---
 __all__ = [
     "__version__",
     "Constructor",
     "loadingBar",
-    "Help",
     "Logfile",
     "Charge",
+    "HelpDatabase",
+    "HelpSystem",
 ]

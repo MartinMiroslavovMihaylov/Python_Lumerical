@@ -1,0 +1,7 @@
+{
+  "1": "Start FDE Simulation -> obj.StartFDESimulation()",
+  "2": "Start EME Simulation -> obj.StartEMESimulation()",
+  "3": "Start FDTD Simulation -> obj.StartFDTDSimulation()",
+  "4": "Start CHARGE Simulation -> obj.StartCHARGESolver()",
+  "5": "Start FEEM Simulation -> obj.StartFEEMSolver()"
+}
